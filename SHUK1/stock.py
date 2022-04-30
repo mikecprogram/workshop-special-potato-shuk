@@ -32,3 +32,14 @@ class stock:
             self.stockItems.remove(tmp)
         else:
             print("The item is'nt on the store stock, can't remove it!")
+
+    def search(self,itemName,category,keyword,maxPrice,minItemRating,minShopRating):
+        print("need to implement search in stock")
+        return []
+    
+    def checkPurchase(self, itemName, itemNumber ,user):
+
+        print("need to implement checkPurchase in stock")
+
+        return True
+    

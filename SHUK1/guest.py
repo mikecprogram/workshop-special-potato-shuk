@@ -4,11 +4,11 @@ class guest:
 
     def __init__(self,user):
         self.user=user
-    def register(self, username, password):
+    def register(self, marketid, username, password):
         try:
             with sqlite3.connect("market.db") as connection:
                 cur =connection.cursor()
-                command="INSERT INTO users (username,password) VALUES (\""+str(username)+"\",\""+str(password)+"\");"
+                command="INSERT INTO users (market,username,password) VALUES ("+str(marketid)+",\""+str(username)+"\",\""+str(password)+"\");"
                 print(command)
                 r=cur.execute(command)
                 print(r)
@@ -17,11 +17,11 @@ class guest:
             print("ERROR:",e)
         finally:
             connection.close()
-    def login(self, username, password):
+    def login(self, marketid, username, password):
         try:
             with sqlite3.connect("market.db") as connection:
                 cur =connection.cursor()
-                command="SELECT * FROM users WHERE  username IS \""+str(username)+"\" AND password IS \""+str(password)+"\";"
+                command="SELECT * FROM users WHERE market IS "+str(marketid)+" AND username IS \""+str(username)+"\" AND password IS \""+str(password)+"\";"
                 print(command)
                 r=cur.execute(command)
                 print(r.fetchall())
