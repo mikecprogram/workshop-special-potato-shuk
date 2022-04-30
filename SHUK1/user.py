@@ -45,13 +45,13 @@ class user:
         return self._market.search(name,category,keyword,maxPrice,minItemRating,minShopRating)
 
     def addToCart(self,itemName,shopName):
-        _shoppingCart.addItem(shopName,itemName)
+        self._shoppingCart.addItem(shopName, itemName)
 
     def removeFromCart(self,itemName,shopName):
-        _shoppingCart.removeItem(shopName,itemName)
+        self._shoppingCart.removeItem(shopName, itemName)
 
     def checkBasket(self, shopName):
-        return _shoppingCart.checkBasket(shopName)
+        return self._shoppingCart.checkBasket(shopName)
 
     def commitPurchase(self):
         if self._market.commitPurchase(self._shoppingCart):
