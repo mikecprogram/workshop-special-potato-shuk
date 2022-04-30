@@ -18,13 +18,19 @@ class user:
     def login(self, username, password):
         if type(self._state).__name__=="guest":
             if (self._state.login(self._market._id, username, password)):
-                state=member(self,username,self._market)
+                state=member(self,username)
         else:
             print("already logged in")
 
     def logout(self):
         if type(self._state).__name__!="guest":
+            self._state.logout()
             self._state=guest(self)
+        else:
+            print("already logged out")
+    def openShop(self,name):
+        if type(self._state).__name__!="guest":
+            self._state.openShop(name)
         else:
             print("already logged out")
             

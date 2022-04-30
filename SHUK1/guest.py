@@ -11,7 +11,7 @@ class guest:
                 command="INSERT INTO users (market,username,password) VALUES ("+str(marketid)+",\""+str(username)+"\",\""+str(password)+"\");"
                 print(command)
                 r=cur.execute(command)
-                print(r)
+                print(r.fetchall())
                 connection.commit()              
         except Exception as e:
             print("ERROR:",e)
@@ -24,8 +24,7 @@ class guest:
                 command="SELECT * FROM users WHERE market IS "+str(marketid)+" AND username IS \""+str(username)+"\" AND password IS \""+str(password)+"\";"
                 print(command)
                 r=cur.execute(command)
-                print(r.fetchall())
-                if r.fetchall()==[]:
+                if r.fetchall()!=[]:
                     return True
                 else:
                     print("bad username or password")
