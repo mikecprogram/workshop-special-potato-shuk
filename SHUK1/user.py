@@ -18,7 +18,7 @@ class user:
     def login(self, username, password):
         if type(self._state).__name__=="guest":
             if (self._state.login(self._market._id, username, password)):
-                state=member(self,username)
+                self.state=member(self,username)
         else:
             print("already logged in")
 
