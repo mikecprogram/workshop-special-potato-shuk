@@ -6,23 +6,27 @@ class market:
     def __init__(self):
         self._id=1 #need to load from DB
         self._membersController = membersController(self)
-        self._activeUsers = []#used for notifications
+        self.activeUsers = []#used for notifications
         self._shops = [] #load
         self._externalSystems = externalSystems(self)
         self._admins = []#load
-
+    
+    def getController(self):
+        return self._membersController
+    
+    
     def shopByName(self,name):
         for s in self._shops:
-            if s.name==shopname:
+            if s.name==name:
                 return s
         return None
     def enter(self):
         u=user(self)
-        self._activeUsers.append(u)
+        self.activeUsers.append(u)
         return u
         
-    def exit(self):
-        self._activeUsers.remove(u)
+    def exit(self,u):
+        self.activeUsers.remove(u)
         
     def getShops(self):
         res=[]
@@ -42,17 +46,17 @@ class market:
 
     def commitPurchase(self,cart):
         for b in cart:
-            s=shopByName(b.shop)
-            for i inb.stockItems:
+            s= self.shopByName(b.shop)
+            for i in b.stockItems:
                 if not s.checkPurchase(i[0],i[1],cart.user):
                     return False
         if not self._externalSystems.checkDelivery(cart.user):
             return False
         price=0
         for b in cart:
-            s=shopByName(b.shop)
-            for i inb.stockItems:
-                price+=shop.getPrice(i[0],i[1])
+            s = self.shopByName(b.shop)
+            for i in b.stockItems:
+                price+= s.getPrice(i[0],i[1])
         
         if not self._externalSystems.makePayment(price,cart.user):
             return False

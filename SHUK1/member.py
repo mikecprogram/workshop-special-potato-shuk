@@ -1,3 +1,6 @@
+import sqlite3
+
+
 class member:
     def __init__(self,user,username,market = None):
         self.user = user
