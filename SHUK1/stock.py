@@ -1,6 +1,6 @@
 from asyncio.windows_events import NULL
 from re import I
-from SHUK1.stockItem import stockItem
+from stockItem import stockItem
 
 
 class stock:

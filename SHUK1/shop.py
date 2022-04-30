@@ -1,6 +1,8 @@
-from ast import For
-from SHUK1.stock import stock
-from SHUK1.stockItem import stockItem
+from discountPolicy import discountPolicy
+from purchaseHistory import purchaseHistory
+from purchasePolicy import purchasePolicy
+from stock import stock
+from stockItem import stockItem
 
 
 class shop:
@@ -10,9 +12,9 @@ class shop:
         self.founder = founder
         self.owners = []#load
         self.managers = []#load
-        self.purchaseHistory = purchaseHistory(self) #load
+        self.purchaseHistory = purchaseHistory() #load
         self.discountPolicy = discountPolicy(self)#load
-        self.purchasePolicy = purchasePolicy(self)#load
+        self.purchasePolicy = purchasePolicy()#load
         self.stock = stock(self)
 
     def addItemToStock(self,item : stockItem, stockNumber):
@@ -27,7 +29,7 @@ class shop:
     def getDetails(self):
         return [self.market,self.name,self.founder] #add more details if needed
 
-    def search(self,itemname,category,keyword,maxPrice,minItemRating,minShopRating)
+    def search(self,itemname,category,keyword,maxPrice,minItemRating,minShopRating):
         self.stock.search(itemname,category,keyword,maxPrice,minItemRating,minShopRating)
 
     def checkPurchase(self, itemName, itemNumber ,user):

@@ -1,8 +1,9 @@
 import sqlite3
 
+from shop import shop
 
 class member:
-    def __init__(self,user,username,market = None):
+    def __init__(self,user ,username,market = None):
         self.user = user
         self.ownedShops = []#load
         self.foundedShops = []#load
@@ -18,12 +19,12 @@ class member:
             with sqlite3.connect("market.db") as connection:
                 cur =connection.cursor()
                 
-                command="SELECT name FROM shops WHERE market IS "+str(self.user._market.id)+" AND founder IS \""+str(self.username)+"\";"
+                command="SELECT name FROM shops WHERE market IS " + str(self.user.market.id) + " AND founder IS \"" + str(self.username) + "\";"
                 print(command)
                 r=cur.execute(command)
                 print(r.fetchall())
                 for row in r:
-                    self.foundedShops.append(shop(self.user._market.id,row[0],self.username))
+                    self.foundedShops.append(shop(self.user.market.id, row[0], self.username))
 
                 #this is for owners which is not for V1
                 """    
@@ -45,7 +46,7 @@ class member:
             with sqlite3.connect("market.db") as connection:
                 cur =connection.cursor()
                 for s in self.foundedShops:    
-                    command="INSERT INTO shops (market,name,founder) VALUES ("+str(self.user._market.id)+",\""+str(s)+"\",\""+str(self.username)+"\");"
+                    command="INSERT INTO shops (market,name,founder) VALUES (" + str(self.user.market.id) + ",\"" + str(s) + "\",\"" + str(self.username) + "\");"
                     print(command)
                     r=cur.execute(command)
                 connection.commit()              
@@ -55,7 +56,9 @@ class member:
             connection.close()
 
     def openShop(self,name):
-        self.foundedShops.append(shop(self.user._market.id,name,self.username))
+        shopp = shop(self.user.market.id, name, self.username)
+        if(self.user.market.addShop(shopp)):
+            self.foundedShops.append(shopp)
 
 
 
