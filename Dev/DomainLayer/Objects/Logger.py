@@ -1,4 +1,24 @@
+import logging as logger
+
+
 class Logger:
 
-    def ___init___(self):
-        pass
+    @staticmethod
+    def debug(self, message):
+        logger.debug(message)
+
+    @staticmethod
+    def info(self, message):
+        logger.info(message)
+
+    @staticmethod
+    def warning(self, message):
+        logger.warning(message)
+
+    @staticmethod
+    def error(self, message):
+        logger.error(message)
+
+    @staticmethod
+    def critical(self, message):
+        logger.critical(message)
