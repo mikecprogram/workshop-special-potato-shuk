@@ -6,5 +6,16 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(True, False)
 
 
+
+    def happyCase(self):
+        pass
+
+    def sadCase(self):
+        pass
+
+    def badCase(self):
+        pass
+
+
 if __name__ == '__main__':
     unittest.main()
