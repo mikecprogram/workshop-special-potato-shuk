@@ -8,7 +8,7 @@ class Logger:
         logger.debug(message)
 
     @staticmethod
-    def info(self, message):
+    def event(self, message):
         logger.info(message)
 
     @staticmethod
