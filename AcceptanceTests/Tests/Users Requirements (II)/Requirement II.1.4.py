@@ -21,14 +21,6 @@ class MyTestCase(unittest.TestCase):
         self.m.login(self.u,"username","password")
         self.assertTrue(self.m.isLoggedin(u))
         
-    def testLogout(self):
-        self.assertTrue(self.m.isActive(u))
-        self.assertTrue(self.m.isMember(u))
-        self.m.login(self.u,"username","badpassword")
-        self.assertTrue(self.m.isLoggedin(u))
-        self.m.logout(self.u)
-        self.assertFalse(self.m.isLoggedin(u))
-        
     def testBadUser(self):
         self.assertTrue(self.m.isActive(u))
         self.assertTrue(self.m.isMember(u))

@@ -17,6 +17,8 @@ class MyTestCase(unittest.TestCase):
         s=self.m.foundShop(self.u,"shopname")
         self.m.defineItemInShop(self.u,"shopname","itemname","category",["keyword1","keyword2"])
         self.m.addItemToShop(self.u,"shopname","itemname",10)
+        self.m.defineItemInShop(self.u,"shopname","itemname2","category",["keyword1","keyword3"])
+        self.m.addItemToShop(self.u,"shopname","itemname",10)
         #add to "shopname" 10 "itemname" items. self.u is user identifier for premmisions (if any exist)
         self.m.logout(self.u)
         
@@ -34,9 +36,18 @@ class MyTestCase(unittest.TestCase):
         result=self.m.search(None,None,"keyword1")
         self.assertTrue(True) #dont know result structure for now just print 
         print(result)
-        
-    
+    def testSearchAll(self):
+        result=self.m.search("itemname","category","keyword1")
+        self.assertTrue(True) #dont know result structure for now just print 
+        print(result)
+    def testSearchBad(self):
+        result=self.m.search("itemname5","category5","keyword5")
+        self.assertEqual(result,[])
 
+    def testSearchBadNone(self):
+        result=self.m.search(None,"category5",None)
+        self.assertEqual(result,[])
+    
     
         
 if __name__ == '__main__':

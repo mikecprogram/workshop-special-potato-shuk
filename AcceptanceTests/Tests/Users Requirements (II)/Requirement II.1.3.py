@@ -22,7 +22,7 @@ class MyTestCase(unittest.TestCase):
         self.m.register(self.u,"username","password")
         self.assertTrue(self.m.isMember(u))
         self.m.register(self.u,"username","password")
-        self.assertFalse(self.m.isMember(u))
+        self.assertTrue(self.m.isMember(u)) #still member but should error msg
         
     def testNoUser(self):
         self.assertTrue(self.m.isActive(u))
