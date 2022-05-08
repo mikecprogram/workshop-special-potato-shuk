@@ -63,7 +63,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name: str,) -> Response[List[str]]:#[shop description ,item_name1 , item_name2 ...]
+    def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name: str) -> Response[List[str]]:#[shop description ,item_name1 , item_name2 ...]
         try:
             return Response(self.market.info_about_shop_in_the_market_and_his_items_name(user_id, shop_name))
         except Exception as e:
@@ -96,7 +96,7 @@ class SystemService(BridgeInterface):
 
     def shopping_carts_delete_item(self, user_id: int, item_name: str, shop_name: str ,amount :int) -> Response[bool]:
         try:
-            return Response(self.market.shopping_carts_delete_item( user_id, item_name, shop_name))
+            return Response(self.market.shopping_carts_delete_item( user_id, item_name, shop_name,amount))
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -109,79 +109,79 @@ class SystemService(BridgeInterface):
 
     def in_shop_purchases_history_request(self, user_id : int) -> Response[List[str]]:
         try:
-            return self.market.get_purchase_history()
+            return Response(self.market.get_purchase_history())
         except Exception as e:
             return Response(exception=e.__str__())
 
     def logout(self, user_id: int) -> Response[bool]:
         try:
-            return self.market.logout(user_id)
+            return Response(self.market.logout(user_id))
         except Exception as e:
             return Response(response=e.__str__())
 
     def shop_open(self, user_id: int, shop_name: str) -> Response[bool]:
         try:
-            return self.market.shop_open(user_id, shop_name)
+            return Response(self.market.shop_open(user_id, shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
 
     def adding_item_to_the_shops_stock(self, user_id: int, item_name: str, shop_name: str,category:str ,item_desc:str ,item_price : float , amount: int) -> Response[bool]:
         try:
-            return self.market.adding_item_to_the_shops_stock(user_id,item_name,shop_name,category,item_desc,item_price)
+            return Response(self.market.adding_item_to_the_shops_stock(user_id,item_name,shop_name,category,item_desc,item_price,amount))
         except Exception as e:
             return Response(exception=e.__str__())
 
     def deleting_item_from_shop_stock(self, user_id: int, item_name: str, shop_name: str, amount:int) -> Response[bool]:
         try:
-            return self.market.deleting_item_from_shop_stock(user_id, item_name, shop_name)
+            return Response(self.market.deleting_item_from_shop_stock(user_id, item_name, shop_name,amount))
         except Exception as e:
             return Response(exception=e.__str__())
 
     def change_items_details_in_shops_stock(self, user_id: int ,item_name: str, shop_name: str ,item_desc:str = None,item_price : float = None , item_amount: int = None) -> Response[bool]:
         try:
-            return self.market.change_items_details_in_shops_stock(user_id, item_name, shop_name, item_desc, item_price, item_amount)
+            return Response(self.market.change_items_details_in_shops_stock(user_id, item_name, shop_name, item_desc, item_price, item_amount))
         except Exception as e:
             return Response(exception=e.__str__())
 
     def shop_owner_assignment(self, user_id:int ,shop_name:str, member_name_to_assign: int, ) -> Response[bool]:
         try:
-            return self.market.shop_owner_assignment(user_id, shop_name, member_name_to_assign)
+            return Response(self.market.shop_owner_assignment(user_id, shop_name, member_name_to_assign))
         except Exception as e:
             return Response(exception=e.__str__())
 
     def shop_manager_assignment(self, user_id: int, shop_name: str, member_name_to_assign: str) -> Response[bool]:
         try:
-            return self.market.shop_manager_assignment(user_id, shop_name,member_name_to_assign)
+            return Response(self.market.shop_manager_assignment(user_id, shop_name,member_name_to_assign))
         except Exception as e:
             return Response(exception=e.__str__())
 
     def shop_manager_permissions_add(self, user_id: int, manager_name_to_update: str, permission_type: int, shop_name: str) -> Response[bool]:
         try:
-            return self.market.shop_manager_permissions_updating(user_id, manager_name_to_update ,permission_type, shop_name)
+            return Response(self.market.shop_manager_permissions_updating(user_id, manager_name_to_update ,permission_type, shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
 
     def shop_manager_permissions_delete(self, user_id: int, manager_name_to_update: str, permission_type: int, shop_name: str) -> Response[bool]:
         try:
-            return self.market.shop_manager_permissions_updating(user_id,manager_name_to_update, permission_type, shop_name)
+            return Response(self.market.shop_manager_permissions_updating(user_id,manager_name_to_update, permission_type, shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
 
     def shop_closing(self, user_id: str, shop_name: str) -> Response[bool]:
         try:
-            return self.market.shop_closing(user_id, shop_name)
+            return Response(self.market.shop_closing(user_id, shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
 
     def shop_manager_permissions_check(self, user_id: int, manager_name: str, shop_name: str) -> Response[Set[int]]:
         try:
-            return self.market.shop_manager_permissions_check(user_id, manager_name, shop_name)
+            return Response(self.market.shop_manager_permissions_check(user_id, manager_name, shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
 
     def shops_roles_info_request(self, user_id: str, shop_name: str) -> Response[List[List[str]]]:#[[member_name,"Manager"], [member_name,"Owner"]...]
         try:
-            return self.market.shops_roles_info_request(user_id, shop_name)
+            return Response(self.market.shops_roles_info_request(user_id, shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
 
