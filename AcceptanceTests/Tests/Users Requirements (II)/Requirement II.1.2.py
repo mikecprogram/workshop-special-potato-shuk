@@ -1,21 +1,22 @@
 import unittest
 import sys
 #this is how you import from different folder in python:
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\SHUK1')
-
-from market import *
+sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
+from SystemService import *
 
 
 class MyTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.m=marketService()
-        self.u=self.m.enter()
+        self.m=SystemService()
+        self.u=self.m.get_into_the_Trading_system_as_a_guest()
         
     def testGood(self):
-        self.assertTrue(self.m.isActive(u))
-        self.m.exit(u)
-        self.assertFalse(self.m.isActive(u))
+        r = self.m.is_active(u)
+        self.assertTrue((not r.is_exception) and r.response)
+        self.m.Trading_system_quitting(u)
+        r = self.m.is_active(u)
+        self.assertTrue((not r.is_exception) and r.response)
         
 if __name__ == '__main__':
     unittest.main()

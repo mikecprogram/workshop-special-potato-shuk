@@ -13,7 +13,7 @@ class BridgeInterface:
     def is_login(self,user_id) -> Response[bool]:
         pass
 
-    def is_member(self,name) -> Response[bool]:
+    def is_member(self,user_id, name) -> Response[bool]:
         pass
 
     def shipping_request(self, user_id: int, items : List[str]) -> Response[bool]:
@@ -29,7 +29,7 @@ class BridgeInterface:
     def login_into_the_trading_system(self, user_id: int, name: str, password: str) -> Response[bool]:
         pass
 
-    def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name: str,) -> Response[List[str]]: #[shop_desc ,item_name1 , item_name2 ...]
+    def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name: str) -> Response[List[str]]: #[shop_desc ,item_name1 , item_name2 ...]
         pass
 
     def info_about_item_in_shop(self, user_id, item_name, shop_name: str) -> Response[List[str]]: #[]
@@ -61,13 +61,13 @@ class BridgeInterface:
     def shop_open(self, user_id: int, shop_name: str) -> Response[bool]:
         pass
 
-    def adding_item_to_the_shops_stock(self, user_id: int, item_name: str, shop_name: str ,item_desc:str ,item_price : str) -> Response[bool]:
+    def adding_item_to_the_shops_stock(self, user_id: int, item_name: str, shop_name: str,category:str ,item_desc:str ,item_price : int , amount: int) -> Response[bool]:
         pass
 
-    def deleting_item_from_shop_stock(self, user_id: int, item_name: str, shop_name: str) -> Response[bool]:
+    def deleting_item_from_shop_stock(self, user_id: int, item_name: str, shop_name: str, amount:int) -> Response[bool]:
         pass
 
-    def change_items_details_in_shops_stock(self, user_id: int ,item_name: str, shop_name: str ,item_desc:str = None,item_price : int = None , item_amount: int = None) -> Response[bool]:
+    def change_items_details_in_shops_stock(self, user_id: int ,item_name: str, shop_name: str ,item_desc:str = None,item_price : int = None, item_amount: int = None) -> Response[bool]:
         pass
 
     def shop_owner_assignment(self, user_id:int ,shop_name:str, member_name_to_assign: int, ) -> Response[bool]:

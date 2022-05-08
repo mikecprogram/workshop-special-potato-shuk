@@ -1,47 +1,63 @@
 import unittest
 import sys
 #this is how you import from different folder in python:
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\SHUK1')
+sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
+from SystemService import *
 
-from market import *
 
 
 class MyTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.m=marketService()
-        self.u=self.m.enter()
-        self.m.register(self.u,"username","password")
+        self.m=SystemService()
+        self.u=self.m.get_into_the_Trading_system_as_a_guest()
+        self.m.registration_for_the_trading_system(self.u,"username","password")
     def tearDown(self):
         self.m.logout(self.u)#logout every time to allow all tests
         
     def testGood(self):
-        self.assertTrue(self.m.isActive(u))
-        self.assertTrue(self.m.isMember(u))
-        self.m.login(self.u,"username","password")
-        self.assertTrue(self.m.isLoggedin(u))
+        r = self.m.is_active(u)
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.is_member("username")
+        self.assertTrue((not r.is_exception) and r.response)
+        r=self.m.login_into_the_trading_system(self.u,"username","password")
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.is_login(u)
+        self.assertTrue((not r.is_exception) and r.response)
         
     def testBadUser(self):
-        self.assertTrue(self.m.isActive(u))
-        self.assertTrue(self.m.isMember(u))
-        self.m.login(self.u,"badusername","password")
-        self.assertFalse(self.m.isLoggedin(u))
+        r = self.m.is_active(u)
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.is_member("username")
+        self.assertTrue((not r.is_exception) and r.response)
+        r=self.m.login_into_the_trading_system(self.u,"badusername","password")
+        self.assertTrue((not r.is_exception) and (not r.response))
+        r = self.m.is_login(u)
+        self.assertTrue((not r.is_exception) and (not r.response))
         
     def testBadPass(self):
-        self.assertTrue(self.m.isActive(u))
-        self.assertTrue(self.m.isMember(u))
-        self.m.login(self.u,"username","badpassword")
-        self.assertFalse(self.m.isLoggedin(u))
+        r = self.m.is_active(u)
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.is_member("username")
+        self.assertTrue((not r.is_exception) and r.response)
+        r=self.m.login_into_the_trading_system(self.u,"username","badpassword")
+        self.assertTrue((not r.is_exception) and (not r.response))
+        r = self.m.is_login(u)
+        self.assertTrue((not r.is_exception) and (not r.response))
         
     def testDoubleLogin(self):
-        self.assertTrue(self.m.isActive(u))
-        self.assertTrue(self.m.isMember(u))
-        self.m.login(self.u,"username","badpassword")
-        self.assertTrue(self.m.isLoggedin(u))
-        err=self.m.login(self.u,"username","badpassword")
-        #should display error bus still be logged in
-        self.assertTrue(self.m.isLoggedin(u))
-        self.assertEqual(err,"user already logged in")
+        r = self.m.is_active(u)
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.is_member("username")
+        self.assertTrue((not r.is_exception) and r.response)
+        r=self.m.login_into_the_trading_system(self.u,"username","password")
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.is_login(u)
+        self.assertTrue((not r.is_exception) and r.response)
+        r=self.m.login_into_the_trading_system(self.u,"username","password")
+        self.assertTrue((not r.is_exception) and (not r.response))
+        r = self.m.is_login(u)
+        self.assertTrue((not r.is_exception) and (not r.response))
     
         
 if __name__ == '__main__':

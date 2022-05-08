@@ -1,52 +1,68 @@
 import unittest
 import sys
 #this is how you import from different folder in python:
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\SHUK1')
-
-from market import *
-
+sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
+from SystemService import *
 
 class MyTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.m=marketService()
-        self.u=self.m.enter()
+        self.m=SystemService()
+        self.u=self.m.get_into_the_Trading_system_as_a_guest()
+        self.m.registration_for_the_trading_system(self.u,"username","password")
         #need to login, create shop and add items to it for test
-        self.m.register(self.u,"username","password")
-        self.m.login(self.u,"username","password")
-        s=self.m.foundShop(self.u,"shopname")
-        self.m.defineItemInShop(self.u,"shopname","itemname","category",["keyword1","keyword2"])
-        self.m.addItemToShop(self.u,"shopname","itemname",10)
-        self.m.defineItemInShop(self.u,"shopname","itemname2","category",["keyword1","keyword3"])
-        self.m.addItemToShop(self.u,"shopname","itemname",10)
-        #add to "shopname" 10 "itemname" items. self.u is user identifier for premmisions (if any exist)
+        self.m.login_into_the_trading_system(self.u,"username","password")
+        self.m.shop_open(self.u,"shopname")
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname1","shopname","animal objects","cats and clocks",5,10)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname2","shopname","animal objects","dogs and locks",2,50)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname3","rockshop","rocks","rock collection",1,5)
         self.m.logout(self.u)
         
 
         
     def testSearchName(self):
-        result=self.m.search("itemname",None,None)
-        self.assertTrue(True) #dont know result structure for now just print 
-        print(result)
+        r=self.m.general_items_searching(self.u,itemname="itemname1")
+        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname1"]]) 
+
     def testSearchCategory(self):
-        result=self.m.search(None,"category",None)
-        self.assertTrue(True) #dont know result structure for now just print 
-        print(result)
+        r=self.m.general_items_searching(self.u,category="animal objects")
+        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname1"],["shopname","itemname2"]])
+        
     def testSearchKeyword(self):
-        result=self.m.search(None,None,"keyword1")
-        self.assertTrue(True) #dont know result structure for now just print 
-        print(result)
+        r=self.m.general_items_searching(self.u,item_keyword="cats")
+        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname1"]])
+
+    def testSearchMaxPrice(self):
+        r=self.m.general_items_searching(self.u,item_maxPrice=3)
+        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname2"],["rockshop","itemname3"]])
+        
     def testSearchAll(self):
-        result=self.m.search("itemname","category","keyword1")
-        self.assertTrue(True) #dont know result structure for now just print 
-        print(result)
+        r=self.m.general_items_searching(self.u,itemname="itemname2",category="animal objects",item_keyword="dogs",item_maxPrice=3)
+        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname2"]])
+        
     def testSearchBad(self):
-        result=self.m.search("itemname5","category5","keyword5")
-        self.assertEqual(result,[])
+        r=self.m.general_items_searching(self.u,itemname="itemname42")
+        self.assertTrue((not r.is_exception) and r.response==[]) 
 
     def testSearchBadNone(self):
-        result=self.m.search(None,"category5",None)
-        self.assertEqual(result,[])
+        r=self.m.general_items_searching(self.u)
+        self.assertTrue((not r.is_exception) and r.response==[])
+
+    def testSearchExclusive(self):
+        r=self.m.general_items_searching(self.u,category="animal objects",item_maxPrice=1)
+        self.assertTrue((not r.is_exception) and r.response==[])
+        
+    def testSearchPartialDesc(self):
+        r=self.m.general_items_searching(self.u,item_keyword="ock")
+        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname1"],["shopname","itemname2"],["rockshop","itemname3"]])
+        
+    def testSearchPartialName(self):
+        r=self.m.general_items_searching(self.u,item_keyword="ocks")
+        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname1"],["shopname","itemname2"],["rockshop","itemname3"]])
+        
+    def testSearchWhitespace(self):
+        r=self.m.general_items_searching(self.u,item_keyword="ock ")
+        self.assertTrue((not r.is_exception) and r.response==[["rockshop","itemname3"]])
     
     
         

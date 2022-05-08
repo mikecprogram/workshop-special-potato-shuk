@@ -1,58 +1,53 @@
 import unittest
 import sys
 #this is how you import from different folder in python:
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\SHUK1')
-
-from market import *
+sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
+from SystemService import *
 
 
 class MyTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.m=marketService()#new market every test
-        self.u=self.m.enter()
+        self.m=SystemService()
+        self.u=self.m.get_into_the_Trading_system_as_a_guest()
+        self.m.registration_for_the_trading_system(self.u,"username","password")
         #need to login, create shop and add items to it for test
-        self.m.register(self.u,"username","password")
-        self.m.login(self.u,"username","password")
-        self.m.foundShop(self.u,"shopname")
-        self.m.defineItemInShop(self.u,"shopname","itemname","category",["keyword1"])
-        self.m.addItemToShop(self.u,"shopname","itemname",10)
-        #add to "shopname" 10 "itemname" items. self.u is user identifier for premmisions (if any exist)
+        self.m.login_into_the_trading_system(self.u,"username","password")
+        self.m.shop_open(self.u,"shopname")
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname","shopname","category","description",5,10)
         self.m.logout(self.u)
         
                
     def testGoodGuest(self):
-        shopInfo=self.m.getShopInfo("shopname")
-        itemInfo=self.m.getItemInfo("shopname","itemname")
-        self.assertTrue(True) #dont know detail structure for now just print 
-        print(shopInfo, itemInfo)
+        r=self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")
+        assertTrue((not r.is_exception) and r.response == ["","itemname"])
+        r=self.m.info_about_item_in_shop(self.u,"itemname","shopname")
+        self.assertTrue((not r.is_exception) and r.response) 
         
     def testGoodMember(self): #in case information is defferent
-        self.m.login(self.u,"username","password")
-        shopInfo=self.m.getShopInfo("shopname")
-        itemInfo=self.m.getItemInfo("shopname","itemname")
-        self.assertTrue(True) #dont know detail structure for now just print 
-        print(shopInfo, itemInfo)
+        self.m.login_into_the_trading_system(self.u,"username","password")
+        r=self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")
+        assertTrue((not r.is_exception) and r.response == ["","itemname"])
+        r=self.m.info_about_item_in_shop(self.u,"itemname","shopname")
+        self.assertTrue((not r.is_exception) and r.response) 
         
     def testbadShopGuest(self):
-        shopInfo=self.m.getShopInfo("badshopname")
-        self.assertEqual(shopInfo,None)
+        r=self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")
+        self.assertTrue((not r.is_exception) and r.response) 
         
     def testbadShopMember(self):
-        self.m.login(self.u,"username","password")
-        shopInfo=self.m.getShopInfo("badshopname")
-        self.assertEqual(shopInfo,None)
+        self.m.login_into_the_trading_system(self.u,"username","password")
+        r=self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")
+        self.assertTrue((not r.is_exception) and r.response==None) 
         
     def testbadItemGuest(self):
-        shopInfo=self.m.getShopInfo("shopname")
-        itemInfo=self.m.getItemInfo("shopname","baditemname")
-        self.assertEqual(itemInfo,None)
+        r=self.m.info_about_item_in_shop(self.u,"itemname","shopname")
+        self.assertTrue((not r.is_exception) and r.response==None) 
         
     def testbadShopMember(self):
-        self.m.login(self.u,"username","password")
-        shopInfo=self.m.getShopInfo("shopname")
-        itemInfo=self.m.getItemInfo("shopname","baditemname")
-        self.assertEqual(itemInfo,None)
+        self.m.login_into_the_trading_system(self.u,"username","password")
+        r=self.m.info_about_item_in_shop(self.u,"itemname","shopname")
+        self.assertTrue((not r.is_exception) and r.response==None) 
 
     
         
