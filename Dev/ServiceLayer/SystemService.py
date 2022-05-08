@@ -2,6 +2,7 @@ from BridgeInterface import BridgeInterface
 from ..DomainLayer.Controllers.Market import Market as market
 from Response import Response
 from typing import List,Set
+#C:\Users\salih_kadry\Desktop\ServiceLayerV1\workshop-special-potato-shuk\AcceptanceTests
 class SystemService(BridgeInterface):
     def __init__(self):
         self.market: market = None
@@ -19,9 +20,27 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shipping_request(self, user_id: int, items : List[str]) -> Response[bool]:
+    def shipping_request(self, user_id: int, items : List[str]) -> Response[bool]:#TODO
         try:
             return Response(self.market.shipping_request(user_id, items))
+        except Exception as e:
+            return Response(exception=e.__str__())
+
+    def is_active(self, user_id) -> Response[bool]:
+        try:
+            return Response(self.market.is_active(user_id))
+        except Exception as e:
+            return Response(exception=e.__str__())
+
+    def is_login(self, user_id) -> Response[bool]:
+        try:
+            return Response(self.market.is_login(user_id))
+        except Exception as e:
+            return Response(exception=e.__str__())
+
+    def is_member(self, name) -> Response[bool]:
+        try:
+            return Response(self.market.is_member(name))
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -63,9 +82,9 @@ class SystemService(BridgeInterface):
             return Response(exception=e.__str__())
 
 
-    def shopping_carts_add_item(self, user_id: int, item_name: str, shop_name: str) -> Response[bool]:
+    def shopping_carts_add_item(self, user_id: int, item_name: str, shop_name: str, amount:int) -> Response[bool]:
         try:
-            return Response(self.market.shopping_carts_add_item(user_id, item_name, shop_name))
+            return Response(self.market.shopping_carts_add_item(user_id, item_name, shop_name,amount))
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -75,7 +94,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shopping_carts_delete_item(self, user_id: int, item_name: str, shop_name: str) -> Response[bool]:
+    def shopping_carts_delete_item(self, user_id: int, item_name: str, shop_name: str ,amount :int) -> Response[bool]:
         try:
             return Response(self.market.shopping_carts_delete_item( user_id, item_name, shop_name))
         except Exception as e:

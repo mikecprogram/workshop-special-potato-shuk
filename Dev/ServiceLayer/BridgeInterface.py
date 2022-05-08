@@ -7,10 +7,19 @@ class BridgeInterface:
     def initialization_of_the_system(self, external_payment_service : str, external_supplement_service : str, system_admin_name:str , password :str) -> Response[bool]:
         pass
 
+    def is_active(self,user_id) -> Response[bool]:
+        pass
+
+    def is_login(self,user_id) -> Response[bool]:
+        pass
+
+    def is_member(self,name) -> Response[bool]:
+        pass
+
     def shipping_request(self, user_id: int, items : List[str]) -> Response[bool]:
         pass
 
-    #guest and member
+    #guest and member (exit)
     def Trading_system_quitting(self, user_id: int) -> Response[bool]:
         pass
 
@@ -20,27 +29,27 @@ class BridgeInterface:
     def login_into_the_trading_system(self, user_id: int, name: str, password: str) -> Response[bool]:
         pass
 
-    def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name: str,) -> Response[List[str]]: #[shop description ,item_name1 , item_name2 ...]
+    def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name: str,) -> Response[List[str]]: #[shop_desc ,item_name1 , item_name2 ...]
         pass
 
-    def info_about_item_in_shop(self, user_id, item_name, shop_name: str) -> str:
+    def info_about_item_in_shop(self, user_id, item_name, shop_name: str) -> Response[List[str]]: #[]
         pass
 
-    def general_items_searching(self, user_id:int, item_keyword: str= None, item_maxPrice: int= None)->Response[List[List[str]]]: #[[shop_name, item_name1] , [shop_name,item_name2] ...]
+    #keyword search from name and description
+    def general_items_searching(self, user_id:int,item_name: str =None, category:str =None ,item_keyword: str= None, item_maxPrice: int= None) -> Response[List[List[str]]]: #[[shop_name, item_name1] , [shop_name,item_name2] ...]
         pass
 
-
-    def shopping_carts_add_item(self, user_id: int, item_name: str, shop_name: str) -> Response[bool]:
+    def shopping_carts_add_item(self, user_id: int, item_name: str, shop_name: str, amount : int) -> Response[bool]:
         pass
 
     def shopping_carts_check_content(self, user_id: int) -> Response[List[List[str]]]: #List[List[str]]: #[[shop_name, item_name1,item_name2..] , [shop_name, item_name1,item_name2..] ...]
         pass
 
-    def shopping_carts_delete_item(self, user_id: int, item_name: str, shop_name: str) -> Response[bool]:
+    def shopping_carts_delete_item(self, user_id: int, item_name: str, shop_name: str, amount :int) -> Response[bool]:
         pass
 
     #guest and member
-    def Shopping_cart_purchase(self, user_id: int) -> Response[bool]:#TODO
+    def Shopping_cart_purchase(self, user_id: int) -> Response[bool]:
         pass
 
     def in_shop_purchases_history_request(self, user_id : int) -> Response[List[str]]:
