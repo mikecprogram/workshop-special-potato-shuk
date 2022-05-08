@@ -71,13 +71,13 @@ class SystemService(BridgeInterface):
 
     def info_about_item_in_shop(self, user_id, item_name, shop_name: str) -> str:
         try:
-            return Response(self.market.info_about_item_in_shop(shop_name))
+            return Response(self.market.info_about_item_in_shop(user_id, item_name,shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def general_items_searching(self, user_id:int, item_keyword: str= None, item_maxPrice: int= None)->Response[List[List[str]]]: #[[shop_name, item_name1] , [shop_name,item_name2] ...]
+    def general_items_searching(self, user_id:int,item_name: str =None, category:str =None ,item_keyword: str= None, item_maxPrice: int= None)->Response[List[List[str]]]: #[[shop_name, item_name1] , [shop_name,item_name2] ...]
         try:
-            return Response(self.market.general_items_searching(user_id, item_keyword, item_maxPrice))
+            return Response(self.market.general_items_searching(user_id,category, item_keyword, item_maxPrice))
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -125,19 +125,19 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def adding_item_to_the_shops_stock(self, user_id: int, item_name: str, shop_name: str,category:str ,item_desc:str ,item_price : str , amount: int) -> Response[bool]:
+    def adding_item_to_the_shops_stock(self, user_id: int, item_name: str, shop_name: str,category:str ,item_desc:str ,item_price : float , amount: int) -> Response[bool]:
         try:
-            return self.market.adding_item_to_the_shops_stock(user_id,item_name,shop_name,item_desc,item_price)
+            return self.market.adding_item_to_the_shops_stock(user_id,item_name,shop_name,category,item_desc,item_price)
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def deleting_item_from_shop_stock(self, user_id: int, item_name: str, shop_name: str) -> Response[bool]:
+    def deleting_item_from_shop_stock(self, user_id: int, item_name: str, shop_name: str, amount:int) -> Response[bool]:
         try:
             return self.market.deleting_item_from_shop_stock(user_id, item_name, shop_name)
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def change_items_details_in_shops_stock(self, user_id: int ,item_name: str, shop_name: str ,item_desc:str = None,item_price : int = None , item_amount: int = None) -> Response[bool]:
+    def change_items_details_in_shops_stock(self, user_id: int ,item_name: str, shop_name: str ,item_desc:str = None,item_price : float = None , item_amount: int = None) -> Response[bool]:
         try:
             return self.market.change_items_details_in_shops_stock(user_id, item_name, shop_name, item_desc, item_price, item_amount)
         except Exception as e:
