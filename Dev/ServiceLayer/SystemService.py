@@ -125,7 +125,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def adding_item_to_the_shops_stock(self, user_id: int, item_name: str, shop_name: str ,item_desc:str ,item_price : str) -> Response[bool]:
+    def adding_item_to_the_shops_stock(self, user_id: int, item_name: str, shop_name: str,category:str ,item_desc:str ,item_price : str) -> Response[bool]:
         try:
             return self.market.adding_item_to_the_shops_stock(user_id,item_name,shop_name,item_desc,item_price)
         except Exception as e:

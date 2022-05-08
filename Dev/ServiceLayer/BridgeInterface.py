@@ -61,13 +61,13 @@ class BridgeInterface:
     def shop_open(self, user_id: int, shop_name: str) -> Response[bool]:
         pass
 
-    def adding_item_to_the_shops_stock(self, user_id: int, item_name: str, shop_name: str ,item_desc:str ,item_price : str) -> Response[bool]:
+    def adding_item_to_the_shops_stock(self, user_id: int, item_name: str, shop_name: str,category:str ,item_desc:str ,item_price : int) -> Response[bool]:
         pass
 
     def deleting_item_from_shop_stock(self, user_id: int, item_name: str, shop_name: str) -> Response[bool]:
         pass
 
-    def change_items_details_in_shops_stock(self, user_id: int ,item_name: str, shop_name: str ,item_desc:str = None,item_price : int = None , item_amount: int = None) -> Response[bool]:
+    def change_items_details_in_shops_stock(self, user_id: int ,item_name: str, shop_name: str ,item_desc:str = None,item_price : int = 0, item_amount: int = 0) -> Response[bool]:
         pass
 
     def shop_owner_assignment(self, user_id:int ,shop_name:str, member_name_to_assign: int, ) -> Response[bool]:
