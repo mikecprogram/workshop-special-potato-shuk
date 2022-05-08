@@ -13,7 +13,7 @@ class BridgeInterface:
     def is_login(self,user_id) -> Response[bool]:
         pass
 
-    def is_member(self,name) -> Response[bool]:
+    def is_member(self,user_id, name) -> Response[bool]:
         pass
 
     def shipping_request(self, user_id: int, items : List[str]) -> Response[bool]:

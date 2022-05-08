@@ -38,9 +38,9 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def is_member(self, name) -> Response[bool]:
+    def is_member(self,user_id, name) -> Response[bool]:
         try:
-            return Response(self.market.is_member(name))
+            return Response(self.market.is_member(user_id,name))
         except Exception as e:
             return Response(exception=e.__str__())
 
