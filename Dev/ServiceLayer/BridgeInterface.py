@@ -61,7 +61,7 @@ class BridgeInterface:
     def shop_open(self, user_id: int, shop_name: str) -> Response[bool]:
         pass
 
-    def adding_item_to_the_shops_stock(self, user_id: int, item_name: str, shop_name: str,category:str ,item_desc:str ,item_price : int) -> Response[bool]:
+    def adding_item_to_the_shops_stock(self, user_id: int, item_name: str, shop_name: str,category:str ,item_desc:str ,item_price : int , amount: int) -> Response[bool]:
         pass
 
     def deleting_item_from_shop_stock(self, user_id: int, item_name: str, shop_name: str) -> Response[bool]:
