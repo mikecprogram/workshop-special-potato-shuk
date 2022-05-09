@@ -3,14 +3,14 @@ import sys
 #this is how you import from different folder in python:
 sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\SHUK1')
 
-from market import *
+from SystemService import *
 
 class MyTestCase(unittest.TestCase):
     
     def setUp(self):
-        self.m=marketService()
-        self.u=self.m.enter()
-        self.m.register(self.u,"username","password")
+        self.m=SystemService()
+        self.u=self.m.get_into_the_Trading_system_as_a_guest()
+        self.m.registration_for_the_trading_system(self.u,"username","password")
 
     def testGood(self):
         self.assertFalse(self.m.isActive(u))

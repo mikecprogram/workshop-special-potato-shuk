@@ -1,3 +1,4 @@
+from dataclasses import asdict
 import unittest
 import sys
 #this is how you import from different folder in python:
