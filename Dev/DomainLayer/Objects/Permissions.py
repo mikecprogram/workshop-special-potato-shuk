@@ -1,7 +1,7 @@
 from .Logger import Logger
 
 
-class Permission:
+class Permissions:
 
     def ___init___(self):
         pass
