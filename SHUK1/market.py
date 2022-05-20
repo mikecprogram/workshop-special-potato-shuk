@@ -43,7 +43,7 @@ class market:
     def commitPurchase(self,cart):
         for b in cart:
             s=shopByName(b.shop)
-            for i inb.stockItems:
+            for i in b.stockItems:
                 if not s.checkPurchase(i[0],i[1],cart.user):
                     return False
         if not self._externalSystems.checkDelivery(cart.user):
@@ -51,7 +51,7 @@ class market:
         price=0
         for b in cart:
             s=shopByName(b.shop)
-            for i inb.stockItems:
+            for i in b.stockItems:
                 price+=shop.getPrice(i[0],i[1])
         
         if not self._externalSystems.makePayment(price,cart.user):

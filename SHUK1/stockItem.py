@@ -1,5 +1,5 @@
 class stockItem:
-    def __init__(self,stock, name, desc, id,shoppingBasket = None):
+    def __init__(self,name, desc, id,shoppingBasket = None,stock=None):
         self.stock = stock
         self.discountPolicy = []#load. unsure how to implement (list or singular)
         self.purchasePolicy = []#load

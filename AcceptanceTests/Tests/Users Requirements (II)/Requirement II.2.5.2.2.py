@@ -17,3 +17,5 @@ class MyTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+#need to define test guest discount policies
