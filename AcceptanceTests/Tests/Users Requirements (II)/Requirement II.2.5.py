@@ -22,6 +22,15 @@ class MyTestCase(unittest.TestCase):
         r=Shopping_cart_purchase(self.u)
         self.assertTrue((not r.is_exception) and r.response)
 
+    def happyCase(self):
+        pass
+
+    def sadCase(self):
+        pass
+
+    def badCase(self):
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()

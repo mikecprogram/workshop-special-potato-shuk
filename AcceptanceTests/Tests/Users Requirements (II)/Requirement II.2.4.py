@@ -19,7 +19,6 @@ class MyTestCase(unittest.TestCase):
         self.m.adding_item_to_the_shops_stock(self.u,"itemname3","rockshop","rocks","rock collection",1,5)
         self.m.logout(self.u)
         
-
         
     def testDisplayCart(self):
         shopping_carts_add_item(self.u,"itemname1","shopname",1)

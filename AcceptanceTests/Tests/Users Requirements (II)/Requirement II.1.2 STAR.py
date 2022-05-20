@@ -28,7 +28,6 @@ class MyTestCase(unittest.TestCase):
         self.m.logout(self.u)
         r = self.m.is_login(u)
         self.assertTrue((not r.is_exception) and (not r.response))
-        
 
     
         

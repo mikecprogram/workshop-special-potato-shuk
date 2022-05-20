@@ -40,6 +40,15 @@ class MyTestCase(unittest.TestCase):
         lst_new = self.m.general_items_searching(self.u)
         self.assertTrue(lst_old.response.count == 0 and lst_new.response.count == 1)
 
+    def happyCase(self):
+        pass
+
+    def sadCase(self):
+        pass
+
+    def badCase(self):
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()

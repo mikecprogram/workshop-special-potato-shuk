@@ -55,6 +55,15 @@ class MyTestCase(unittest.TestCase):
         self.assertFalse(self.m.isLoggedin(u))
         self.assertTrue(self.m.isMember(u))
 
+    def happyCase(self):
+        pass
+
+    def sadCase(self):
+        pass
+
+    def badCase(self):
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()

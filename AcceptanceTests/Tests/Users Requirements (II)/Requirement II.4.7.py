@@ -31,6 +31,15 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.is_exception) and r.response)
         r = self.m.shop_manager_permissions_add(self.u,"username2",1,"shopname")
 
+    def happyCase(self):
+        pass
+
+    def sadCase(self):
+        pass
+
+    def badCase(self):
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()

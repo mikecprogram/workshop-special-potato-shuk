@@ -26,6 +26,5 @@ class MyTestCase(unittest.TestCase):
         self.m.change_items_details_in_shops_stock(self.u,"itemname1","shopname","")
         lst_new = self.m.general_items_searching(self.u,item_name="itemname1")
         self.assertTrue(lst_old.response[0].des != 0 and lst_new.response[0].des)
-
 if __name__ == '__main__':
     unittest.main()

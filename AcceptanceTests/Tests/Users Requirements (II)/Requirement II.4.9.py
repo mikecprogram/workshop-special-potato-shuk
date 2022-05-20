@@ -24,6 +24,15 @@ class MyTestCase(unittest.TestCase):
         #waiting to be implement
         print("can't close shops")
 
+    def happyCase(self):
+        pass
+
+    def sadCase(self):
+        pass
+
+    def badCase(self):
+        pass
+
 
 if __name__ == '__main__':
     unittest.main()
