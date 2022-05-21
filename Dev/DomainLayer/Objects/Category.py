@@ -1,6 +1,6 @@
 class Category:
 
-    def ___init___(self,shop, catagoryName, catagoryId):
+    def __init__(self,shop, catagoryName, catagoryId):
         self._shop = shop
         self._catagoryName = catagoryName
         self._catagoryId = catagoryId

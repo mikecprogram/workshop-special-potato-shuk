@@ -1,10 +1,12 @@
 from unicodedata import category
+
+from .Category import Category
 from .Logger import Logger
 
 
-class Stock:
+class StockItem:
 
-    def ___init___(self, id,category, name, count, purchasepolicy, discountpolicy,
+    def __init__(self, id,category, name, count, purchasepolicy, discountpolicy,
                    price):
         self._id = id
         self._categroy = category
@@ -13,6 +15,7 @@ class Stock:
         self._name = name
         self._count = count
         self._price = price
+
     def getID(self):
         return self._id
     def addDiscountPolicy(self, discont):
@@ -51,3 +54,7 @@ class Stock:
         if totaldiscount < 1:
             finalPrice = finalPrice * (1-totaldiscount)
         return finalPrice
+
+    def getCategory(self) -> Category:
+        return self._categroy
+

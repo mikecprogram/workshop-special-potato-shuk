@@ -3,7 +3,7 @@ from .Logger import Logger
 
 class Member:
 
-    def ___init___(self,user,username,market = None):
+    def __init__(self,user,username,market = None):
         self.user = user
         self.foundedShops = []#load
         self.ownedShops = []#load

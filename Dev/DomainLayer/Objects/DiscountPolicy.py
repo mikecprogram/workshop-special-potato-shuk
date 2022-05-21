@@ -3,7 +3,7 @@ import time
 
 class DiscountPolicy:
 
-    def ___init___(self,isGuestOnly,isMemberOnly,discount,mustBuyItemsID,endDate,cuponCode):
+    def __init__(self,isGuestOnly,isMemberOnly,discount,mustBuyItemsID,endDate,cuponCode):
         self._isGuestOnly = isGuestOnly
         self._isMemberOnly = isMemberOnly
         self._discount = discount

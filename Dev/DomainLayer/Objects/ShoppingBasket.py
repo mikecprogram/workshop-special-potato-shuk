@@ -16,12 +16,12 @@ class ShoppingBasket:
     def addItem(self, itemName):
         i = self.getItemByName(itemName)
         if i is None:
-            self.stockItems.append([itemname,1])
+            self.stockItems.append([itemName,1])
         else:
             i[1]=i[1]+1
 
     def removeItem(self, itemName):
-        i = getItemByName(itemName)
+        i = self.getItemByName(itemName)
         if i is not None:
             if i[1]==1:
                 self.stockItems.remove(i)

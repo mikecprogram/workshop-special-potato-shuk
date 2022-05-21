@@ -3,7 +3,7 @@ from .Logger import Logger
 
 class PurchaseHistory:
 
-    def ___init___(self):
+    def __init__(self):
         self.purchaseString = ""#load
         pass
         

@@ -3,7 +3,7 @@ from .Logger import Logger
 
 class ShippingService:
 
-    def ___init___(self):
+    def __init__(self):
         pass
     
     def requestShipping(self):

@@ -3,7 +3,7 @@ from .Logger import Logger
 
 class ShoppingCart:
 
-    def ___init___(self, user):
+    def __init__(self, user):
         self._user = user
         self._shoppingBaskets = None
         self._cartPrice = None

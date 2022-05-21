@@ -3,5 +3,5 @@ from .Logger import Logger
 
 class ExternalServices:
 
-    def ___init___(self):
+    def __init__(self):
         pass

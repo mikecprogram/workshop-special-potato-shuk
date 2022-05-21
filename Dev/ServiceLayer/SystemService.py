@@ -1,5 +1,5 @@
 from BridgeInterface import BridgeInterface
-from ..DomainLayer.Controllers.Market import Market as market
+from ..DomainLayer.Objects.Market import Market as market
 from Response import Response
 from typing import List,Set
 #C:\Users\salih_kadry\Desktop\ServiceLayerV1\workshop-special-potato-shuk\AcceptanceTests
@@ -69,7 +69,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def info_about_item_in_shop(self, user_id, item_name, shop_name: str) -> str:
+    def info_about_item_in_shop(self, user_id, item_name, shop_name: str) -> Response:
         try:
             return Response(self.market.info_about_item_in_shop(user_id, item_name,shop_name))
         except Exception as e:
@@ -113,7 +113,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def logout(self, user_id: int) -> Response[bool]:
+    def logout(self, user_id: int) -> Response[str]:
         try:
             return Response(self.market.logout(user_id))
         except Exception as e:
