@@ -27,7 +27,7 @@ class shop:
     def getDetails(self):
         return [self.market,self.name,self.founder] #add more details if needed
 
-    def search(self,itemname,category,keyword,maxPrice,minItemRating,minShopRating)
+    def search(self,itemname,category,keyword,maxPrice,minItemRating,minShopRating):
         self.stock.search(itemname,category,keyword,maxPrice,minItemRating,minShopRating)
 
     def checkPurchase(self, itemName, itemNumber ,user):
