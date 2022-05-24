@@ -147,7 +147,7 @@ class Market:
     def shop_owner_assignment(self, requesterUserName, shop_name, member_name_to_assignUserName, token):
         if self.can_perform_action(token):
             if self.is_member(member_name_to_assignUserName):
-                if self._shops[shop_name] is not None:
+                if  shop_name in self._shops:
                     self._shops[shop_name].assign_owner(requesterUserName, self._members[member_name_to_assignUserName])
                 else:
                     raise Exception('Shop does not exist with the given shop name!')
@@ -157,7 +157,7 @@ class Market:
     def shop_manager_assignment(self, requesterUserName, shop_name, member_name_to_assignUserName, token):
         if self.can_perform_action(token):
             if self.is_member(member_name_to_assignUserName):
-                if self._shops[shop_name] is not None:
+                if shop_name in self._shops:
                     self._shops[shop_name].assign_manager(requesterUserName, self._members[member_name_to_assignUserName])
                 else:
                     raise Exception('Shop does not exist with the given shop name!')

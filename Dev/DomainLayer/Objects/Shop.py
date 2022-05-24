@@ -37,7 +37,7 @@ class Shop():
         pass
 
     def assign_owner(self, assignerUsername, assignee):
-        if self._owners[assignee.get_username()] is not None:
+        if assignee.get_username() in self._owners:
             raise Exception("Assignee is already an owner of the shop!")
         if self.is_owner(assignerUsername):
             self._owners[assignee.get_username()] = assignee
@@ -53,7 +53,7 @@ class Shop():
         return True
 
     def assign_manager(self, assignerUsername, assignee):
-        if self._managers[assignee.get_username()] is not None:
+        if assignee.get_username() in self._managers:
             raise Exception("Assignee is already a manager of the shop!")
         if self.is_owner(assignerUsername):
             self._managers[assignee.get_username()] = assignee
@@ -69,7 +69,7 @@ class Shop():
         return True
 
     def add_assignment(self, assignerUsername, assigneeUsername, assignment):
-        if assignment[assignerUsername] is not None:
+        if assignerUsername in assignment:
             assignment[assignerUsername].append(Assignment(assignerUsername, assigneeUsername))
         else:
             assignment[assignerUsername] = [Assignment(assignerUsername, assigneeUsername)]
@@ -78,7 +78,7 @@ class Shop():
         pass  # just change state of shop to closed TODO
 
     def is_manager(self, managerUsername):
-        return self._managers[managerUsername] is not None
+        return managerUsername in self._managers
 
     def is_owner(self, ownerUsername):
         return self._owners[ownerUsername] is not None or self._founder.get_username() == ownerUsername
