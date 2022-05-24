@@ -36,14 +36,27 @@ class Shop():
     def update_discount_policy(self):
         pass
 
-    def assign_owner(self, assigner, assignee):
-        if assignee not in self._owners:
-            self._owners.append(assignee)
-            self._assignments[assigner].append(Assignment(assigner, assignee))
+    def assign_owner(self, assignerUsername, assignee):
+        if self._owners[assignee.get_username()] is not None:
+            raise Exception("Assignee is already an owner of the shop!")
+        if self.is_owner(assignerUsername):
+            self._owners[assignee.get_username()] = assignee
+            self.add_assignment(assignerUsername, assignee.get_username(), self._owners_assignments)
+        elif self.is_manager(assignerUsername):
+            if self._managers[assignerUsername].can_assign_manager():
+                self._owners[assignee.get_username()] = assignee
+                self.add_assignment(assignerUsername, assignee.get_username(), self._owners_assignments)
+            else:
+                raise Exception("Assigner manager does not have the permission to assign owners!")
+        else:
+            raise Exception("Owner assignment failed!")
+        return True
 
     def assign_manager(self, assignerUsername, assignee):
+        if self._managers[assignee.get_username()] is not None:
+            raise Exception("Assignee is already a manager of the shop!")
         if self.is_owner(assignerUsername):
-            self._managers[assignerUsername] = assignee
+            self._managers[assignee.get_username()] = assignee
             self.add_assignment(assignerUsername, assignee.get_username(), self._managers_assignments)
         elif self.is_manager(assignerUsername):
             if self._managers[assignerUsername].can_assign_manager():
