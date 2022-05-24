@@ -1,10 +1,9 @@
-from .Logger import Logger
+#from .Logger import Logger
 
 
 class Member:
 
-    def __init__(self,user,username,market = None):
-        self.user = user
+    def __init__(self,username,hashed,market = None):
         self.foundedShops = []#load
         self.ownedShops = []#load
         self.managedShops = []#load
@@ -12,21 +11,16 @@ class Member:
         self.assignees = []
         self.admin = market
         self.username=username
-        self.load()#???
-
-    def register(self, marketid, username, password):
-        raise Exception("Unfortunately, a member can't perform registering")
+        self._hashed = hashed
         
     def get_username(self):
         return self._username
 
     def set_credintialsHash(self, credintialsHash):
         self._credintialsHash = credintialsHash
-    
-    def login(self,username, password):
-        raise Exception("Unfortunately, a member can't perform login again")
-        return False
 
     def openShop(self,shop):
         self.foundedShops.append(shop)
 
+    def isHashedCorrect(self,hashed):
+        return True if self._hashed == hashed else False
