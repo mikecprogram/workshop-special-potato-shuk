@@ -144,11 +144,11 @@ class Market:
         if self.can_perform_action(token):
             pass
 
-    def shop_owner_assignment(self, requesterId, shop_name, member_name_to_assign, token):
+    def shop_owner_assignment(self, requesterUserName, shop_name, member_name_to_assignUserName, token):
         if self.can_perform_action(token):
-            if self.is_member(member_name_to_assign):
+            if self.is_member(member_name_to_assignUserName):
                 if self._shops[shop_name] is not None:
-                    self._shops[shop_name].assign_owner(requesterId, member_name_to_assign)
+                    self._shops[shop_name].assign_owner(requesterUserName, self._members[member_name_to_assignUserName])
                 else:
                     raise Exception('Shop does not exist with the given shop name!')
             else:
