@@ -68,8 +68,8 @@ class Market:
         else:
             return False
 
-    def is_exist_member(self, username):
-        return self._members.get(username) is not None
+    def is_member(self, username):
+        return self._members[username] is not None
 
     def open_shop(self, token):
         if self.can_perform_action(token):
@@ -84,9 +84,6 @@ class Market:
 
     def is_login(self, user_id):
         return self._members.get(user_id) is not None and self._onlineVisitors.get(user_id) is not None
-
-    def is_member(self, user_id, name):  # not sure if we need name arg
-        return self._members.get(user_id) is not None
 
     def shipping_request(self, user_id, items, token):
         if self.can_perform_action(token):
@@ -147,25 +144,26 @@ class Market:
         if self.can_perform_action(token):
             pass
 
-    def shop_owner_assignment(self, user_id, shop_name, member_name_to_assign, token):
+    def shop_owner_assignment(self, requesterUserName, shop_name, member_name_to_assignUserName, token):
         if self.can_perform_action(token):
-            if self.is_exist_member(member_name_to_assign):
-                if self._shops[shop_name] is not None:
-                    self._shops[shop_name].assign_owner(user_id, member_name_to_assign)
+            if self.is_member(member_name_to_assignUserName):
+                if  shop_name in self._shops:
+                    self._shops[shop_name].assign_owner(requesterUserName, self._members[member_name_to_assignUserName])
                 else:
                     raise Exception('Shop does not exist with the given shop name!')
             else:
                 raise Exception('member does not exist to be assigned!')
 
-    def shop_manager_assignment(self, user_id, shop_name, member_name_to_assign, token):
+    def shop_manager_assignment(self, requesterUserName, shop_name, member_name_to_assignUserName, token):
         if self.can_perform_action(token):
-            if self.is_exist_member(member_name_to_assign):
-                if self._shops[shop_name] is not None:
-                    self._shops[shop_name].assign_manager(user_id, member_name_to_assign)
+            if self.is_member(member_name_to_assignUserName):
+                if shop_name in self._shops:
+                    self._shops[shop_name].assign_manager(requesterUserName, self._members[member_name_to_assignUserName])
                 else:
                     raise Exception('Shop does not exist with the given shop name!')
             else:
                 raise Exception('member does not exist to be assigned!')
+
     def shop_closing(self, user_id, shop_name, token):
         if self.can_perform_action(token):
             if self._shops[shop_name] is not None:
