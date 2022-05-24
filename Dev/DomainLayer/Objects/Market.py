@@ -24,7 +24,7 @@ class Market:
         self._onlineDate = {}  # hashmap  used only by can_perform_action,enter
         self._nextToken = -1
         self._enterLock = threading.Lock()
-        self._shops = {} # {shopName, shop}
+        self._shops = {}  # {shopName, shop}
 
     # returns boolean, returns if current date < 10Minutes+_onlineDate[token]
     # if #t update _onlineDate[token]
@@ -69,7 +69,10 @@ class Market:
             return False
 
     def is_member(self, username):
-        return self._members[username] is not None
+        if self._members[username] is not None:
+            return True
+        else:
+            raise Exception("There is no member with given username in the market!")
 
     def open_shop(self, token):
         if self.can_perform_action(token):
@@ -128,11 +131,16 @@ class Market:
     def logout(self, user_id):
         pass
 
-    def shop_open(self, user_id, shop_name, token):
+    def shop_open(self, requesterUsername, shop_name, token):
         if self.can_perform_action(token):
-            self._shops[shop_name] = Shop(user_id, shop_name)
+            if self.is_member(requesterUsername):
+                if not (shop_name in self._shops):
+                    self._shops[shop_name] = Shop(shop_name, requesterUsername)
+                else:
+                    raise Exception("There is already a shop with given name in the market, try another name please!")
 
-    def adding_item_to_the_shops_stock(self, user_id, item_name, shop_name, category, item_desc, item_price, amount, token):
+    def adding_item_to_the_shops_stock(self, user_id, item_name, shop_name, category, item_desc, item_price, amount,
+                                       token):
         if self.can_perform_action(token):
             pass
 
@@ -140,14 +148,15 @@ class Market:
         if self.can_perform_action(token):
             pass
 
-    def change_items_details_in_shops_stock(self, user_id, item_name, shop_name, item_desc, item_price, item_amount, token):
+    def change_items_details_in_shops_stock(self, user_id, item_name, shop_name, item_desc, item_price, item_amount,
+                                            token):
         if self.can_perform_action(token):
             pass
 
     def shop_owner_assignment(self, requesterUserName, shop_name, member_name_to_assignUserName, token):
         if self.can_perform_action(token):
             if self.is_member(member_name_to_assignUserName):
-                if  shop_name in self._shops:
+                if shop_name in self._shops:
                     self._shops[shop_name].assign_owner(requesterUserName, self._members[member_name_to_assignUserName])
                 else:
                     raise Exception('Shop does not exist with the given shop name!')
@@ -158,7 +167,8 @@ class Market:
         if self.can_perform_action(token):
             if self.is_member(member_name_to_assignUserName):
                 if shop_name in self._shops:
-                    self._shops[shop_name].assign_manager(requesterUserName, self._members[member_name_to_assignUserName])
+                    self._shops[shop_name].assign_manager(requesterUserName,
+                                                          self._members[member_name_to_assignUserName])
                 else:
                     raise Exception('Shop does not exist with the given shop name!')
             else:
@@ -170,7 +180,7 @@ class Market:
                 self._shops[shop_name].close_shop()
             else:
                 raise Exception('Shop does not exist with the given shop name!')
-            #TODO need to add members notification about shop closing event
+            # TODO need to add members notification about shop closing event
 
     def shop_manager_permissions_updating(self, user_id, manager_name_to_update, permission_type, shop_name, token):
         if self.can_perform_action(token):

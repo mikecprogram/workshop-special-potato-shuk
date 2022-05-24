@@ -1,10 +1,9 @@
-from .Logger import Logger
+from DiscountPolicy import DiscountPolicy
+from Logger import Logger
 import Stock
 import StockItem
 import Member
-import PurchasePolicy
-import DiscountPolicy
-import PurchaseHistory
+from PurchaseHistory import PurchaseHistory
 from Assignment import Assignment
 
 
