@@ -206,22 +206,21 @@ class Market():
     def shop_owner_assignment(self, token, shop_name, member_name_to_assignUserName):
         if self.isToken(token):
             if self.is_member(member_name_to_assignUserName):
-                self._onlineVisitors[token].assign_owner(self._members[member_name_to_assignUserName])
+                self._onlineVisitors[token].assign_owner(shop_name, self._members[member_name_to_assignUserName])
 
             else:
                 raise Exception('member does not exist to be assigned!')
         return True
 
-    def shop_manager_assignment(self, token, requesterUserName, shop_name, member_name_to_assignUserName):
+    def shop_manager_assignment(self, token, shop_name, member_name_to_assignUserName):
         if self.isToken(token):
             if self.is_member(member_name_to_assignUserName):
-                if self.is_shop(shop_name):
-                    self._shops[shop_name].assign_manager(requesterUserName,
-                                                          self._members[member_name_to_assignUserName])
-                else:
-                    raise Exception('Shop does not exist with the given shop name!')
+                self._onlineVisitors[token].assign_manager(shop_name, self._members[member_name_to_assignUserName])
+
             else:
                 raise Exception('member does not exist to be assigned!')
+        return True
+
 
     def shop_closing(self, token, shop_name):
         if self.isToken(token):
