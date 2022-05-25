@@ -20,7 +20,7 @@ class Market:
 
     def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password):
         self._members = {}
-        self._onlineVisitors = {}  #{token, User}
+        self._onlineVisitors = {}  # {token, User}
         self._onlineDate = {}  # hashmap  used only by can_perform_action,enter
         self._nextToken = -1
         self._enterLock = threading.Lock()
@@ -168,7 +168,7 @@ class Market:
     def shop_manager_assignment(self, requesterUserName, shop_name, member_name_to_assignUserName, token):
         if self.can_perform_action(token):
             if self.is_member(member_name_to_assignUserName):
-                if shop_name in self._shops:
+                if self.is_shop(shop_name):
                     self._shops[shop_name].assign_manager(requesterUserName,
                                                           self._members[member_name_to_assignUserName])
                 else:
@@ -188,10 +188,18 @@ class Market:
         if self.can_perform_action(token):
             pass
 
-    def shops_roles_info_request(self, user_id, shop_name, token):
+    def shops_roles_info_request(self, username, shopName, token):
         if self.can_perform_action(token):
-            pass
+            if self.is_member(username):
+                if self.is_shop(shopName):
+                    return self._shops[shopName].getRolesInfoReport(username)
 
     def shop_manager_permissions_check(self, user_id, manager_name, shop_name, token):
         if self.can_perform_action(token):
             pass
+
+    def is_shop(self, shopName):
+        if shopName in self._shops:
+            return True
+        else:
+            raise Exception("Shop does not exist with the given shop name!")

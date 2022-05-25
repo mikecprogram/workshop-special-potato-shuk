@@ -9,9 +9,9 @@ class Member(User):
         super().__init__(market)
         self.user = user
         self.foundedShops = []  # load
-        self.ownedShops = []  # load
-        self.managedShops = []  # load
-        self.permissions = []  # load
+        self.ownedShops = {}  # {shopName, shop}
+        self.managedShops = {}  # {shopName, shop}
+        self.permissions = None  # load
         self.assignees = []
         self.admin = market
         self.username = username
@@ -32,5 +32,20 @@ class Member(User):
     def addFoundedShop(self, shop):
         self.foundedShops.append(shop)
 
-    def exit(self, token):
+    def exit(self):
         super().saveShoppingCart()
+
+    def addOwnedShop(self, shop):
+        self.ownedShops[shop.getShopName()] = shop
+
+    def addManagedShop(self, shop):
+        self.managedShops[shop.getShopName()] = shop
+
+    def can_assign_manager(self):
+        return self.permissions.can_assign_manager()
+
+    def canGetRolesInfoReport(self):
+        if self.permissions.canGetRolesInfoReport():
+            return True
+        else:
+            raise Exception("")
