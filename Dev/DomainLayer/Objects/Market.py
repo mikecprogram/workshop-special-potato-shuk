@@ -74,7 +74,6 @@ class Market():
             del self._onlineVisitors[token]
             del self._onlineDate[token]
 
-
     def register(self, token, username, password):
         if self.isToken(token):
             user = self._onlineVisitors[token]
@@ -95,10 +94,6 @@ class Market():
 
     def is_member(self, username):
         return username in self._members
-
-    def open_shop(self, token):
-        if self.isToken(token):
-            pass
 
     def close_shop(self, token):
         if self.isToken(token):
@@ -177,19 +172,13 @@ class Market():
 
     def shop_open(self, token, shop_name):
         if self.isToken(token):
-            user = self._onlineVisitors[token]
-            if user.isMember():
-                if not (shop_name in self._shops):
-                    newShop = Shop(shop_name, user.getMember())
-                    self._shops[shop_name] = newShop
-                    user.addFoundedShop(newShop)
-        return False
-
-    def adding_item_to_the_shops_stock(self, token, item_name, shop_name, category, item_desc, item_price, amount):
-        if self.isToken(token):
-            pass
-        else:
-            raise Exception("There is already a shop with given name in the market, try another name please!")
+            if not shop_name in self._shops:
+                user = self._onlineVisitors[token]
+                newShop = Shop(shop_name, user)
+                user.shop_open(newShop)
+                return True
+            else:
+                raise Exception("There is already a shop with given name in the market, try another name please!")
 
     def adding_item_to_the_shops_stock(self, token, item_name, shop_name, category, item_desc, item_price, amount):
         if self.isToken(token):
@@ -220,7 +209,6 @@ class Market():
             else:
                 raise Exception('member does not exist to be assigned!')
         return True
-
 
     def shop_closing(self, token, shop_name):
         if self.isToken(token):

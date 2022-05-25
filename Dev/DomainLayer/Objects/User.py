@@ -42,6 +42,7 @@ class User:
     def openShop(self, shop):
         self._state.openShop(shop)
 
+
     def getAllItems(self):
         return self._shoppingCart.getAllItems()
 

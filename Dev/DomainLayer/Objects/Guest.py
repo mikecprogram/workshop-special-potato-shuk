@@ -10,7 +10,10 @@ class Guest:
         return True
 
     def assign_owner(self, shopName, memberToAssign):
-        raise Exception("Guest could not assign shop owners")
+        raise Exception("Guest could not assign shop owners!")
 
     def assign_manager(self, shopNmae, member):
-        raise Exception("Guest could not assign shop managers")
+        raise Exception("Guest could not assign shop managers!")
+
+    def openShop(self, shop):
+        raise Exception("Guest could not open a shop!")
