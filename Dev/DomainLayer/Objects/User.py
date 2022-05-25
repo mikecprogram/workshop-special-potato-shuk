@@ -47,3 +47,7 @@ class User:
 
     def clearShoppingCart(self):
         self._shoppingCart.clear()
+
+    def saveShoppingCart(self):
+        self._shoppingCart.store()
+        pass

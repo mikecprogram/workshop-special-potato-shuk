@@ -58,7 +58,7 @@ class Market:
 
     def register(self, username, password, token):
         if self.can_perform_action(token):
-            if not self.is_exist_member(username):
+            if not self.is_member(username):
                 if is_valid_password(password):
                     hashedPassword = password  # TODO: hash this using external class
                     member = Member(username, hashedPassword)
@@ -134,7 +134,10 @@ class Market:
         if self.can_perform_action(token):
             if self.is_member(requesterUsername):
                 if not (shop_name in self._shops):
-                    self._shops[shop_name] = Shop(shop_name, requesterUsername)
+                    newShop = Shop(shop_name, requesterUsername)
+                    self._shops[shop_name] = newShop
+                    self._members[requesterUsername].addFoundedShop(newShop)
+
                 else:
                     raise Exception("There is already a shop with given name in the market, try another name please!")
 

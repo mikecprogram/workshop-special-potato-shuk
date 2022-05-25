@@ -6,6 +6,7 @@ from User import User
 class Member(User):
 
     def __init__(self, user, username, market=None):
+        super().__init__(market)
         self.user = user
         self.foundedShops = []  # load
         self.ownedShops = []  # load
@@ -27,7 +28,9 @@ class Member(User):
 
     def login(self, username, password):
         raise Exception("Unfortunately, a member can't perform login again")
-        return False
 
-    def openShop(self, shop):
+    def addFoundedShop(self, shop):
         self.foundedShops.append(shop)
+
+    def exit(self, token):
+        super().saveShoppingCart()
