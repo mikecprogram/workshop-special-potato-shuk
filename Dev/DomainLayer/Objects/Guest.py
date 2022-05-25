@@ -3,17 +3,15 @@ from .Member import Member
 from User import User
 
 
-class Guest:
+class Guest(User):
 
-    def __init__(self, user: User):
-        self._user = user
+    def __init__(self, market):
+        super().__init__(market)
 
-    def logout(self):
+
+    def logout(self): # could be removed
         # should do nothing on logout by definition
         pass
 
-    def login(self, marketid, username, password):
-        pass
-
-    def get_username(self):
-        return self._username
+    def exit(self, token):  # guest quitting do nothing by definition right now.
+        self.clearShoppingCart(token)
