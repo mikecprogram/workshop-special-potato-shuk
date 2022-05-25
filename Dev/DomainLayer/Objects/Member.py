@@ -5,20 +5,21 @@ from Dev.DomainLayer.Objects.Permissions import Permissions
 class Member:
 
     def __init__(self, username, hashed, market=None):
-        self.foundedShops = []  # load
+        self.foundedShops = {}  # {shopName, Shop}
         self.ownedShops = {}  # {shopname, Shop}
         self.managedShops = []  # load
         self.permissions = {}  # {shopname, Permissions}
         self.assignees = []
         self.admin = market
-        self.username = username
+        self._username = username
         self._hashed = hashed
 
     def get_username(self):
         return self._username
 
     def addFoundedShop(self, shop):
-        self.foundedShops.append(shop)
+        self.foundedShops[shop.getShopName()] = shop
+        self.ownedShops[shop.getShopName()] = shop
 
     def isHashedCorrect(self, hashed):
         return True if self._hashed == hashed else False
@@ -51,17 +52,17 @@ class Member:
 
     def assign_owner(self, shopName, memberToAssign):
         if self.is_owned_shop(shopName):
-            self.ownedShops[shopName].assign_owner(self.username, memberToAssign)
+            self.ownedShops[shopName].assign_owner(self._username, memberToAssign)
         elif self.is_managed_shop(shopName) and self.can_assign_owner(shopName):
-            self.managedShops[shopName].assign_owner(self.username, memberToAssign)
+            self.managedShops[shopName].assign_owner(self._username, memberToAssign)
         else:
             raise Exception("Member could not assign an owner to not owned or not managed with special permission shop!")
 
     def assign_manager(self, shopName, memberToAssign):
         if self.is_owned_shop(shopName):
-            self.ownedShops[shopName].assign_manager(self.username, memberToAssign)
+            self.ownedShops[shopName].assign_manager(self._username, memberToAssign)
         elif self.is_managed_shop(shopName) and self.can_assign_owner(shopName):
-            self.managedShops[shopName].assign_manager(self.username, memberToAssign)
+            self.managedShops[shopName].assign_manager(self._username, memberToAssign)
         else:
             raise Exception("Member could not assign a manager to not owned or not managed with special permission shop!")
 

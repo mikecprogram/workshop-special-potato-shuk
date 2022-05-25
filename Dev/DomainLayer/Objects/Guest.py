@@ -23,3 +23,4 @@ class Guest:
         
     def getRolesInfoReport(self, shopName):
         raise Exception("Guest could not do this operation")
+
