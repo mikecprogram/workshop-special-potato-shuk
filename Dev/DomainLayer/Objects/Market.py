@@ -20,7 +20,7 @@ class Market:
 
     def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password):
         self._members = {}
-        self._onlineVisitors = {}  # hashmap
+        self._onlineVisitors = {}  #{token, User}
         self._onlineDate = {}  # hashmap  used only by can_perform_action,enter
         self._nextToken = -1
         self._enterLock = threading.Lock()
@@ -50,7 +50,10 @@ class Market:
         return currentToken
 
     def exit(self, token):
-        self._onlineDate[token] = 0
+        if self.can_perform_action(token):
+            if token in self._onlineVisitors:
+                self._onlineVisitors[token].exit()
+                self._onlineDate[token] = 0
         pass
 
     def register(self, username, password, token):
@@ -73,10 +76,6 @@ class Market:
             return True
         else:
             raise Exception("There is no member with given username in the market!")
-
-    def open_shop(self, token):
-        if self.can_perform_action(token):
-            pass
 
     def close_shop(self, token):
         if self.can_perform_action(token):
