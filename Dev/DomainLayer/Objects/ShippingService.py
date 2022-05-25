@@ -7,4 +7,4 @@ class ShippingService:
         pass
     
     def requestShipping(self):
-        return True
+        pass
