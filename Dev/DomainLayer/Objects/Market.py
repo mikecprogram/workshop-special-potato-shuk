@@ -132,7 +132,10 @@ class Market():
 
     def info_about_shop_in_the_market_and_his_items_name(self, token, shop_name):
         if self.isToken(token):
-            pass
+            if self.is_shop(shop_name):
+                return self._shops[shop_name].get_shop_report()
+            else:
+                raise Exception('Shop does not exist with the given shop name!')
 
     def general_items_searching(self, token, category, item_keyword, item_maxPrice):
         if self.isToken(token):
@@ -236,8 +239,8 @@ class Market():
         else:
             raise Exception("Shop does not exist with the given shop name!")
 
-    def payment_execution(self, token):
+    def payment_execution(self, token): # TODO to specify which params we need
         self._externalServices.execute_payment()
 
-    def shipping_execution(self, token):
+    def shipping_execution(self, token): # TODO to specify which params we need
         self._externalServices.execute_shipment()

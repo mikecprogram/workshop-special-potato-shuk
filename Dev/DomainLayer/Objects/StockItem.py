@@ -58,3 +58,5 @@ class StockItem:
     def getCategory(self) -> Category:
         return self._categroy
 
+    def get_item_report(self):
+        return 'Item: ' + self._name + '\n' + 'Price: ' + self._price + '\n' + 'Amount: ' + self._count + '\n' + 'id: ' + self._id +'\n'

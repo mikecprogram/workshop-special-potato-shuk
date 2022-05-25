@@ -1,17 +1,16 @@
 from DiscountPolicy import DiscountPolicy
 from Logger import Logger
-import Stock
 import StockItem
 import Member
 from PurchaseHistory import PurchaseHistory
 from Assignment import Assignment
-
+from Stock import Stock
 
 class Shop():
 
     def __init__(self, shopName: str, founder: Member):
         self._name = shopName
-        self._stock = Stock
+        self._stock = Stock()
         self._status = None  # need to confirm if we need shop's status such as closed/open. TODO
         self._founder = founder
         self._owners = {}  # {ownerUsername, Member}
@@ -89,3 +88,7 @@ class Shop():
             report = report + 'Username: ' + managerUsername + ' role: manager\n'
 
         return report
+
+    def get_shop_report(self):
+
+        return 'Shop name: ' + self._name +'\n'+ 'Founder: '+ self._founder +'\n' + 'Status: ' + self._status + '\n'+ self._stock.get_items_report()
