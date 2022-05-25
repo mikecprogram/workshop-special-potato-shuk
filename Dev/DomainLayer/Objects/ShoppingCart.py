@@ -1,13 +1,13 @@
-from .Logger import Logger
+##from .Logger import Logger
+from ShoppingBasket import ShoppingBasket
 
 
 class ShoppingCart:
 
     def __init__(self, user):
         self._user = user
-        self._shoppingBaskets = None
         self._cartPrice = None
-        self.shoppingBaskets = []  #here init baskets ie load from memory
+        self.shoppingBaskets = {}   # {shopName, ShoppingBasket}
 
     def getBasketByShop(self, shopname):
         for b in self.shoppingBaskets:
@@ -26,8 +26,17 @@ class ShoppingCart:
         if b is not None:
             b.removeItem(itemName)
 
-    def checkBasket(self, shepName):
+    def checkBasket(self, shopName):
         b = self.getBasketByShop(shopName)
         if b is not None:
             return b.checkBasket()
         return None
+
+    def clear(self):
+        self._user = None
+        self._cartPrice = None
+        for shop in self.shoppingBaskets:
+            self.shoppingBaskets[shop].clear()
+
+    def store(self):
+        pass         # TODO store the the shopping cart at DB
