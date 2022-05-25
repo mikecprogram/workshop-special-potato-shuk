@@ -159,12 +159,22 @@ class Market():
         if self.isToken(token):
             pass
 
-    def shop_open(self, user_id, shop_name, token):
+    def shop_open(self,token, WTF==>requesterUsername, shop_name, token):
         if self.isToken(token):
-            self._shops[shop_name] = Shop(user_id, shop_name)
+            if self.is_member(requesterUsername):
+                if not (shop_name in self._shops):
+                    newShop = Shop(shop_name, requesterUsername)
+                    self._shops[shop_name] = newShop
+                    self._members[requesterUsername].addFoundedShop(newShop)
 
     def adding_item_to_the_shops_stock(self, user_id, item_name, shop_name, category, item_desc, item_price, amount, token):
         if self.isToken(token):
+                else:
+                    raise Exception("There is already a shop with given name in the market, try another name please!")
+
+    def adding_item_to_the_shops_stock(self, user_id, item_name, shop_name, category, item_desc, item_price, amount,
+                                       token):
+        if self.can_perform_action(token):
             pass
 
     def deleting_item_from_shop_stock(self, user_id, item_name, shop_name, amount, token):
@@ -178,7 +188,7 @@ class Market():
     def shop_owner_assignment(self,token, requesterUserName, shop_name, member_name_to_assignUserName):
         if self.isToken(token):
             if self.is_member(member_name_to_assignUserName):
-                if  shop_name in self._shops:
+                if shop_name in self._shops:
                     self._shops[shop_name].assign_owner(requesterUserName, self._members[member_name_to_assignUserName])
                 else:
                     raise Exception('Shop does not exist with the given shop name!')
@@ -188,8 +198,9 @@ class Market():
     def shop_manager_assignment(self,token, requesterUserName, shop_name, member_name_to_assignUserName):
         if self.isToken(token):
             if self.is_member(member_name_to_assignUserName):
-                if shop_name in self._shops:
-                    self._shops[shop_name].assign_manager(requesterUserName, self._members[member_name_to_assignUserName])
+                if self.is_shop(shop_name):
+                    self._shops[shop_name].assign_manager(requesterUserName,
+                                                          self._members[member_name_to_assignUserName])
                 else:
                     raise Exception('Shop does not exist with the given shop name!')
             else:
@@ -201,7 +212,7 @@ class Market():
                 self._shops[shop_name].close_shop()
             else:
                 raise Exception('Shop does not exist with the given shop name!')
-            #TODO need to add members notification about shop closing event
+            # TODO need to add members notification about shop closing event
 
     def shop_manager_permissions_updating(self, user_id, manager_name_to_update, permission_type, shop_name, token):
         if self.isToken(token):
@@ -210,7 +221,18 @@ class Market():
     def shops_roles_info_request(self, user_id, shop_name, token):
         if self.isToken(token):
             pass
+    def shops_roles_info_request(self, username, shopName, token):
+        if self.isToken(token):
+            if self.is_member(username):
+                if self.is_shop(shopName):
+                    return self._shops[shopName].getRolesInfoReport(username)
 
     def shop_manager_permissions_check(self, user_id, manager_name, shop_name, token):
         if self.isToken(token):
             pass
+
+    def is_shop(self, shopName):
+        if shopName in self._shops:
+            return True
+        else:
+            raise Exception("Shop does not exist with the given shop name!")

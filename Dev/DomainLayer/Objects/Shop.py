@@ -1,10 +1,9 @@
-from .Logger import Logger
+from DiscountPolicy import DiscountPolicy
+from Logger import Logger
 import Stock
 import StockItem
 import Member
-import PurchasePolicy
-import DiscountPolicy
-import PurchaseHistory
+from PurchaseHistory import PurchaseHistory
 from Assignment import Assignment
 
 
@@ -24,6 +23,9 @@ class Shop():
         self._managers_assignments = {}
         pass
 
+    def getShopName(self):
+        return self._name
+
     def add_item(self, item: StockItem):
         self._stock.add(item)
 
@@ -41,10 +43,12 @@ class Shop():
             raise Exception("Assignee is already an owner of the shop!")
         if self.is_owner(assignerUsername):
             self._owners[assignee.get_username()] = assignee
+            self._managers[assignee.get_username()].addOwnedShop(self)
             self.add_assignment(assignerUsername, assignee.get_username(), self._owners_assignments)
         elif self.is_manager(assignerUsername):
             if self._managers[assignerUsername].can_assign_manager():
                 self._owners[assignee.get_username()] = assignee
+                self._managers[assignee.get_username()].addOwnedShop(self)
                 self.add_assignment(assignerUsername, assignee.get_username(), self._owners_assignments)
             else:
                 raise Exception("Assigner manager does not have the permission to assign owners!")
@@ -57,10 +61,12 @@ class Shop():
             raise Exception("Assignee is already a manager of the shop!")
         if self.is_owner(assignerUsername):
             self._managers[assignee.get_username()] = assignee
+            self._managers[assignee.get_username()].addManagedShop(self)
             self.add_assignment(assignerUsername, assignee.get_username(), self._managers_assignments)
         elif self.is_manager(assignerUsername):
             if self._managers[assignerUsername].can_assign_manager():
                 self._managers[assignee.get_username()] = assignee
+                self._managers[assignee.get_username()].addManagedShop(self)
                 self.add_assignment(assignerUsername, assignee.get_username(), self._managers_assignments)
             else:
                 raise Exception("Assigner manager does not have the permission to assign managers!")
@@ -88,3 +94,20 @@ class Shop():
         for discount in self._discountPolicy:
             totaldiscount = totaldiscount * discount.getDiscount(user)
         return totaldiscount
+
+    def getRolesInfoReport(self, requesterUsername):
+
+        if self.is_owner(requesterUsername) or (self.is_manager(requesterUsername) and self._managers[requesterUsername].canGetRolesInfoReport()):
+
+            report = 'Founder: ' + self._founder + '\n'
+            for ownerUsername in self._owners:
+                report = report + 'Username: ' + ownerUsername + ' role: owner\n'
+
+            for managerUsername in self._managers:
+                report = report + 'Username: ' + managerUsername + ' role: manager\n'
+        else:
+            raise Exception("Just owners and managers with relevant permissions can get roles info report of given "
+                            "shop!")
+
+        return report
+
