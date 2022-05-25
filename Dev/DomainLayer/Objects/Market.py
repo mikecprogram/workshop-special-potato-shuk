@@ -6,6 +6,7 @@ from Logger import Logger
 from Member import Member
 from Shop import Shop
 from User import User
+from ExternalServices import ExternalServices
 
 
 def is_valid_password(password):
@@ -25,6 +26,7 @@ class Market:
         self._nextToken = -1
         self._enterLock = threading.Lock()
         self._shops = {}  # {shopName, shop}
+        self._externalServices = ExternalServices()
 
     # returns boolean, returns if current date < 10Minutes+_onlineDate[token]
     # if #t update _onlineDate[token]
@@ -203,3 +205,6 @@ class Market:
             return True
         else:
             raise Exception("Shop does not exist with the given shop name!")
+
+    def payment_execution(self):
+        self._externalServices.execute_payment()
