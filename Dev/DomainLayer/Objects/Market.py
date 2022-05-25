@@ -80,7 +80,7 @@ class Market():
             user = self._onlineVisitors[token]
             if user.isMember():
                 raise Exception("Logged in member can't register for some reason")
-            if not self.is_exist_member(username):
+            if not self.is_member(username):
                 if is_valid_password(password):
                     hashedPassword = self._security.hash(password)
                     member = Member(username, hashedPassword)
@@ -93,7 +93,7 @@ class Market():
         else:
             return False
 
-    def is_exist_member(self, username):
+    def is_member(self, username):
         return username in self._members
 
     def open_shop(self, token):
@@ -192,7 +192,7 @@ class Market():
             raise Exception("There is already a shop with given name in the market, try another name please!")
 
     def adding_item_to_the_shops_stock(self, token, item_name, shop_name, category, item_desc, item_price, amount):
-        if self.can_perform_action(token):
+        if self.isToken(token):
             pass
 
     def deleting_item_from_shop_stock(self, token, item_name, shop_name, amount):
@@ -203,15 +203,14 @@ class Market():
         if self.isToken(token):
             pass
 
-    def shop_owner_assignment(self, token, requesterUserName, shop_name, member_name_to_assignUserName):
+    def shop_owner_assignment(self, token, shop_name, member_name_to_assignUserName):
         if self.isToken(token):
             if self.is_member(member_name_to_assignUserName):
-                if shop_name in self._shops:
-                    self._shops[shop_name].assign_owner(requesterUserName, self._members[member_name_to_assignUserName])
-                else:
-                    raise Exception('Shop does not exist with the given shop name!')
+                self._onlineVisitors[token].assign_owner(self._members[member_name_to_assignUserName])
+
             else:
                 raise Exception('member does not exist to be assigned!')
+        return True
 
     def shop_manager_assignment(self, token, requesterUserName, shop_name, member_name_to_assignUserName):
         if self.isToken(token):

@@ -8,3 +8,6 @@ class Guest:
 
     def exit(self): # does not do anything
         return True
+
+    def assign_owner(self, shopName, memberToAssign):
+        raise Exception("Guest could not assign shop owners")

@@ -5,12 +5,11 @@ class Member:
 
     def __init__(self, username, hashed, market=None):
         self.foundedShops = []  # load
-        self.ownedShops = []  # load
+        self.ownedShops = {}  # {shopname, Shop}
         self.managedShops = []  # load
         self.permissions = {}  # {shopname, Permissions}
         self.assignees = []
         self.admin = market
-        self.permissions = None  # load
         self.username = username
         self._hashed = hashed
 
@@ -29,15 +28,27 @@ class Member:
     def addManagedShop(self, shop):
         self.managedShops[shop.getShopName()] = shop
 
-    def can_assign_manager(self):
-        return self.permissions.can_assign_manager()
+    def can_assign_manager(self, shopname):
+        return self.permissions[shopname].can_assign_manager()
 
-    def canGetRolesInfoReport(self):
-        if self.permissions.canGetRolesInfoReport():
-            return True
-        else:
-            raise Exception("")
+    def can_assign_owner(self, shopname):
+        return self.permissions[shopname].can_assign_owner()
+
+    def canGetRolesInfoReport(self, shopname):
+        return self.permissions[shopname].canGetRolesInfoReport()
 
     def exit(self):
         # store shopping cart in db
         return True
+
+    def is_owned_shop(self, shopName):
+        return shopName in self.ownedShops
+
+    def is_managed_shop(self, shopName):
+        return shopName in self.managedShops
+
+    def assign_owner(self, shopName, memberToAssign):
+        if self.is_owned_shop(shopName) or (self.is_managed_shop(shopName) and self.can_assign_owner(shopName)):
+            self.ownedShops[shopName].assign_owner(self.username, memberToAssign)
+        else:
+            raise Exception("Member could not assign an owner to not owned or not managed with special permission shop!")

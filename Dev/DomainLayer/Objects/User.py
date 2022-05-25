@@ -72,3 +72,6 @@ class User:
     def saveShoppingCart(self):
         self._shoppingCart.store()
         pass
+
+    def assign_owner(self, shopName, memberToAssign):
+        self._state.assign_owner(shopName, memberToAssign)
