@@ -2,7 +2,7 @@ from operator import is_
 import time
 import threading
 
-#from Logger import Logger
+# from Logger import Logger
 from Shop import Shop
 from User import User
 from ExternalServices import ExternalServices
@@ -10,41 +10,46 @@ from ExternalServices import ExternalServices
 from Member import Member
 from Security import Security
 
+
 def is_valid_password(password):
     if len(password) >= 8:  # need to add constraints on pass TODO
         return True
     else:
         raise Exception("invalid password")  # may add some hint about a valid password TODO
 
+
 debug = False
-maxtimeonline = 1#60 * 10  # 10 minutes
+maxtimeonline = 1  # 60 * 10  # 10 minutes
+
+
 class Market():
 
-    def prid(self,txt):
+    def prid(self, txt):
         if debug:
             print(txt)
 
-    def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password,maxtimeonline = 60*10 ):#10 minutes
+    def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password,
+                 maxtimeonline=60 * 10):  # 10 minutes
         self._maxtimeonline = maxtimeonline
         self._members = {}
-        self._onlineVisitors = {}  # hashmap
+        self._onlineVisitors = {}  # {token, User}
         self._onlineDate = {}  # hashmap  used only by isToken,enter
         self._nextToken = -1
         self._enterLock = threading.Lock()
-        self._shops = {} # {shopName, shop}
+        self._shops = {}  # {shopName, shop}
         self._security = Security()
         self._externalServices = ExternalServices()
 
     # returns boolean, returns if current date < 10Minutes+_onlineDate[token]
     # if #t update _onlineDate[token]
     # this will be checked before each user function
-    #this function returns whether the token is valid
+    # this function returns whether the token is valid
     def isToken(self, token):
-        if(not(token in self._onlineVisitors)):
+        if (not (token in self._onlineVisitors)):
             self.prid("The token was not found")
             return False
         currentTime = time.time()
-        if(currentTime - self._onlineDate[token] < self._maxtimeonline):
+        if (currentTime - self._onlineDate[token] < self._maxtimeonline):
             self._onlineDate[token] = currentTime
             return True
         self.prid("Session time out for token %d" % token)
@@ -64,17 +69,20 @@ class Market():
         return currentToken
 
     def exit(self, token):
-        del self._onlineVisitors[token]
-        del self._onlineDate[token]
+        if self.isToken(token):
+            self._onlineVisitors[token].exit()
+            del self._onlineVisitors[token]
+            del self._onlineDate[token]
 
-    def register(self,token, username, password):
+
+    def register(self, token, username, password):
         if self.isToken(token):
             user = self._onlineVisitors[token]
             if user.isMember():
                 raise Exception("Logged in member can't register for some reason")
             if not self.is_exist_member(username):
                 if is_valid_password(password):
-                    hashedPassword =self._security.hash(password)
+                    hashedPassword = self._security.hash(password)
                     member = Member(username, hashedPassword)
                     self._members[username] = member
                     return True
@@ -86,7 +94,7 @@ class Market():
             return False
 
     def is_exist_member(self, username):
-        return self._members.get(username) is not None
+        return username in self._members
 
     def open_shop(self, token):
         if self.isToken(token):
@@ -111,10 +119,9 @@ class Market():
             user = self._onlineVisitors[token]
             user.logout()
 
-
-    def login(self,token, username, password):
+    def login(self, token, username, password):
         if self.isToken(token):
-            if not(is_valid_password(password)) :
+            if not (is_valid_password(password)):
                 raise Exception("Password is not valid")
             if username in self._members:
                 member = self._members[username]
@@ -122,7 +129,6 @@ class Market():
                 if member.isHashedCorrect(hashed):
                     user = self._onlineVisitors[token]
                     user.login(member)
-
                     return True
                 else:
                     raise Exception("Wrong password")
@@ -160,6 +166,7 @@ class Market():
     def get_purchase_history(self, token):
         if self.isToken(token):
             pass
+
     """
     In order to check if user is still connected we use  self.isToken(token)
     To get user we use self._onlineVisitors[token]
@@ -167,14 +174,15 @@ class Market():
     If we succed we return True
     Else we throw Exception (Or, in rare occasion we return False)
     """
-    def shop_open(self,token, shop_name):
+
+    def shop_open(self, token, shop_name):
         if self.isToken(token):
             user = self._onlineVisitors[token]
             if user.isMember():
                 if not (shop_name in self._shops):
                     newShop = Shop(shop_name, user.getMember())
                     self._shops[shop_name] = newShop
-                    user.addFoundedShop(newShop) 
+                    user.addFoundedShop(newShop)
         return False
 
     def adding_item_to_the_shops_stock(self, token, item_name, shop_name, category, item_desc, item_price, amount):
@@ -195,7 +203,7 @@ class Market():
         if self.isToken(token):
             pass
 
-    def shop_owner_assignment(self,token, requesterUserName, shop_name, member_name_to_assignUserName):
+    def shop_owner_assignment(self, token, requesterUserName, shop_name, member_name_to_assignUserName):
         if self.isToken(token):
             if self.is_member(member_name_to_assignUserName):
                 if shop_name in self._shops:
@@ -205,7 +213,7 @@ class Market():
             else:
                 raise Exception('member does not exist to be assigned!')
 
-    def shop_manager_assignment(self,token, requesterUserName, shop_name, member_name_to_assignUserName):
+    def shop_manager_assignment(self, token, requesterUserName, shop_name, member_name_to_assignUserName):
         if self.isToken(token):
             if self.is_member(member_name_to_assignUserName):
                 if self.is_shop(shop_name):
@@ -228,16 +236,17 @@ class Market():
         if self.isToken(token):
             pass
 
-    def shops_roles_info_request(self, token, shop_name):
+    def shops_roles_info_request(self, shop_name, token):
         if self.isToken(token):
             pass
-    def shops_roles_info_request(self, username, shopName):
+
+    def shops_roles_info_request(self, shopName, token):
         if self.isToken(token):
             if self.is_member(username):
                 if self.is_shop(shopName):
                     return self._shops[shopName].getRolesInfoReport(username)
 
-    def shop_manager_permissions_check(self, token, manager_name, shop_name):
+    def shop_manager_permissions_check(self, manager_name, shop_name, token):
         if self.isToken(token):
             pass
 
