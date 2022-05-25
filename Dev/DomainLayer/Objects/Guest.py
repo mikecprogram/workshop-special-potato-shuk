@@ -1,19 +1,10 @@
-from .Logger import Logger
-from .Member import Member
-from User import User
+##from .Logger import Logger
 
 
 class Guest:
 
-    def __init__(self, user: User):
+    def __init__(self, user):
         self._user = user
 
-    def logout(self):
-        # should do nothing on logout by definition
-        pass
-
-    def login(self, marketid, username, password):
-        pass
-
-    def get_username(self):
-        return self._username
+    def exit(self): # does not do anything
+        return True

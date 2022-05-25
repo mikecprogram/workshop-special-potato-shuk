@@ -1,7 +1,7 @@
-from .Logger import Logger
+#from .Logger import Logger
 
 
-class PurchasePolicy:
+class PurchasePolicy():
 
     def __init__(self):
         pass
