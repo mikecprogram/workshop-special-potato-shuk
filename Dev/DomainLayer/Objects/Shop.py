@@ -79,18 +79,13 @@ class Shop():
             totaldiscount = totaldiscount * discount.getDiscount(user)
         return totaldiscount
 
-    def getRolesInfoReport(self, requesterUsername):
+    def getRolesInfoReport(self):
 
-        if self.is_owner(requesterUsername) or (self.is_manager(requesterUsername) and self._managers[requesterUsername].canGetRolesInfoReport()):
+        report = 'Founder: ' + self._founder + '\n'
+        for ownerUsername in self._owners:
+            report = report + 'Username: ' + ownerUsername + ' role: owner\n'
 
-            report = 'Founder: ' + self._founder + '\n'
-            for ownerUsername in self._owners:
-                report = report + 'Username: ' + ownerUsername + ' role: owner\n'
-
-            for managerUsername in self._managers:
-                report = report + 'Username: ' + managerUsername + ' role: manager\n'
-        else:
-            raise Exception("Just owners and managers with relevant permissions can get roles info report of given "
-                            "shop!")
+        for managerUsername in self._managers:
+            report = report + 'Username: ' + managerUsername + ' role: manager\n'
 
         return report
