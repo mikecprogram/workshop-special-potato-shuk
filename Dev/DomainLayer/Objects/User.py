@@ -1,10 +1,11 @@
 ##from .Logger import Logger
-#from Guest import *
-#from Member import *
-#from ShoppingCart import *
+# from Guest import *
+# from Member import *
+# from ShoppingCart import *
 from Guest import Guest
 from Member import Member
 from ShoppingCart import ShoppingCart
+
 
 class User:
     def __init__(self, market):
@@ -14,24 +15,28 @@ class User:
 
     def isMember(self):
         return isinstance(self._state, Member)
+
     def getMember(self):
         if self.isMember():
             return self._state
         else:
             raise Exception("This user is not a member")
-    def login(self,member):
-        if not(self.isMember()):
+
+    def login(self, member):
+        if not (self.isMember()):
             self._state = member
             return True
         else:
             raise Exception("Logged in member tried to login again.")
+
     def logout(self):
         if self.isMember():
-            self._state= Guest(self)
+            self._state = Guest(self)
         else:
             raise Exception("Cant log out guest")
 
-
+    def exit(self):
+        self._state.exit()
 
     def openShop(self, shop):
         self._state.openShop(shop)

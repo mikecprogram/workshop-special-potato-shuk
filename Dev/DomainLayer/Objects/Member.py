@@ -1,13 +1,13 @@
-#from .Logger import Logger
+# from .Logger import Logger
 
 
 class Member:
 
-    def __init__(self,username,hashed,market = None):
-        self.foundedShops = []#load
-        self.ownedShops = []#load
-        self.managedShops = []#load
-        self.permissions = []#load
+    def __init__(self, username, hashed, market=None):
+        self.foundedShops = []  # load
+        self.ownedShops = []  # load
+        self.managedShops = []  # load
+        self.permissions = {}  # {shopname, Permissions}
         self.assignees = []
         self.admin = market
         self.permissions = None  # load
@@ -20,7 +20,7 @@ class Member:
     def addFoundedShop(self, shop):
         self.foundedShops.append(shop)
 
-    def isHashedCorrect(self,hashed):
+    def isHashedCorrect(self, hashed):
         return True if self._hashed == hashed else False
 
     def addOwnedShop(self, shop):
@@ -37,3 +37,7 @@ class Member:
             return True
         else:
             raise Exception("")
+
+    def exit(self):
+        # store shopping cart in db
+        return True
