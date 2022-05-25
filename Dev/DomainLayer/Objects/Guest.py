@@ -1,17 +1,16 @@
-from .Logger import Logger
-from .Member import Member
-from User import User
+##from .Logger import Logger
 
 
-class Guest(User):
+class Guest:
 
-    def __init__(self, market):
-        super().__init__(market)
+    def __init__(self, user):
+        self._user = user
 
+    def exit(self): # does not do anything
+        return True
 
-    def logout(self): # could be removed
-        # should do nothing on logout by definition
-        pass
+    def assign_owner(self, shopName, memberToAssign):
+        raise Exception("Guest could not assign shop owners")
 
     def exit(self, token):  # guest quitting do nothing by definition right now.
         self.clearShoppingCart(token)

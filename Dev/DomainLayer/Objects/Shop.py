@@ -41,37 +41,21 @@ class Shop():
     def assign_owner(self, assignerUsername, assignee):
         if assignee.get_username() in self._owners:
             raise Exception("Assignee is already an owner of the shop!")
-        if self.is_owner(assignerUsername):
-            self._owners[assignee.get_username()] = assignee
-            self._managers[assignee.get_username()].addOwnedShop(self)
-            self.add_assignment(assignerUsername, assignee.get_username(), self._owners_assignments)
-        elif self.is_manager(assignerUsername):
-            if self._managers[assignerUsername].can_assign_manager():
-                self._owners[assignee.get_username()] = assignee
-                self._managers[assignee.get_username()].addOwnedShop(self)
-                self.add_assignment(assignerUsername, assignee.get_username(), self._owners_assignments)
-            else:
-                raise Exception("Assigner manager does not have the permission to assign owners!")
-        else:
-            raise Exception("Owner assignment failed!")
+        # TODO if assigned owner was a manager need to think what to do remove from managers or...
+        self._owners[assignee.get_username()] = assignee
+        assignee.addOwnedShop(self)
+        self.add_assignment(assignerUsername, assignee.get_username(), self._owners_assignments)
         return True
 
     def assign_manager(self, assignerUsername, assignee):
         if assignee.get_username() in self._managers:
             raise Exception("Assignee is already a manager of the shop!")
-        if self.is_owner(assignerUsername):
-            self._managers[assignee.get_username()] = assignee
-            self._managers[assignee.get_username()].addManagedShop(self)
-            self.add_assignment(assignerUsername, assignee.get_username(), self._managers_assignments)
-        elif self.is_manager(assignerUsername):
-            if self._managers[assignerUsername].can_assign_manager():
-                self._managers[assignee.get_username()] = assignee
-                self._managers[assignee.get_username()].addManagedShop(self)
-                self.add_assignment(assignerUsername, assignee.get_username(), self._managers_assignments)
-            else:
-                raise Exception("Assigner manager does not have the permission to assign managers!")
-        else:
-            raise Exception("Manager assignment failed!")
+        if assignee.get_username() in self._owners:
+            raise Exception("Assignee is already an owner of the shop!")
+
+        self._managers[assignee.get_username()] = assignee
+        assignee.addManagedShop(self)
+        self.add_assignment(assignerUsername, assignee.get_username(), self._managers_assignments)
         return True
 
     def add_assignment(self, assignerUsername, assigneeUsername, assignment):
@@ -105,4 +89,3 @@ class Shop():
             report = report + 'Username: ' + managerUsername + ' role: manager\n'
 
         return report
-

@@ -1,52 +1,67 @@
-from .Logger import Logger
+# from .Logger import Logger
+from Dev.DomainLayer.Objects.Permissions import Permissions
 
-from User import User
 
+class Member:
 
-class Member(User):
-
-    def __init__(self, user, username, market=None):
-        super().__init__(market)
-        self.user = user
+    def __init__(self, username, hashed, market=None):
         self.foundedShops = []  # load
-        self.ownedShops = {}  # {shopName, shop}
-        self.managedShops = {}  # {shopName, shop}
-        self.permissions = None  # load
+        self.ownedShops = {}  # {shopname, Shop}
+        self.managedShops = []  # load
+        self.permissions = {}  # {shopname, Permissions}
         self.assignees = []
         self.admin = market
         self.username = username
-        self.load()  # ???
-
-    def register(self, marketid, username, password):
-        raise Exception("Unfortunately, a member can't perform registering")
+        self._hashed = hashed
 
     def get_username(self):
         return self._username
 
-    def set_credintialsHash(self, credintialsHash):
-        self._credintialsHash = credintialsHash
-
-    def login(self, username, password):
-        raise Exception("Unfortunately, a member can't perform login again")
-
     def addFoundedShop(self, shop):
         self.foundedShops.append(shop)
 
-    def exit(self):
-        super().saveShoppingCart()
+    def isHashedCorrect(self, hashed):
+        return True if self._hashed == hashed else False
 
     def addOwnedShop(self, shop):
         self.ownedShops[shop.getShopName()] = shop
 
     def addManagedShop(self, shop):
         self.managedShops[shop.getShopName()] = shop
+        self.permissions[shop.getShopName()] = Permissions()
 
-    def can_assign_manager(self):
-        return self.permissions.can_assign_manager()
+    def can_assign_manager(self, shopname):
+        return self.permissions[shopname].can_assign_manager()
 
-    def canGetRolesInfoReport(self):
-        if self.permissions.canGetRolesInfoReport():
-            return True
+    def can_assign_owner(self, shopname):
+        return self.permissions[shopname].can_assign_owner()
+
+    def canGetRolesInfoReport(self, shopname):
+        return self.permissions[shopname].canGetRolesInfoReport()
+
+    def exit(self):
+        # store shopping cart in db
+        return True
+
+    def is_owned_shop(self, shopName):
+        return shopName in self.ownedShops
+
+    def is_managed_shop(self, shopName):
+        return shopName in self.managedShops
+
+    def assign_owner(self, shopName, memberToAssign):
+        if self.is_owned_shop(shopName):
+            self.ownedShops[shopName].assign_owner(self.username, memberToAssign)
+        elif self.is_managed_shop(shopName) and self.can_assign_owner(shopName):
+            self.managedShops[shopName].assign_owner(self.username, memberToAssign)
+        else:
+            raise Exception("Member could not assign an owner to not owned or not managed with special permission shop!")
+
+    def assign_manager(self, shopName, memberToAssign):
+        if self.is_owned_shop(shopName):
+            self.ownedShops[shopName].assign_manager(self.username, memberToAssign)
+        elif self.is_managed_shop(shopName) and self.can_assign_owner(shopName):
+            self.managedShops[shopName].assign_manager(self.username, memberToAssign)
         else:
             raise Exception("Member could not assign a manager to not owned or not managed with special permission shop!")
 
@@ -57,3 +72,4 @@ class Member(User):
             return self.managedShops[shopName].getRolesInfoReport()
         else:
             raise Exception("Member could not get info about role in not owned or not managed with special permission shop!")
+

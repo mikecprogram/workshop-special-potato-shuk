@@ -2,10 +2,13 @@ from operator import is_
 import time
 import threading
 
-from Logger import Logger
-from Member import Member
+# from Logger import Logger
 from Shop import Shop
 from User import User
+from ExternalServices import ExternalServices
+
+from Member import Member
+from Security import Security
 
 
 def is_valid_password(password):
@@ -15,164 +18,205 @@ def is_valid_password(password):
         raise Exception("invalid password")  # may add some hint about a valid password TODO
 
 
-class Market:
-    maxtimeonline = 60 * 10  # 10 minutes
+debug = False
+maxtimeonline = 1  # 60 * 10  # 10 minutes
 
-    def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password):
+
+class Market():
+
+    def prid(self, txt):
+        if debug:
+            print(txt)
+
+    def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password,
+                 maxtimeonline=60 * 10):  # 10 minutes
+        self._maxtimeonline = maxtimeonline
         self._members = {}
         self._onlineVisitors = {}  # {token, User}
-        self._onlineDate = {}  # hashmap  used only by can_perform_action,enter
+        self._onlineDate = {}  # hashmap  used only by isToken,enter
         self._nextToken = -1
         self._enterLock = threading.Lock()
         self._shops = {}  # {shopName, shop}
+        self._security = Security()
+        self._externalServices = ExternalServices()
 
     # returns boolean, returns if current date < 10Minutes+_onlineDate[token]
     # if #t update _onlineDate[token]
     # this will be checked before each user function
-    def can_perform_action(self, token):
+    # this function returns whether the token is valid
+    def isToken(self, token):
+        if (not (token in self._onlineVisitors)):
+            self.prid("The token was not found")
+            return False
         currentTime = time.time()
-        if currentTime - self._onlineDate[token] < maxtimeonline:
+        if (currentTime - self._onlineDate[token] < self._maxtimeonline):
             self._onlineDate[token] = currentTime
             return True
-        else:
-            raise Exception("session time run out")
+        self.prid("Session time out for token %d" % token)
+        return False
 
     # sync me on [enter]
     def enter(self):
         # return token id
         # save token id with a user-guest attached
         self._enterLock.acquire()
-        self._nextToken = self._nextToken + 1
         currentToken = self._nextToken
-        self._onlineVisitors[self._nextToken] = User(self)
-        self._onlineDate[self._nextToken] = time.time()
+        self._nextToken = self._nextToken + 1
         self._enterLock.release()
+        currentToken = self._nextToken
+        self._onlineVisitors[currentToken] = User(self)
+        self._onlineDate[currentToken] = time.time()
         return currentToken
 
     def exit(self, token):
-        if self.can_perform_action(token):
-            if token in self._onlineVisitors:
-                self._onlineVisitors[token].exit()
-                self._onlineDate[token] = 0
-        pass
+        if self.isToken(token):
+            self._onlineVisitors[token].exit()
+            del self._onlineVisitors[token]
+            del self._onlineDate[token]
 
-    def register(self, username, password, token):
-        if self.can_perform_action(token):
+
+    def register(self, token, username, password):
+        if self.isToken(token):
+            user = self._onlineVisitors[token]
+            if user.isMember():
+                raise Exception("Logged in member can't register for some reason")
             if not self.is_member(username):
                 if is_valid_password(password):
-                    hashedPassword = password  # TODO: hash this using external class
+                    hashedPassword = self._security.hash(password)
                     member = Member(username, hashedPassword)
                     self._members[username] = member
                     return True
                 else:
                     raise Exception('invalid password!')
             else:
-                raise Exception('Username was taken!')
+                raise Exception('Username is taken!')
         else:
             return False
 
     def is_member(self, username):
-        if self._members[username] is not None:
-            return True
-        else:
-            raise Exception("There is no member with given username in the market!")
+        return username in self._members
+
+    def open_shop(self, token):
+        if self.isToken(token):
+            pass
 
     def close_shop(self, token):
-        if self.can_perform_action(token):
+        if self.isToken(token):
             pass
 
-    def is_active(self, user_id):
-        return self._onlineVisitors.get(user_id) is not None
+    def is_active(self, token):
+        return self._onlineVisitors.get(token) is not None
 
-    def is_login(self, user_id):
-        return self._members.get(user_id) is not None and self._onlineVisitors.get(user_id) is not None
+    def is_logged_in(self, token):
+        return self._members.get(token) is not None and self._onlineVisitors.get(token) is not None
 
-    def shipping_request(self, user_id, items, token):
-        if self.can_perform_action(token):
+    def shipping_request(self, token, items):
+        if self.isToken(token):
             pass
 
-    def login(self, user_id, name, password, token):
-        if self.can_perform_action(token):
+    def logout(self, token):
+        if self.isToken(token):
+            user = self._onlineVisitors[token]
+            user.logout()
+
+    def login(self, token, username, password):
+        if self.isToken(token):
+            if not (is_valid_password(password)):
+                raise Exception("Password is not valid")
+            if username in self._members:
+                member = self._members[username]
+                hashed = self._security.hash(password)
+                if member.isHashedCorrect(hashed):
+                    user = self._onlineVisitors[token]
+                    user.login(member)
+                    return True
+                else:
+                    raise Exception("Wrong password")
+            else:
+                raise Exception("No user such as %s" % username)
+
+    def info_about_shop_in_the_market_and_his_items_name(self, token, shop_name):
+        if self.isToken(token):
             pass
 
-    def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name, token):
-        if self.can_perform_action(token):
+    def general_items_searching(self, token, category, item_keyword, item_maxPrice):
+        if self.isToken(token):
             pass
 
-    def general_items_searching(self, user_id, category, item_keyword, item_maxPrice, token):
-        if self.can_perform_action(token):
+    def info_about_item_in_shop(self, token, item_name, shop_name):
+        if self.isToken(token):
             pass
 
-    def info_about_item_in_shop(self, user_id, item_name, shop_name, token):
-        if self.can_perform_action(token):
+    def shopping_carts_add_item(self, token, item_name, shop_name, amount):
+        if self.isToken(token):
             pass
 
-    def shopping_carts_add_item(self, user_id, item_name, shop_name, amount, token):
-        if self.can_perform_action(token):
+    def shopping_carts_check_content(self, token):
+        if self.isToken(token):
             pass
 
-    def shopping_carts_check_content(self, user_id, token):
-        if self.can_perform_action(token):
+    def shopping_carts_delete_item(self, token, item_name, shop_name, amount):
+        if self.isToken(token):
             pass
 
-    def shopping_carts_delete_item(self, user_id, item_name, shop_name, amount, token):
-        if self.can_perform_action(token):
-            pass
-
-    def Shopping_cart_purchase(self, user_id, token):
-        if self.can_perform_action(token):
+    def Shopping_cart_purchase(self, token):
+        if self.isToken(token):
             pass
 
     def get_purchase_history(self, token):
-        if self.can_perform_action(token):
+        if self.isToken(token):
             pass
 
-    def logout(self, user_id):
-        pass
+    """
+    In order to check if user is still connected we use  self.isToken(token)
+    To get user we use self._onlineVisitors[token]
+    To check if user is member we use user.isMember():
+    If we succed we return True
+    Else we throw Exception (Or, in rare occasion we return False)
+    """
 
-    def shop_open(self, requesterUsername, shop_name, token):
-        if self.can_perform_action(token):
-            if self.is_member(requesterUsername):
+    def shop_open(self, token, shop_name):
+        if self.isToken(token):
+            user = self._onlineVisitors[token]
+            if user.isMember():
                 if not (shop_name in self._shops):
-                    newShop = Shop(shop_name, requesterUsername)
+                    newShop = Shop(shop_name, user.getMember())
                     self._shops[shop_name] = newShop
-                    self._members[requesterUsername].addFoundedShop(newShop)
+                    user.addFoundedShop(newShop)
+        return False
 
-                else:
-                    raise Exception("There is already a shop with given name in the market, try another name please!")
+    def adding_item_to_the_shops_stock(self, token, item_name, shop_name, category, item_desc, item_price, amount):
+        if self.isToken(token):
+            pass
+        else:
+            raise Exception("There is already a shop with given name in the market, try another name please!")
 
-    def adding_item_to_the_shops_stock(self, user_id, item_name, shop_name, category, item_desc, item_price, amount,
-                                       token):
-        if self.can_perform_action(token):
+    def adding_item_to_the_shops_stock(self, token, item_name, shop_name, category, item_desc, item_price, amount):
+        if self.isToken(token):
             pass
 
-    def deleting_item_from_shop_stock(self, user_id, item_name, shop_name, amount, token):
-        if self.can_perform_action(token):
+    def deleting_item_from_shop_stock(self, token, item_name, shop_name, amount):
+        if self.isToken(token):
             pass
 
-    def change_items_details_in_shops_stock(self, user_id, item_name, shop_name, item_desc, item_price, item_amount,
-                                            token):
-        if self.can_perform_action(token):
+    def change_items_details_in_shops_stock(self, token, item_name, shop_name, item_desc, item_price, item_amount):
+        if self.isToken(token):
             pass
 
-    def shop_owner_assignment(self, requesterUserName, shop_name, member_name_to_assignUserName, token):
-        if self.can_perform_action(token):
+    def shop_owner_assignment(self, token, shop_name, member_name_to_assignUserName):
+        if self.isToken(token):
             if self.is_member(member_name_to_assignUserName):
-                if shop_name in self._shops:
-                    self._shops[shop_name].assign_owner(requesterUserName, self._members[member_name_to_assignUserName])
-                else:
-                    raise Exception('Shop does not exist with the given shop name!')
+                self._onlineVisitors[token].assign_owner(shop_name, self._members[member_name_to_assignUserName])
+
             else:
                 raise Exception('member does not exist to be assigned!')
+        return True
 
-    def shop_manager_assignment(self, requesterUserName, shop_name, member_name_to_assignUserName, token):
-        if self.can_perform_action(token):
+    def shop_manager_assignment(self, token, shop_name, member_name_to_assignUserName):
+        if self.isToken(token):
             if self.is_member(member_name_to_assignUserName):
-                if self.is_shop(shop_name):
-                    self._shops[shop_name].assign_manager(requesterUserName,
-                                                          self._members[member_name_to_assignUserName])
-                else:
-                    raise Exception('Shop does not exist with the given shop name!')
+                self._onlineVisitors[token].assign_manager(shop_name, self._members[member_name_to_assignUserName])
+
             else:
                 raise Exception('member does not exist to be assigned!')
         return True
@@ -185,18 +229,16 @@ class Market:
                 raise Exception('Shop does not exist with the given shop name!')
             # TODO need to add members notification about shop closing event
 
-    def shop_manager_permissions_updating(self, user_id, manager_name_to_update, permission_type, shop_name, token):
-        if self.can_perform_action(token):
+    def shop_manager_permissions_updating(self, token, manager_name_to_update, permission_type, shop_name):
+        if self.isToken(token):
             pass
 
     def shops_roles_info_request(self, shopName, token):
         if self.isToken(token):
             return self._onlineVisitors[token].getRolesInfoReport(shopName)
 
-
-
-    def shop_manager_permissions_check(self, user_id, manager_name, shop_name, token):
-        if self.can_perform_action(token):
+    def shop_manager_permissions_check(self, manager_name, shop_name, token):
+        if self.isToken(token):
             pass
 
     def is_shop(self, shopName):
@@ -204,3 +246,9 @@ class Market:
             return True
         else:
             raise Exception("Shop does not exist with the given shop name!")
+
+    def payment_execution(self, token):
+        self._externalServices.execute_payment()
+
+    def shipping_execution(self, token):
+        self._externalServices.execute_shipment()
