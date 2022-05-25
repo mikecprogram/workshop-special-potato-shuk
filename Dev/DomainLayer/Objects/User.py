@@ -79,3 +79,6 @@ class User:
 
     def assign_manager(self, shopNmae, memberToAssign):
         self._state.assign_manager(shopNmae, member)
+    
+    def getRolesInfoReport(self, shopName):
+        self._state.getRolesInfoReport(shopName)
