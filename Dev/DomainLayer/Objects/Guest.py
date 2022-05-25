@@ -15,3 +15,9 @@ class Guest(User):
 
     def exit(self, token):  # guest quitting do nothing by definition right now.
         self.clearShoppingCart(token)
+
+    def assign_manager(self, shopNmae, member):
+        raise Exception("Guest could not assign shop managers")
+
+    def getRolesInfoReport(self, shopName):
+        raise Exception("Guest could not do this operation")

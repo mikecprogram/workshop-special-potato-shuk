@@ -48,4 +48,12 @@ class Member(User):
         if self.permissions.canGetRolesInfoReport():
             return True
         else:
-            raise Exception("")
+            raise Exception("Member could not assign a manager to not owned or not managed with special permission shop!")
+
+    def getRolesInfoReport(self, shopName):
+        if self.is_owned_shop(shopName):
+            return self.ownedShops[shopName].getRolesInfoReport()
+        elif self.is_managed_shop(shopName) and self.can_assign_owner(shopName):
+            return self.managedShops[shopName].getRolesInfoReport()
+        else:
+            raise Exception("Member could not get info about role in not owned or not managed with special permission shop!")

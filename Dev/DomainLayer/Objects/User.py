@@ -51,3 +51,12 @@ class User:
     def saveShoppingCart(self):
         self._shoppingCart.store()
         pass
+
+    def assign_owner(self, shopName, memberToAssign):
+        self._state.assign_owner(shopName, memberToAssign)
+
+    def assign_manager(self, shopNmae, memberToAssign):
+        self._state.assign_manager(shopNmae, member)
+
+    def getRolesInfoReport(self, shopName):
+        self._state.getRolesInfoReport(shopName)

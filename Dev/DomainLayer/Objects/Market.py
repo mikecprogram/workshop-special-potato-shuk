@@ -175,9 +175,10 @@ class Market:
                     raise Exception('Shop does not exist with the given shop name!')
             else:
                 raise Exception('member does not exist to be assigned!')
+        return True
 
-    def shop_closing(self, user_id, shop_name, token):
-        if self.can_perform_action(token):
+    def shop_closing(self, token, shop_name):
+        if self.isToken(token):
             if self._shops[shop_name] is not None:
                 self._shops[shop_name].close_shop()
             else:
@@ -188,11 +189,11 @@ class Market:
         if self.can_perform_action(token):
             pass
 
-    def shops_roles_info_request(self, username, shopName, token):
-        if self.can_perform_action(token):
-            if self.is_member(username):
-                if self.is_shop(shopName):
-                    return self._shops[shopName].getRolesInfoReport(username)
+    def shops_roles_info_request(self, shopName, token):
+        if self.isToken(token):
+            return self._onlineVisitors[token].getRolesInfoReport(shopName)
+
+
 
     def shop_manager_permissions_check(self, user_id, manager_name, shop_name, token):
         if self.can_perform_action(token):
