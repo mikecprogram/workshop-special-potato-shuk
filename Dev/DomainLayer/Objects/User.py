@@ -1,4 +1,4 @@
-#from .Logger import Logger
+##from .Logger import Logger
 #from Guest import *
 #from Member import *
 #from ShoppingCart import *
@@ -14,6 +14,11 @@ class User:
 
     def isMember(self):
         return isinstance(self._state, Member)
+    def getMember(self):
+        if self.isMember():
+            return self._state
+        else:
+            raise Exception("This user is not a member")
     def login(self,member):
         if not(self.isMember()):
             self._state = member

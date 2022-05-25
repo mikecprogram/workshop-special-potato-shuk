@@ -2,8 +2,7 @@ from operator import is_
 import time
 import threading
 
-from Logger import Logger
-from Member import Member
+#from Logger import Logger
 from Shop import Shop
 from User import User
 from ExternalServices import ExternalServices
@@ -97,13 +96,13 @@ class Market():
         if self.isToken(token):
             pass
 
-    def is_active(self, user_id):
-        return self._onlineVisitors.get(user_id) is not None
+    def is_active(self, token):
+        return self._onlineVisitors.get(token) is not None
 
-    def is_logged_in(self, user_id):
-        return self._members.get(user_id) is not None and self._onlineVisitors.get(user_id) is not None
+    def is_logged_in(self, token):
+        return self._members.get(token) is not None and self._onlineVisitors.get(token) is not None
 
-    def shipping_request(self, user_id, items, token):
+    def shipping_request(self, token, items):
         if self.isToken(token):
             pass
 
@@ -130,61 +129,69 @@ class Market():
             else:
                 raise Exception("No user such as %s" % username)
 
-    def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name, token):
+    def info_about_shop_in_the_market_and_his_items_name(self, token, shop_name):
         if self.isToken(token):
             pass
 
-    def general_items_searching(self, user_id, category, item_keyword, item_maxPrice, token):
+    def general_items_searching(self, token, category, item_keyword, item_maxPrice):
         if self.isToken(token):
             pass
 
-    def info_about_item_in_shop(self, user_id, item_name, shop_name, token):
+    def info_about_item_in_shop(self, token, item_name, shop_name):
         if self.isToken(token):
             pass
 
-    def shopping_carts_add_item(self, user_id, item_name, shop_name, amount, token):
+    def shopping_carts_add_item(self, token, item_name, shop_name, amount):
         if self.isToken(token):
             pass
 
-    def shopping_carts_check_content(self, user_id, token):
+    def shopping_carts_check_content(self, token):
         if self.isToken(token):
             pass
 
-    def shopping_carts_delete_item(self, user_id, item_name, shop_name, amount, token):
+    def shopping_carts_delete_item(self, token, item_name, shop_name, amount):
         if self.isToken(token):
             pass
 
-    def Shopping_cart_purchase(self, user_id, token):
+    def Shopping_cart_purchase(self, token):
         if self.isToken(token):
             pass
 
     def get_purchase_history(self, token):
         if self.isToken(token):
             pass
-
-    def shop_open(self,token, WTF==>requesterUsername, shop_name, token):
+    """
+    In order to check if user is still connected we use  self.isToken(token)
+    To get user we use self._onlineVisitors[token]
+    To check if user is member we use user.isMember():
+    If we succed we return True
+    Else we throw Exception (Or, in rare occasion we return False)
+    """
+    def shop_open(self,token, shop_name):
         if self.isToken(token):
-            if self.is_member(requesterUsername):
+            user = self._onlineVisitors[token]
+            if user.isMember():
                 if not (shop_name in self._shops):
-                    newShop = Shop(shop_name, requesterUsername)
+                    newShop = Shop(shop_name, user.getMember())
                     self._shops[shop_name] = newShop
-                    self._members[requesterUsername].addFoundedShop(newShop)
+                    user.addFoundedShop(newShop) 
+        return False
 
-    def adding_item_to_the_shops_stock(self, user_id, item_name, shop_name, category, item_desc, item_price, amount, token):
+    def adding_item_to_the_shops_stock(self, token, item_name, shop_name, category, item_desc, item_price, amount):
         if self.isToken(token):
-                else:
-                    raise Exception("There is already a shop with given name in the market, try another name please!")
+            pass
+        else:
+            raise Exception("There is already a shop with given name in the market, try another name please!")
 
-    def adding_item_to_the_shops_stock(self, user_id, item_name, shop_name, category, item_desc, item_price, amount,
-                                       token):
+    def adding_item_to_the_shops_stock(self, token, item_name, shop_name, category, item_desc, item_price, amount):
         if self.can_perform_action(token):
             pass
 
-    def deleting_item_from_shop_stock(self, user_id, item_name, shop_name, amount, token):
+    def deleting_item_from_shop_stock(self, token, item_name, shop_name, amount):
         if self.isToken(token):
             pass
 
-    def change_items_details_in_shops_stock(self, user_id, item_name, shop_name, item_desc, item_price, item_amount, token):
+    def change_items_details_in_shops_stock(self, token, item_name, shop_name, item_desc, item_price, item_amount):
         if self.isToken(token):
             pass
 
@@ -209,7 +216,7 @@ class Market():
             else:
                 raise Exception('member does not exist to be assigned!')
 
-    def shop_closing(self, user_id, shop_name, token):
+    def shop_closing(self, token, shop_name):
         if self.isToken(token):
             if self._shops[shop_name] is not None:
                 self._shops[shop_name].close_shop()
@@ -217,20 +224,20 @@ class Market():
                 raise Exception('Shop does not exist with the given shop name!')
             # TODO need to add members notification about shop closing event
 
-    def shop_manager_permissions_updating(self, user_id, manager_name_to_update, permission_type, shop_name, token):
+    def shop_manager_permissions_updating(self, token, manager_name_to_update, permission_type, shop_name):
         if self.isToken(token):
             pass
 
-    def shops_roles_info_request(self, user_id, shop_name, token):
+    def shops_roles_info_request(self, token, shop_name):
         if self.isToken(token):
             pass
-    def shops_roles_info_request(self, username, shopName, token):
+    def shops_roles_info_request(self, username, shopName):
         if self.isToken(token):
             if self.is_member(username):
                 if self.is_shop(shopName):
                     return self._shops[shopName].getRolesInfoReport(username)
 
-    def shop_manager_permissions_check(self, user_id, manager_name, shop_name, token):
+    def shop_manager_permissions_check(self, token, manager_name, shop_name):
         if self.isToken(token):
             pass
 
@@ -240,8 +247,8 @@ class Market():
         else:
             raise Exception("Shop does not exist with the given shop name!")
 
-    def payment_execution(self):
+    def payment_execution(self, token):
         self._externalServices.execute_payment()
 
-    def shipping_execution(self):
+    def shipping_execution(self, token):
         self._externalServices.execute_shipment()
