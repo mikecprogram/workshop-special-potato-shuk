@@ -3,7 +3,7 @@ from market import *
 from member import *
 from shoppingCart import *
 
-class user:
+class User:
     def __init__(self,market):
         self._market=market
         self._state=guest(self)

@@ -101,4 +101,3 @@ class Shop():
                             "shop!")
 
         return report
-

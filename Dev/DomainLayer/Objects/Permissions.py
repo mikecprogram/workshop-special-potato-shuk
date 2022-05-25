@@ -16,4 +16,3 @@ class Permissions:
 
     def canGetRolesInfoReport(self):
         return self.RolesInfoReport
-
