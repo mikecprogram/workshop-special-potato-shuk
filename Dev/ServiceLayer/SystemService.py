@@ -200,9 +200,10 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shops_roles_info_request(self, user_id: str, shop_name: str) -> Response[
+    def shops_roles_info_request(self, username: str, shop_name: str, token) -> Response[
         List[List[str]]]:  # [[member_name,"Manager"], [member_name,"Owner"]...]
         try:
-            return Response(self.market.shops_roles_info_request(user_id, shop_name))
+            self.market.shops_roles_info_request(username, shop_name, token)
+
         except Exception as e:
             return Response(exception=e.__str__())

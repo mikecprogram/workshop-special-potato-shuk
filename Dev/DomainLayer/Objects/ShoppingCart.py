@@ -1,4 +1,4 @@
-from .Logger import Logger
+##from .Logger import Logger
 from ShoppingBasket import ShoppingBasket
 
 
@@ -37,3 +37,6 @@ class ShoppingCart:
         self._cartPrice = None
         for shop in self.shoppingBaskets:
             self.shoppingBaskets[shop].clear()
+
+    def store(self):
+        pass         # TODO store the the shopping cart at DB

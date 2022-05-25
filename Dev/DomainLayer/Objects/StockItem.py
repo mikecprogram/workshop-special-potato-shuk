@@ -1,7 +1,7 @@
 from unicodedata import category
 
-from .Category import Category
-from .Logger import Logger
+from Category import Category
+##from .Logger import Logger
 
 
 class StockItem:
