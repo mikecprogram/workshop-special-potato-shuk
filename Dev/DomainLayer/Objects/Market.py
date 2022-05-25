@@ -6,6 +6,8 @@ from Logger import Logger
 from Member import Member
 from Shop import Shop
 from User import User
+from ExternalServices import ExternalServices
+
 from Member import Member
 from Security import Security
 
@@ -32,6 +34,7 @@ class Market():
         self._enterLock = threading.Lock()
         self._shops = {} # {shopName, shop}
         self._security = Security()
+        self._externalServices = ExternalServices()
 
     # returns boolean, returns if current date < 10Minutes+_onlineDate[token]
     # if #t update _onlineDate[token]
@@ -236,3 +239,6 @@ class Market():
             return True
         else:
             raise Exception("Shop does not exist with the given shop name!")
+
+    def payment_execution(self):
+        self._externalServices.execute_payment()
