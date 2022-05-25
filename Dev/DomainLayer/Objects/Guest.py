@@ -11,3 +11,6 @@ class Guest:
 
     def assign_owner(self, shopName, memberToAssign):
         raise Exception("Guest could not assign shop owners")
+
+    def assign_manager(self, shopNmae, member):
+        raise Exception("Guest could not assign shop managers")

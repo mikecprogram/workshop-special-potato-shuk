@@ -4,6 +4,7 @@
 # from ShoppingCart import *
 from Guest import Guest
 from Member import Member
+from SHUK1.member import member
 from ShoppingCart import ShoppingCart
 
 
@@ -75,3 +76,6 @@ class User:
 
     def assign_owner(self, shopName, memberToAssign):
         self._state.assign_owner(shopName, memberToAssign)
+
+    def assign_manager(self, shopNmae, memberToAssign):
+        self._state.assign_manager(shopNmae, member)

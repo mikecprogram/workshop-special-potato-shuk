@@ -8,6 +8,8 @@ class Permissions:
         self._ownerAssignment = False  # boolean
         self.RolesInfoReport = False
 
+        # TODO need to add default permission as in requirement doc use case 4.12 and 4.13
+
     def can_assign_manager(self):
         return self._managerAssignment
 

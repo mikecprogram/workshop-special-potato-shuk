@@ -1,4 +1,5 @@
 # from .Logger import Logger
+from Dev.DomainLayer.Objects.Permissions import Permissions
 
 
 class Member:
@@ -27,6 +28,7 @@ class Member:
 
     def addManagedShop(self, shop):
         self.managedShops[shop.getShopName()] = shop
+        self.permissions[shop.getShopName()] = Permissions()
 
     def can_assign_manager(self, shopname):
         return self.permissions[shopname].can_assign_manager()
@@ -48,7 +50,17 @@ class Member:
         return shopName in self.managedShops
 
     def assign_owner(self, shopName, memberToAssign):
-        if self.is_owned_shop(shopName) or (self.is_managed_shop(shopName) and self.can_assign_owner(shopName)):
+        if self.is_owned_shop(shopName):
             self.ownedShops[shopName].assign_owner(self.username, memberToAssign)
+        elif self.is_managed_shop(shopName) and self.can_assign_owner(shopName):
+            self.managedShops[shopName].assign_owner(self.username, memberToAssign)
         else:
             raise Exception("Member could not assign an owner to not owned or not managed with special permission shop!")
+
+    def assign_manager(self, shopName, memberToAssign):
+        if self.is_owned_shop(shopName):
+            self.ownedShops[shopName].assign_manager(self.username, memberToAssign)
+        elif self.is_managed_shop(shopName) and self.can_assign_owner(shopName):
+            self.managedShops[shopName].assign_manager(self.username, memberToAssign)
+        else:
+            raise Exception("Member could not assign a manager to not owned or not managed with special permission shop!")
