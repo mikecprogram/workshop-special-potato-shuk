@@ -242,3 +242,6 @@ class Market():
 
     def payment_execution(self):
         self._externalServices.execute_payment()
+
+    def shipping_execution(self):
+        self._externalServices.execute_shipment()
