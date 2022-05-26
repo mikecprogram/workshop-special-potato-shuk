@@ -1,9 +1,7 @@
 import unittest
 import sys
-from SHUK1.stock import stock
-from SHUK1.stockItem import stockItem
 #this is how you import from different folder in python:
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\SHUK1')
+sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
 
 from SystemService import *
 
@@ -19,7 +17,7 @@ class MyTestCase(unittest.TestCase):
     def tearDown(self):
         self.m.logout(self.u)
         
-    def testGood(self):
+    def testGood(self): #find all items with empty search
         lst_old = self.m.general_items_searching(self.u)
         self.m.adding_item_to_the_shops_stock(self.u,"itemname1","shopname","animal objects","cats and clocks",5,10)
         self.m.adding_item_to_the_shops_stock(self.u,"itemname2","shopname","animal objects","dogs and locks",2,50)
@@ -28,7 +26,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(lst_old.response.count == 0 and lst_new.response.count == 3)
         
 
-    def testBad(self):
+    def testBad(self): #cant find items that dont get added
         lst_old = self.m.general_items_searching(self.u)
         self.m.adding_item_to_the_shops_stock(self.u,"a","shopname","animal objects","cats and clocks",-2,10)
         self.m.adding_item_to_the_shops_stock(self.u,"b","shopname","animal objects","cats and clocks",5,-10)
@@ -38,14 +36,8 @@ class MyTestCase(unittest.TestCase):
         lst_new = self.m.general_items_searching(self.u)
         self.assertTrue(lst_old.response.count == 0 and lst_new.response.count == 0)
 
-    def happyCase(self):
-        pass
 
-    def sadCase(self):
-        pass
 
-    def badCase(self):
-        pass
 
 
 

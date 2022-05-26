@@ -1,9 +1,7 @@
 import unittest
 import sys
-from SHUK1.stock import stock
-from SHUK1.stockItem import stockItem
 #this is how you import from different folder in python:
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\SHUK1')
+sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
 
 from SystemService import *
 
@@ -19,35 +17,63 @@ class MyTestCase(unittest.TestCase):
     def tearDown(self):
         self.m.logout(self.u)
         
-    def testGood(self):
+    def testEmpty(self): #find all items with empty search
         lst_old = self.m.general_items_searching(self.u)
         self.m.adding_item_to_the_shops_stock(self.u,"itemname1","shopname","animal objects","cats and clocks",5,10)
-        self.m.deleting_item_from_shop_stock(self.u,"itemname1","shopname",10)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname2","shopname","animal objects","dogs and locks",2,50)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname3","rockshop","rocks","rock collection",1,5)
         lst_new = self.m.general_items_searching(self.u)
-        self.assertTrue(lst_old.response.count == 0 and lst_new.response.count == 0)
-    def testGood2(self):
-        lst_old = self.m.general_items_searching(self.u)
+        self.assertTrue(lst_old.response.count == 0 and lst_new.response.count == 3)
+
+    def testByName(self): 
+        lst_old = self.m.general_items_searching(self.u,item_name="itemname1")
         self.m.adding_item_to_the_shops_stock(self.u,"itemname1","shopname","animal objects","cats and clocks",5,10)
-        self.m.deleting_item_from_shop_stock(self.u,"itemname1","shopname",9)
-        lst_new = self.m.general_items_searching(self.u)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname2","shopname","animal objects","dogs and locks",2,50)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname3","rockshop","rocks","rock collection",1,5)
+        lst_new = self.m.general_items_searching(self.u,item_name="itemname1")
         self.assertTrue(lst_old.response.count == 0 and lst_new.response.count == 1)
         
-
-    def testBad(self):
-        lst_old = self.m.general_items_searching(self.u)
+    def testByCategory(self): 
+        lst_old = self.m.general_items_searching(self.u,category="animal objects")
         self.m.adding_item_to_the_shops_stock(self.u,"itemname1","shopname","animal objects","cats and clocks",5,10)
-        self.m.deleting_item_from_shop_stock(self.u,"itemnamea","shopname",9)
-        lst_new = self.m.general_items_searching(self.u)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname2","shopname","animal objects","dogs and locks",2,50)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname3","rockshop","rocks","rock collection",1,5)
+        lst_new = self.m.general_items_searching(self.u,category="animal objects")
+        self.assertTrue(lst_old.response.count == 0 and lst_new.response.count == 2)
+
+    def testByKeywoerd(self): 
+        lst_old = self.m.general_items_searching(self.u,item_keyword="cats and dogs")
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname1","shopname","animal objects","cats and clocks",5,10)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname2","shopname","animal objects","dogs and locks",2,50)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname3","rockshop","rocks","rock collection",1,5)
+        lst_new = self.m.general_items_searching(self.u,item_keyword="cats and dogs")
         self.assertTrue(lst_old.response.count == 0 and lst_new.response.count == 1)
+        
+    def testByKeywoerdPartial(self): 
+        lst_old = self.m.general_items_searching(self.u,item_keyword="lock")
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname1","shopname","animal objects","cats and clocks",5,10)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname2","shopname","animal objects","dogs and locks",2,50)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname3","rockshop","rocks","rock collection",1,5)
+        lst_new = self.m.general_items_searching(self.u,item_keyword="lock")
+        self.assertTrue(lst_old.response.count == 0 and lst_new.response.count == 2)
 
-    def happyCase(self):
-        pass
+    def testByKeywoerdPartial2(self): 
+        lst_old = self.m.general_items_searching(self.u,item_keyword="ock")
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname1","shopname","animal objects","cats and clocks",5,10)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname2","shopname","animal objects","dogs and locks",2,50)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname3","rockshop","rocks","rock collection",1,5)
+        lst_new = self.m.general_items_searching(self.u,item_keyword="ock")
+        self.assertTrue(lst_old.response.count == 0 and lst_new.response.count == 3)
+        
+    def testByPrice(self): 
+        lst_old = self.m.general_items_searching(self.u,item_maxPrice=10)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname1","shopname","animal objects","cats and clocks",5,10)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname2","shopname","animal objects","dogs and locks",2,50)
+        self.m.adding_item_to_the_shops_stock(self.u,"itemname3","rockshop","rocks","rock collection",1,5)
+        lst_new = self.m.general_items_searching(self.u,item_maxPrice=10)
+        self.assertTrue(lst_old.response.count == 0 and lst_new.response.count == 2)
 
-    def sadCase(self):
-        pass
 
-    def badCase(self):
-        pass
 
 
 if __name__ == '__main__':

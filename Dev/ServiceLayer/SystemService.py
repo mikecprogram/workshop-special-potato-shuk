@@ -2,12 +2,13 @@ from pickle import NONE
 import sys
 from BridgeInterface import BridgeInterface
 
-sys.path.insert(0, r'C:\Users\USER\Documents\GitHub\workshop-special-potato-shuk\Dev\DomainLayer\Objects')
+sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\Dev\DomainLayer\Objects')
 
 import Market
 import Market as market
 from Response import Response
 from typing import List, Set
+
 prem=[
     "premission1",
     "premission2",

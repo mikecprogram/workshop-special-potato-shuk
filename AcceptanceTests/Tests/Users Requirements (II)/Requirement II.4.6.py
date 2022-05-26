@@ -1,10 +1,8 @@
-from hashlib import new
-import threading
 import unittest
 import sys
-
 #this is how you import from different folder in python:
-sys.path.insert(0, r'C:\Users\USER\Documents\GitHub\workshop-special-potato-shuk\Dev\ServiceLayer')
+sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
+
 from SystemService import *
 
 class MyTestCase(unittest.TestCase):

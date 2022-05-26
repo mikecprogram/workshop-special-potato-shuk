@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
 from SystemService import *
 
-
+class MyTestCase(unittest.TestCase):
 
     def setUp(self):
         self.m=SystemService()

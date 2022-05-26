@@ -1,7 +1,7 @@
 import unittest
 import sys
 #this is how you import from different folder in python:
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\SHUK1')
+sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
 
 from SystemService import *
 
@@ -13,12 +13,12 @@ class MyTestCase(unittest.TestCase):
 
 
     def testGood(self):
-        r = self.m.is_active(u)
+        r = self.m.is_active(self.u)
         self.assertTrue((not r.is_exception) and r.response)
         r = self.m.is_member("username")
         self.assertTrue((not r.is_exception) and r.response)
         self.m.login_into_the_trading_system(self.u,"username","badpassword")
-        r = self.m.is_login(u)
+        r = self.m.is_login(self.u)
         self.assertTrue((not r.is_exception) and r.response)
         #open a shop
         r = self.m.shop_open(self.u,"shopname")
@@ -27,16 +27,16 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.is_exception) and r.response)
         # logout
         self.m.logout(self.u)
-        r = self.m.is_login(u)
+        r = self.m.is_login(self.u)
         self.assertTrue((not r.is_exception) and (not r.response))
 
     def testBad(self):
-        r = self.m.is_active(u)
+        r = self.m.is_active(self.u)
         self.assertTrue((not r.is_exception) and r.response)
         r = self.m.is_member("username")
         self.assertTrue((not r.is_exception) and r.response)
         self.m.login_into_the_trading_system(self.u,"username","badpassword")
-        r = self.m.is_login(u)
+        r = self.m.is_login(self.u)
         self.assertTrue((not r.is_exception) and r.response)
         #open a shop
         r = self.m.shop_open(self.u,"11111111")
@@ -45,16 +45,16 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.is_exception) and (not r.response))
         # logout
         self.m.logout(self.u)
-        r = self.m.is_login(u)
+        r = self.m.is_login(self.u)
         self.assertTrue((not r.is_exception) and (not r.response))
     
     def testBadDoubleShopName(self):
-        r = self.m.is_active(u)
+        r = self.m.is_active(self.u)
         self.assertTrue((not r.is_exception) and r.response)
         r = self.m.is_member("username")
         self.assertTrue((not r.is_exception) and r.response)
         self.m.login_into_the_trading_system(self.u,"username","badpassword")
-        r = self.m.is_login(u)
+        r = self.m.is_login(self.u)
         self.assertTrue((not r.is_exception) and r.response)
         #open a shop
         r = self.m.shop_open(self.u,"shopname")
@@ -65,19 +65,9 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.is_exception) and (not r.response))
         # logout
         self.m.logout(self.u)
-        r = self.m.is_login(u)
+        r = self.m.is_login(self.u)
         self.assertTrue((not r.is_exception) and (not r.response))
 
-
-
-    def happyCase(self):
-        pass
-
-    def sadCase(self):
-        pass
-
-    def badCase(self):
-        pass
 
 
 if __name__ == '__main__':

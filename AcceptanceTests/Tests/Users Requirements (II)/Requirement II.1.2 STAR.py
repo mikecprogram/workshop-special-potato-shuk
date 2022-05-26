@@ -22,7 +22,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.is_exception) and r.response)
         r = self.m.is_member("username")
         self.assertTrue((not r.is_exception) and r.response)
-        self.m.login_into_the_trading_system(self.u,"username","badpassword")
+        self.m.login_into_the_trading_system(self.u,"username","password")
         r = self.m.is_login(u)
         self.assertTrue((not r.is_exception) and r.response)
         self.m.logout(self.u)
