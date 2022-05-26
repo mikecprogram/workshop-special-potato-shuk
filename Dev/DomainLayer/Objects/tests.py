@@ -15,10 +15,14 @@ def logintests():
 def test1():
     m = Market(None,None,None,None,10)
     t1 = m.enter()
-    m.shopping_carts_add_item(token,0)
+    m.register(t1,"FANTA","12345678")
+    m.login(t1,"FANTA","12345678")
+    m.addToCart(t1,0 ,"Shop1",1)
+    m.addToCart(t1,1 ,"Shop1",1)
+    print(m.getCartContents(t1))
+
     m.logout(t1)
-    m.shopping_carts_add_item(token,1)
-    m.purchase(t1)
+    #m.purchase(t1)
 
 
 def logoutregistertests(m):
@@ -112,4 +116,4 @@ def timeoutEnter(m,time):
     else:
         print("timeoutEnter Sucess")
 if __name__ == '__main__':
-    logintests()
+    test1()

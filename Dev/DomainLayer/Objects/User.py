@@ -60,12 +60,13 @@ class User:
     def search(self, name=None, category=None, keyword=None, maxPrice=None, minItemRating=None, minShopRating=None):
         return self._market.search(name, category, keyword, maxPrice, minItemRating, minShopRating)
 
-    def addToCart(self, itemName, shopName):
-        self._shoppingCart.addItem(shopName, itemName)
+    def addToCart(self, itemid, shopName,amount):
+        self._shoppingCart.addItem(shopName, itemid,amount)
 
-    def removeFromCart(self, itemName, shopName):
-        self._shoppingCart.removeItem(shopName, itemName)
-
+    def removeFromCart(self, itemid, shopName):
+        self._shoppingCart.removeItem(shopName, itemid)
+    def checkBaskets(self):
+        return self._shoppingCart.checkBaskets()
     def checkBasket(self, shopName):
         return self._shoppingCart.checkBasket(shopName)
 

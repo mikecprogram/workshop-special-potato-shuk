@@ -76,7 +76,7 @@ class Market():
 
     def register(self, token, username, password):
         if self.isToken(token):
-            user = self._onlineVisitors[token]
+            user = self.getUser(token)
             if user.isMember():
                 raise Exception("Logged in member can't register for some reason")
             if not self.is_member(username):
@@ -111,7 +111,7 @@ class Market():
 
     def logout(self, token):
         if self.isToken(token):
-            user = self._onlineVisitors[token]
+            user = self.getUser(token)
             user.logout()
 
     def login(self, token, username, password):
@@ -122,7 +122,7 @@ class Market():
                 member = self._members[username]
                 hashed = self._security.hash(password)
                 if member.isHashedCorrect(hashed):
-                    user = self._onlineVisitors[token]
+                    user = self.getUser(token)
                     user.login(member)
                     return True
                 else:
@@ -141,20 +141,25 @@ class Market():
         if self.isToken(token):
             pass
 
-    def info_about_item_in_shop(self, token, item_name, shop_name):
+    def info_about_item_in_shop(self, token, itemid, shop_name):
         if self.isToken(token):
             pass
 
-    def shopping_carts_add_item(self, token, item_name, shop_name, amount):
+    def addToCart(self, token, itemid, shop_name, amount):
         if self.isToken(token):
+            user = self.getUser(token)
+            user.addToCart(itemid,shop_name, amount);
             pass
 
-    def shopping_carts_check_content(self, token):
+    def getCartContents(self, token):
         if self.isToken(token):
-            pass
+            user = self.getUser(token)
+            return user.checkBaskets();
 
-    def shopping_carts_delete_item(self, token, item_name, shop_name, amount):
+    def removeFromCart(self, token, itemid, shop_name, amount):
         if self.isToken(token):
+            user = self.getUser(token)
+            user.removeFromCart(itemid,shop_name, amount);
             pass
 
     def Shopping_cart_purchase(self, token):
@@ -164,6 +169,8 @@ class Market():
     def get_purchase_history(self, token):
         if self.isToken(token):
             pass
+    def getUser(self,token):
+        return self._onlineVisitors[token]
 
     """
     In order to check if user is still connected we use  self.isToken(token)
@@ -176,7 +183,7 @@ class Market():
     def shop_open(self, token, shop_name):
         if self.isToken(token):
             if not shop_name in self._shops:
-                user = self._onlineVisitors[token]
+                user = self.getUser(token)
                 newShop = Shop(shop_name, user)
                 user.shop_open(newShop)
                 return True
@@ -187,11 +194,11 @@ class Market():
         if self.isToken(token):
             pass
 
-    def deleting_item_from_shop_stock(self, token, item_name, shop_name, amount):
+    def deleting_item_from_shop_stock(self, token, itemid, shop_name, amount):
         if self.isToken(token):
             pass
 
-    def change_items_details_in_shops_stock(self, token, item_name, shop_name, item_desc, item_price, item_amount):
+    def change_items_details_in_shops_stock(self, token, itemid, shop_name, item_desc, item_price, item_amount):
         if self.isToken(token):
             pass
 

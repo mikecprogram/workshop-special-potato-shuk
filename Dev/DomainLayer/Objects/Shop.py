@@ -8,7 +8,7 @@ from Stock import Stock
 
 class Shop():
 
-    def __init__(self, shopName: str, founder: Member):
+    def __init__(self, shopName: str, founder):
         self._name = shopName
         self._stock = Stock()
         self._status = None  # need to confirm if we need shop's status such as closed/open. TODO
@@ -16,12 +16,17 @@ class Shop():
         self._owners = {}  # {ownerUsername, Member}
         self._managers = {}  # {managerUsername, Member}
         self._purchasePolicy = []
-        self._discountPolicy = DiscountPolicy()
-        self._purchaseHistory = PurchaseHistory()
+        #self._discountPolicy = DiscountPolicy()
+        #self._purchaseHistory = PurchaseHistory()
         self._owners_assignments = {}
         self._managers_assignments = {}
         pass
 
+    
+    def isAmount(self, itemid,amount):#if the store has enough supply
+        return True
+    def itemExists(self, itemid):
+        return True
     def getShopName(self):
         return self._name
 

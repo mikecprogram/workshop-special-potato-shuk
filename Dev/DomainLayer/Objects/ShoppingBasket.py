@@ -1,13 +1,14 @@
 #from .Logger import Logger
-
+import Shop
 
 class ShoppingBasket:
 
     def __init__(self, shoppingCart, shop):
         self.shoppingCart = shoppingCart  # is it necessary here?
 
-        self.shop = shop  # is it necessary here?
-        self.stockItems = []  # load
+        self.shop = shop  
+
+        self.stockItems = {}  # load
 
     def getItemByName(self, itemName):  # refactor and optimize
         for i in self.stockItems:
@@ -15,23 +16,33 @@ class ShoppingBasket:
                 return i
         return None
 
-    def addItem(self, itemName): # refactor and optimize
-        i = self.getItemByName(itemName)
-        if i is None:
-            self.stockItems.append([itemName, 1])
-        else:
-            i[1] = i[1] + 1
+    def addItem(self, itemid,amount):
+        if not(self.shop.itemExists(itemid)):
+            raise Exception("No such item found in shop")
+        if not (itemid in self.stockItems):
+            self.stockItems[itemid] = 0
+        if not(self.shop.isAmount(itemid,self.stockItems[itemid] +amount)):
+            raise Exception("No such amount available in shop")
+        self.stockItems[itemid] = self.stockItems[itemid] + amount
 
-    def removeItem(self, itemName): # refactor and optimize
-        i = self.getItemByName(itemName)
-        if i is not None:
-            if i[1] == 1:
-                self.stockItems.remove(i)
-            else:
-                i[1] = i[1] - 1
+    def removeItem(self, itemid,amount): 
+        if not(self.shop.itemExists(itemid)):
+            raise Exception("No such item found in shop")
+        if not(itemid in self.stockItems):
+            self.stockItems[itemid] = 0
+        if not(self.shop.isAmount(itemid,self.stockItems[itemid] +amount)):
+            raise Exception("No such amount available in shop")
+        if amount >= self.stockItems[itemid] :
+            self.stockItems[itemid] = 0
+        else:
+            self.stockItems[itemid] = self.stockItems[itemid] - amount
 
     def checkBasket(self):
-        return self.stockItems
+        str = ""
+        for id in self.stockItems:
+            i = self.stockItems[id]
+            str = "%s %d - %i \n" %(str , id,i)
+
 
     def clear(self):
         self.shoppingCart = None

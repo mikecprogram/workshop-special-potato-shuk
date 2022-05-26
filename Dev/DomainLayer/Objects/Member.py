@@ -1,5 +1,5 @@
 # from .Logger import Logger
-from DomainLayer.Objects.ShoppingCart import ShoppingCart
+from ShoppingCart import ShoppingCart
 from Permissions import Permissions
 
 
@@ -14,6 +14,7 @@ class Member:
         self.admin = market
         self._username = username
         self._hashed = hashed
+        self._savedCart = None
 
     def get_username(self):
         return self._username

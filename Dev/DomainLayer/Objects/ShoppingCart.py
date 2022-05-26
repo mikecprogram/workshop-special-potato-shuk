@@ -1,6 +1,6 @@
 ##from .Logger import Logger
 from ShoppingBasket import ShoppingBasket
-
+import Shop
 
 class ShoppingCart:
 
@@ -11,26 +11,30 @@ class ShoppingCart:
 
     def getBasketByShop(self, shopname):
         for b in self.shoppingBaskets:
-            if b.shop == shopname:
-                return b
+            if b == shopname:
+                return self.shoppingBaskets[b]
         return None
 
-    def addItem(self, shopName, itemName):
+    def addItem(self, shopName, itemid,amount):
         b = self.getBasketByShop(shopName)
         if b is None:
-            self.shoppingBaskets.append(ShoppingBasket(self, shopName))
-        b.addItem(itemName)
+            b = ShoppingBasket(self, Shop.Shop(shopName,None))
+            self.shoppingBaskets[shopName] = b
+        b.addItem(itemid,amount)
 
-    def removeItem(self, shopName, itemName):
+    def removeItem(self, shopName, itemid,amount):
         b = self.getBasketByShop(shopName)
-        if b is not None:
-            b.removeItem(itemName)
+        if b is None:
+            b = ShoppingBasket(self, Shop(shopName,None))
+            self.shoppingBaskets[shopName] = b
+        b.removeItem(itemid,amount)
 
-    def checkBasket(self, shopName):
-        b = self.getBasketByShop(shopName)
-        if b is not None:
-            return b.checkBasket()
-        return None
+    def checkBaskets(self):
+        ans = ""
+        for name in self.shoppingBaskets:
+            b = self.shoppingBaskets[name]
+            ans = "%s %s \n %s \n"%(ans,b.shop.getShopName(),b.checkBasket())
+        return ans
 
     def clear(self):
         self._user = None
