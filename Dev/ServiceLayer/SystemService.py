@@ -8,6 +8,21 @@ import Market
 import Market as market
 from Response import Response
 from typing import List, Set
+prem=[
+    "premission1",
+    "premission2",
+    "premission3",
+    "premission4",
+    "premission5",
+    "premission6",
+    "premission7",
+    "premission8",
+    "premission9",
+    "premission10",
+    "premission11",
+    "premission12",
+    "premission13",
+    ]
 
 
 # C:\Users\salih_kadry\Desktop\ServiceLayerV1\workshop-special-potato-shuk\AcceptanceTests
@@ -30,9 +45,9 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shipping_request(self, user_id: int, items: List[str]) -> Response[bool]:  # TODO
+    def shipping_request(self, user_id: int,username: str, shopname: str) -> Response[bool]: 
         try:
-            return Response(self.market.shipping_request(user_id, items))
+            return Response(self.market.shipping_request(user_id, username, shopname)) #get shipping details from user of  <username> and items from and items from the shopping basket
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -51,6 +66,21 @@ class SystemService(BridgeInterface):
     def is_member(self, user_id, name) -> Response[bool]:
         try:
             return Response(self.market.is_member(user_id, name))
+        except Exception as e:
+            return Response(exception=e.__str__())
+    def get_owned_shops(self, user_id,username) -> Response[List[str]]:
+        try:
+            return Response(self.market.get_owned_shops(user_id, username))
+        except Exception as e:
+            return Response(exception=e.__str__())
+    def get_founded_shops(self, user_id,username) -> Response[List[str]]:
+        try:
+            return Response(self.market.get_founded_shops(user_id, username))
+        except Exception as e:
+            return Response(exception=e.__str__())
+    def get_managed_shops(self, user_id,username) -> Response[List[str]]:
+        try:
+            return Response(self.market.get_founded_shops(user_id, username))
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -147,6 +177,17 @@ class SystemService(BridgeInterface):
                                                            item_price, amount))
         except Exception as e:
             return Response(exception=e.__str__())
+    def validate_purchase_policy(self,user_id: int, shopname :str) -> Response[bool]: 
+        try:
+            return Response(self.market.validate_purchase_policy(user_id , shopname)) #market return true if all items in basket fit policy and false if not
+        except Exception as e:
+            return Response(exception=e.__str__())
+        
+    def get_discount(self,user_id: int, shopname :str) -> Response[float]: # market return float of final discount for all items in the shopping *basket* all calcs in domain
+        try:
+            return Response(self.market.get_discount(user_id , shopname))
+        except Exception as e:
+            return Response(exception=e.__str__())
 
     def deleting_item_from_shop_stock(self, user_id: int, item_name: str, shop_name: str, amount: int) -> Response[
         bool]:
@@ -200,9 +241,9 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shop_manager_permissions_check(self, user_id: int, manager_name: str, shop_name: str) -> Response[Set[int]]:
+    def shop_manager_permissions_check(self, user_id: int, manager_name: str, shop_name: str) -> Response[List[str]]:
         try:
-            return Response(self.market.shop_manager_permissions_check(user_id, manager_name, shop_name))
+            return Response([prem[i] for i in self.market.shop_manager_permissions_check(user_id, manager_name, shop_name)]) #market return list of int
         except Exception as e:
             return Response(exception=e.__str__())
 
