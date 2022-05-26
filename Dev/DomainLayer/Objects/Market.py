@@ -191,7 +191,7 @@ class Market():
         if self.isToken(token):
             if not shop_name in self._shops:
                 user = self.getUser(token)
-                newShop = Shop(shop_name, user)
+                newShop = Shop(shop_name, user.getMember())
                 user.shop_open(newShop)
                 return True
             else:
