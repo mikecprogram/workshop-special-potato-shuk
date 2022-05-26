@@ -1,4 +1,5 @@
 from atexit import register
+import threading
 from time import sleep
 from Market import Market
 def logintests():
@@ -32,13 +33,13 @@ def test1():
 def test2():
     m = Market(None,None,None,None,10)
     t1 = m.enter()
-    m.register(t1,"FANTA","12345678")
-    m.login(t1,"FANTA","12345678")
+    m.register(t1,"MOK","12345678")
+    m.login(t1,"MOK","12345678")
     m.addToCart(t1,0 ,"Shop1",1)
     m.addToCart(t1,1 ,"Shop1",4)
     print(m.getCartContents(t1))
     m.logout(t1)
-    m.login(t1,"FANTA","12345678")
+    m.login(t1,"MOK","12345678")
     m.addToCart(t1,1 ,"Shop1",5)
     print(m.getCartContents(t1))
     if(m.purchase(t1)):
@@ -140,4 +141,10 @@ def timeoutEnter(m,time):
     else:
         print("timeoutEnter Sucess")
 if __name__ == '__main__':
+    t1 = threading.Thread(target=test1)
+    t2 = threading.Thread(target=test2)
+    t1.start()
+    t2.start()
+    t1.join()
+    t2.join()
     test1()

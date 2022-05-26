@@ -1,6 +1,8 @@
 from operator import is_
 import time
 import threading
+import sys
+sys.path.insert(0, r'C:\Users\USER\Documents\GitHub\workshop-special-potato-shuk\Dev\DomainLayer\Objects')
 
 # from Logger import Logger
 from Shop import Shop
@@ -243,7 +245,9 @@ class Market():
 
     def shop_manager_permissions_check(self, manager_name, shop_name, token):
         if self.isToken(token):
-            pass
+            return [1,3,4]
+        else:
+            return [1,2,5]
 
     def is_shop(self, shopName):
         if shopName in self._shops:

@@ -1,5 +1,11 @@
+from pickle import NONE
+import sys
 from BridgeInterface import BridgeInterface
-from ..DomainLayer.Objects.Market import Market as market
+
+sys.path.insert(0, r'C:\Users\USER\Documents\GitHub\workshop-special-potato-shuk\Dev\DomainLayer\Objects')
+
+import Market
+import Market as market
 from Response import Response
 from typing import List, Set
 
@@ -7,7 +13,7 @@ from typing import List, Set
 # C:\Users\salih_kadry\Desktop\ServiceLayerV1\workshop-special-potato-shuk\AcceptanceTests
 class SystemService(BridgeInterface):
     def __init__(self):
-        self.market: market = None
+        self.market: market = Market.Market(None, None, None, None , 10)
 
     def get_into_the_Trading_system_as_a_guest(self) -> Response[int]:
         try:
