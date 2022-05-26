@@ -1,5 +1,5 @@
-from Dev.DomainLayer.Objects.StockItem import StockItem
-
+#from Dev.DomainLayer.Objects.StockItem import StockItem
+from StockItem import StockItem
 
 class Stock:
 
@@ -32,3 +32,9 @@ class Stock:
         else:
             raise Exception('Category does not exist!')
 
+    def get_items_report(self):
+        report = 'Items in stock: \n'
+        for stockItemId in self._stockItems:
+            report += self._stockItems[stockItemId].get_item_report()
+
+        return report
