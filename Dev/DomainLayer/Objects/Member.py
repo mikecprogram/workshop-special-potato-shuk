@@ -21,7 +21,6 @@ class Member:
 
     def addFoundedShop(self, shop):
         self.foundedShops[shop.getShopName()] = shop
-        self.ownedShops[shop.getShopName()] = shop
 
     def isHashedCorrect(self, hashed):
         return True if self._hashed == hashed else False
