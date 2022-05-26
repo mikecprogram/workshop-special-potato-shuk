@@ -26,7 +26,7 @@ class User:
         if not (self.isMember()):
             self._state = member
             self.clearShoppingCart()
-            self._shoppingCart = member.loadShoppingCart(self)
+            self._shoppingCart = self._state.loadShoppingCart(self)
             return True
         else:
             raise Exception("Logged in member tried to login again.")
@@ -35,6 +35,7 @@ class User:
         if self.isMember():
             self._state.saveShoppingCart(self._shoppingCart)
             self._state = Guest(self)
+            self._shoppingCart = ShoppingCart(self)
         else:
             raise Exception("Cant log out guest")
 
@@ -63,8 +64,8 @@ class User:
     def addToCart(self, itemid, shopName,amount):
         self._shoppingCart.addItem(shopName, itemid,amount)
 
-    def removeFromCart(self, itemid, shopName):
-        self._shoppingCart.removeItem(shopName, itemid)
+    def removeFromCart(self, itemid, shopName,amount):
+        self._shoppingCart.removeItem(shopName, itemid,amount)
     def checkBaskets(self):
         return self._shoppingCart.checkBaskets()
     def checkBasket(self, shopName):

@@ -18,11 +18,21 @@ def test1():
     m.register(t1,"FANTA","12345678")
     m.login(t1,"FANTA","12345678")
     m.addToCart(t1,0 ,"Shop1",1)
-    m.addToCart(t1,1 ,"Shop1",1)
+    m.addToCart(t1,1 ,"Shop1",4)
+    print(m.getCartContents(t1))
+    m.removeFromCart(t1,1 ,"Shop1",1)
+    print(m.getCartContents(t1))
+    m.removeFromCart(t1,1 ,"Shop1",3)
     print(m.getCartContents(t1))
 
     m.logout(t1)
-    #m.purchase(t1)
+    print(m.getCartContents(t1))
+    m.login(t1,"FANTA","12345678")
+    print(m.getCartContents(t1))
+    if(m.purchase(t1)):
+        print("success!")
+    else:
+        print("fail")
 
 
 def logoutregistertests(m):

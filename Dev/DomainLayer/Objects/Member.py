@@ -82,4 +82,5 @@ class Member:
         if self._savedCart is None:
             return ShoppingCart(user)
         else:
-            return self._savedCart.setUser(user)
+            self._savedCart.setUser(user)
+            return self._savedCart

@@ -33,15 +33,16 @@ class ShoppingBasket:
         if not(self.shop.isAmount(itemid,self.stockItems[itemid] +amount)):
             raise Exception("No such amount available in shop")
         if amount >= self.stockItems[itemid] :
-            self.stockItems[itemid] = 0
+            del self.stockItems[itemid]
         else:
             self.stockItems[itemid] = self.stockItems[itemid] - amount
 
     def checkBasket(self):
-        str = ""
+        str = "Different items : %d\n" % len(self.stockItems)
         for id in self.stockItems:
             i = self.stockItems[id]
-            str = "%s %d - %i \n" %(str , id,i)
+            str = "%s Item ID: %d\t amount :%i \n" %(str , id,i)
+        return str
 
 
     def clear(self):

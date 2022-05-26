@@ -33,8 +33,11 @@ class ShoppingCart:
         ans = ""
         for name in self.shoppingBaskets:
             b = self.shoppingBaskets[name]
-            ans = "%s %s \n %s \n"%(ans,b.shop.getShopName(),b.checkBasket())
-        return ans
+            ans = "%s from shop %s: \n %s\n"%(ans,b.shop.getShopName(),b.checkBasket())
+        if ans == "":
+            return "Basket is empty"
+        else:
+            return ans
 
     def clear(self):
         self._user = None
