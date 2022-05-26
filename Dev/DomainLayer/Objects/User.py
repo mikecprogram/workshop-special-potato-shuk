@@ -85,8 +85,16 @@ class User:
     def assign_owner(self, shopName, memberToAssign):
         self._state.assign_owner(shopName, memberToAssign)
 
-    def assign_manager(self, shopNmae, memberToAssign):
-        self._state.assign_manager(shopNmae, member)
+    def assign_manager(self, shopName, memberToAssign):
+        self._state.assign_manager(shopName, memberToAssign)
     
     def getRolesInfoReport(self, shopName):
         self._state.getRolesInfoReport(shopName)
+    def purchase(self):
+        if not(self._shoppingCart.purchase()):
+            Exception("Purchase failed for unknown reason")
+        if self.isMember():
+            self._state.dropSavedCart()
+        self.clearShoppingCart()
+        self._shoppingCart = ShoppingCart(self)
+        return True

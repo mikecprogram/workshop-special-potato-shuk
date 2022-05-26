@@ -1,4 +1,5 @@
 ##from .Logger import Logger
+from tkinter import E
 from ShoppingBasket import ShoppingBasket
 import Shop
 
@@ -50,3 +51,11 @@ class ShoppingCart:
         pass         # TODO store the the shopping cart at DB
     def setUser(self,user):
         self._user = user
+    def purchase(self):
+        try:
+            for name in self.shoppingBaskets:
+                b = self.shoppingBaskets[name]
+                b.purchase(self._user)
+            return True
+        except Exception as e:
+            raise e

@@ -171,7 +171,12 @@ class Market():
             pass
     def getUser(self,token):
         return self._onlineVisitors[token]
-
+    def purchase(self,token):
+        if self.isToken(token):
+            user = self.getUser(token)
+            user.purchase()
+            return True
+        return False
     """
     In order to check if user is still connected we use  self.isToken(token)
     To get user we use self._onlineVisitors[token]

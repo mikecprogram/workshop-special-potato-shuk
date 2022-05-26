@@ -77,7 +77,9 @@ class Member:
     def saveShoppingCart(self, cart):
         cart.store()
         self._savedCart = cart
-        
+    def dropSavedCart(self):
+        self._savedCart = None
+
     def loadShoppingCart(self,user):
         if self._savedCart is None:
             return ShoppingCart(user)

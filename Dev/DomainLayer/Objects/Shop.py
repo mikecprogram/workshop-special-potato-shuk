@@ -5,6 +5,7 @@ import Member
 from PurchaseHistory import PurchaseHistory
 from Assignment import Assignment
 from Stock import Stock
+import threading
 
 class Shop():
 
@@ -20,6 +21,7 @@ class Shop():
         #self._purchaseHistory = PurchaseHistory()
         self._owners_assignments = {}
         self._managers_assignments = {}
+        self._purchaseLock = threading.Lock()
         pass
 
     
@@ -97,3 +99,10 @@ class Shop():
     def get_shop_report(self):
 
         return 'Shop name: ' + self._name +'\n'+ 'Founder: '+ self._founder +'\n' + 'Status: ' + self._status + '\n'+ self._stock.get_items_report()
+    def aqcuirePurchaseLock(self):
+        self._purchaseLock.acquire()
+
+    def releaseReleaseLock(self):
+        self._purchaseLock.release()
+    def purchase(self,user, id, amount):
+        return True

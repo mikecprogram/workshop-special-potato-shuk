@@ -49,3 +49,18 @@ class ShoppingBasket:
         self.shoppingCart = None
         self.shop = None
         self.stockItems = None
+    def purchase(self,user):
+        self.shop.aqcuirePurchaseLock()
+        try:
+            for id in self.stockItems:
+                amount = self.stockItems[id]
+                if not(self.shop.isAmount(id,amount)):
+                    raise Exception("Not enough left from item %d" % id)
+                self.shop.purchase(user, id, amount)
+                
+        except Exception as e:
+            self.shop.releaseReleaseLock()
+            raise e
+        self.stockItems.clear()
+        self.shop.releaseReleaseLock()
+        return True
