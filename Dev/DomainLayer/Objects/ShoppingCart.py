@@ -39,4 +39,7 @@ class ShoppingCart:
             self.shoppingBaskets[shop].clear()
 
     def store(self):
+        self._user = None
         pass         # TODO store the the shopping cart at DB
+    def setUser(self,user):
+        self._user = user

@@ -1,5 +1,6 @@
 # from .Logger import Logger
-from Dev.DomainLayer.Objects.Permissions import Permissions
+from DomainLayer.Objects.ShoppingCart import ShoppingCart
+from Permissions import Permissions
 
 
 class Member:
@@ -40,10 +41,6 @@ class Member:
     def canGetRolesInfoReport(self, shopname):
         return self.permissions[shopname].canGetRolesInfoReport()
 
-    def exit(self):
-        # store shopping cart in db
-        return True
-
     def is_owned_shop(self, shopName):
         return shopName in self.ownedShops
 
@@ -76,3 +73,12 @@ class Member:
             return self.managedShops[shopName].getRolesInfoReport()
         else:
             raise Exception("Member could not get info about role in not owned or not managed with special permission shop!")
+    def saveShoppingCart(self, cart):
+        cart.store()
+        self._savedCart = cart
+        
+    def loadShoppingCart(self,user):
+        if self._savedCart is None:
+            return ShoppingCart(user)
+        else:
+            return self._savedCart.setUser(user)

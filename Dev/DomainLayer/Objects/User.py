@@ -4,7 +4,6 @@
 # from ShoppingCart import *
 from Guest import Guest
 from Member import Member
-from SHUK1.member import member
 from ShoppingCart import ShoppingCart
 
 
@@ -26,18 +25,24 @@ class User:
     def login(self, member):
         if not (self.isMember()):
             self._state = member
+            self.clearShoppingCart()
+            self._shoppingCart = member.loadShoppingCart(self)
             return True
         else:
             raise Exception("Logged in member tried to login again.")
 
     def logout(self):
         if self.isMember():
+            self._state.saveShoppingCart(self._shoppingCart)
             self._state = Guest(self)
         else:
             raise Exception("Cant log out guest")
 
     def exit(self):
-        self._state.exit()
+        if self.isMember():
+            self.logout()
+        else:
+            self.clearShoppingCart()
 
     def openShop(self, shop):
         self._state.openShop(shop)

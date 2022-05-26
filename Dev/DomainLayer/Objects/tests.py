@@ -12,6 +12,15 @@ def logintests():
     logoutregistertests(m)
     failEnter(m)
     timeoutEnter(m,timeout+1)
+def test1():
+    m = Market(None,None,None,None,10)
+    t1 = m.enter()
+    m.shopping_carts_add_item(token,0)
+    m.logout(t1)
+    m.shopping_carts_add_item(token,1)
+    m.purchase(t1)
+
+
 def logoutregistertests(m):
     t = m.enter()
     if(m.register(t,"FANTA","12345678")):
