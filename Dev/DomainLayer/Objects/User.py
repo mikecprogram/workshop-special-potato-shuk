@@ -98,3 +98,6 @@ class User:
         self.clearShoppingCart()
         self._shoppingCart = ShoppingCart(self)
         return True
+    def getUsername(self):
+        if self.isMember():
+            return self._state.get_username()

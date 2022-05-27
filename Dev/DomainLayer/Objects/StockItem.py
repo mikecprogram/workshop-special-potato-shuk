@@ -6,15 +6,17 @@ from Category import Category
 
 class StockItem:
 
-    def __init__(self, id,category, name, count, purchasepolicy, discountpolicy,
-                   price):
-        self._id = id
-        self._categroy = category
+    def __init__(self, ID ,category, name, count, purchasepolicy, discountpolicy,price):
+        self._id = ID
+        self._category = category
         self._purchasePolicy = []
         self._discountPolicy = []
         self._name = name
         self._count = count
         self._price = price
+        
+    def toString(self):
+        return "id: "+str(self._id)+"\ncategory: "+self._category+"\nname: "+self._name+"\namount: "+str(self._count)+"\nprice: "+str(self._price)
 
     def getID(self):
         return self._id
@@ -56,7 +58,7 @@ class StockItem:
         return finalPrice
 
     def getCategory(self) -> Category:
-        return self._categroy
+        return self._category
 
     def get_item_report(self):
         return 'Item: ' + self._name + '\n' + 'Price: ' + self._price + '\n' + 'Amount: ' + self._count + '\n' + 'id: ' + self._id +'\n'

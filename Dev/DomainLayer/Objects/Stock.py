@@ -7,7 +7,7 @@ class Stock:
         self._categories = {}  # {CategoryName, Category}
         self._stockItems = {}  # {stockItemId, stockItem}
         pass
-    def getNextId():
+    def getNextId(self):
         i=1
         while i in self._stockItems.keys():
             i=i+1
@@ -23,6 +23,7 @@ class Stock:
     def addStockItem(self, stockItem: StockItem):
         if self._stockItems.get(stockItem.getID()) is None:
             self._stockItems[stockItem.getID()] = stockItem
+            return True
         else:
             raise Exception('Stock item is already exist!')
 
@@ -31,6 +32,7 @@ class Stock:
             self._stockItems.pop(stockItemId)
         else:
             raise Exception('Stock item does not exist!')
+        
 
     def removeCategory(self, categoryName):
         if self._categories.get(categoryName) is not None:
@@ -44,3 +46,28 @@ class Stock:
             report += self._stockItems[stockItemId].get_item_report()
 
         return report
+    
+    def search(self, item_name, category, item_keyword, item_maxPrice, name):
+        ret=[]
+        
+        for i,item in self._stockItems.items():
+            c=item.getCategory()
+            n=item.getName()
+            p=item.getPrice()
+            #print(c,n,p)
+            #print(category,item_name,item_maxPrice)
+            if category is not None and not c==category:
+                continue
+            if item_name is not None and not n==item_name:
+                continue
+            if item_maxPrice is not None and p>item_maxPrice:
+                continue
+            if item_keyword is not None:
+                if(item_keyword not in c and item_keyword not in n):
+                    continue
+            ret.append([name,i])
+        #print(ret)
+        return ret                
+
+
+        

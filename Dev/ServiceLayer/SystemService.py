@@ -122,7 +122,7 @@ class SystemService(BridgeInterface):
                                 item_keyword: str = None, item_maxPrice: int = None) -> Response[
         List[List[str]]]:  # [[shop_name, item_name1] , [shop_name,item_name2] ...]
         try:
-            return Response(self.market.general_items_searching(user_id, category, item_keyword, item_maxPrice))
+            return Response(self.market.general_items_searching(user_id,  item_name, category, item_keyword, item_maxPrice))
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -164,9 +164,9 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(response=e.__str__())
 
-    def shop_open(self, username: int, shop_name: str) -> Response[bool]:
+    def shop_open(self, user_id: int, shop_name: str) -> Response[bool]:
         try:
-            return Response(self.market.shop_open(username, shop_name))
+            return Response(self.market.shop_open(user_id, shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
 

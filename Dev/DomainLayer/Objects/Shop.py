@@ -14,7 +14,7 @@ class Shop():
         self._stock = Stock()
         self._status = None  # need to confirm if we need shop's status such as closed/open. TODO
         self._founder = founder
-        self._owners = {}  # {ownerUsername, Member}
+        self._owners = {founder.get_username(): founder}  # {ownerUsername, Member}
         self._managers = {}  # {managerUsername, Member}
         self._purchasePolicy = []
         #self._discountPolicy = DiscountPolicy()
@@ -36,13 +36,20 @@ class Shop():
         self._stock.add(item)
         
     def add_item(self, username, item_name, category, item_desc, item_price, amount):
-        if not (username in self._owners.keys()):
+        if not (username in self._owners.keys()) and not (username in self._managers.keys()):
             return False
-        item=StockItem(self._stock.getNextId(),category,item_name,amount,None,None,item_price)
-        self._stock.add(item)
+        if(amount<0 or item_price<0 or item_name==""):
+            return False
+        nid=self._stock.getNextId()
+        item=StockItem.StockItem(nid,category,item_name,amount,None,None,item_price)
+        #print(item.toString())
+        r = self._stock.addStockItem(item)
+        #print (self._stock.search(None,None,None,None,self._name))
+        return r
 
-    def remove_item(self, item: StockItem):
-        self._stock.remove(item)
+    def remove_item(self, itemid: int):
+        self._stock.removeStockItem(itemid)
+
 
     def update_purchase_policy(self):
         pass
@@ -104,7 +111,7 @@ class Shop():
 
     def get_shop_report(self):
 
-        return 'Shop name: ' + self._name +'\n'+ 'Founder: '+ self._founder +'\n' + 'Status: ' + self._status + '\n'+ self._stock.get_items_report()
+        return 'Shop name: ' + self._name +'\n'+ 'Founder: '+ self._founder.get_username() + '\n'+ self._stock.get_items_report()
     def aqcuirePurchaseLock(self):
         self._purchaseLock.acquire()
 
@@ -112,3 +119,21 @@ class Shop():
         self._purchaseLock.release()
     def purchase(self,user, id, amount):
         return True
+    
+    def search(self, item_name, category, item_keyword, item_maxPrice):
+        r=self._stock.search( item_name, category, item_keyword, item_maxPrice,self._name)
+        #print(r)
+        return r
+
+
+
+
+
+
+
+
+
+
+
+
+        

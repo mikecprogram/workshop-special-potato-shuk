@@ -143,9 +143,17 @@ class Market():
             else:
                 raise Exception('Shop does not exist with the given shop name!')
 
-    def general_items_searching(self, token, category, item_keyword, item_maxPrice):
+    def general_items_searching(self, token, item_name, category, item_keyword, item_maxPrice):
+        ret=[]
         if self.isToken(token):
-            pass
+            
+            for n,s in self._shops.items():
+                l=s.search( item_name, category, item_keyword, item_maxPrice)
+                if not l is None:
+                    for i in l:
+                        ret.append(i)
+                #print("ret len after "+n+": "+str(ret))
+        return ret
 
     def info_about_item_in_shop(self, token, itemid, shop_name):
         if self.isToken(token):
@@ -194,17 +202,22 @@ class Market():
     def shop_open(self, token, shop_name):
         if self.isToken(token):
             if not shop_name in self._shops:
+                if shop_name=="":
+                    raise Exception("bad shop name")
                 user = self.getUser(token)
                 newShop = Shop(shop_name, user.getMember())
-                user.shop_open(newShop)
+                self._shops[shop_name] = newShop
+                user.getMember().openShop(newShop)
                 return True
             else:
                 raise Exception("There is already a shop with given name in the market, try another name please!")
 
     def adding_item_to_the_shops_stock(self, token, item_name, shop_name, category, item_desc, item_price, amount):
-        if self.isToken(token):
+        if self.isToken(token) and self.is_logged_in(token):
+            u=self.getUser(token)
             if shop_name in self._shops.keys():
-                return self._shops[shop_name].add_item(self._members.get(token), item_name, category, item_desc, item_price, amount)
+                s=self._shops[shop_name]
+                return s.add_item(u.getUsername(), item_name, category, item_desc, item_price, amount)
         return False
 
     def deleting_item_from_shop_stock(self, token, itemid, shop_name, amount):

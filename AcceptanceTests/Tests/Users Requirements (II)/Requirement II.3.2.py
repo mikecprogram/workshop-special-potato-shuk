@@ -8,8 +8,9 @@ from SystemService import *
 class MyTestCase(unittest.TestCase):
     def setUp(self):
         self.m=SystemService()
-        self.u=self.m.get_into_the_Trading_system_as_a_guest()
+        self.u=self.m.get_into_the_Trading_system_as_a_guest().response
         self.m.registration_for_the_trading_system(self.u,"username","password")
+        self.m.login_into_the_trading_system(self.u,"username","password")
 
 
     def testGood(self):
@@ -23,7 +24,7 @@ class MyTestCase(unittest.TestCase):
         #open a shop
         r = self.m.shop_open(self.u,"shopname")
         self.assertTrue((not r.is_exception) and r.response)
-        r = self.m.info_about_shop_in_the_market_and_his_items_name("shopname")
+        r = self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")
         self.assertTrue((not r.is_exception) and r.response)
         # logout
         self.m.logout(self.u)
@@ -39,10 +40,8 @@ class MyTestCase(unittest.TestCase):
         r = self.m.is_login(self.u)
         self.assertTrue((not r.is_exception) and r.response)
         #open a shop
-        r = self.m.shop_open(self.u,"11111111")
-        self.assertTrue((not r.is_exception) and (not r.response))
         r = self.m.shop_open(self.u,"")
-        self.assertTrue((not r.is_exception) and (not r.response))
+        self.assertTrue(r.is_exception)
         # logout
         self.m.logout(self.u)
         r = self.m.is_login(self.u)
@@ -59,10 +58,10 @@ class MyTestCase(unittest.TestCase):
         #open a shop
         r = self.m.shop_open(self.u,"shopname")
         self.assertTrue((not r.is_exception) and r.response)
-        r = self.m.info_about_shop_in_the_market_and_his_items_name("shopname")
+        r = self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")
         self.assertTrue((not r.is_exception) and r.response)
         r = self.m.shop_open(self.u,"shopname")
-        self.assertTrue((not r.is_exception) and (not r.response))
+        self.assertTrue(r.is_exception)
         # logout
         self.m.logout(self.u)
         r = self.m.is_login(self.u)
