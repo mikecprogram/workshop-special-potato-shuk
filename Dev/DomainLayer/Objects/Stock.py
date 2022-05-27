@@ -7,6 +7,12 @@ class Stock:
         self._categories = {}  # {CategoryName, Category}
         self._stockItems = {}  # {stockItemId, stockItem}
         pass
+    def getNextId():
+        i=1
+        while i in self._stockItems.keys():
+            i=i+1
+        return i
+            
 
     def addCategory(self, category):
         if self._categories.get(category.get_catagoryName()) is None:

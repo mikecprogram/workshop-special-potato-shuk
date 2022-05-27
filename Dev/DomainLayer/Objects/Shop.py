@@ -31,8 +31,14 @@ class Shop():
         return True
     def getShopName(self):
         return self._name
-
+    
     def add_item(self, item: StockItem):
+        self._stock.add(item)
+        
+    def add_item(self, username, item_name, category, item_desc, item_price, amount):
+        if not (username in self._owners.keys()):
+            return False
+        item=StockItem(self._stock.getNextId(),category,item_name,amount,None,None,item_price)
         self._stock.add(item)
 
     def remove_item(self, item: StockItem):

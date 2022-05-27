@@ -9,7 +9,7 @@ class MyTestCase(unittest.TestCase):
 
     def setUp(self):
         self.m=SystemService()
-        self.u=self.m.get_into_the_Trading_system_as_a_guest()
+        self.u=self.m.get_into_the_Trading_system_as_a_guest().response
         self.m.registration_for_the_trading_system(self.u,"username","password")
         #need to login, create shop and add items to it for test
         self.m.login_into_the_trading_system(self.u,"username","password")
@@ -20,14 +20,14 @@ class MyTestCase(unittest.TestCase):
                
     def testGoodGuest(self):
         r=self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")
-        assertTrue((not r.is_exception) and r.response == ["","itemname"])
+        self.assertTrue((not r.is_exception) and r.response == ["","itemname"])
         r=self.m.info_about_item_in_shop(self.u,"itemname","shopname")
         self.assertTrue((not r.is_exception) and r.response) 
         
     def testGoodMember(self): #in case information is defferent
         self.m.login_into_the_trading_system(self.u,"username","password")
         r=self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")
-        assertTrue((not r.is_exception) and r.response == ["","itemname"])
+        self.assertTrue((not r.is_exception) and r.response == ["","itemname"])
         r=self.m.info_about_item_in_shop(self.u,"itemname","shopname")
         self.assertTrue((not r.is_exception) and r.response) 
         

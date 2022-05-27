@@ -60,13 +60,13 @@ class SystemService(BridgeInterface):
 
     def is_login(self, user_id) -> Response[bool]:
         try:
-            return Response(self.market.is_login(user_id))
+            return Response(self.market.is_logged_in(user_id))
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def is_member(self, user_id, name) -> Response[bool]:
+    def is_member(self,  name) -> Response[bool]:
         try:
-            return Response(self.market.is_member(user_id, name))
+            return Response(self.market.is_member( name))
         except Exception as e:
             return Response(exception=e.__str__())
     def get_owned_shops(self, user_id,username) -> Response[List[str]]:

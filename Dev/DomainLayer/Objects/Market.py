@@ -75,6 +75,8 @@ class Market():
             self._onlineVisitors[token].exit()
             del self._onlineVisitors[token]
             del self._onlineDate[token]
+            return True
+        return False
 
     def register(self, token, username, password):
         if self.isToken(token):
@@ -82,7 +84,7 @@ class Market():
             if user.isMember():
                 raise Exception("Logged in member can't register for some reason")
             if not self.is_member(username):
-                if is_valid_password(password):
+                if is_valid_password(password) and username!="":
                     hashedPassword = self._security.hash(password)
                     member = Member(username, hashedPassword)
                     self._members[username] = member
@@ -95,7 +97,7 @@ class Market():
             return False
 
     def is_member(self, username):
-        return username in self._members
+        return username in self._members.keys()
 
     def close_shop(self, token):
         if self.isToken(token):
@@ -105,7 +107,9 @@ class Market():
         return self._onlineVisitors.get(token) is not None
 
     def is_logged_in(self, token):
-        return self._members.get(token) is not None and self._onlineVisitors.get(token) is not None
+        u=self._onlineVisitors.get(token)
+        if u is not None:
+            return u.isMember()
 
     def shipping_request(self, token, items):
         if self.isToken(token):
@@ -199,7 +203,9 @@ class Market():
 
     def adding_item_to_the_shops_stock(self, token, item_name, shop_name, category, item_desc, item_price, amount):
         if self.isToken(token):
-            pass
+            if shop_name in self._shops.keys():
+                return self._shops[shop_name].add_item(self._members.get(token), item_name, category, item_desc, item_price, amount)
+        return False
 
     def deleting_item_from_shop_stock(self, token, itemid, shop_name, amount):
         if self.isToken(token):
