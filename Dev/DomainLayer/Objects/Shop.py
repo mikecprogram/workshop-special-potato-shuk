@@ -41,7 +41,7 @@ class Shop():
         if(amount<0 or item_price<0 or item_name==""):
             return False
         nid=self._stock.getNextId()
-        item=StockItem.StockItem(nid,category,item_name,amount,None,None,item_price)
+        item=StockItem.StockItem(nid,category,item_name,item_desc,amount,None,None,item_price)
         #print(item.toString())
         r = self._stock.addStockItem(item)
         #print (self._stock.search(None,None,None,None,self._name))

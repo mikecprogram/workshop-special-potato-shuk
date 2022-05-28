@@ -54,8 +54,8 @@ class Stock:
             c=item.getCategory()
             n=item.getName()
             p=item.getPrice()
-            #print(c,n,p)
-            #print(category,item_name,item_maxPrice)
+            d=item.getDesc()
+            #print(n,p,item_maxPrice)
             if category is not None and not c==category:
                 continue
             if item_name is not None and not n==item_name:
@@ -63,9 +63,9 @@ class Stock:
             if item_maxPrice is not None and p>item_maxPrice:
                 continue
             if item_keyword is not None:
-                if(item_keyword not in c and item_keyword not in n):
+                if(item_keyword not in c and item_keyword not in n and item_keyword not in d):
                     continue
-            ret.append([name,i])
+            ret.append([name,n])
         #print(ret)
         return ret                
 

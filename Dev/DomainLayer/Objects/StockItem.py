@@ -6,9 +6,10 @@ from Category import Category
 
 class StockItem:
 
-    def __init__(self, ID ,category, name, count, purchasepolicy, discountpolicy,price):
+    def __init__(self, ID ,category, name, description, count, purchasepolicy, discountpolicy,price):
         self._id = ID
         self._category = category
+        self._desc = description
         self._purchasePolicy = []
         self._discountPolicy = []
         self._name = name
@@ -16,7 +17,7 @@ class StockItem:
         self._price = price
         
     def toString(self):
-        return "id: "+str(self._id)+"\ncategory: "+self._category+"\nname: "+self._name+"\namount: "+str(self._count)+"\nprice: "+str(self._price)
+        return "id: "+str(self._id)+"\ncategory: "+self._category+"\nname: "+self._name+"\namount: "+str(self._count)+"\nprice: "+str(self._price)+"\ndescription: "+self._desc
 
     def getID(self):
         return self._id
@@ -39,6 +40,9 @@ class StockItem:
 
     def getPrice(self):
         return self._price
+    
+    def getDesc(self):
+        return self._desc
 
     def canPurchase(self, user):
         return True

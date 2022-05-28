@@ -146,8 +146,8 @@ class Market():
     def general_items_searching(self, token, item_name, category, item_keyword, item_maxPrice):
         ret=[]
         if self.isToken(token):
-            
             for n,s in self._shops.items():
+                #print(n)
                 l=s.search( item_name, category, item_keyword, item_maxPrice)
                 if not l is None:
                     for i in l:
