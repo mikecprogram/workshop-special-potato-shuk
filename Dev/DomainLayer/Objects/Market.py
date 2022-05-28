@@ -155,9 +155,9 @@ class Market():
                 #print("ret len after "+n+": "+str(ret))
         return ret
 
-    def info_about_item_in_shop(self, token, itemid, shop_name):
-        if self.isToken(token):
-            pass
+    def info_about_item_in_shop(self, token, itemname, shop_name):
+        if self.isToken(token) and shop_name in self._shops.keys():
+            return self._shops[shop_name].getItemInfo(itemname)
 
     def addToCart(self, token, itemid, shop_name, amount):
         if self.isToken(token):

@@ -12,6 +12,12 @@ class Stock:
         while i in self._stockItems.keys():
             i=i+1
         return i
+
+    def getItemInfo(self,name):
+        for k,i in self._stockItems.items():
+            if(i.getName()==name):
+                return i.toString()
+        return None
             
 
     def addCategory(self, category):
@@ -41,9 +47,9 @@ class Stock:
             raise Exception('Category does not exist!')
 
     def get_items_report(self):
-        report = 'Items in stock: \n'
+        report = []
         for stockItemId in self._stockItems:
-            report += self._stockItems[stockItemId].get_item_report()
+            report.append(self._stockItems[stockItemId].getName())
 
         return report
     

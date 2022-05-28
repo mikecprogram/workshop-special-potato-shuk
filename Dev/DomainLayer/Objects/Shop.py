@@ -110,8 +110,7 @@ class Shop():
         return report
 
     def get_shop_report(self):
-
-        return 'Shop name: ' + self._name +'\n'+ 'Founder: '+ self._founder.get_username() + '\n'+ self._stock.get_items_report()
+        return ['Shop name: ' + self._name +'\n'+ 'Founder: '+ self._founder.get_username() + '\n',self._stock.get_items_report()]
     def aqcuirePurchaseLock(self):
         self._purchaseLock.acquire()
 
@@ -124,7 +123,9 @@ class Shop():
         r=self._stock.search( item_name, category, item_keyword, item_maxPrice,self._name)
         #print(r)
         return r
-
+    
+    def getItemInfo(self, name):
+        return self._stock.getItemInfo(name)
 
 
 
