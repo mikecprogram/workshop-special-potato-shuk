@@ -1,12 +1,12 @@
 #from .Logger import Logger
+from paymentServiceInterface import paymentServiceInterface
 
-
-class PaymentService:
+class PaymentService(paymentServiceInterface):
 
     def __init__(self):
-        pass #TODO add the payment service
+        pass 
     
     
     def request_payment(self,amount,payment_details):
-        pass
+        return True
 
