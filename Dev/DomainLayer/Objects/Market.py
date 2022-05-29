@@ -227,7 +227,7 @@ class Market():
             if shop_name in self._shops.keys():
                 s=self._shops[shop_name]
                 return s.add_item(u.getUsername(), item_name, category, item_desc, item_price, amount)
-        return False
+        raise Exception('Bad token!')
 
     def deleting_item_from_shop_stock(self, token, item_name, shop_name, amount):
         if self.isToken(token):
@@ -244,6 +244,17 @@ class Market():
             if shop_name in self._shops.keys():
                 s = self._shops[shop_name]
                 return s.editItem(itemname, new_name, item_desc, item_price)
+        raise Exception('Bad token!')
+
+    def shopping_carts_add_item(self, token, item_name, shop_name, amount):
+        if self.isToken(token):
+            if shop_name in self._shops.keys():
+                s = self._shops[shop_name]
+                valid = s.checkAmount(item_name, amount)
+                if valid:
+                    self._onlineVisitors[token].addToCart(s, item_name, amount)
+                    return True
+        raise Exception('Bad token!')
 
     def shop_owner_assignment(self, token, shop_name, member_name_to_assignUserName):
         if self.isToken(token):

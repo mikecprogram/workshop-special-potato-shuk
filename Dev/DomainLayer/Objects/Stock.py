@@ -56,6 +56,14 @@ class Stock:
                     i.setPrice(item_price)
         return True
 
+    def checkAmount(self,item_name, amount):
+        for n, i in self._stockItems.items():
+            if i.getName() == item_name:
+                if i.getCount()<amount:
+                    raise Exception('Not enough items in stock!')
+                return True
+        raise Exception('No such items in stock!')
+
     def removeCategory(self, categoryName):
         if self._categories.get(categoryName) is not None:
             self._categories.pop(categoryName)

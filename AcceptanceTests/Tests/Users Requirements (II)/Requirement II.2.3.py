@@ -1,14 +1,13 @@
 import unittest
-import sys
-#this is how you import from different folder in python:
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
-from SystemService import *
+
+from Dev.ServiceLayer.SystemService import *
 
 class MyTestCase(unittest.TestCase):
 
     def setUp(self):
         self.m=SystemService()
-        self.u=self.m.get_into_the_Trading_system_as_a_guest()
+        self.m.initialization_of_the_system()
+        self.u=self.m.get_into_the_Trading_system_as_a_guest().response
         self.m.registration_for_the_trading_system(self.u,"username","password")
         #need to login, create shop and add items to it for test
         self.m.login_into_the_trading_system(self.u,"username","password")
@@ -21,20 +20,21 @@ class MyTestCase(unittest.TestCase):
 
         
     def testSaveCartItemsGood(self):
-        r=shopping_carts_add_item(self.u,"itemname1","shopname",1)
+        r=self.m.shopping_carts_add_item(self.u,"itemname1","shopname",1)
+
         self.assertTrue((not r.is_exception) and r.response)
         
     def testSaveCartBadName(self):
-        r=shopping_carts_add_item(self.u,"baditemname1","shopname",1)
-        self.assertTrue((not r.is_exception) and (not r.response))
+        r=self.m.shopping_carts_add_item(self.u,"baditemname1","shopname",1)
+        self.assertTrue(r.is_exception)
         
     def testSaveCartBadShop(self):
-        r=shopping_carts_add_item(self.u,"itemname1","badshopname",1)
-        self.assertTrue((not r.is_exception) and (not r.response))
+        r=self.m.shopping_carts_add_item(self.u,"itemname1","badshopname",1)
+        self.assertTrue(r.is_exception)
 
     def testSaveCartBadAmount(self):
-        r=shopping_carts_add_item(self.u,"itemname1","shopname",100)
-        self.assertTrue((not r.is_exception) and (not r.response)) 
+        r=self.m.shopping_carts_add_item(self.u,"itemname1","shopname",100)
+        self.assertTrue(r.is_exception)
         
         
         

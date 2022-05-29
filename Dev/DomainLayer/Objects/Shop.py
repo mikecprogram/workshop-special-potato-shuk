@@ -76,6 +76,14 @@ class Shop():
         self._purchaseLock.release()
         return r
 
+    def checkAmount(self,item_name, amount):
+        if amount < 0:
+            raise Exception('Bad amount')
+        self._purchaseLock.acquire()
+        r = self._stock.checkAmount(item_name, amount)
+        self._purchaseLock.release()
+        return r
+
     def update_purchase_policy(self):
         pass
 

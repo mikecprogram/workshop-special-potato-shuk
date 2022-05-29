@@ -16,12 +16,12 @@ class ShoppingCart:
                 return self.shoppingBaskets[b]
         return None
 
-    def addItem(self, shopName, itemid,amount):
-        b = self.getBasketByShop(shopName)
+    def addItem(self, shop, item_name, amount):
+        b = self.getBasketByShop(shop.getShopName())
         if b is None:
-            b = ShoppingBasket(self, Shop.Shop(shopName,None))
-            self.shoppingBaskets[shopName] = b
-        b.addItem(itemid,amount)
+            b = ShoppingBasket(self, shop)
+            self.shoppingBaskets[shop.getShopName()] = b
+        b.addItem(item_name, amount)
 
     def removeItem(self, shopName, itemid,amount):
         b = self.getBasketByShop(shopName)
