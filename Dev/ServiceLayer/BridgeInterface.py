@@ -1,7 +1,9 @@
 from Response import Response
 from typing import List,Set
-from Dev.DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
-from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
+sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\Dev\DomainLayer\Objects')
+
+from shippingServiceInterface import shippingServiceInterface
+from paymentServiceInterface import paymentServiceInterface
 class BridgeInterface:
     def get_into_the_Trading_system_as_a_guest(self) -> Response[int]:
         pass
