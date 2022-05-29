@@ -4,6 +4,8 @@ from BridgeInterface import BridgeInterface
 from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
 from Dev.DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
 from Dev.DomainLayer.Objects.Market import Market as market
+from Dev.DomainLayer.Objects.PaymentService import PaymentService
+from Dev.DomainLayer.Objects.ShippingService import ShippingService
 sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\Dev\DomainLayer\Objects')
 
 from Response import Response
@@ -26,8 +28,8 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def initialization_of_the_system(self, external_payment_service : paymentServiceInterface, external_supplement_service : shippingServiceInterface,
-                                     system_admin_name: str, password: str , MaxTimeOnline : int = 10) -> Response[bool]:
+    def initialization_of_the_system(self, external_payment_service : paymentServiceInterface = paymentServiceInterface(), external_supplement_service : shippingServiceInterface = shippingServiceInterface (),
+                                     system_admin_name: str = "Alex", password: str = "Alex_123456" , MaxTimeOnline : int = 10) -> Response[bool]:
         try: 
             if self.market is not None:
                 Response(exception="system have been initialized before")
