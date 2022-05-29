@@ -98,7 +98,7 @@ class Shop():
             self._status = ShopState.Closed
             # TODO add notifying and events system
             pass
-
+            return True
         else:
             raise Exception('Closed shop could not be closed again!')
 

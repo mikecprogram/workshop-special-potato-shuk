@@ -245,7 +245,7 @@ class Market():
     def shop_closing(self, token, shop_name):
         if self.isToken(token):
             if self.is_shop(shop_name):
-                self._onlineVisitors[token].close_shop()
+                return self._onlineVisitors[token].close_shop()
             else:
                 raise Exception('Shop does not exist with the given shop name!')
 
