@@ -46,6 +46,8 @@ class StockItem:
 
     def canPurchase(self, user):
         return True
+    def remove(self, amount):
+        self._count-=amount
 
     def getTotalDiscount(self, user):
         totaldiscount = 1

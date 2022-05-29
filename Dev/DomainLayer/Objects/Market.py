@@ -230,9 +230,15 @@ class Market():
                 return s.add_item(u.getUsername(), item_name, category, item_desc, item_price, amount)
         return False
 
-    def deleting_item_from_shop_stock(self, token, itemid, shop_name, amount):
+    def deleting_item_from_shop_stock(self, token, item_name, shop_name, amount):
         if self.isToken(token):
-            pass
+            
+            if shop_name in self._shops.keys():
+                s=self._shops[shop_name]
+                
+                r = s.remove_item(item_name, amount)
+                return r
+        raise Exception('Bad token!')
 
     def change_items_details_in_shops_stock(self, token, itemid, shop_name, item_desc, item_price, item_amount):
         if self.isToken(token):

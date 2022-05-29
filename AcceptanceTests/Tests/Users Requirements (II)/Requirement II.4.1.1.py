@@ -23,6 +23,7 @@ class MyTestCase(unittest.TestCase):
         #print(lst_old.exception, lst_old.response)
         self.assertTrue(len(lst_old.response) == 0)
         r=self.m.adding_item_to_the_shops_stock(self.u,"itemname1","shopname","animal objects","cats and clocks",5,10)
+        print(r.exception, r.response)
         self.assertTrue((not r.is_exception) and r.response)
         self.m.adding_item_to_the_shops_stock(self.u,"itemname2","shopname","animal objects","dogs and locks",2,50)
         self.m.adding_item_to_the_shops_stock(self.u,"itemname3","rockshop","rocks","rock collection",1,5)
