@@ -9,21 +9,7 @@ import Market as market
 from Response import Response
 from typing import List, Set
 
-prem=[
-    "premission1",
-    "premission2",
-    "premission3",
-    "premission4",
-    "premission5",
-    "premission6",
-    "premission7",
-    "premission8",
-    "premission9",
-    "premission10",
-    "premission11",
-    "premission12",
-    "premission13",
-    ]
+
 
 
 # C:\Users\salih_kadry\Desktop\ServiceLayerV1\workshop-special-potato-shuk\AcceptanceTests
@@ -245,7 +231,7 @@ class SystemService(BridgeInterface):
 
     def shop_manager_permissions_check(self, user_id: int, manager_name: str, shop_name: str) -> Response[List[str]]:
         try:
-            return Response([prem[i] for i in self.market.shop_manager_permissions_check(user_id, manager_name, shop_name)]) #market return list of int
+            return Response(self.market.shop_manager_permissions_check(user_id, manager_name, shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
 

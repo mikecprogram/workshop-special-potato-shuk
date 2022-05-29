@@ -11,7 +11,21 @@ from ExternalServices import ExternalServices
 
 from Member import Member
 from Security import Security
-
+prem=[
+    "premission1",
+    "premission2",
+    "premission3",
+    "premission4",
+    "premission5",
+    "premission6",
+    "premission7",
+    "premission8",
+    "premission9",
+    "premission10",
+    "premission11",
+    "premission12",
+    "premission13",
+    ]
 
 def is_valid_password(password):
     if len(password) >= 8:  # need to add constraints on pass TODO
@@ -260,9 +274,7 @@ class Market():
 
     def shop_manager_permissions_check(self, manager_name, shop_name, token):
         if self.isToken(token):
-            return [1,3,4]
-        else:
-            return [1,2,5]
+            pass
 
     def is_shop(self, shopName):
         if shopName in self._shops:
