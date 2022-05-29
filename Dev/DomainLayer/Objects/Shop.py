@@ -1,10 +1,7 @@
-from DiscountPolicy import DiscountPolicy
-from Logger import Logger
-import StockItem
-import Member
-from PurchaseHistory import PurchaseHistory
-from Assignment import Assignment
-from Stock import Stock
+
+from Dev.DomainLayer.Objects.StockItem import *
+from Dev.DomainLayer.Objects.Assignment import Assignment
+from Dev.DomainLayer.Objects.Stock import Stock
 import threading
 from enum import Enum
 
@@ -57,7 +54,7 @@ class Shop():
         if (amount < 0 or item_price < 0 or item_name == ""):
             return False
         nid = self._stock.getNextId()
-        item = StockItem.StockItem(nid, category, item_name, item_desc, amount, None, None, item_price)
+        item = StockItem(nid, category, item_name, item_desc, amount, None, None, item_price)
         # print(item.toString())
         r = self.add_item_lock(item)
         # print (self._stock.search(None,None,None,None,self._name))

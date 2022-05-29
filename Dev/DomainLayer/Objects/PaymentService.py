@@ -1,5 +1,5 @@
 #from .Logger import Logger
-from paymentServiceInterface import paymentServiceInterface
+from Dev.DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
 
 class PaymentService(paymentServiceInterface):
 

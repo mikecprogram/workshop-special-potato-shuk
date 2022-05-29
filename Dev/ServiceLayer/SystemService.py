@@ -1,15 +1,15 @@
 from pickle import NONE
 import sys
-from BridgeInterface import BridgeInterface
-from Response import Response
+from Dev.ServiceLayer.BridgeInterface import BridgeInterface
+from Dev.ServiceLayer.Response import Response
 from typing import List, Set
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\Dev\DomainLayer\Objects')
 
-from shippingServiceInterface import shippingServiceInterface
-from paymentServiceInterface import paymentServiceInterface
-from Market import Market as market
-from PaymentService import PaymentService
-from ShippingService import ShippingService
+
+from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
+from Dev.DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
+from Dev.DomainLayer.Objects.Market import Market as market
+from Dev.DomainLayer.Objects.PaymentService import PaymentService
+from Dev.DomainLayer.Objects.ShippingService import ShippingService
 
 
 

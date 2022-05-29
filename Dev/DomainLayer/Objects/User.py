@@ -2,9 +2,9 @@
 # from Guest import *
 # from Member import *
 # from ShoppingCart import *
-from Guest import Guest
-from Member import Member
-from ShoppingCart import ShoppingCart
+from Dev.DomainLayer.Objects.Guest import Guest
+from Dev.DomainLayer.Objects.Member import Member
+from Dev.DomainLayer.Objects.ShoppingCart import ShoppingCart
 
 
 class User:
