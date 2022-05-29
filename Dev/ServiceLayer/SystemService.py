@@ -1,9 +1,9 @@
 from pickle import NONE
 import sys
 from BridgeInterface import BridgeInterface
-from ..DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
-from ..DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
-from ..DomainLayer.Objects.Market import Market as market
+from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
+from Dev.DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
+from Dev.DomainLayer.Objects.Market import Market as market
 sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\Dev\DomainLayer\Objects')
 
 from Response import Response
@@ -11,9 +11,6 @@ from typing import List, Set
 
 
 
-# C:\Users\salih_kadry\Desktop\ServiceLayerV1\workshop-special-potato-shuk\AcceptanceTests
-
-#SystemServiceSinglton after initialization_of_the_system SystemServiceSinglton will be used 
 
 
 
@@ -23,6 +20,8 @@ class SystemService(BridgeInterface):
 
     def get_into_the_Trading_system_as_a_guest(self) -> Response[int]:
         try:
+            if self.market is not None:
+                Response(exception="system have been initialized before")
             return Response(self.market.enter())
         except Exception as e:
             return Response(exception=e.__str__())
