@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Guest.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Guest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Member.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Member.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Notification.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Notifier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Permissions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/User.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/User.py" afterDir="false" />
     </list>
