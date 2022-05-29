@@ -99,10 +99,6 @@ class Market():
     def is_member(self, username):
         return username in self._members.keys()
 
-    def close_shop(self, token):
-        if self.isToken(token):
-            pass
-
     def is_active(self, token):
         return self._onlineVisitors.get(token) is not None
 
@@ -248,11 +244,11 @@ class Market():
 
     def shop_closing(self, token, shop_name):
         if self.isToken(token):
-            if self._shops[shop_name] is not None:
-                self._shops[shop_name].close_shop()
+            if self.is_shop(shop_name):
+                self._onlineVisitors[token].close_shop()
             else:
                 raise Exception('Shop does not exist with the given shop name!')
-            # TODO need to add members notification about shop closing event
+
 
     def shop_manager_permissions_updating(self, token, manager_name_to_update, permission_type, shop_name):
         if self.isToken(token):

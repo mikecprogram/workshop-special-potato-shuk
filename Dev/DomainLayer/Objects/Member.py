@@ -73,6 +73,7 @@ class Member:
             return self.managedShops[shopName].getRolesInfoReport()
         else:
             raise Exception("Member could not get info about role in not owned or not managed with special permission shop!")
+
     def saveShoppingCart(self, cart):
         cart.store()
         self._savedCart = cart
@@ -85,3 +86,14 @@ class Member:
         else:
             self._savedCart.setUser(user)
             return self._savedCart
+
+    def close_shop(self, shopName):
+        if self.is_owned_shop(shopName):
+            return self.ownedShops[shopName].close_shop()
+        elif self.is_managed_shop(shopName) and self.can_close_shop(shopName):
+            return self.managedShops[shopName].close_shop()
+        else:
+            raise Exception("Member could not close a not owned or not managed with special permission shop!")
+
+    def can_close_shop(self, shopName):
+        return self.permissions[shopName].can_close_shop()
