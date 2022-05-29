@@ -1,4 +1,4 @@
-from .Logger import Logger
+#from .Logger import Logger
 
 
 class ShippingService:
@@ -7,4 +7,4 @@ class ShippingService:
         pass
     
     def requestShipping(self):
-        return True
+        pass

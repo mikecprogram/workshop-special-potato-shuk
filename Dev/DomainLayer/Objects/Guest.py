@@ -1,19 +1,22 @@
-from .Logger import Logger
-from .Member import Member
-from User import User
+##from .Logger import Logger
 
 
 class Guest:
 
-    def __init__(self, user: User):
-        self._user = user
+    def __init__(self, user):
+        self._user = user   # is it necessary here ? answer:
+        
+    def assign_owner(self, shopName, memberToAssign):
+        raise Exception("Guest could not assign shop owners!")
 
-    def logout(self):
-        # should do nothing on logout by definition
-        pass
+    def assign_manager(self, shopNmae, member):
+        raise Exception("Guest could not assign shop managers!")
 
-    def login(self, marketid, username, password):
-        pass
+    def openShop(self, shop):
+        raise Exception("Guest could not open a shop!")
+        
+    def getRolesInfoReport(self, shopName):
+        raise Exception("Guest could not do this operation")
 
-    def get_username(self):
-        return self._username
+    def close_shop(self, shopName):
+        raise Exception("Guest could not do this operation")

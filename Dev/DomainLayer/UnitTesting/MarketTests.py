@@ -1,10 +1,13 @@
-import unittest
+#import unittest
 
+class MarketTests(unittest.TestCase):
+    def logintests(self):
+        m = Market(None,None,None,None)
+        self.testTimeout_guest(m)
 
-class MyTestCase(unittest.TestCase):
-    def test_something(self):
-        self.assertEqual(True, False)
-
-
+    def testTimeout_guest(self):
+        self.assertTrue(True, False)
 if __name__ == '__main__':
-    unittest.main()
+    #unittest.main()
+    mt = MarketTests()
+    mt.logintests

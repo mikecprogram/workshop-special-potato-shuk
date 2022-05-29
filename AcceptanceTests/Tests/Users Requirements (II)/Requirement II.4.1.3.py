@@ -1,10 +1,7 @@
-from hashlib import new
 import unittest
 import sys
-from SHUK1.stock import stock
-from SHUK1.stockItem import stockItem
 #this is how you import from different folder in python:
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\SHUK1')
+sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
 
 from SystemService import *
 
@@ -26,5 +23,6 @@ class MyTestCase(unittest.TestCase):
         self.m.change_items_details_in_shops_stock(self.u,"itemname1","shopname","")
         lst_new = self.m.general_items_searching(self.u,item_name="itemname1")
         self.assertTrue(lst_old.response[0].des != 0 and lst_new.response[0].des)
+        
 if __name__ == '__main__':
     unittest.main()
