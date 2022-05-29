@@ -1,7 +1,7 @@
 ##from .Logger import Logger
 from tkinter import E
-from ShoppingBasket import ShoppingBasket
-import Shop
+from Dev.DomainLayer.Objects.ShoppingBasket import ShoppingBasket
+from Dev.DomainLayer.Objects.Shop import Shop
 
 class ShoppingCart:
 

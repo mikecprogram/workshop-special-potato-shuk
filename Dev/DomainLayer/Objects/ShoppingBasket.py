@@ -1,5 +1,5 @@
 #from .Logger import Logger
-import Shop
+from Dev.DomainLayer.Objects.Shop import Shop
 
 class ShoppingBasket:
 

@@ -1,5 +1,5 @@
 #from .Logger import Logger
-from shippingServiceInterface import shippingServiceInterface
+from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
 
 class ShippingService(shippingServiceInterface):
 

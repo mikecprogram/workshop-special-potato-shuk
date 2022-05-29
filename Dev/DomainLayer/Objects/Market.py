@@ -2,15 +2,14 @@ from operator import is_
 import time
 import threading
 import sys
-sys.path.insert(0, r'C:\Users\USER\Documents\GitHub\workshop-special-potato-shuk\Dev\DomainLayer\Objects')
 
 # from Logger import Logger
-from Shop import Shop
-from User import User
-from ExternalServices import ExternalServices
+from Dev.DomainLayer.Objects.Shop import Shop
+from Dev.DomainLayer.Objects.User import User
+from Dev.DomainLayer.Objects.ExternalServices import ExternalServices
 
-from Member import Member
-from Security import Security
+from Dev.DomainLayer.Objects.Member import Member
+from Dev.DomainLayer.Objects.Security import Security
 prem=[
     "premission1",
     "premission2",

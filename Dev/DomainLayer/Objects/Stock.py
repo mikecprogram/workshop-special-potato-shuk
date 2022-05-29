@@ -1,5 +1,5 @@
 #from Dev.DomainLayer.Objects.StockItem import StockItem
-from StockItem import StockItem
+from Dev.DomainLayer.Objects.StockItem import *
 
 class Stock:
 

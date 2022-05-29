@@ -1,6 +1,6 @@
 # from .Logger import Logger
-from ShoppingCart import ShoppingCart
-from Permissions import Permissions
+from Dev.DomainLayer.Objects.ShoppingCart import ShoppingCart
+from Dev.DomainLayer.Objects.Permissions import Permissions
 
 
 class Member:

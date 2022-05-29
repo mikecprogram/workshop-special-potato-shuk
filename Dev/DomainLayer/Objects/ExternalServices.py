@@ -1,6 +1,6 @@
 #from .Logger import Logger
-from paymentServiceInterface import paymentServiceInterface
-from shippingServiceInterface import shippingServiceInterface
+from Dev.DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
+from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
 
 
 class ExternalServices:
