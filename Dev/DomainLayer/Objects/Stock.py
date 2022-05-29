@@ -33,11 +33,17 @@ class Stock:
         else:
             raise Exception('Stock item is already exist!')
 
-    def removeStockItem(self, stockItemId):
-        if self._stockItems.get(stockItemId) is not None:
-            self._stockItems.pop(stockItemId)
-        else:
-            raise Exception('Stock item does not exist!')
+    def removeStockItem(self, itemname, amount):
+        for n,i in self._stockItems.items():
+            if i.getName()==itemname:
+                #print(1111)
+                if i.getCount()<amount:
+                    raise Exception('Not enough items in stock!')
+                if i.getCount()==amount:
+                    self._stockItems.pop(n)
+                self._stockItems[n].remove(amount)
+        return True
+
         
 
     def removeCategory(self, categoryName):

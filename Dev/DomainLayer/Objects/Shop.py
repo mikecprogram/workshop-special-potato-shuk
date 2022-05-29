@@ -27,6 +27,8 @@ class Shop():
         self._managers_assignments = {}
         self._purchaseLock = threading.Lock()
         pass
+    def getId(self,itemname):
+        return self._stock.getId(itemname)
 
     def get_status(self):
         return self._status
@@ -40,8 +42,11 @@ class Shop():
     def getShopName(self):
         return self._name
 
-    def add_item(self, item: StockItem):
-        self._stock.add(item)
+    def add_item_lock(self, item: StockItem):
+        self._purchaseLock.acquire()
+        r = self._stock.addStockItem(item)
+        self._purchaseLock.release()
+        return r
 
     def add_item(self, username, item_name, category, item_desc, item_price, amount):
         if not (username in self._owners.keys()) and not (username in self._managers.keys()):
@@ -51,12 +56,17 @@ class Shop():
         nid = self._stock.getNextId()
         item = StockItem(nid, category, item_name, item_desc, amount, None, None, item_price)
         # print(item.toString())
-        r = self._stock.addStockItem(item)
+        r = self.add_item_lock(item)
         # print (self._stock.search(None,None,None,None,self._name))
         return r
 
-    def remove_item(self, itemid: int):
-        self._stock.removeStockItem(itemid)
+    def remove_item(self, item_name, amount):
+        if (amount<0):
+            raise Exception('Bad amount to delete')
+        self._purchaseLock.acquire()
+        r = self._stock.removeStockItem(item_name, amount)
+        self._purchaseLock.release()
+        return r
 
     def update_purchase_policy(self):
         pass
