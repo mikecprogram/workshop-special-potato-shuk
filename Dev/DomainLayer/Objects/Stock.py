@@ -44,7 +44,17 @@ class Stock:
                 self._stockItems[n].remove(amount)
         return True
 
-        
+    def editStockItem(self,itemname, new_name, item_desc, item_price):
+        for n, i in self._stockItems.items():
+            if i.getName() == itemname:
+
+                if new_name is not None:
+                    i.setName(new_name)
+                if item_desc is not None:
+                    i.setDesc(item_desc)
+                if item_price is not None:
+                    i.setPrice(item_price)
+        return True
 
     def removeCategory(self, categoryName):
         if self._categories.get(categoryName) is not None:

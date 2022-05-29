@@ -239,9 +239,11 @@ class Market():
                 return r
         raise Exception('Bad token!')
 
-    def change_items_details_in_shops_stock(self, token, itemid, shop_name, item_desc, item_price, item_amount):
+    def change_items_details_in_shops_stock(self, token, itemname,  shop_name, new_name, item_desc, item_price):
         if self.isToken(token):
-            pass
+            if shop_name in self._shops.keys():
+                s = self._shops[shop_name]
+                return s.editItem(itemname, new_name, item_desc, item_price)
 
     def shop_owner_assignment(self, token, shop_name, member_name_to_assignUserName):
         if self.isToken(token):

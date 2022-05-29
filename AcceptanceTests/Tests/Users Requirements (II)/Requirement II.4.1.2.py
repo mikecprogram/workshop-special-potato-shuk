@@ -1,14 +1,15 @@
 import unittest
 import sys
 #this is how you import from different folder in python:
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
+#sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
 
-from SystemService import *
+from Dev.ServiceLayer.SystemService import *
 
 
 class MyTestCase(unittest.TestCase):
     def setUp(self):
         self.m=SystemService()
+        self.m.initialization_of_the_system()
         self.u=self.m.get_into_the_Trading_system_as_a_guest().response
         self.m.registration_for_the_trading_system(self.u,"username","password")
         #need to login, create shop and add items to it for test
@@ -16,6 +17,7 @@ class MyTestCase(unittest.TestCase):
         self.m.shop_open(self.u,"shopname")
         self.m.shop_open(self.u,"rockshop")
         lst_old = self.m.general_items_searching(self.u)
+        print(lst_old.exception,lst_old.response)
         self.assertTrue(len(lst_old.response) == 0)
         self.m.adding_item_to_the_shops_stock(self.u,"itemname1","shopname","animal objects","cats and clocks",5,10)
         self.m.adding_item_to_the_shops_stock(self.u,"itemname2","shopname","animal objects","dogs and locks",2,50)

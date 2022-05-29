@@ -68,6 +68,14 @@ class Shop():
         self._purchaseLock.release()
         return r
 
+    def editItem(self, itemname, new_name, item_desc, item_price):
+        if (item_price is not None and item_price < 0) or (new_name is not None and new_name == ""):
+            raise Exception('Bad details')
+        self._purchaseLock.acquire()
+        r = self._stock.editStockItem(itemname, new_name, item_desc, item_price)
+        self._purchaseLock.release()
+        return r
+
     def update_purchase_policy(self):
         pass
 
