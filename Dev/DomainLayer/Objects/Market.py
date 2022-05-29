@@ -54,7 +54,7 @@ class Market():
         self._enterLock = threading.Lock()
         self._shops = {}  # {shopName, shop}
         self._security = Security()
-        self._externalServices = ExternalServices()
+        self._externalServices = ExternalServices(external_payment_service,external_supplement_service)
 
     # returns boolean, returns if current date < 10Minutes+_onlineDate[token]
     # if #t update _onlineDate[token]
