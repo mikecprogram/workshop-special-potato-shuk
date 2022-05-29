@@ -28,7 +28,7 @@ class SystemService(BridgeInterface):
             return Response(exception=e.__str__())
 
     def initialization_of_the_system(self, external_payment_service : paymentServiceInterface, external_supplement_service : shippingServiceInterface,
-                                     system_admin_name: str, password: str , MaxTimeOnline : int) -> Response[bool]:
+                                     system_admin_name: str, password: str , MaxTimeOnline : int = 10) -> Response[bool]:
         try: 
             if self.market is not None:
                 Response(exception="system have been initialized before")

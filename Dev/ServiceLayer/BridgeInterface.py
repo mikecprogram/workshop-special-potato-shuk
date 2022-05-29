@@ -1,10 +1,13 @@
 from Response import Response
 from typing import List,Set
+from ..DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
+from ..DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
 class BridgeInterface:
     def get_into_the_Trading_system_as_a_guest(self) -> Response[int]:
         pass
 
-    def initialization_of_the_system(self, external_payment_service : str, external_supplement_service : str, system_admin_name:str , password :str) -> Response[bool]:
+    def initialization_of_the_system(self, external_payment_service : paymentServiceInterface, external_supplement_service : shippingServiceInterface,
+                                     system_admin_name: str, password: str , MaxTimeOnline : int) -> Response[bool]:
         pass
 
     def is_active(self,user_id) -> Response[bool]:
