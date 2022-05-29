@@ -1,7 +1,7 @@
-from .Logger import Logger
+#from .Logger import Logger
 
 
-class PurchaseHistory:
+class PurchaseHistory():
 
     def __init__(self):
         self.purchaseString = ""#load

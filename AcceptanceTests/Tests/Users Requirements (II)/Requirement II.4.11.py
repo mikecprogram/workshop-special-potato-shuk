@@ -1,10 +1,7 @@
-from hashlib import new
 import unittest
 import sys
-from SHUK1.stock import stock
-from SHUK1.stockItem import stockItem
 #this is how you import from different folder in python:
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\SHUK1')
+sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
 
 from SystemService import *
 
