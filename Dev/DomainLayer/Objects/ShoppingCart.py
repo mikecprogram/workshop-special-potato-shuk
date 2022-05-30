@@ -59,3 +59,8 @@ class ShoppingCart:
             return True
         except Exception as e:
             raise e
+
+
+    def archive_shopping_baskets(self, token):
+        for basket in self.shoppingBaskets.values():
+            basket.archive(token)
