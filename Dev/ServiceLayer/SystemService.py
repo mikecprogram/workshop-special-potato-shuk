@@ -184,7 +184,7 @@ class SystemService(BridgeInterface):
         try:
             if self.market is None:
                 return Response(exception = "you have to initialize the system") 
-            return Response(self.market.get_inshop_purchases_history(token, shopname)
+            return Response(self.market.get_inshop_purchases_history(token, shopname))
         except Exception as e:
             return Response(exception=e.__str__())
 
