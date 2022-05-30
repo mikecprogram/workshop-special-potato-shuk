@@ -20,53 +20,76 @@ class Permission(Enum):
     InshopPurchasesHistoryGetting = 12
 
 
+def is_valid_permission(permission_id):
+    for permission in Permission:
+        if permission.value == permission_id:
+            return True
+    return False
+
+
 class Permissions:
 
     def __init__(self):
-        self._assignedPermission = set()  # set of permission.enum
+        self._assignedPermission = set() # {PermissionEnum}
         self.add_permission(Permission.UsersQuestionsAnswering)
         self.add_permission(Permission.InshopPurchasesHistoryGetting)
 
-    def add_permission(self, permission):
-        if permission in self._assignedPermission:
+    def has_permission(self, permission):
+        return permission in self._assignedPermission
+
+    def add_permission(self, permission_id):
+        if not is_valid_permission(permission_id):
+            raise Exception('Non valid permission id!')
+        permission = Permission(permission_id)
+        if self.has_permission(permission):
             raise Exception('Member already has required permission')
-        self._assignedPermission.add(permission)
+        else:
+            self._assignedPermission.add(permission)
+
+    def remove_permission(self, permission_id):
+        if not is_valid_permission(permission_id):
+            raise Exception('Non valid permission id!')
+        permission = Permission(permission_id)
+        if not self.has_permission(permission):
+            raise Exception('Member does not have the required permission')
+        else:
+            self._assignedPermission.remove(permission)
 
     def can_manage_stock(self):
-        return Permission.StockManaging in self._assignedPermission
+        return self.has_permission(Permission.StockManaging)
 
     def can_change_discount_policy(self):
-        return Permission.DiscountPolicyChanging in self._assignedPermission
+        return self.has_permission(Permission.DiscountPolicyChanging)
 
     def can_change_purchase_policy(self):
-        return Permission.PurchasePolicyChanging in self._assignedPermission
+        return self.has_permission(Permission.PurchasePolicyChanging)
 
     def can_assign_manager(self):
-        return Permission.ShopManagerAssigning in self._assignedPermission
+        return self.has_permission(Permission.ShopManagerAssigning)
 
     def can_assign_owner(self):
-        return Permission.ShopOwnerAssigning in self._assignedPermission
+        return self.has_permission(Permission.ShopOwnerAssigning)
 
     def can_unassign_manager(self):
-        return Permission.ShopManagerUnassigning in self._assignedPermission
+        return self.has_permission(Permission.ShopManagerUnassigning)
 
     def can_unassign_owner(self):
-        return Permission.ShopOwnerUnassigning in self._assignedPermission
+        return self.has_permission(Permission.ShopOwnerUnassigning)
 
     def can_get_shop_roles_info(self):
-        return Permission.ShopRolesInfoGetting in self._assignedPermission
+        return self.has_permission(Permission.ShopRolesInfoGetting)
 
     def can_close_shop(self):
-        return Permission.ShopClosing in self._assignedPermission
+        return self.has_permission(Permission.ShopClosing)
 
     def can_get_inshop_purchases_history(self):
-        return Permission.InshopPurchasesHistoryGetting in self._assignedPermission
+        return self.has_permission(Permission.InshopPurchasesHistoryGetting)
 
     def can_change_shop_manager_permissions(self):
-        return Permission.ShopManagerPermissionsChanging in self._assignedPermission
+        return self.has_permission(Permission.ShopManagerPermissionsChanging)
 
     def can_open_closed_shop(self):
-        return Permission.ClosedShopOpening in self._assignedPermission
+        return self.has_permission(Permission.ClosedShopOpening)
 
     def can_answer_users_questions(self):
-        return Permission.UsersQuestionsAnswering in self._assignedPermission
+        return self.has_permission(Permission.UsersQuestionsAnswering)

@@ -119,6 +119,12 @@ class Shop():
         else:
             assignment[assignerUsername] = [Assignment(assignerUsername, assigneeUsername)]
 
+    def is_assignment(self, assigner, assignee):
+        if assigner in self._owners_assignments:
+            return assignee in self._owners_assignments[assigner]
+        if assigner in self._managers_assignments:
+            return assignee in self._managers_assignments[assigner]
+
     def close_shop(self):
         if self._status is ShopState.Open:
             self._status = ShopState.Closed
@@ -176,3 +182,20 @@ class Shop():
 
     def get_inshop_purchases_history(self):
         return self._purchases_history.get_string()
+
+
+    def grant_permission(self,permission_code, grantor_username, grantee_manager):
+
+        if not self.is_manager(grantee_manager.get_username()):
+            raise Exception('Asked grantee member is not a manager of the given shop in market!')
+        if not(self.is_owner(grantor_username) and self.is_assignment(grantor_username, grantee_manager.get_username())):
+            raise Exception('Owner can only update his assignees permissions!')
+        grantee_manager.get_permissions(self._name).add_permission(permission_code)
+
+
+    def withdraw_permission(self,permission_code, grantor_username, grantee_manager):
+        if not self.is_manager(grantee_manager.get_username()):
+            raise Exception('Asked member is not a manager of the given shop in market!')
+        if not(self.is_owner(grantor_username) and self.is_assignment(grantor_username, grantee_manager.get_username())):
+            raise Exception('Owner can only update his assignees permissions!')
+        grantee_manager.get_permissions(self._name).remove_permission(permission_code)
