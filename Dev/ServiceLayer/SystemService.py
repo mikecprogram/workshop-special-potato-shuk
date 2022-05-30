@@ -180,11 +180,11 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def in_shop_purchases_history_request(self, username: int) -> Response[List[str]]:
+    def in_shop_purchases_history_request(self, token, shopname) -> Response[List[str]]:
         try:
             if self.market is None:
                 return Response(exception = "you have to initialize the system") 
-            return Response(self.market.get_purchase_history())
+            return Response(self.market.get_inshop_purchases_history(token, shopname)
         except Exception as e:
             return Response(exception=e.__str__())
 
