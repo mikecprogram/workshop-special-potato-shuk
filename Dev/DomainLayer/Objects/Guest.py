@@ -23,9 +23,3 @@ class Guest:
 
     def get_inshop_purchases_history(self, shopname):
         raise Exception('Guest could not get in-shop purchases history!')
-
-    def grant_permission(permission_code, shop_name, target_manager):
-        raise Exception('Guest could not grant permissions!')
-
-    def withdraw_permission(permission_code, shop_name, target_manager):
-        raise Exception('Guest could not withdraw permissions!')

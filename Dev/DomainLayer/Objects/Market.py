@@ -265,19 +265,19 @@ class Market():
         if self.isToken(token):
             if self.is_member(member_name_to_assignUserName):
                 self._onlineVisitors[token].assign_owner(shop_name, self._members[member_name_to_assignUserName])
-                return True
+
             else:
                 raise Exception('member does not exist to be assigned!')
-
+        return True
 
     def shop_manager_assignment(self, token, shop_name, member_name_to_assignUserName):
         if self.isToken(token):
             if self.is_member(member_name_to_assignUserName):
                 self._onlineVisitors[token].assign_manager(shop_name, self._members[member_name_to_assignUserName])
-                return True
+
             else:
                 raise Exception('member does not exist to be assigned!')
-
+        return True
 
     def shop_closing(self, token, shop_name):
         if self.isToken(token):
@@ -310,23 +310,3 @@ class Market():
 
     def shipping_execution(self, token): # TODO to specify which params we need
         self._externalServices.execute_shipment()
-
-    def grant_permission(self, permission_code, shop_name, token, target_manager):
-        if self.isToken(token):
-            if self.is_shop(shop_name):
-                self._onlineVisitors[token].grant_permission(permission_code, shop_name, target_manager)
-                return True
-            else:
-                raise Exception('Shop does not exist with the given shop name!')
-        else:
-            raise Exception('Timed out token!')
-
-    def withdraw_permission(self, permission_code, shop_name, token, target_manager):
-        if self.isToken(token):
-            if self.is_shop(shop_name):
-                self._onlineVisitors[token].withdraw_permission(permission_code, shop_name, target_manager)
-                return True
-            else:
-                raise Exception('Shop does not exist with the given shop name!')
-        else:
-            raise Exception('Timed out token!')
