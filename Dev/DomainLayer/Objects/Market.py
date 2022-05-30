@@ -2,16 +2,29 @@ from operator import is_
 import time
 import threading
 import sys
-sys.path.insert(0, r'C:\Users\USER\Documents\GitHub\workshop-special-potato-shuk\Dev\DomainLayer\Objects')
 
 # from Logger import Logger
-from Shop import Shop
-from User import User
-from ExternalServices import ExternalServices
+from Dev.DomainLayer.Objects.Shop import Shop
+from Dev.DomainLayer.Objects.User import User
+from Dev.DomainLayer.Objects.ExternalServices import ExternalServices
 
-from Member import Member
-from Security import Security
-
+from Dev.DomainLayer.Objects.Member import Member
+from Dev.DomainLayer.Objects.Security import Security
+prem=[
+    "premission1",
+    "premission2",
+    "premission3",
+    "premission4",
+    "premission5",
+    "premission6",
+    "premission7",
+    "premission8",
+    "premission9",
+    "premission10",
+    "premission11",
+    "premission12",
+    "premission13",
+    ]
 
 def is_valid_password(password):
     if len(password) >= 8:  # need to add constraints on pass TODO
@@ -40,7 +53,7 @@ class Market():
         self._enterLock = threading.Lock()
         self._shops = {}  # {shopName, shop}
         self._security = Security()
-        self._externalServices = ExternalServices()
+        self._externalServices = ExternalServices(external_payment_service,external_supplement_service)
 
     # returns boolean, returns if current date < 10Minutes+_onlineDate[token]
     # if #t update _onlineDate[token]
@@ -176,9 +189,14 @@ class Market():
         if self.isToken(token):
             pass
 
-    def get_purchase_history(self, token):
+    def get_inshop_purchases_history(self, token, shopname):
         if self.isToken(token):
-            pass
+            if shopname in self._shops:
+                self._onlineVisitors[token].get_inshop_purchases_history(shopname)
+            else:
+                raise Exception('Shop not found with given name!')
+        else:
+            raise Exception('Timed out token!')
     def getUser(self,token):
         return self._onlineVisitors[token]
     def purchase(self,token):
@@ -214,33 +232,52 @@ class Market():
             if shop_name in self._shops.keys():
                 s=self._shops[shop_name]
                 return s.add_item(u.getUsername(), item_name, category, item_desc, item_price, amount)
-        return False
+        raise Exception('Bad token!')
 
-    def deleting_item_from_shop_stock(self, token, itemid, shop_name, amount):
+    def deleting_item_from_shop_stock(self, token, item_name, shop_name, amount):
         if self.isToken(token):
-            pass
+            
+            if shop_name in self._shops.keys():
+                s=self._shops[shop_name]
+                
+                r = s.remove_item(item_name, amount)
+                return r
+        raise Exception('Bad token!')
 
-    def change_items_details_in_shops_stock(self, token, itemid, shop_name, item_desc, item_price, item_amount):
+    def change_items_details_in_shops_stock(self, token, itemname,  shop_name, new_name, item_desc, item_price):
         if self.isToken(token):
-            pass
+            if shop_name in self._shops.keys():
+                s = self._shops[shop_name]
+                return s.editItem(itemname, new_name, item_desc, item_price)
+        raise Exception('Bad token!')
+
+    def shopping_carts_add_item(self, token, item_name, shop_name, amount):
+        if self.isToken(token):
+            if shop_name in self._shops.keys():
+                s = self._shops[shop_name]
+                valid = s.checkAmount(item_name, amount)
+                if valid:
+                    self._onlineVisitors[token].addToCart(s, item_name, amount)
+                    return True
+        raise Exception('Bad token!')
 
     def shop_owner_assignment(self, token, shop_name, member_name_to_assignUserName):
         if self.isToken(token):
             if self.is_member(member_name_to_assignUserName):
                 self._onlineVisitors[token].assign_owner(shop_name, self._members[member_name_to_assignUserName])
-
+                return True
             else:
                 raise Exception('member does not exist to be assigned!')
-        return True
+
 
     def shop_manager_assignment(self, token, shop_name, member_name_to_assignUserName):
         if self.isToken(token):
             if self.is_member(member_name_to_assignUserName):
                 self._onlineVisitors[token].assign_manager(shop_name, self._members[member_name_to_assignUserName])
-
+                return True
             else:
                 raise Exception('member does not exist to be assigned!')
-        return True
+
 
     def shop_closing(self, token, shop_name):
         if self.isToken(token):
@@ -260,9 +297,7 @@ class Market():
 
     def shop_manager_permissions_check(self, manager_name, shop_name, token):
         if self.isToken(token):
-            return [1,3,4]
-        else:
-            return [1,2,5]
+            pass
 
     def is_shop(self, shopName):
         if shopName in self._shops:
@@ -275,3 +310,23 @@ class Market():
 
     def shipping_execution(self, token): # TODO to specify which params we need
         self._externalServices.execute_shipment()
+
+    def grant_permission(self, permission_code, shop_name, token, target_manager):
+        if self.isToken(token):
+            if self.is_shop(shop_name):
+                self._onlineVisitors[token].grant_permission(permission_code, shop_name, target_manager)
+                return True
+            else:
+                raise Exception('Shop does not exist with the given shop name!')
+        else:
+            raise Exception('Timed out token!')
+
+    def withdraw_permission(self, permission_code, shop_name, token, target_manager):
+        if self.isToken(token):
+            if self.is_shop(shop_name):
+                self._onlineVisitors[token].withdraw_permission(permission_code, shop_name, target_manager)
+                return True
+            else:
+                raise Exception('Shop does not exist with the given shop name!')
+        else:
+            raise Exception('Timed out token!')

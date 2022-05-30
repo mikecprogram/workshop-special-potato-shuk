@@ -1,5 +1,5 @@
 #from Dev.DomainLayer.Objects.StockItem import StockItem
-from StockItem import StockItem
+from Dev.DomainLayer.Objects.StockItem import *
 
 class Stock:
 
@@ -33,12 +33,36 @@ class Stock:
         else:
             raise Exception('Stock item is already exist!')
 
-    def removeStockItem(self, stockItemId):
-        if self._stockItems.get(stockItemId) is not None:
-            self._stockItems.pop(stockItemId)
-        else:
-            raise Exception('Stock item does not exist!')
-        
+    def removeStockItem(self, itemname, amount):
+        for n,i in self._stockItems.items():
+            if i.getName()==itemname:
+                #print(1111)
+                if i.getCount()<amount:
+                    raise Exception('Not enough items in stock!')
+                if i.getCount()==amount:
+                    self._stockItems.pop(n)
+                self._stockItems[n].remove(amount)
+        return True
+
+    def editStockItem(self,itemname, new_name, item_desc, item_price):
+        for n, i in self._stockItems.items():
+            if i.getName() == itemname:
+
+                if new_name is not None:
+                    i.setName(new_name)
+                if item_desc is not None:
+                    i.setDesc(item_desc)
+                if item_price is not None:
+                    i.setPrice(item_price)
+        return True
+
+    def checkAmount(self,item_name, amount):
+        for n, i in self._stockItems.items():
+            if i.getName() == item_name:
+                if i.getCount()<amount:
+                    raise Exception('Not enough items in stock!')
+                return True
+        raise Exception('No such items in stock!')
 
     def removeCategory(self, categoryName):
         if self._categories.get(categoryName) is not None:

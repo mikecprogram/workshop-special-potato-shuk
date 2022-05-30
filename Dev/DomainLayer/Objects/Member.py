@@ -1,6 +1,6 @@
 # from .Logger import Logger
-from ShoppingCart import ShoppingCart
-from Permissions import Permissions
+from Dev.DomainLayer.Objects.ShoppingCart import ShoppingCart
+from Dev.DomainLayer.Objects.Permissions import Permissions
 
 
 class Member:
@@ -64,6 +64,7 @@ class Member:
             raise Exception("Member could not assign a manager to not owned or not managed with special permission shop!")
 
     def openShop(self, shop):
+
         self.addFoundedShop(shop)
 
     def getRolesInfoReport(self, shopName):
@@ -97,3 +98,41 @@ class Member:
 
     def can_close_shop(self, shopName):
         return self.permissions[shopName].can_close_shop()
+
+    def get_inshop_purchases_history(self, shopname):
+        if self.is_owned_shop(shopname):
+            return self.ownedShops[shopname].get_inshop_purchases_history()
+        elif self.is_managed_shop(shopname) and self.can_get_inshop_purchases_history(shopname):
+            return self.managedShops[shopname].get_inshop_purchases_history()
+        else:
+            raise Exception("Member could not get inshop purchases history about non owned or non managed with special permission shop!")
+
+    def can_get_inshop_purchases_history(self, shopname):
+        return self.permissions[shopname].can_get_inshop_purchases_history()
+
+    def can_update_manager_permissions(self, shop_name):
+        return self.permissions[shop_name].can_change_shop_manager_permissions()
+
+    def grant_permission(permission_code, shop_name, target_manager):
+        if self.is_owned_shop(shop_name):
+            self.ownedShops[shop_name].grant_permission(permission_code, self._username, target_manager)
+        elif self.is_managed_shop(shop_name) and self.can_update_manager_permissions(shop_name):
+            self.managedShops[shop_name].grant_permission(permission_code, self._username, target_manager)
+        else:
+            raise Exception(
+                "Member could not grant manager permissions in non owned or non managed with special permission shop!")
+
+    def withdraw_permission(permission_code, shop_name, target_manager):
+        if self.is_owned_shop(shop_name):
+            self.ownedShops[shop_name].withdraw_permission(permission_code, self._username, target_manager)
+        elif self.is_managed_shop(shop_name) and self.can_update_manager_permissions(shop_name):
+            self.managedShops[shop_name].withdraw_permission(permission_code, self._username, target_manager)
+        else:
+            raise Exception(
+                "Member could not withdraw manager permissions in non owned or non managed with special permission shop!")
+
+    def get_permissions(self, shop_name):
+        if shop_name in self.permissions:
+            return self.permissions[shop_name]
+        else:
+            raise Exception('Shop not found!')

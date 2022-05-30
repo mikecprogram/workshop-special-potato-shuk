@@ -2,9 +2,9 @@
 # from Guest import *
 # from Member import *
 # from ShoppingCart import *
-from Guest import Guest
-from Member import Member
-from ShoppingCart import ShoppingCart
+from Dev.DomainLayer.Objects.Guest import Guest
+from Dev.DomainLayer.Objects.Member import Member
+from Dev.DomainLayer.Objects.ShoppingCart import ShoppingCart
 
 
 class User:
@@ -63,8 +63,8 @@ class User:
     def search(self, name=None, category=None, keyword=None, maxPrice=None, minItemRating=None, minShopRating=None):
         return self._market.search(name, category, keyword, maxPrice, minItemRating, minShopRating)
 
-    def addToCart(self, itemid, shopName,amount):
-        self._shoppingCart.addItem(shopName, itemid,amount)
+    def addToCart(self,shop, item_name,amount):
+        self._shoppingCart.addItem(shop, item_name,amount)
 
     def removeFromCart(self, itemid, shopName,amount):
         self._shoppingCart.removeItem(shopName, itemid,amount)
@@ -103,3 +103,12 @@ class User:
     def getUsername(self):
         if self.isMember():
             return self._state.get_username()
+
+    def get_inshop_purchases_history(self, shopname):
+        return self._state.get_inshop_purchases_history(shopname)
+
+    def grant_permission(permission_code, shop_name, target_manager):
+        self._state.grant_permission(permission_code, shop_name, target_manager)
+
+    def withdraw_permission(permission_code, shop_name, target_manager):
+        self._state.withdraw_permission(permission_code, shop_name, target_manager)

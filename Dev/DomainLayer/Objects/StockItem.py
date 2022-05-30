@@ -1,6 +1,6 @@
 from unicodedata import category
 
-from Category import Category
+from Dev.DomainLayer.Objects.Category import Category
 ##from .Logger import Logger
 
 
@@ -40,12 +40,24 @@ class StockItem:
 
     def getPrice(self):
         return self._price
-    
+
     def getDesc(self):
         return self._desc
 
+    def setName(self, new):
+        self._name = new
+
+    def setDesc(self, new):
+        self._desc = new
+
+    def setPrice(self, new):
+        self._price = new
+
     def canPurchase(self, user):
         return True
+
+    def remove(self, amount):
+        self._count-=amount
 
     def getTotalDiscount(self, user):
         totaldiscount = 1

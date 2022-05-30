@@ -8,7 +8,7 @@ class MyTestCase(unittest.TestCase):
     
     def setUp(self):
         self.m=SystemService()
-        self.u=self.m.get_into_the_Trading_system_as_a_guest()
+        self.u=self.m.get_into_the_Trading_system_as_a_guest().response
         self.m.registration_for_the_trading_system(self.u,"username","password")
 
     def testGood(self):

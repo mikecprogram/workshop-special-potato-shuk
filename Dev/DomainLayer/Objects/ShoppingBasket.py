@@ -1,29 +1,29 @@
 #from .Logger import Logger
-import Shop
+from Dev.DomainLayer.Objects.Shop import Shop
 
 class ShoppingBasket:
 
     def __init__(self, shoppingCart, shop):
-        self.shoppingCart = shoppingCart  # is it necessary here?
+        self.shoppingCart = shoppingCart
 
         self.shop = shop  
 
         self.stockItems = {}  # load
 
-    def getItemByName(self, itemName):  # refactor and optimize
+    def getItemByName(self, itemName):
         for i in self.stockItems:
-            if i[0] == itemName:  # ghghj
+            if i[0] == itemName:
                 return i
         return None
 
-    def addItem(self, itemid,amount):
-        if not(self.shop.itemExists(itemid)):
+    def addItem(self, item_name,amount):
+        if not(self.shop.itemExists(item_name)):
             raise Exception("No such item found in shop")
-        if not (itemid in self.stockItems):
-            self.stockItems[itemid] = 0
-        if not(self.shop.isAmount(itemid,self.stockItems[itemid] +amount)):
+        if not (item_name in self.stockItems):
+            self.stockItems[item_name] = 0
+        if not(self.shop.isAmount(item_name,self.stockItems[item_name] +amount)):
             raise Exception("No such amount available in shop")
-        self.stockItems[itemid] = self.stockItems[itemid] + amount
+        self.stockItems[item_name] = self.stockItems[item_name] + amount
 
     def removeItem(self, itemid,amount): 
         if not(self.shop.itemExists(itemid)):
