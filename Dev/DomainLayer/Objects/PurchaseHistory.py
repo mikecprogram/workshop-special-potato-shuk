@@ -10,3 +10,5 @@ class PurchaseHistory():
     def append(self,data):
         self.purchaseString = self.purchaseString + data + "\n"
         
+    def get_string(self):
+        return self.purchaseString

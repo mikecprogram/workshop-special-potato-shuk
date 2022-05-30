@@ -17,7 +17,7 @@ class Permission(Enum):
     ClosedShopOpening: 9
     UsersQuestionsAnswering: 10
     ShopRolesInfoGetting: 11
-    InshopPurchaseHistoryGetting: 12
+    InshopPurchasesHistoryGetting: 12
 
 
 class Permissions:
@@ -25,7 +25,7 @@ class Permissions:
     def __init__(self):
         self._assignedPermission = set()  # set of permission.enum
         self.add_permission(Permission.UsersQuestionsAnswering)
-        self.add_permission(Permission.InshopPurchaseHistoryGetting)
+        self.add_permission(Permission.InshopPurchasesHistoryGetting)
 
     def add_permission(self, permission):
         if permission in self._assignedPermission:
@@ -59,8 +59,8 @@ class Permissions:
     def can_close_shop(self):
         return Permission.ShopClosing in self._assignedPermission
 
-    def can_get_inshop_purchase_history(self):
-        return Permission.InshopPurchaseHistoryGetting in self._assignedPermission
+    def can_get_inshop_purchases_history(self):
+        return Permission.InshopPurchasesHistoryGetting in self._assignedPermission
 
     def can_change_shop_manager_permissions(self):
         return Permission.ShopManagerPermissionsChanging in self._assignedPermission

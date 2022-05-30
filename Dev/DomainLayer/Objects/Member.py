@@ -98,3 +98,14 @@ class Member:
 
     def can_close_shop(self, shopName):
         return self.permissions[shopName].can_close_shop()
+
+    def get_inshop_purchases_history(self, shopname):
+        if self.is_owned_shop(shopname):
+            return self.ownedShops[shopname].get_inshop_purchases_history()
+        elif self.is_managed_shop(shopname) and self.can_get_inshop_purchases_history(shopname):
+            return self.managedShops[shopname].get_inshop_purchases_history()
+        else:
+            raise Exception("Member could not get inshop purchases history about non owned or non managed with special permission shop!")
+
+    def can_get_inshop_purchases_history(self, shopname):
+        return self.permissions[shopname].can_get_inshop_purchases_history()

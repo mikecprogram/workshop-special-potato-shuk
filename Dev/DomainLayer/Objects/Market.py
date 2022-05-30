@@ -189,9 +189,14 @@ class Market():
         if self.isToken(token):
             pass
 
-    def get_purchase_history(self, token):
+    def get_inshop_purchases_history(self, token, shopname):
         if self.isToken(token):
-            pass
+            if shopname in self._shops:
+                self._onlineVisitors[token].get_inshop_purchases_history(shopname)
+            else:
+                raise Exception('Shop not found with given name!')
+        else:
+            raise Exception('Timed out token!')
     def getUser(self,token):
         return self._onlineVisitors[token]
     def purchase(self,token):

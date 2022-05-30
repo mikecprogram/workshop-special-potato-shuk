@@ -2,7 +2,9 @@
 from Dev.DomainLayer.Objects.StockItem import *
 from Dev.DomainLayer.Objects.Assignment import Assignment
 from Dev.DomainLayer.Objects.Stock import Stock
+from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
 import threading
+
 from enum import Enum
 
 
@@ -26,6 +28,7 @@ class Shop():
         self._owners_assignments = {}
         self._managers_assignments = {}
         self._purchaseLock = threading.Lock()
+        self._purchases_history = PurchaseHistory()
         pass
     def getId(self,itemname):
         return self._stock.getId(itemname)
@@ -170,3 +173,6 @@ class Shop():
 
     def getItemInfo(self, name):
         return self._stock.getItemInfo(name)
+
+    def get_inshop_purchases_history(self):
+        return self._purchases_history.get_string()
