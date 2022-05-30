@@ -103,3 +103,6 @@ class User:
     def getUsername(self):
         if self.isMember():
             return self._state.get_username()
+
+    def get_inshop_purchases_history(self, shopname):
+        return self._state.get_inshop_purchases_history(shopname)
