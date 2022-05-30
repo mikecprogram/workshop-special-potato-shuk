@@ -112,3 +112,6 @@ class User:
 
     def withdraw_permission(permission_code, shop_name, target_manager):
         self._state.withdraw_permission(permission_code, shop_name, target_manager)
+
+    def archive_purchase_cart(self, token):
+        self._shoppingCart.archive_shopping_baskets(token)

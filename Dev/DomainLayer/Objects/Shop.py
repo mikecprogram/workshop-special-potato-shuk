@@ -199,3 +199,6 @@ class Shop():
         if not(self.is_owner(grantor_username) and self.is_assignment(grantor_username, grantee_manager.get_username())):
             raise Exception('Owner can only update his assignees permissions!')
         grantee_manager.get_permissions(self._name).remove_permission(permission_code)
+
+    def archive_shopping_basket(self, shooping_basket_report):
+        self._purchases_history.append(shooping_basket_report)

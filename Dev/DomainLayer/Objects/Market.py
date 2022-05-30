@@ -331,3 +331,8 @@ class Market():
                 raise Exception('Shop does not exist with the given shop name!')
         else:
             raise Exception('Timed out token!')
+
+    def archive_purchase(self, token):
+        if self.isToken(token):
+            self._onlineVisitors[token].archive_purchase_cart(token)
+        return True

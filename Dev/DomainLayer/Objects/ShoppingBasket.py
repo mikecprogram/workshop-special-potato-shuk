@@ -5,9 +5,7 @@ class ShoppingBasket:
 
     def __init__(self, shoppingCart, shop):
         self.shoppingCart = shoppingCart
-
-        self.shop = shop  
-
+        self.shop = shop
         self.stockItems = {}  # load
 
     def getItemByName(self, itemName):
@@ -64,3 +62,20 @@ class ShoppingBasket:
         self.stockItems.clear()
         self.shop.releaseReleaseLock()
         return True
+
+    def to_string(self, customer_token):
+        string = "###############################\n"
+        string += "Customer token: " + customer_token + "\n"
+        string += "Shop name: " + self.shop.getShopName() +"\n"
+        string += "Items: \n"
+        for item in self.stockItems.values():
+            string += item.get_item_report()
+
+        string += "Basket price: " + self.calculate_basket_price() + "\n"
+
+    def calculate_basket_price(self):
+        pass # todo
+
+    def archive(self, token):
+
+        self.shop.archive_shopping_basket(self.to_string(token))
