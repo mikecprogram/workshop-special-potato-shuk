@@ -171,7 +171,8 @@ class Market():
     def addToCart(self, token, itemid, shop_name, amount):
         if self.isToken(token):
             user = self.getUser(token)
-            user.addToCart(itemid,shop_name, amount);
+            shop = self._shops[shop_name]
+            user.addToCart(itemid, shop, amount);
             pass
 
     def getCartContents(self, token):
