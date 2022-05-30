@@ -5,19 +5,19 @@ from enum import Enum
 
 
 class Permission(Enum):
-    StockManaging: 0
-    DiscountPolicyChanging: 1
-    PurchasePolicyChanging: 2
-    ShopOwnerAssigning: 3
-    ShopOwnerUnassigning: 4
-    ShopManagerAssigning: 5
-    ShopManagerUnassigning: 6
-    ShopManagerPermissionsChanging: 7
-    ShopClosing: 8
-    ClosedShopOpening: 9
-    UsersQuestionsAnswering: 10
-    ShopRolesInfoGetting: 11
-    InshopPurchasesHistoryGetting: 12
+    StockManaging = 0
+    DiscountPolicyChanging = 1
+    PurchasePolicyChanging = 2
+    ShopOwnerAssigning = 3
+    ShopOwnerUnassigning = 4
+    ShopManagerAssigning = 5
+    ShopManagerUnassigning = 6
+    ShopManagerPermissionsChanging = 7
+    ShopClosing = 8
+    ClosedShopOpening = 9
+    UsersQuestionsAnswering = 10
+    ShopRolesInfoGetting = 11
+    InshopPurchasesHistoryGetting = 12
 
 
 class Permissions:
