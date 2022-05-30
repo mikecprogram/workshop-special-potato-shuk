@@ -64,6 +64,7 @@ class Member:
             raise Exception("Member could not assign a manager to not owned or not managed with special permission shop!")
 
     def openShop(self, shop):
+
         self.addFoundedShop(shop)
 
     def getRolesInfoReport(self, shopName):
