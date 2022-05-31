@@ -1,10 +1,4 @@
 import unittest
-import sys
-#this is how you import from different folder in python:
-from Dev.ServiceLayer.SystemService import SystemService
-
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
-
 from Dev.ServiceLayer.SystemService import *
 
 
