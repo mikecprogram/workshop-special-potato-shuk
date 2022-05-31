@@ -159,7 +159,7 @@ class SystemService(BridgeInterface):
         try:
             if self.market is None:
                 return Response(exception = "you have to initialize the system") 
-            return Response(self.market.shopping_carts_check_content(user_id))
+            return Response(self.market.getCartContents(user_id))
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -167,7 +167,7 @@ class SystemService(BridgeInterface):
         try:
             if self.market is None:
                 return Response(exception = "you have to initialize the system") 
-            return Response(self.market.shopping_carts_delete_item(user_id, item_name, shop_name, amount))
+            return Response(self.market.removeFromCart(user_id, item_name, shop_name, amount))
         except Exception as e:
             return Response(exception=e.__str__())
 

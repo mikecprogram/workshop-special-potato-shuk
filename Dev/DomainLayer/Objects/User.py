@@ -66,8 +66,8 @@ class User:
     def addToCart(self,shop, item_name,amount):
         self._shoppingCart.addItem(shop, item_name,amount)
 
-    def removeFromCart(self, itemid, shopName,amount):
-        self._shoppingCart.removeItem(shopName, itemid,amount)
+    def removeFromCart(self, item_name, shopName,amount):
+        return self._shoppingCart.removeItem(shopName, item_name,amount)
     def checkBaskets(self):
         return self._shoppingCart.checkBaskets()
     def checkBasket(self, shopName):

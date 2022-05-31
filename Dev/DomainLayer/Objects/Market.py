@@ -180,11 +180,10 @@ class Market():
             user = self.getUser(token)
             return user.checkBaskets();
 
-    def removeFromCart(self, token, itemid, shop_name, amount):
+    def removeFromCart(self, token, item_name, shop_name, amount):
         if self.isToken(token):
             user = self.getUser(token)
-            user.removeFromCart(itemid,shop_name, amount);
-            pass
+            return user.removeFromCart(item_name,shop_name, amount);
 
     def Shopping_cart_purchase(self, token):
         if self.isToken(token):

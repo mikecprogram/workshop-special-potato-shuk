@@ -23,22 +23,21 @@ class ShoppingCart:
             self.shoppingBaskets[shop.getShopName()] = b
         b.addItem(item_name, amount)
 
-    def removeItem(self, shopName, itemid,amount):
+    def removeItem(self, shopName, item_name,amount):
         b = self.getBasketByShop(shopName)
         if b is None:
-            b = ShoppingBasket(self, Shop(shopName,None))
-            self.shoppingBaskets[shopName] = b
-        b.removeItem(itemid,amount)
+            raise ("removing too from non existant basket!")
+        ret = b.removeItem(item_name,amount)
+        if not b.checkBasket():
+            self.shoppingBaskets.pop(shopName)
+        return ret
 
     def checkBaskets(self):
-        ans = ""
+        ans = []
         for name in self.shoppingBaskets:
             b = self.shoppingBaskets[name]
-            ans = "%s from shop %s: \n %s\n"%(ans,b.shop.getShopName(),b.checkBasket())
-        if ans == "":
-            return "Basket is empty"
-        else:
-            return ans
+            ans.append([b.shop.getShopName(),b.checkBasket()])
+        return ans
 
     def clear(self):
         self._user = None

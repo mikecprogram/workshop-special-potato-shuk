@@ -23,30 +23,33 @@ class ShoppingBasket:
             raise Exception("No such amount available in shop")
         self.stockItems[item_name] = self.stockItems[item_name] + amount
 
-    def removeItem(self, itemid,amount): 
-        if not(self.shop.itemExists(itemid)):
+    def removeItem(self, item_name,amount):
+        if not(self.shop.itemExists(item_name)):
             raise Exception("No such item found in shop")
-        if not(itemid in self.stockItems):
-            self.stockItems[itemid] = 0
-        if not(self.shop.isAmount(itemid,self.stockItems[itemid] +amount)):
+        if self.stockItems[item_name]<amount:
+            raise Exception("No such amount available in basket")
+        if not(item_name in self.stockItems):
+            self.stockItems[item_name] = 0
+        if not(self.shop.isAmount(item_name,self.stockItems[item_name] +amount)):
             raise Exception("No such amount available in shop")
-        if amount >= self.stockItems[itemid] :
-            del self.stockItems[itemid]
+        if amount == self.stockItems[item_name] :
+            del self.stockItems[item_name]
         else:
-            self.stockItems[itemid] = self.stockItems[itemid] - amount
+            self.stockItems[item_name] = self.stockItems[item_name] - amount
+        return True
 
     def checkBasket(self):
-        str = "Different items : %d\n" % len(self.stockItems)
-        for id in self.stockItems:
-            i = self.stockItems[id]
-            str = "%s Item ID: %d\t amount :%i \n" %(str , id,i)
-        return str
-
+        #return self.stockItems
+        ret = []
+        for name, amount in self.stockItems.items():
+            ret.append([name, amount])
+        return ret
 
     def clear(self):
         self.shoppingCart = None
         self.shop = None
         self.stockItems = None
+
     def purchase(self,user):
         self.shop.aqcuirePurchaseLock()
         try:
