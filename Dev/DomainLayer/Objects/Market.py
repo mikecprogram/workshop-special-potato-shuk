@@ -188,7 +188,10 @@ class Market():
 
     def Shopping_cart_purchase(self, token):
         if self.isToken(token):
-            pass
+            user = self.getUser(token)
+            #here call function to validate purchase, ckeck payment and delivery.
+            #if any check fails we raise exception and dont get to the line: user.purchase()
+            return user.purchase()
 
     def get_inshop_purchases_history(self, token, shopname):
         if self.isToken(token):
@@ -200,12 +203,7 @@ class Market():
             raise Exception('Timed out token!')
     def getUser(self,token):
         return self._onlineVisitors[token]
-    def purchase(self,token):
-        if self.isToken(token):
-            user = self.getUser(token)
-            user.purchase()
-            return True
-        return False
+
     """
     In order to check if user is still connected we use  self.isToken(token)
     To get user we use self._onlineVisitors[token]

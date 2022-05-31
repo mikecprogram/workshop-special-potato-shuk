@@ -107,11 +107,11 @@ class User:
     def get_inshop_purchases_history(self, shopname):
         return self._state.get_inshop_purchases_history(shopname)
 
-    def grant_permission(permission_code, shop_name, target_manager):
-        self._state.grant_permission(permission_code, shop_name, target_manager)
+    def grant_permission(self, permission_code, shop_name, target_manager):
+        return self._state.grant_permission(permission_code, shop_name, target_manager)
 
-    def withdraw_permission(permission_code, shop_name, target_manager):
-        self._state.withdraw_permission(permission_code, shop_name, target_manager)
+    def withdraw_permission(self, permission_code, shop_name, target_manager):
+        return self._state.withdraw_permission(permission_code, shop_name, target_manager)
 
     def archive_purchase_cart(self, token):
         self._shoppingCart.archive_shopping_baskets(token)
