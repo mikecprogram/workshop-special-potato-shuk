@@ -10,7 +10,8 @@ from Dev.DomainLayer.Objects.ExternalServices import ExternalServices
 
 from Dev.DomainLayer.Objects.Member import Member
 from Dev.DomainLayer.Objects.Security import Security
-prem=[
+
+prem = [
     "premission1",
     "premission2",
     "premission3",
@@ -24,7 +25,8 @@ prem=[
     "premission11",
     "premission12",
     "premission13",
-    ]
+]
+
 
 def is_valid_password(password):
     if len(password) >= 8:  # need to add constraints on pass TODO
@@ -53,7 +55,7 @@ class Market():
         self._enterLock = threading.Lock()
         self._shops = {}  # {shopName, shop}
         self._security = Security()
-        self._externalServices = ExternalServices(external_payment_service,external_supplement_service)
+        self._externalServices = ExternalServices(external_payment_service, external_supplement_service)
 
     # returns boolean, returns if current date < 10Minutes+_onlineDate[token]
     # if #t update _onlineDate[token]
@@ -97,7 +99,7 @@ class Market():
             if user.isMember():
                 raise Exception("Logged in member can't register for some reason")
             if not self.is_member(username):
-                if is_valid_password(password) and username!="":
+                if is_valid_password(password) and username != "":
                     hashedPassword = self._security.hash(password)
                     member = Member(username, hashedPassword)
                     self._members[username] = member
@@ -116,7 +118,7 @@ class Market():
         return self._onlineVisitors.get(token) is not None
 
     def is_logged_in(self, token):
-        u=self._onlineVisitors.get(token)
+        u = self._onlineVisitors.get(token)
         if u is not None:
             return u.isMember()
 
@@ -153,15 +155,15 @@ class Market():
                 raise Exception('Shop does not exist with the given shop name!')
 
     def general_items_searching(self, token, item_name, category, item_keyword, item_maxPrice):
-        ret=[]
+        ret = []
         if self.isToken(token):
-            for n,s in self._shops.items():
-                #print(n)
-                l=s.search( item_name, category, item_keyword, item_maxPrice)
+            for n, s in self._shops.items():
+                # print(n)
+                l = s.search(item_name, category, item_keyword, item_maxPrice)
                 if not l is None:
                     for i in l:
                         ret.append(i)
-                #print("ret len after "+n+": "+str(ret))
+                # print("ret len after "+n+": "+str(ret))
         return ret
 
     def info_about_item_in_shop(self, token, itemname, shop_name):
@@ -183,13 +185,37 @@ class Market():
     def removeFromCart(self, token, item_name, shop_name, amount):
         if self.isToken(token):
             user = self.getUser(token)
-            return user.removeFromCart(item_name,shop_name, amount);
+            return user.removeFromCart(item_name, shop_name, amount)
+
+    def get_cart_price(self, token):
+        pass
+
+    def add_policy(self, token, percent, name, arg1, arg2=None ):
+        pass
+
+    def get_my_policies(self, token):
+        pass
+
+    def get_shop_policies(self, token, shopname):
+        pass
+
+    def get_item_policies(self, tocken, shopname, itemname):
+        pass
+
+    def add_discount_policy_to_shop(self, token, shopname, policyID):
+        pass
+
+    def add_purchase_policy_to_shop(self, token, shopname, policyID):
+        pass
+
+    def compose_policy(self, token,name,pol1, pol2):
+        pass
 
     def Shopping_cart_purchase(self, token):
         if self.isToken(token):
             user = self.getUser(token)
-            #here call function to validate purchase, ckeck payment and delivery.
-            #if any check fails we raise exception and dont get to the line: user.purchase()
+            # here call function to validate purchase, check payment and delivery.
+            # if any check fails we raise exception and dont get to the line: user.purchase()
             return user.purchase()
 
     def get_inshop_purchases_history(self, token, shopname):
@@ -200,7 +226,8 @@ class Market():
                 raise Exception('Shop not found with given name!')
         else:
             raise Exception('Timed out token!')
-    def getUser(self,token):
+
+    def getUser(self, token):
         return self._onlineVisitors[token]
 
     """
@@ -214,7 +241,7 @@ class Market():
     def shop_open(self, token, shop_name):
         if self.isToken(token):
             if not shop_name in self._shops:
-                if shop_name=="":
+                if shop_name == "":
                     raise Exception("bad shop name")
                 user = self.getUser(token)
                 newShop = Shop(shop_name, user.getMember())
@@ -226,23 +253,23 @@ class Market():
 
     def adding_item_to_the_shops_stock(self, token, item_name, shop_name, category, item_desc, item_price, amount):
         if self.isToken(token) and self.is_logged_in(token):
-            u=self.getUser(token)
+            u = self.getUser(token)
             if shop_name in self._shops.keys():
-                s=self._shops[shop_name]
+                s = self._shops[shop_name]
                 return s.add_item(u.getUsername(), item_name, category, item_desc, item_price, amount)
         raise Exception('Bad token!')
 
     def deleting_item_from_shop_stock(self, token, item_name, shop_name, amount):
         if self.isToken(token):
-            
+
             if shop_name in self._shops.keys():
-                s=self._shops[shop_name]
-                
+                s = self._shops[shop_name]
+
                 r = s.remove_item(item_name, amount)
                 return r
         raise Exception('Bad token!')
 
-    def change_items_details_in_shops_stock(self, token, itemname,  shop_name, new_name, item_desc, item_price):
+    def change_items_details_in_shops_stock(self, token, itemname, shop_name, new_name, item_desc, item_price):
         if self.isToken(token):
             if shop_name in self._shops.keys():
                 s = self._shops[shop_name]
@@ -267,7 +294,6 @@ class Market():
             else:
                 raise Exception('member does not exist to be assigned!')
 
-
     def shop_manager_assignment(self, token, shop_name, member_name_to_assignUserName):
         if self.isToken(token):
             if self.is_member(member_name_to_assignUserName):
@@ -276,14 +302,12 @@ class Market():
             else:
                 raise Exception('member does not exist to be assigned!')
 
-
     def shop_closing(self, token, shop_name):
         if self.isToken(token):
             if self.is_shop(shop_name):
                 return self._onlineVisitors[token].close_shop()
             else:
                 raise Exception('Shop does not exist with the given shop name!')
-
 
     def shop_manager_permissions_updating(self, token, manager_name_to_update, permission_type, shop_name):
         if self.isToken(token):
@@ -303,10 +327,10 @@ class Market():
         else:
             raise Exception("Shop does not exist with the given shop name!")
 
-    def payment_execution(self, token): # TODO to specify which params we need
+    def payment_execution(self, token):  # TODO to specify which params we need
         self._externalServices.execute_payment()
 
-    def shipping_execution(self, token): # TODO to specify which params we need
+    def shipping_execution(self, token):  # TODO to specify which params we need
         self._externalServices.execute_shipment()
 
     def grant_permission(self, permission_code, shop_name, token, target_manager):

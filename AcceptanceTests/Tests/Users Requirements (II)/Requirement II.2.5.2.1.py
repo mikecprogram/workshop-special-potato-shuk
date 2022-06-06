@@ -1,7 +1,7 @@
 import unittest
 import sys
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
-from SystemService import *
+
+from Dev.ServiceLayer.SystemService import *
 
 class MyTestCase(unittest.TestCase):
     
