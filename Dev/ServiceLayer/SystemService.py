@@ -357,7 +357,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shop_closing(self, user_id: str, shop_name: str) -> Response[bool]:
+    def shop_closing(self, user_id: int, shop_name: str) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
@@ -373,12 +373,30 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shops_roles_info_request(self, username: str, shop_name: str, token) -> Response[
+    def shops_roles_info_request(self, username: int, shop_name: str, token) -> Response[
         List[List[str]]]:  # [[member_name,"Manager"], [member_name,"Owner"]...]
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            self.market.shops_roles_info_request(username, shop_name, token)
+            return Response(self.market.shops_roles_info_request(username, shop_name, token))
+
+        except Exception as e:
+            return Response(exception=e.__str__())
+
+    def get_all_members_name(self, user_id: int) -> Response[List[List[str]]]:#[[online_member_name1,online_member_name2..][offline_member_name1,online_member_name2..]]
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.get_all_members_name(user_id))
+
+        except Exception as e:
+            return Response(exception=e.__str__())
+
+    def get_member_info(self, user_id: int, member_name: str) -> Response[str]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.get_member_info(user_id ,member_name))
 
         except Exception as e:
             return Response(exception=e.__str__())

@@ -126,3 +126,6 @@ class User:
 
     def getPolicies(self):
         return self._policies
+
+    def is_admin(self):
+        return self.getMember().is_admin()

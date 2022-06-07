@@ -87,11 +87,17 @@ class BridgeInterface:
     def shop_manager_permissions_delete(self, user_id: int, manager_name_to_update: str, permission_type: int, shop_name: str)-> Response[bool]:
         pass
 
-    def shop_closing(self, user_id: str, shop_name: str):
+    def shop_closing(self, user_id: int, shop_name: str):
         pass
 
     def shop_manager_permissions_check(self, user_id: int, manager_name: str, shop_name: str) -> Response[Set[int]]:
         pass
 
-    def shops_roles_info_request(self, user_id: str, shop_name: str) -> Response[List[List[str]]]:#[[member_name,"Manager"], [member_name,"Owner"]...]
+    def shops_roles_info_request(self, user_id: int, shop_name: str) -> Response[List[List[str]]]:#[[member_name,"Manager"], [member_name,"Owner"]...]
+        pass
+
+    def get_all_members_name(self, user_id: int) -> Response[List[List[str]]]:#[[online_member_name1,online_member_name2..][offline_member_name1,online_member_name2..]]
+        pass
+
+    def get_member_info(self, user_id: int, member_name: str) -> Response[str]:
         pass
