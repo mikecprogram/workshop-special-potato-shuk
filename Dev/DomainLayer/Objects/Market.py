@@ -5,11 +5,14 @@ import sys
 
 # from Logger import Logger
 from Dev.DomainLayer.Objects.Policies.policyAnd import policyAnd
+from Dev.DomainLayer.Objects.Policies.policyXor import policyXor
 from Dev.DomainLayer.Objects.Policies.policyIsCategory import policyIsCategory
 from Dev.DomainLayer.Objects.Policies.policyIsItem import policyIsItem
 from Dev.DomainLayer.Objects.Policies.policyIsShop import policyIsShop
 from Dev.DomainLayer.Objects.Policies.policyNot import policyNot
 from Dev.DomainLayer.Objects.Policies.policyOr import policyOr
+from Dev.DomainLayer.Objects.Policies.policyHasAmount import policyHasAmount
+from Dev.DomainLayer.Objects.Policies.policyHasPrice import policyHasPrice
 from Dev.DomainLayer.Objects.Shop import Shop
 from Dev.DomainLayer.Objects.User import User
 from Dev.DomainLayer.Objects.ExternalServices import ExternalServices
@@ -34,7 +37,7 @@ prem = [
 ]
 
 simplePolicies = [
-    "isItem", "isCategory", "isShop", "hasAmount", "hasPrice"
+    "isItem", "isCategory", "isShop", "hasAmount", "hasPrice","hasAmount","hasPrice"
 ]
 
 compositePolicies = [
@@ -215,15 +218,8 @@ class Market():
         if self.isToken(token):
             if percent<=0:
                 raise Exception('bad discount amount!')
-            ok = False
             user = self.getUser(token)
             if name in simplePolicies:
-                ok = True
-            elif name in compositePolicies:
-                PIDS = [p[0] for p in user.getPolicies()]
-                if arg1 in PIDS and arg2 in PIDS:
-                    ok = True
-            if ok:
                 self._policyLock.acquire()
                 ID = self._nextPolicy
                 self._nextPolicy += 1
@@ -237,18 +233,24 @@ class Market():
         return user.getPolicies()
 
     def get_shop_policies(self, token, shopname):
-        pass
+        if not self.isToken(token):
+            raise Exception('Bad token!')
+        for n,s in self._shops.items():
+            if n==shopname:
+                return s.getPolicies()
 
-    def get_item_policies(self, tocken, shopname, itemname):
-        pass
 
     def add_discount_policy_to_shop(self, token, shopname, policyID):
+        if not self.isToken(token):
+            raise Exception('Bad token!')
         user = self.getUser(token)
         policy = self.makePolicy(user, policyID)
         shop = self._shops[shopname]
         return shop.addDiscountPolicy(policy)
 
     def add_purchase_policy_to_shop(self, token, shopname, policyID):
+        if not self.isToken(token):
+            raise Exception('Bad token!')
         user = self.getUser(token)
         policy = self.makePolicy(user, policyID)
         shop = self._shops[shopname]
@@ -265,28 +267,54 @@ class Market():
                 break
         if pol is None:
             raise Exception("bad policy ID!")
-        if PID in simplePolicies:
+        if pol[1] in simplePolicies:
             if pol[1] == "isShop":
-                return policyIsShop(p[0:])
+                return policyIsShop(p[0], p[2])
             if pol[1] == "isCategory":
-                return policyIsCategory(p[0:])
+                print(p[0], p[3],p[2])
+                return policyIsCategory(p[0], p[3],p[2])
             if pol[1] == "isItem":
-                return policyIsItem(p[0:])
+                return policyIsItem(p[0], p[3],p[2])
+            if pol[1] == "hasAmount":
+                return policyHasAmount(p[0], p[4],p[2],p[3])
+            if pol[1] == "hasPrice":
+                return policyHasPrice(p[0], p[4],p[2],p[3])
         else:
             if pol[1] == "not":
                 pt = self.makePolicy(user, p[2])
-                return policyNot(pt)
+                return policyNot(p[0], pt)
             if pol[1] == "and":
+
                 pt1 = self.makePolicy(user, p[2])
                 pt2 = self.makePolicy(user, p[3])
-                return policyAnd(pt1, pt2)
+                return policyAnd(p[0], pt1, pt2)
             if pol[1] == "or":
                 pt1 = self.makePolicy(user, p[2])
                 pt2 = self.makePolicy(user, p[3])
-                return policyOr(pt1, pt2)
+                return policyOr(p[0], pt1, pt2)
+            if pol[1] == "xor":
+                pt1 = self.makePolicy(user, p[2])
+                pt2 = self.makePolicy(user, p[3])
+                return policyXor(p[0], pt1, pt2)
 
-    def compose_policy(self, token, name, pol1, pol2):
-        pass
+    def compose_policy(self, token, name, arg1, arg2):
+        if not self.isToken(token):
+            raise Exception('Bad token!')
+        ok = False
+        user = self.getUser(token)
+        if name in compositePolicies:
+
+            PIDS = [p[0] for p in user.getPolicies()]
+            if arg1 in PIDS and (arg2 is None or arg2 in PIDS):
+                ok = True
+        if ok:
+            self._policyLock.acquire()
+            ID = self._nextPolicy
+            self._nextPolicy += 1
+            self._policyLock.release()
+            return user.addTempPolicy(ID, name, arg1, arg2, None)
+        raise Exception('Cannot add policy!')
+
 
     def Shopping_cart_purchase(self, token):
         if self.isToken(token):

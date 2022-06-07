@@ -30,7 +30,8 @@ class Shop():
         self._purchases_history = PurchaseHistory()
         self._shop_lock = threading.Lock()
         pass
-    def getId(self,itemname):
+
+    def getId(self, itemname):
         return self._stock.getId(itemname)
 
     def get_status(self):
@@ -57,14 +58,14 @@ class Shop():
         if (amount < 0 or item_price < 0 or item_name == ""):
             return False
         nid = self._stock.getNextId()
-        item = StockItem(nid, category, item_name, item_desc, amount, None, None, item_price)
+        item = StockItem(nid, category, item_name, item_desc, amount, None, None, item_price, self._name)
         # print(item.toString())
         r = self.add_item_lock(item)
         # print (self._stock.search(None,None,None,None,self._name))
         return r
 
     def remove_item(self, item_name, amount):
-        if (amount<0):
+        if (amount < 0):
             raise Exception('Bad amount to delete')
         self._shop_lock.acquire()
         r = self._stock.removeStockItem(item_name, amount)
@@ -79,13 +80,14 @@ class Shop():
         self._shop_lock.release()
         return r
 
-    def checkAmount(self,item_name, amount):
+    def checkAmount(self, item_name, amount):
         if amount < 0:
             raise Exception('Bad amount')
         self._shop_lock.acquire()
         r = self._stock.checkAmount(item_name, amount)
         self._shop_lock.release()
         return r
+
     def assign_owner(self, assigner_member_object, assignee_member_object):
         if assignee_member_object.get_username() in self._owners:
             raise Exception("Assignee is already an owner of the shop!")
@@ -97,12 +99,12 @@ class Shop():
 
     def delete_owner(self, assigner_user_name, assignee_user_name):
         if assignee_user_name not in self._owners:
-            raise Exception(assignee_user_name+" is not an owner of the shop:" + self._name)
+            raise Exception(assignee_user_name + " is not an owner of the shop:" + self._name)
         self.delete_assignment_owner(assigner_user_name, assignee_user_name, self._owners_assignments)
 
     def delete_assignment_owner(self, assigner_user_name, assignee_user_name, assignment):
-        assignee_member_object=None
-        b=False
+        assignee_member_object = None
+        b = False
         if assigner_user_name in assignment:
             for i in assignment[assigner_user_name]:
                 if i.assignee.get_username() == assignee_user_name:
@@ -111,10 +113,10 @@ class Shop():
                     b = True
                     break
         if not b:
-            raise Exception(assigner_user_name+" did not assignee " + assignee_user_name)
+            raise Exception(assigner_user_name + " did not assignee " + assignee_user_name)
         self.recursive_delete(assignee_member_object)
 
-    def recursive_delete(self,member_to_delete):
+    def recursive_delete(self, member_to_delete):
         if member_to_delete.get_username() in self._owners_assignments:
             for i in self._owners_assignments[member_to_delete.get_username()]:
                 self.recursive_delete(i.assignee)
@@ -143,9 +145,11 @@ class Shop():
 
     def add_assignment(self, assigner_member_object, assignee_member_object, assignment):
         if assigner_member_object.get_username() in assignment:
-            assignment[assigner_member_object.get_username()].append(Assignment(assigner_member_object, assignee_member_object))
+            assignment[assigner_member_object.get_username()].append(
+                Assignment(assigner_member_object, assignee_member_object))
         else:
-            assignment[assigner_member_object.get_username()] = [Assignment(assigner_member_object, assignee_member_object)]
+            assignment[assigner_member_object.get_username()] = [
+                Assignment(assigner_member_object, assignee_member_object)]
 
     def is_assignment(self, assigner, assignee):
         if assigner in self._owners_assignments:
@@ -211,20 +215,20 @@ class Shop():
     def get_inshop_purchases_history(self):
         return self._purchases_history.get_string()
 
-
-    def grant_permission(self,permission_code, grantor_username, grantee_manager):
+    def grant_permission(self, permission_code, grantor_username, grantee_manager):
 
         if not self.is_manager(grantee_manager.get_username()):
             raise Exception('Asked grantee member is not a manager of the given shop in market!')
-        if not(self.is_owner(grantor_username) and self.is_assignment(grantor_username, grantee_manager.get_username())):
+        if not (self.is_owner(grantor_username) and self.is_assignment(grantor_username,
+                                                                       grantee_manager.get_username())):
             raise Exception('Owner can only update his assignees permissions!')
         grantee_manager.get_permissions(self._name).add_permission(permission_code)
 
-
-    def withdraw_permission(self,permission_code, grantor_username, grantee_manager):
+    def withdraw_permission(self, permission_code, grantor_username, grantee_manager):
         if not self.is_manager(grantee_manager.get_username()):
             raise Exception('Asked member is not a manager of the given shop in market!')
-        if not(self.is_owner(grantor_username) and self.is_assignment(grantor_username, grantee_manager.get_username())):
+        if not (self.is_owner(grantor_username) and self.is_assignment(grantor_username,
+                                                                       grantee_manager.get_username())):
             raise Exception('Owner can only update his assignees permissions!')
         grantee_manager.get_permissions(self._name).remove_permission(permission_code)
 
@@ -233,6 +237,17 @@ class Shop():
 
     def addPurchasePolicy(self, policy):
         self._purchasePolicy.append(policy)
+        return True
 
-    def addDiscountPolicy(self,policy):
+    def addDiscountPolicy(self, policy):
         self._discountPolicy.append(policy)
+        return True
+
+    def getPolicies(self):
+        ret = []
+        for p in self._discountPolicy:
+            ret.append(["discount", p.getID(), p.getDiscount()])
+        for p in self._purchasePolicy:
+            ret.append(["purchase", p.getID()])
+        return ret
+

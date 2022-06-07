@@ -5,7 +5,8 @@ from Dev.DomainLayer.Objects.Policies.Composable import Composable
 
 class policyIsCategory(Composable):
 
-    def __init__(self, percent, category):
+    def __init__(self, ID, percent, category):
+        self.ID = ID
         self.percent = percent
         self.category = category
 

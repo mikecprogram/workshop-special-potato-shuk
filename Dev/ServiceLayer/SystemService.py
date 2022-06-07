@@ -237,13 +237,6 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def get_item_policies(self, token, shopname, itemname) -> Response[List[List[object]]]:
-        try:
-            if self.market is None:
-                return Response(exception="you have to initialize the system")
-            return Response(self.market.get_item_policies(token, shopname, itemname))
-        except Exception as e:
-            return Response(exception=e.__str__())
 
     def in_shop_purchases_history_request(self, token, shopname) -> Response[List[str]]:
         try:

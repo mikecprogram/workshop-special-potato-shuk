@@ -1,7 +1,7 @@
-from Dev.DomainLayer.Objects.Policies.Composer import *
+from Dev.DomainLayer.Objects.Policies.Composer import Composer
 
 
-class policyAnd(Composer):
+class policyXor(Composer):
 
     def __init__(self, ID, c1, c2):
         self.ID = ID
@@ -10,4 +10,4 @@ class policyAnd(Composer):
         self.c2 = c2
 
     def apply(self, user, item):
-        return self.c1.apply(user, item) and self.c2.apply(user, item)
+        return self.c1.apply(user, item) ^ self.c2.apply(user, item)

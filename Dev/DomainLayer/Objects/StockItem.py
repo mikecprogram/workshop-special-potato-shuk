@@ -6,7 +6,7 @@ from Dev.DomainLayer.Objects.Category import Category
 
 class StockItem:
 
-    def __init__(self, ID ,category, name, description, count, purchasepolicy, discountpolicy,price):
+    def __init__(self, ID ,category, name, description, count, purchasepolicy, discountpolicy,price,shopname):
         self._id = ID
         self._category = category
         self._desc = description
@@ -15,12 +15,16 @@ class StockItem:
         self._name = name
         self._count = count
         self._price = price
+        self._shopname = shopname
         
     def toString(self):
         return "id: "+str(self._id)+"\ncategory: "+self._category+"\nname: "+self._name+"\namount: "+str(self._count)+"\nprice: "+str(self._price)+"\ndescription: "+self._desc
 
     def getID(self):
         return self._id
+
+    def getShopName(self):
+        return self._shopname
 
     def addDiscountPolicy(self, discount):
         self._discountPolicy.append(discount)

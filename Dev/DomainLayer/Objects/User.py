@@ -52,6 +52,9 @@ class User:
     def close_shop(self, shopName):
         return self._state.close_shop(shopName)
 
+    def getBasketByShop(self, shopname):
+        return self._shoppingCart.getBasketByShop(shopname)
+
     def getAllItems(self):
         return self._shoppingCart.getAllItems()
 
@@ -118,10 +121,11 @@ class User:
         self._shoppingCart.archive_shopping_baskets(token)
 
     def addTempPolicy(self,ID, name, arg1, arg2, percent):
-        if arg2 is None:
-            self._policies.append([ID, name, arg1, percent])
-        else:
-            self._policies.append([ID, name, arg1, arg2, percent])
+        p=[]
+        for i in [ID, name, arg1, arg2, percent]:
+            if i is not None:
+                p.append(i)
+        self._policies.append(p)
         return True
 
     def getPolicies(self):
