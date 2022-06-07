@@ -27,8 +27,8 @@ class Shop():
         # self._purchaseHistory = PurchaseHistory()
         self._owners_assignments = {}
         self._managers_assignments = {}
-        self._purchaseLock = threading.Lock()
         self._purchases_history = PurchaseHistory()
+        self._shop_lock = threading.Lock()
         pass
     def getId(self,itemname):
         return self._stock.getId(itemname)
@@ -46,9 +46,9 @@ class Shop():
         return self._name
 
     def add_item_lock(self, item: StockItem):
-        self._purchaseLock.acquire()
+        self._shop_lock.acquire()
         r = self._stock.addStockItem(item)
-        self._purchaseLock.release()
+        self._shop_lock.release()
         return r
 
     def add_item(self, username, item_name, category, item_desc, item_price, amount):
@@ -66,51 +66,86 @@ class Shop():
     def remove_item(self, item_name, amount):
         if (amount<0):
             raise Exception('Bad amount to delete')
-        self._purchaseLock.acquire()
+        self._shop_lock.acquire()
         r = self._stock.removeStockItem(item_name, amount)
-        self._purchaseLock.release()
+        self._shop_lock.release()
         return r
 
     def editItem(self, itemname, new_name, item_desc, item_price):
         if (item_price is not None and item_price < 0) or (new_name is not None and new_name == ""):
             raise Exception('Bad details')
-        self._purchaseLock.acquire()
+        self._shop_lock.acquire()
         r = self._stock.editStockItem(itemname, new_name, item_desc, item_price)
-        self._purchaseLock.release()
+        self._shop_lock.release()
         return r
 
     def checkAmount(self,item_name, amount):
         if amount < 0:
             raise Exception('Bad amount')
-        self._purchaseLock.acquire()
+        self._shop_lock.acquire()
         r = self._stock.checkAmount(item_name, amount)
-        self._purchaseLock.release()
+        self._shop_lock.release()
         return r
-    def assign_owner(self, assignerUsername, assignee):
-        if assignee.get_username() in self._owners:
+    def assign_owner(self, assigner_member_object, assignee_member_object):
+        if assignee_member_object.get_username() in self._owners:
             raise Exception("Assignee is already an owner of the shop!")
         # TODO if assigned owner was a manager need to think what to do remove from managers or...
-        self._owners[assignee.get_username()] = assignee
-        assignee.addOwnedShop(self)
-        self.add_assignment(assignerUsername, assignee.get_username(), self._owners_assignments)
+        self._owners[assignee_member_object.get_username()] = assignee_member_object
+        assignee_member_object.addOwnedShop(self)
+        self.add_assignment(assigner_member_object, assignee_member_object, self._owners_assignments)
         return True
 
-    def assign_manager(self, assignerUsername, assignee):
-        if assignee.get_username() in self._managers:
+    def delete_owner(self, assigner_user_name, assignee_user_name):
+        if assignee_user_name not in self._owners:
+            raise Exception(assignee_user_name+" is not an owner of the shop:" + self._name)
+        self.delete_assignment_owner(assigner_user_name, assignee_user_name, self._owners_assignments)
+
+    def delete_assignment_owner(self, assigner_user_name, assignee_user_name, assignment):
+        assignee_member_object=None
+        b=False
+        if assigner_user_name in assignment:
+            for i in assignment[assigner_user_name]:
+                if i.assignee.get_username() == assignee_user_name:
+                    assignee_member_object = i.assignee
+                    assignment[assigner_user_name].remove(i)
+                    b = True
+                    break
+        if not b:
+            raise Exception(assigner_user_name+" did not assignee " + assignee_user_name)
+        self.recursive_delete(assignee_member_object)
+
+    def recursive_delete(self,member_to_delete):
+        if member_to_delete.get_username() in self._owners_assignments:
+            for i in self._owners_assignments[member_to_delete.get_username()]:
+                self.recursive_delete(i.assignee)
+        if member_to_delete.get_username() in self._managers_assignments:
+            for i in self._managers_assignments[member_to_delete.get_username()]:
+                self.recursive_delete(i.assignee)
+        if member_to_delete.get_username() in self._owners_assignments:
+            del self._owners_assignments[member_to_delete.get_username()]
+        if member_to_delete.get_username() in self._managers_assignments:
+            del self._managers_assignments[member_to_delete.get_username()]
+        member_to_delete.deleteOwnedShop(self)
+        member_to_delete.deleteManagedShop(self)
+        if member_to_delete.get_username() in self._owners:
+            del self._owners[member_to_delete.get_username()]
+
+    def assign_manager(self, assigner_member_object, assignee_member_object):
+        if assignee_member_object.get_username() in self._managers:
             raise Exception("Assignee is already a manager of the shop!")
-        if assignee.get_username() in self._owners:
+        if assignee_member_object.get_username() in self._owners:
             raise Exception("Assignee is already an owner of the shop!")
 
-        self._managers[assignee.get_username()] = assignee
-        assignee.addManagedShop(self)
-        self.add_assignment(assignerUsername, assignee.get_username(), self._managers_assignments)
+        self._managers[assignee_member_object.get_username()] = assignee_member_object
+        assignee_member_object.addManagedShop(self)
+        self.add_assignment(assigner_member_object, assignee_member_object, self._managers_assignments)
         return True
 
-    def add_assignment(self, assignerUsername, assigneeUsername, assignment):
-        if assignerUsername in assignment:
-            assignment[assignerUsername].append(Assignment(assignerUsername, assigneeUsername))
+    def add_assignment(self, assigner_member_object, assignee_member_object, assignment):
+        if assigner_member_object.get_username() in assignment:
+            assignment[assigner_member_object.get_username()].append(Assignment(assigner_member_object, assignee_member_object))
         else:
-            assignment[assignerUsername] = [Assignment(assignerUsername, assigneeUsername)]
+            assignment[assigner_member_object.get_username()] = [Assignment(assigner_member_object, assignee_member_object)]
 
     def is_assignment(self, assigner, assignee):
         if assigner in self._owners_assignments:
@@ -157,10 +192,10 @@ class Shop():
                 self._stock.get_items_report()]
 
     def aqcuirePurchaseLock(self):
-        self._purchaseLock.acquire()
+        self._shop_lock.acquire()
 
     def releaseReleaseLock(self):
-        self._purchaseLock.release()
+        self._shop_lock.release()
 
     def purchase(self, user, id, amount):
         return True
