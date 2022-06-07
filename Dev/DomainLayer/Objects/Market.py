@@ -49,7 +49,7 @@ def is_valid_password(password):
         raise Exception("invalid password")  # may add some hint about a valid password TODO
 
 
-debug = False
+debug = True
 maxtimeonline = 1  # 60 * 10  # 10 minutes
 
 
@@ -436,9 +436,9 @@ class Market():
         return True
 
     def get_all_members_name(self, token):
+        self._enterLock.acquire()
         if self.isToken(token) and self.is_logged_in(token):
             if self.getUser(token).is_admin():
-                self._enterLock.acquire()
                 online_members = list(self._onlineVisitors.values())
                 self._enterLock.release()
                 online_members = [u.getUsername() for u in online_members if u.isMember()]
@@ -453,14 +453,40 @@ class Market():
             raise Exception('Timed out token!')
 
     def get_member_info(self, token, member_name):
+        self._enterLock.acquire()
         if self.isToken(token) and self.is_logged_in(token):
             if self.getUser(token).is_admin():
+                self._enterLock.release()
                 self._membersLock.acquire()
                 if self.is_member(member_name):
-                    return self._members[member_name].get_member_info()
+                    m = self._members[member_name]
+                    output = m.get_member_info()
+                    self._membersLock.release()
+                    return output
                 else:
+                    self._membersLock.release()
                     raise Exception(member_name+" is not Member")
             else:
+                self._enterLock.release()
                 raise Exception('Not Admin!')
         else:
+            self._enterLock.release()
+            raise Exception('Timed out token!')
+
+    def delete_shop_owner(self, token: int, shop_name: str, owner_name: str):
+        self._enterLock.acquire()
+        if self.isToken(token) and self.is_logged_in(token):
+            self._membersLock.acquire()
+            token_member = self._members[self.getUser(token).getUsername()]
+            self._enterLock.release()
+            if self.is_member(owner_name):
+                try:
+                    token_member.delete_shop_owner(shop_name, owner_name)
+                finally:
+                    self._membersLock.release()
+            else:
+                self._membersLock.release()
+                raise Exception(owner_name+" is not Member")
+        else:
+            self._enterLock.release()
             raise Exception('Timed out token!')

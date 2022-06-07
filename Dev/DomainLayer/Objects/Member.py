@@ -12,12 +12,10 @@ class Member:
         self.ownedShops = {}  # {shopname, Shop}
         self.managedShops = {}  # load
         self.permissions = {}  # {shopname, Permissions}
-        self.assignees = []
         self.admin = market
         self._username = username
         self._hashed = hashed
         self._savedCart = None
-        self._member_lock=threading.Lock();
 
     def is_admin(self):
         return self.admin is not None
@@ -27,12 +25,22 @@ class Member:
 
     def addFoundedShop(self, shop):
         self.foundedShops[shop.getShopName()] = shop
+        self.ownedShops[shop.getShopName()] = shop
 
     def isHashedCorrect(self, hashed):
         return True if self._hashed == hashed else False
 
     def addOwnedShop(self, shop):
         self.ownedShops[shop.getShopName()] = shop
+
+    def deleteOwnedShop(self, shop):
+        if shop.getShopName() in self.ownedShops:
+            del self.ownedShops[shop.getShopName()]
+
+    def deleteManagedShop(self, shop):
+        if shop.getShopName() in self.managedShops:
+            del self.managedShops[shop.getShopName()]
+            del self.permissions[shop.getShopName()]
 
     def addManagedShop(self, shop):
         self.managedShops[shop.getShopName()] = shop
@@ -54,18 +62,20 @@ class Member:
         return shopName in self.managedShops
 
     def assign_owner(self, shopName, memberToAssign):
-        if self.is_owned_shop(shopName):
-            self.ownedShops[shopName].assign_owner(self._username, memberToAssign)
+        if self.is_owned_shop(shopName) :
+            self.ownedShops[shopName].assign_owner(self, memberToAssign)
+        elif shopName in self.foundedShops:
+            self.foundedShops[shopName].assign_owner(self, memberToAssign)
         elif self.is_managed_shop(shopName) and self.can_assign_owner(shopName):
-            self.managedShops[shopName].assign_owner(self._username, memberToAssign)
+            self.managedShops[shopName].assign_owner(self, memberToAssign)
         else:
             raise Exception("Member could not assign an owner to not owned or not managed with special permission shop!")
 
     def assign_manager(self, shopName, memberToAssign):
         if self.is_owned_shop(shopName):
-            self.ownedShops[shopName].assign_manager(self._username, memberToAssign)
+            self.ownedShops[shopName].assign_manager(self, memberToAssign)
         elif self.is_managed_shop(shopName) and self.can_assign_owner(shopName):
-            self.managedShops[shopName].assign_manager(self._username, memberToAssign)
+            self.managedShops[shopName].assign_manager(self, memberToAssign)
         else:
             raise Exception("Member could not assign a manager to not owned or not managed with special permission shop!")
 
@@ -144,7 +154,6 @@ class Member:
             raise Exception('Shop not found!')
 
     def get_member_info(self):
-        self._member_lock.acquire()
         output = "Member Name= " + self._username + "\n"
         if len(self.foundedShops) >0:
             output += "founder for: " + str(list(self.foundedShops.values())) + " shops\n"
@@ -154,5 +163,9 @@ class Member:
             output += "manager for: " + str(self.permissions) + "\n"
         if self.admin is not None:
             output = output+"and he is Admin\n"
-        self._member_lock.release()
         return output
+    def delete_shop_owner(self,shop_name, owner_name):
+        if self.is_owned_shop(shop_name):
+            self.ownedShops[shop_name].delete_owner(self._username,owner_name)
+        else:
+            raise Exception(self._username+" isn't owner of shop: "+shop_name)
