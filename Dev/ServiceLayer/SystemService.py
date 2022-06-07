@@ -189,7 +189,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def add_policy(self, token, percent, name, arg1, arg2) -> Response[bool]:
+    def add_policy(self, token, percent, name, arg1=None, arg2=None) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
@@ -205,7 +205,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def compose_policy(self, token, name, policy1, policy2) -> Response[bool]:
+    def compose_policy(self, token, name, policy1, policy2=None) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")

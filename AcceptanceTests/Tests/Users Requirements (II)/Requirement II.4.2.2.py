@@ -52,18 +52,6 @@ class MyTestCase(unittest.TestCase):
         r = self.m.get_item_policies(self.u, "shopname", "itemname")
         self.assertTrue((not r.is_exception) and r.response == [["discount", 1]])
 
-    def testHasAmountPurchase(self):
-        r = self.m.add_policy(self.u, 10, "hasAmount", "itemname", 4)
-        self.assertTrue((not r.is_exception) and r.response)
-        r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.is_exception) and r.response == [[1, "hasAmount", "itemname", 4, 10]])
-        r = self.m.add_purchase_policy_to_shop(self.u, "shopname", 1)
-        self.assertTrue((not r.is_exception) and r.response)
-        r = self.m.get_shop_policies(self.u, "shopname")
-        self.assertTrue((not r.is_exception) and r.response == [["purchase", 1]])
-        r = self.m.get_item_policies(self.u, "shopname", "itemname")
-        self.assertTrue((not r.is_exception) and r.response == [["purchase", 1]])
-
     def testIsShopDiscount(self):
         r = self.m.add_policy(self.u, 10, "isShop")
         self.assertTrue((not r.is_exception) and r.response)
@@ -76,18 +64,6 @@ class MyTestCase(unittest.TestCase):
         r = self.m.get_item_policies(self.u, "shopname", "itemname")
         self.assertTrue((not r.is_exception) and r.response == [["discount", 1]])
 
-    def testIsShopPurchase(self):
-        r = self.m.add_policy(self.u, 10, "isShop")
-        self.assertTrue((not r.is_exception) and r.response)
-        r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.is_exception) and r.response == [[1, "isShop", 10]])
-        r = self.m.add_purchase_policy_to_shop(self.u, "shopname", 1)
-        self.assertTrue((not r.is_exception) and r.response)
-        r = self.m.get_shop_policies(self.u, "shopname")
-        self.assertTrue((not r.is_exception) and r.response == [["purchase", 1]])
-        r = self.m.get_item_policies(self.u, "shopname", "itemname")
-        self.assertTrue((not r.is_exception) and r.response == [["purchase", 1]])
-
     def testHasRawPriceDiscount(self):
         r = self.m.add_policy(self.u, 10, "hasPrice", 4)
         self.assertTrue((not r.is_exception) and r.response)
@@ -99,18 +75,6 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.is_exception) and r.response == [["discount", 1]])
         r = self.m.get_item_policies(self.u, "shopname", "itemname")
         self.assertTrue((not r.is_exception) and r.response == [["discount", 1]])
-
-    def testHasRawPricePurchase(self):
-        r = self.m.add_policy(self.u, 10, "hasPrice", 4)
-        self.assertTrue((not r.is_exception) and r.response)
-        r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.is_exception) and r.response == [[1, "hasPrice", 4, 10]])
-        r = self.m.add_purchase_policy_to_shop(self.u, "shopname", 1)
-        self.assertTrue((not r.is_exception) and r.response)
-        r = self.m.get_shop_policies(self.u, "shopname")
-        self.assertTrue((not r.is_exception) and r.response == [["purchase", 1]])
-        r = self.m.get_item_policies(self.u, "shopname", "itemname")
-        self.assertTrue((not r.is_exception) and r.response == [["purchase", 1]])
 
     def testMulti(self):
         r = self.m.add_policy(self.u, 10, "hasPrice", 4)

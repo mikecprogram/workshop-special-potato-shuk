@@ -97,7 +97,7 @@ class Stock:
                     continue
             ret.append([name,n])
         #print(ret)
-        return ret                
+        return ret
 
 
         

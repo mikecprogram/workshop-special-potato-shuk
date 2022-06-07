@@ -12,6 +12,7 @@ class User:
         self._market = market
         self._state = Guest(self)
         self._shoppingCart = ShoppingCart(self)
+        self._policies=[]
 
     def isMember(self):
         return isinstance(self._state, Member)
@@ -115,3 +116,13 @@ class User:
 
     def archive_purchase_cart(self, token):
         self._shoppingCart.archive_shopping_baskets(token)
+
+    def addTempPolicy(self,ID, name, arg1, arg2, percent):
+        if arg2 is None:
+            self._policies.append([ID, name, arg1, percent])
+        else:
+            self._policies.append([ID, name, arg1, arg2, percent])
+        return True
+
+    def getPolicies(self):
+        return self._policies

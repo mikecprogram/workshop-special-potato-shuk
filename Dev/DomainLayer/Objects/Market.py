@@ -4,6 +4,12 @@ import threading
 import sys
 
 # from Logger import Logger
+from Dev.DomainLayer.Objects.Policies.policyAnd import policyAnd
+from Dev.DomainLayer.Objects.Policies.policyIsCategory import policyIsCategory
+from Dev.DomainLayer.Objects.Policies.policyIsItem import policyIsItem
+from Dev.DomainLayer.Objects.Policies.policyIsShop import policyIsShop
+from Dev.DomainLayer.Objects.Policies.policyNot import policyNot
+from Dev.DomainLayer.Objects.Policies.policyOr import policyOr
 from Dev.DomainLayer.Objects.Shop import Shop
 from Dev.DomainLayer.Objects.User import User
 from Dev.DomainLayer.Objects.ExternalServices import ExternalServices
@@ -25,6 +31,14 @@ prem = [
     "premission11",
     "premission12",
     "premission13",
+]
+
+simplePolicies = [
+    "isItem", "isCategory", "isShop", "hasAmount", "hasPrice"
+]
+
+compositePolicies = [
+    "not", "and", "or", "xor", "max", "add"
 ]
 
 
@@ -53,6 +67,8 @@ class Market():
         self._onlineDate = {}  # hashmap  used only by isToken,enter
         self._nextToken = -1
         self._enterLock = threading.Lock()
+        self._nextPolicy = 1
+        self._policyLock = threading.Lock()
         self._shops = {}  # {shopName, shop}
         self._security = Security()
         self._externalServices = ExternalServices(external_payment_service, external_supplement_service)
@@ -180,7 +196,7 @@ class Market():
     def getCartContents(self, token):
         if self.isToken(token):
             user = self.getUser(token)
-            return user.checkBaskets();
+            return user.checkBaskets()
 
     def removeFromCart(self, token, item_name, shop_name, amount):
         if self.isToken(token):
@@ -190,11 +206,30 @@ class Market():
     def get_cart_price(self, token):
         pass
 
-    def add_policy(self, token, percent, name, arg1, arg2=None ):
-        pass
+    def add_policy(self, token, percent, name, arg1=None, arg2=None):
+        if self.isToken(token):
+            if percent<=0:
+                raise Exception('bad discount amount!')
+            ok = False
+            user = self.getUser(token)
+            if name in simplePolicies:
+                ok = True
+            elif name in compositePolicies:
+                PIDS = [p[0] for p in user.getPolicies()]
+                if arg1 in PIDS and arg2 in PIDS:
+                    ok = True
+            if ok:
+                self._policyLock.acquire()
+                ID = self._nextPolicy
+                self._nextPolicy += 1
+                self._policyLock.release()
+                return user.addTempPolicy(ID, name, arg1, arg2, percent)
+            raise Exception('Cannot add policy!')
+        raise Exception('Bad token!')
 
     def get_my_policies(self, token):
-        pass
+        user = self.getUser(token)
+        return user.getPolicies()
 
     def get_shop_policies(self, token, shopname):
         pass
@@ -203,12 +238,49 @@ class Market():
         pass
 
     def add_discount_policy_to_shop(self, token, shopname, policyID):
-        pass
+        user = self.getUser(token)
+        policy = self.makePolicy(user, policyID)
+        shop = self._shops[shopname]
+        return shop.addDiscountPolicy(policy)
 
     def add_purchase_policy_to_shop(self, token, shopname, policyID):
-        pass
+        user = self.getUser(token)
+        policy = self.makePolicy(user, policyID)
+        shop = self._shops[shopname]
+        return shop.addPurchasePolicy(policy)
 
-    def compose_policy(self, token,name,pol1, pol2):
+
+
+    def makePolicy(self,user, PID):
+        pols = user.getPolicies()
+        pol = None
+        for p in pols:
+            if p[0]==PID:
+                pol=p
+                break
+        if pol is None:
+            raise Exception("bad policy ID!")
+        if PID in simplePolicies:
+            if pol[1] == "isShop":
+                return policyIsShop(p[0:])
+            if pol[1] == "isCategory":
+                return policyIsCategory(p[0:])
+            if pol[1] == "isItem":
+                return policyIsItem(p[0:])
+        else:
+            if pol[1] == "not":
+                pt = self.makePolicy(user, p[2])
+                return policyNot(pt)
+            if pol[1] == "and":
+                pt1 = self.makePolicy(user, p[2])
+                pt2 = self.makePolicy(user, p[3])
+                return policyAnd(pt1, pt2)
+            if pol[1] == "or":
+                pt1 = self.makePolicy(user, p[2])
+                pt2 = self.makePolicy(user, p[3])
+                return policyOr(pt1, pt2)
+
+    def compose_policy(self, token, name, pol1, pol2):
         pass
 
     def Shopping_cart_purchase(self, token):

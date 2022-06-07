@@ -21,11 +21,18 @@ class StockItem:
 
     def getID(self):
         return self._id
-    def addDiscountPolicy(self, discont):
-        self._discountPolicy.append(discont)
+
+    def addDiscountPolicy(self, discount):
+        self._discountPolicy.append(discount)
 
     def removeDiscountPolicy(self, discount):
         self._discountPolicy.remove(discount)
+
+    def addPurchasePolicy(self, purchase):
+        self._purchasePolicy.append(purchase)
+
+    def removePurchasePolicy(self, purchase):
+        self._purchasePolicy.remove(purchase)
 
     def getDiscountPolicies(self):
         return self._discountPolicy

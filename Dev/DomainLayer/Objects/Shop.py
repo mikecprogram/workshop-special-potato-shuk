@@ -1,4 +1,4 @@
-
+from Dev.DomainLayer.Objects.Policies.policyIsShop import policyIsShop
 from Dev.DomainLayer.Objects.StockItem import *
 from Dev.DomainLayer.Objects.Assignment import Assignment
 from Dev.DomainLayer.Objects.Stock import Stock
@@ -23,7 +23,7 @@ class Shop():
         self._owners = {founder.get_username(): founder}  # {ownerUsername, Member}
         self._managers = {}  # {managerUsername, Member}
         self._purchasePolicy = []
-        # self._discountPolicy = DiscountPolicy()
+        self._discountPolicy = []
         # self._purchaseHistory = PurchaseHistory()
         self._owners_assignments = {}
         self._managers_assignments = {}
@@ -86,13 +86,6 @@ class Shop():
         r = self._stock.checkAmount(item_name, amount)
         self._purchaseLock.release()
         return r
-
-    def update_purchase_policy(self):
-        pass
-
-    def update_discount_policy(self):
-        pass
-
     def assign_owner(self, assignerUsername, assignee):
         if assignee.get_username() in self._owners:
             raise Exception("Assignee is already an owner of the shop!")
@@ -202,3 +195,9 @@ class Shop():
 
     def archive_shopping_basket(self, shooping_basket_report):
         self._purchases_history.append(shooping_basket_report)
+
+    def addPurchasePolicy(self, policy):
+        self._purchasePolicy.append(policy)
+
+    def addDiscountPolicy(self,policy):
+        self._discountPolicy.append(policy)
