@@ -63,6 +63,7 @@ class Market():
                  maxtimeonline=60 * 10):  # 10 minutes
         self._maxtimeonline = maxtimeonline
         self._members = {}
+        self._membersLock = threading.Lock()
         self._onlineVisitors = {}  # {token, User}
         self._onlineDate = {}  # hashmap  used only by isToken,enter
         self._nextToken = -1
@@ -71,6 +72,9 @@ class Market():
         self._policyLock = threading.Lock()
         self._shops = {}  # {shopName, shop}
         self._security = Security()
+        hashedPassword = self._security.hash(password)
+        member = Member(system_admin_name, hashedPassword, self)
+        self._members[system_admin_name] = member
         self._externalServices = ExternalServices(external_payment_service, external_supplement_service)
 
     # returns boolean, returns if current date < 10Minutes+_onlineDate[token]
@@ -145,6 +149,7 @@ class Market():
     def logout(self, token):
         if self.isToken(token):
             user = self.getUser(token)
+
             user.logout()
 
     def login(self, token, username, password):
@@ -429,3 +434,33 @@ class Market():
         if self.isToken(token):
             self._onlineVisitors[token].archive_purchase_cart(token)
         return True
+
+    def get_all_members_name(self, token):
+        if self.isToken(token) and self.is_logged_in(token):
+            if self.getUser(token).is_admin():
+                self._enterLock.acquire()
+                online_members = list(self._onlineVisitors.values())
+                self._enterLock.release()
+                online_members = [u.getUsername() for u in online_members if u.isMember()]
+                self._membersLock.acquire()
+                offline_members = list(self._members.keys())
+                self._membersLock.release()
+                offline_members = [mn for mn in offline_members if mn not in online_members]
+                return [online_members, offline_members]
+            else:
+                raise Exception('Not Admin!')
+        else:
+            raise Exception('Timed out token!')
+
+    def get_member_info(self, token, member_name):
+        if self.isToken(token) and self.is_logged_in(token):
+            if self.getUser(token).is_admin():
+                self._membersLock.acquire()
+                if self.is_member(member_name):
+                    return self._members[member_name].get_member_info()
+                else:
+                    raise Exception(member_name+" is not Member")
+            else:
+                raise Exception('Not Admin!')
+        else:
+            raise Exception('Timed out token!')
