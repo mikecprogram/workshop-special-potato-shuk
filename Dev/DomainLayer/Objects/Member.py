@@ -159,7 +159,7 @@ class Member:
             output += "founder for: " + str(list(self.foundedShops.values())) + " shops\n"
         if len(self.ownedShops) > 0:
             output += "owner for: " + str(list(self.ownedShops.values())) + " shops\n"
-        if len(self.foundedShops) > 0:
+        if len(self.managedShops) > 0:
             output += "manager for: " + str(self.permissions) + "\n"
         if self.admin is not None:
             output = output+"and he is Admin\n"
@@ -169,3 +169,6 @@ class Member:
             self.ownedShops[shop_name].delete_owner(self._username,owner_name)
         else:
             raise Exception(self._username+" isn't owner of shop: "+shop_name)
+
+    def does_have_role(self):
+        return (len(self.foundedShops)+len(self.ownedShops)+len(self.managedShops)) > 0 or self.admin is not None

@@ -18,7 +18,7 @@ class MyTestCase(unittest.TestCase):
         self.m.login_into_the_trading_system(self.u1,"username1","password1")
         self.m.login_into_the_trading_system(self.u2,"username2","password2")
         self.m.login_into_the_trading_system(self.u3,"username3","password3")
-        self.m.login_into_the_trading_system(self.u3,"username4","password4")
+        self.m.login_into_the_trading_system(self.u4,"username4","password4")
 
         self.m.shop_open(self.u1,"shopname")
     def tearDown(self):
