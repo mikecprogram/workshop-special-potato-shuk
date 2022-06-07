@@ -17,7 +17,7 @@ class MyTestCase(unittest.TestCase):
         r = self.m.get_all_members_name(self.u)
         self.assertTrue((not r.is_exception) and r.response[0][0] == "Alex" and r.response[1][0] == "username")
 
-    def testBad1(self):  # cant find items that dont get added
+    def testBad1(self):
         r = self.m.get_all_members_name(self.u2)
         self.assertTrue(r.is_exception)
 
@@ -25,7 +25,7 @@ class MyTestCase(unittest.TestCase):
         r = self.m.get_member_info(self.u,"Alex")
         self.assertTrue((not r.is_exception) and "Admin" in r.response)
 
-    def testBad2(self):  # cant find items that dont get added
+    def testBad2(self):
         r = self.m.get_member_info(self.u, "notMember")
         self.assertTrue(r.is_exception)
 

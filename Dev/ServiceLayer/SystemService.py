@@ -402,3 +402,12 @@ class SystemService(BridgeInterface):
 
         except Exception as e:
             return Response(exception=e.__str__())
+
+    def delete_member(self, user_id: int, member_name: str) -> Response[None]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.delete_member(user_id, member_name))
+
+        except Exception as e:
+            return Response(exception=e.__str__())

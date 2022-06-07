@@ -105,3 +105,6 @@ class BridgeInterface:
     def delete_shop_owner(self, user_id: int, shop_name: str, owner_name: str) -> Response[None]:
         pass
 
+    def delete_member(self, user_id: int, member_name: str) -> Response[None]:
+        pass
+

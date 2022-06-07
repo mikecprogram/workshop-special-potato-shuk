@@ -518,3 +518,29 @@ class Market():
         else:
             self._enterLock.release()
             raise Exception('Timed out token!')
+
+    def delete_member(self, token: int, member_name: str):
+        try:
+            self._enterLock.acquire()
+            self._membersLock.acquire()
+            if self.isToken(token) and self.is_logged_in(token):
+                if self.getUser(token).is_admin():
+                    if self.is_member(member_name):
+                        m = self._members[member_name]
+                        if m.does_have_role():
+                            raise Exception(member_name + " have roles!")
+                        else:
+                            online_members = list(self._onlineVisitors.values())
+                            online_members =[u for u in online_members if u.isMember() and u.getUsername()==member_name]
+                            if len(online_members) == 1:
+                                online_members[0].logout()
+                            del self._members[member_name]
+                    else:
+                        raise Exception(member_name + " is not Member")
+                else:
+                    raise Exception('Not Admin!')
+            else:
+                raise Exception('Timed out token!')
+        finally:
+            self._membersLock.release()
+            self._enterLock.release()
