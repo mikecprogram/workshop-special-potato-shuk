@@ -160,8 +160,25 @@ class MyTestCase(unittest.TestCase):
         r = self.m.get_shop_policies(self.u, "shopname")
         self.assertTrue((not r.is_exception) and r.response == [["purchase", 3]])
 
+    def testDelete(self):
+        r = self.m.add_policy(self.u, 10, "hasPrice", "itemname", 4)
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.add_policy(self.u, 10, "isItem", "itemname")
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.get_my_policies(self.u)
+        self.assertTrue(
+            (not r.is_exception) and r.response == [[1, "hasPrice", "itemname", 4, 10], [2, "isItem", "itemname", 10]])
+        r = self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.add_purchase_policy_to_shop(self.u, "shopname", 2)
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.get_shop_policies(self.u, "shopname")
+        self.assertTrue((not r.is_exception) and r.response == [["discount", 1, 10], ["purchase", 2]])
+        r = self.m.delete_policy(self.u,"shopname",1)
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.get_shop_policies(self.u, "shopname")
+        self.assertTrue((not r.is_exception) and r.response == [["purchase", 2]])
 
-# NEED TO ADD TESTS FOR DELETE AND EDIT POLICIES
 
 
 if __name__ == '__main__':

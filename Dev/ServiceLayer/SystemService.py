@@ -221,6 +221,14 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
+    def delete_policy(self, token, shopname, policyID)-> Response[bool]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.remove_policy_from_shop(token, shopname, policyID))
+        except Exception as e:
+            return Response(exception=e.__str__())
+
     def get_my_policies(self, token) -> Response[List[List[object]]]:
         try:
             if self.market is None:

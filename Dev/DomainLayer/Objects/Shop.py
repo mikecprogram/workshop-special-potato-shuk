@@ -23,7 +23,9 @@ class Shop():
         self._owners = {founder.get_username(): founder}  # {ownerUsername, Member}
         self._managers = {}  # {managerUsername, Member}
         self._purchasePolicy = []
+        self._purchaseLock = threading.Lock()
         self._discountPolicy = []
+        self._discountLock = threading.Lock()
         # self._purchaseHistory = PurchaseHistory()
         self._owners_assignments = {}
         self._managers_assignments = {}
@@ -236,12 +238,32 @@ class Shop():
         self._purchases_history.append(shooping_basket_report)
 
     def addPurchasePolicy(self, policy):
+        self._purchaseLock.acquire()
         self._purchasePolicy.append(policy)
+        self._purchaseLock.release()
         return True
 
     def addDiscountPolicy(self, policy):
+        self._discountLock.acquire()
         self._discountPolicy.append(policy)
+        self._discountLock.release()
         return True
+
+    def remove_policy(self, ID):
+        done = False
+        self._discountLock.acquire()
+        for d in self._discountPolicy:
+            if d.getID() == ID:
+                self._discountPolicy.remove(d)
+                done = True
+        self._discountLock.release()
+        self._purchaseLock.acquire()
+        for d in self._purchasePolicy:
+            if d.getID() == ID:
+                self._purchasePolicy.remove(d)
+                done = True
+        self._purchaseLock.release()
+        return done
 
     def getPolicies(self):
         ret = []
@@ -250,4 +272,3 @@ class Shop():
         for p in self._purchasePolicy:
             ret.append(["purchase", p.getID()])
         return ret
-

@@ -12,3 +12,6 @@ class Composable:  # any basic discount inherits from Composable (isCategory, is
 
     def getID(self):
         return self.ID
+
+    def __str__(self):
+        return "Policy number: " + str(self.ID) + "\npolicy type: " + type(self).__name__

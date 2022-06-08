@@ -315,6 +315,11 @@ class Market():
             return user.addTempPolicy(ID, name, arg1, arg2, None)
         raise Exception('Cannot add policy!')
 
+    def remove_policy_from_shop(self, token, shopname, policyID):
+        if not self.isToken(token):
+            raise Exception('Bad token!')
+        s = self._shops[shopname]
+        return s.remove_policy(policyID)
 
     def Shopping_cart_purchase(self, token):
         if self.isToken(token):
