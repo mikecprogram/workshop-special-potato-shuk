@@ -100,6 +100,33 @@ class MyTestCase(unittest.TestCase):
         r = self.m.validate_purchase_policy(self.u)
         self.assertTrue((not r.is_exception) and r.response)
 
+    def testNot(self):
+        r = self.m.add_policy(self.u, 10, "hasAmount", "itemname1", 4)
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.get_my_policies(self.u)
+        self.assertTrue((not r.is_exception) and r.response == [[1, "hasAmount", "itemname1", 4, 10]])
+        r = self.m.compose_policy(self.u, "not", 1)
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.get_my_policies(self.u)
+        self.assertTrue((not r.is_exception) and r.response == [[1, "hasAmount", "itemname1", 4, 10], [2, "not", 1]])
+        r = self.m.add_purchase_policy_to_shop(self.u, "shopname", 2)
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.get_shop_policies(self.u, "shopname")
+        self.assertTrue((not r.is_exception) and r.response == [["purchase", 2]])
+        r = self.m.validate_purchase_policy(self.u)
+        self.assertTrue((not r.is_exception) and r.response)
+        r=self.m.shopping_carts_add_item(self.u,"itemname1","shopname",4)
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.shopping_carts_check_content(self.u)
+        self.assertTrue((not r.is_exception) and r.response == [["shopname", [["itemname1", 4]]]])
+        r = self.m.validate_purchase_policy(self.u)
+        self.assertTrue((not r.is_exception) and not r.response)
+        r = self.m.shopping_carts_delete_item(self.u, "itemname1", "shopname", 4)
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.shopping_carts_check_content(self.u)
+        self.assertTrue((not r.is_exception) and r.response == [])
+        r = self.m.validate_purchase_policy(self.u)
+        self.assertTrue((not r.is_exception) and r.response)
 
 
 

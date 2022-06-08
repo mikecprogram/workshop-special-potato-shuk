@@ -58,6 +58,9 @@ class Member:
     def is_owned_shop(self, shopName):
         return shopName in self.ownedShops
 
+    def is_founded_shop(self, shopName):
+        return shopName in self.foundedShops
+
     def is_managed_shop(self, shopName):
         return shopName in self.managedShops
 

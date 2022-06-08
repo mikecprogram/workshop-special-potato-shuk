@@ -11,8 +11,14 @@ class policyHasPrice(Composable):
         self.price = price
 
     def apply(self, user: User, item: StockItem):
-        basket = user.getBasketByShop(item.getShopName()).checkBasket()
-        for name, amount in basket.items():
-            if name == self.itemname:
-                return amount * item.getPrice() > self.price
+        if item is None:
+            ret = 0
+            for name, amount in basket.items():
+                ret += amount * item.getPrice()
+            return ret > self.price
+        else:
+            basket = user.getBasketByShop(item.getShopName()).checkBasket()
+            for name, amount in basket.items():
+                if name == self.itemname:
+                    return amount * item.getPrice() > self.price
         return False
