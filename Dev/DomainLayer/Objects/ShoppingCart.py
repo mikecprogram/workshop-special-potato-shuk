@@ -32,6 +32,12 @@ class ShoppingCart:
             self.shoppingBaskets.pop(shopName)
         return ret
 
+    def validate_purchase(self):
+        for name, basket in self.shoppingBaskets.items():
+            if not basket.validate_purchase(self._user):
+                return False
+        return True
+
     def checkBaskets(self):
         ans = []
         for name in self.shoppingBaskets:

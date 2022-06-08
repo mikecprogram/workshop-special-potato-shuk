@@ -12,7 +12,7 @@ class policyHasAmount(Composable):
 
     def apply(self, user: User, item: StockItem):
         basket = user.getBasketByShop(item.getShopName()).checkBasket()
-        for name, amount in basket.items():
-            if name == self.itemname:
-                return amount > self.amount
+        for item in basket:
+            if item[0] == self.itemname:
+                return item[1] >= self.amount
         return False

@@ -281,12 +281,11 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def validate_purchase_policy(self, user_id: int, shopname: str) -> Response[bool]:
+    def validate_purchase_policy(self, user_id: int) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.validate_purchase_policy(user_id,
-                                                                 shopname))  # market return true if all items in basket fit policy and false if not
+            return Response(self.market.validate_purchase_policy(user_id))  # market return true if all items in basket fit policy and false if not
         except Exception as e:
             return Response(exception=e.__str__())
 

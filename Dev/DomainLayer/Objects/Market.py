@@ -246,6 +246,8 @@ class Market():
         user = self.getUser(token)
         policy = self.makePolicy(user, policyID)
         shop = self._shops[shopname]
+        if shop is None:
+            raise Exception('Bad shop name!')
         return shop.addDiscountPolicy(policy)
 
     def add_purchase_policy_to_shop(self, token, shopname, policyID):
@@ -254,6 +256,8 @@ class Market():
         user = self.getUser(token)
         policy = self.makePolicy(user, policyID)
         shop = self._shops[shopname]
+        if shop is None:
+            raise Exception('Bad shop name!')
         return shop.addPurchasePolicy(policy)
 
 
@@ -367,6 +371,7 @@ class Market():
             if shop_name in self._shops.keys():
                 s = self._shops[shop_name]
                 return s.add_item(u.getUsername(), item_name, category, item_desc, item_price, amount)
+            raise Exception('Bad shop name!')
         raise Exception('Bad token!')
 
     def deleting_item_from_shop_stock(self, token, item_name, shop_name, amount):
@@ -377,7 +382,14 @@ class Market():
 
                 r = s.remove_item(item_name, amount)
                 return r
+            raise Exception('Bad shop name!')
         raise Exception('Bad token!')
+
+    def validate_purchase_policy(self, token):
+        if not self.isToken(token):
+            raise Exception('Bad token!')
+        user = self.getUser(token)
+        return user.validate_cart_purchase()
 
     def change_items_details_in_shops_stock(self, token, itemname, shop_name, new_name, item_desc, item_price):
         if self.isToken(token):

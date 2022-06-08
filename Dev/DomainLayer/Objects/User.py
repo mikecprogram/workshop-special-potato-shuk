@@ -120,6 +120,9 @@ class User:
     def archive_purchase_cart(self, token):
         self._shoppingCart.archive_shopping_baskets(token)
 
+    def validate_cart_purchase(self):
+        return self._shoppingCart.validate_purchase()
+
     def addTempPolicy(self,ID, name, arg1, arg2, percent):
         p=[]
         for i in [ID, name, arg1, arg2, percent]:

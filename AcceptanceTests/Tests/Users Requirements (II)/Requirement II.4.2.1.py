@@ -18,7 +18,6 @@ class MyTestCase(unittest.TestCase):
         r = self.m.add_policy(self.u, 10, "hasAmount", "itemname", 4)
         self.assertTrue((not r.is_exception) and r.response)
         r = self.m.get_my_policies(self.u)
-        print(r.exception, r.response)
         self.assertTrue((not r.is_exception) and r.response == [[1, "hasAmount", "itemname", 4, 10]])
         r = self.m.add_purchase_policy_to_shop(self.u, "shopname", 1)
         self.assertTrue((not r.is_exception) and r.response)
@@ -44,6 +43,14 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.is_exception) and r.response)
         r = self.m.get_shop_policies(self.u, "shopname")
         self.assertTrue((not r.is_exception) and r.response == [["purchase", 1]])
+
+    def testBadShop(self):
+        r = self.m.add_policy(self.u, 10, "hasAmount", "itemname", 4)
+        self.assertTrue((not r.is_exception) and r.response)
+        r = self.m.get_my_policies(self.u)
+        self.assertTrue((not r.is_exception) and r.response == [[1, "hasAmount", "itemname", 4, 10]])
+        r = self.m.add_purchase_policy_to_shop(self.u, "badshopname", 1)
+        self.assertTrue(r.is_exception)
 
 if __name__ == '__main__':
     unittest.main()

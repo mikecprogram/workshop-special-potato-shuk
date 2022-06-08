@@ -14,6 +14,12 @@ class ShoppingBasket:
                 return i
         return None
 
+    def validate_purchase(self, user):
+        for name in self.stockItems.keys():
+            if not self.shop.validate_purchase(user, name):
+                return False
+        return True
+
     def addItem(self, item_name,amount):
         if not(self.shop.itemExists(item_name)):
             raise Exception("No such item found in shop")

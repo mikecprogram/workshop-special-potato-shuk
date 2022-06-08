@@ -272,3 +272,10 @@ class Shop():
         for p in self._purchasePolicy:
             ret.append(["purchase", p.getID()])
         return ret
+
+    def validate_purchase(self, user, name):
+        for policy in self._purchasePolicy:
+            item = self._stock.getItem(name)
+            if not policy.apply(user, item):
+                return False
+        return True

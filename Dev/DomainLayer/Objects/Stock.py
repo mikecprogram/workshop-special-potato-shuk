@@ -18,6 +18,12 @@ class Stock:
             if(i.getName()==name):
                 return i.toString()
         return None
+
+    def getItem(self, name):
+        for k,i in self._stockItems.items():
+            if(i.getName()==name):
+                return i
+        return None
             
 
     def addCategory(self, category):
