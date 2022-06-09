@@ -145,6 +145,24 @@ class Market():
         if u is not None:
             return u.isMember()
 
+    def get_age(self, token):
+        if not self.isToken(token):
+            raise Exception('Bad token!')
+        user = self.getUser(token)
+        if self.isMember():
+            return user.getAge()
+        else:
+            raise Exception("This user is not a member")
+
+    def set_age(self, token, age):
+        if not self.isToken(token):
+            raise Exception('Bad token!')
+        user = self.getUser(token)
+        if self.isMember():
+            return user.setAge(age)
+        else:
+            raise Exception("This user is not a member")
+
     def shipping_request(self, token, items):
         if self.isToken(token):
             pass

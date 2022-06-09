@@ -11,6 +11,8 @@ class MyTestCase(unittest.TestCase):
         self.u=self.m.get_into_the_Trading_system_as_a_guest().response
         self.m.registration_for_the_trading_system(self.u,"username","password")
         #need to login, create shop and add items to it for test
+
+
         self.m.login_into_the_trading_system(self.u,"username","password")
         self.m.shop_open(self.u,"shopname")
         self.m.adding_item_to_the_shops_stock(self.u,"itemname1","shopname","animal objects","cats and clocks",5,10)
@@ -101,6 +103,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.is_exception) and r.response)
 
     def testNot(self):
+        # shopping bag (for "shopname") does not contain 4 items ith name "itemname1"
         r = self.m.add_policy(self.u, 10, "hasAmount", "itemname1", 4)
         self.assertTrue((not r.is_exception) and r.response)
         r = self.m.get_my_policies(self.u)
@@ -127,6 +130,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.is_exception) and r.response == [])
         r = self.m.validate_purchase_policy(self.u)
         self.assertTrue((not r.is_exception) and r.response)
+        
 
 
 

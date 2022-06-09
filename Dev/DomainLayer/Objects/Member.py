@@ -16,6 +16,16 @@ class Member:
         self._username = username
         self._hashed = hashed
         self._savedCart = None
+        self._age = None
+
+    def getAge(self):
+        return self._age
+
+    def setAge(self, age):
+        if age > 0:
+            self._age = age
+            return True
+        return False
 
     def is_admin(self):
         return self.admin is not None

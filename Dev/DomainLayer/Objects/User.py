@@ -23,6 +23,18 @@ class User:
         else:
             raise Exception("This user is not a member")
 
+    def getAge(self):
+        if self.isMember():
+            return self._state.getAge()
+        else:
+            raise Exception("This user is not a member")
+
+    def setAge(self, age):
+        if self.isMember():
+            return self._state.setAge(age)
+        else:
+            raise Exception("This user is not a member")
+
     def login(self, member):
         if not (self.isMember()):
             self._state = member

@@ -45,6 +45,22 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
+    def get_user_age(self, user_id: int) -> Response[int]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.get_age(user_id))  # get shipping details from user of  <username> and items from and items from the shopping basket
+        except Exception as e:
+            return Response(exception=e.__str__())
+
+    def set_user_age(self, user_id: int, age: int) -> Response[bool]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.get_age(user_id, age))  # get shipping details from user of  <username> and items from and items from the shopping basket
+        except Exception as e:
+            return Response(exception=e.__str__())
+
     def is_active(self, user_id) -> Response[bool]:
         try:
             if self.market is None:
