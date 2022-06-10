@@ -249,6 +249,10 @@ class MyTestCase(unittest.TestCase):
         self.m.add_discount_policy_to_shop(self.u, "shopname", 6)
         r = self.m.calculate_cart_price(self.u)
         self.assertTrue((not r.is_exception) and r.response == 20)
+        self.m.shopping_carts_delete_item(self.u,"itemname1","shopname",1)
+        r = self.m.calculate_cart_price(self.u)
+        self.assertTrue((not r.is_exception) and r.response == 19.25)
+
 
 
 
