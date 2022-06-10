@@ -11,4 +11,4 @@ class policyIsItem(Composable):
         self.itemname = itemname
 
     def apply(self, user: User, item: StockItem):
-        return item.getName == self.itemname
+        return item.getName() == self.itemname

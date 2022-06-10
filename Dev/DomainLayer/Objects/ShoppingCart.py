@@ -38,12 +38,26 @@ class ShoppingCart:
                 return False
         return True
 
+    def calculate_price(self):
+        sum = 0
+        for name, basket in self.shoppingBaskets.items():
+            sum += basket.calculate_price(self._user)
+        return sum
+
     def checkBaskets(self):
         ans = []
         for name in self.shoppingBaskets:
             b = self.shoppingBaskets[name]
             ans.append([b.shop.getShopName(),b.checkBasket()])
         return ans
+
+    def checkBasket(self, shopname):
+        if shopname in  self.shoppingBaskets:
+            return self.shoppingBaskets[shopname].checkBasket()
+
+    def getRawPrice(self, shopname):
+        if shopname in  self.shoppingBaskets:
+            return self.shoppingBaskets[shopname].raw_price()
 
     def clear(self):
         self._user = None

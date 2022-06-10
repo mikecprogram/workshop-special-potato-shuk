@@ -35,6 +35,9 @@ class User:
         else:
             raise Exception("This user is not a member")
 
+    def calculate_cart_price(self):
+        return self._shoppingCart.calculate_price()
+
     def login(self, member):
         if not (self.isMember()):
             self._state = member
@@ -86,8 +89,12 @@ class User:
         return self._shoppingCart.removeItem(shopName, item_name,amount)
     def checkBaskets(self):
         return self._shoppingCart.checkBaskets()
+
     def checkBasket(self, shopName):
         return self._shoppingCart.checkBasket(shopName)
+
+    def getRawPrice(self, shopname):
+        return self._shoppingCart.getRawPrice(shopname)
 
     def commitPurchase(self):
         if self._market.commitPurchase(self._shoppingCart):

@@ -265,6 +265,9 @@ class Shop():
         self._purchaseLock.release()
         return done
 
+    def getItemPrice(self, name):
+        return self._stock.getItem(name).getPrice()
+
     def getPolicies(self):
         ret = []
         for p in self._discountPolicy:
@@ -274,8 +277,24 @@ class Shop():
         return ret
 
     def validate_purchase(self, user, name):
+        item = self._stock.getItem(name)
         for policy in self._purchasePolicy:
-            item = self._stock.getItem(name)
             if not policy.apply(user, item):
                 return False
         return True
+
+    def calculate_price(self, user, name, amount):
+        item = self._stock.getItem(name)
+        disc = self.findDiscount(user, item)
+        #print(name, disc,item.getPrice()*amount*disc)
+        return item.getPrice()*amount*disc
+
+    def findDiscount(self, user, item):
+        disc = 0
+        for policy in self._discountPolicy:
+            #print(policy,policy.apply(user, item))
+            if policy.apply(user, item):
+                d = policy.getDiscount()
+                if d > disc:
+                    disc = d
+        return 1 - disc / 100

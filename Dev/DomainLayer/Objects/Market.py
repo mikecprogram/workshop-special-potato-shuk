@@ -5,6 +5,8 @@ import sys
 
 # from Logger import Logger
 from Dev.DomainLayer.Objects.Policies.policyAnd import policyAnd
+from Dev.DomainLayer.Objects.Policies.policyAdd import policyAdd
+from Dev.DomainLayer.Objects.Policies.policyIf import policyIf
 from Dev.DomainLayer.Objects.Policies.policyXor import policyXor
 from Dev.DomainLayer.Objects.Policies.policyIsCategory import policyIsCategory
 from Dev.DomainLayer.Objects.Policies.policyIsItem import policyIsItem
@@ -41,7 +43,7 @@ simplePolicies = [
 ]
 
 compositePolicies = [
-    "not", "and", "or", "xor", "max", "add"
+    "not", "and", "or", "xor", "max", "add", "if"
 ]
 
 
@@ -163,6 +165,12 @@ class Market():
         else:
             raise Exception("This user is not a member")
 
+    def calculate_cart_price(self, token):
+        if not self.isToken(token):
+            raise Exception('Bad token!')
+        user = self.getUser(token)
+        return user.calculate_cart_price()
+
     def shipping_request(self, token, items):
         if self.isToken(token):
             pass
@@ -234,7 +242,7 @@ class Market():
 
     def add_policy(self, token, percent, name, arg1=None, arg2=None):
         if self.isToken(token):
-            if percent<=0:
+            if percent<0:
                 raise Exception('bad discount amount!')
             user = self.getUser(token)
             if name in simplePolicies:
@@ -278,6 +286,16 @@ class Market():
             raise Exception('Bad shop name!')
         return shop.addPurchasePolicy(policy)
 
+    def add_discount_policy_to_shop(self, token, shopname, policyID):
+        if not self.isToken(token):
+            raise Exception('Bad token!')
+        user = self.getUser(token)
+        policy = self.makePolicy(user, policyID)
+        shop = self._shops[shopname]
+        if shop is None:
+            raise Exception('Bad shop name!')
+        return shop.addDiscountPolicy(policy)
+
 
 
     def makePolicy(self,user, PID):
@@ -293,7 +311,6 @@ class Market():
             if pol[1] == "isShop":
                 return policyIsShop(p[0], p[2])
             if pol[1] == "isCategory":
-                print(p[0], p[3],p[2])
                 return policyIsCategory(p[0], p[3],p[2])
             if pol[1] == "isItem":
                 return policyIsItem(p[0], p[3],p[2])
@@ -306,7 +323,6 @@ class Market():
                 pt = self.makePolicy(user, p[2])
                 return policyNot(p[0], pt)
             if pol[1] == "and":
-
                 pt1 = self.makePolicy(user, p[2])
                 pt2 = self.makePolicy(user, p[3])
                 return policyAnd(p[0], pt1, pt2)
@@ -318,6 +334,14 @@ class Market():
                 pt1 = self.makePolicy(user, p[2])
                 pt2 = self.makePolicy(user, p[3])
                 return policyXor(p[0], pt1, pt2)
+            if pol[1] == "if":
+                pt1 = self.makePolicy(user, p[2])
+                pt2 = self.makePolicy(user, p[3])
+                return policyIf(p[0], pt1, pt2)
+            if pol[1] == "add":
+                pt1 = self.makePolicy(user, p[2])
+                pt2 = self.makePolicy(user, p[3])
+                return policyAdd(p[0], pt1, pt2)
 
     def compose_policy(self, token, name, arg1, arg2):
         if not self.isToken(token):

@@ -14,4 +14,7 @@ class Composable:  # any basic discount inherits from Composable (isCategory, is
         return self.ID
 
     def __str__(self):
-        return "Policy number: " + str(self.ID) + "\npolicy type: " + type(self).__name__
+        return "Policy number: " + str(self.ID) +\
+               "\npolicy type: " + type(self).__name__+\
+               "\npolicy discount: " + str(self.percent)+\
+               "\n"
