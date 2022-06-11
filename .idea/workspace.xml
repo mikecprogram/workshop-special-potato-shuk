@@ -4,6 +4,7 @@
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/Requirement II.2.5.2.1.py" beforeDir="false" afterPath="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/Requirement II.2.5.2.1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,7 +206,7 @@
       <workItem from="1654540823585" duration="14689000" />
       <workItem from="1654617138331" duration="6452000" />
       <workItem from="1654651392652" duration="1502000" />
-      <workItem from="1654724769598" duration="21034000" />
+      <workItem from="1654724769598" duration="23226000" />
     </task>
     <servers />
   </component>
@@ -250,7 +251,7 @@
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$Requirement_II_2_5_3.coverage" NAME="Requirement II.2.5.3 Coverage Results" MODIFIED="1654023717875" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$Requirement_II_4_4.coverage" NAME="Requirement II.4.4 Coverage Results" MODIFIED="1654023891869" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$Requirement_II_2_5_STAR.coverage" NAME="Requirement II.2.5 STAR Coverage Results" MODIFIED="1654005503467" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
-    <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$Requirement_II_2_5_2_1.coverage" NAME="Requirement II.2.5.2.1 Coverage Results" MODIFIED="1654890718710" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
+    <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$Requirement_II_2_5_2_1.coverage" NAME="Requirement II.2.5.2.1 Coverage Results" MODIFIED="1654911702495" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$Requirement_II_3_1.coverage" NAME="Requirement II.3.1 Coverage Results" MODIFIED="1654023787317" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$Requirement_II_4_2_2.coverage" NAME="Requirement II.4.2.2 Coverage Results" MODIFIED="1654652876634" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$Requirement_II_4_7.coverage" NAME="Requirement II.4.7 Coverage Results" MODIFIED="1654023968319" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />

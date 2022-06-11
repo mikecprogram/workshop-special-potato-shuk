@@ -286,15 +286,14 @@ class Shop():
     def calculate_price(self, user, name, amount):
         item = self._stock.getItem(name)
         disc = self.findDiscount(user, item)
-        #print(name, disc,item.getPrice()*amount*disc)
-        return item.getPrice()*amount*disc
+        # print(name, disc,item.getPrice()*amount*disc)
+        return round(item.getPrice() * amount * disc,3)
 
     def findDiscount(self, user, item):
-        disc = 0
+        disc = 1
         for policy in self._discountPolicy:
-            #print(policy,policy.apply(user, item))
+            # print(policy,policy.apply(user, item))
             if policy.apply(user, item):
                 d = policy.getDiscount()
-                if d > disc:
-                    disc = d
-        return 1 - disc / 100
+                disc *= (1 - d/100)
+        return disc

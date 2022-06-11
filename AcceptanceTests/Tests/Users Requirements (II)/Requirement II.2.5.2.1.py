@@ -16,11 +16,10 @@ class MyTestCase(unittest.TestCase):
         self.m.login_into_the_trading_system(self.u, "username", "password")
         self.m.shop_open(self.u, "shopname")
         self.m.adding_item_to_the_shops_stock(self.u, "itemname1", "shopname", "animal objects", "cats and clocks", 5,
-                                              10)
+                                              30)
         self.m.adding_item_to_the_shops_stock(self.u, "itemname2", "shopname", "animal objects", "dogs and locks", 2,
                                               50)
         self.m.adding_item_to_the_shops_stock(self.u, "itemname3", "rockshop", "rocks", "rock collection", 1, 5)
-
 
     def testHasPriceAndHasAmountDiscount(self):
         self.m.add_policy(self.u, 0, "hasAmount", "itemname1", 3)  # 0 discount because the discount is not on item 1
@@ -47,8 +46,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.is_exception) and r.response == 20)
         self.m.shopping_carts_add_item(self.u, "itemname2", "shopname", 5)
         r = self.m.calculate_cart_price(self.u)
-        #print(r.exception, r.response)
-
+        # print(r.exception, r.response)
 
         self.assertTrue((not r.is_exception) and r.response == 29)
 
@@ -73,28 +71,27 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.is_exception) and not r.response)
         self.m.shopping_carts_add_item(self.u, "itemname2", "shopname", 4)
         r = self.m.validate_purchase_policy(self.u)
-        #print(r.exception, r.response)
+        # print(r.exception, r.response)
         self.assertTrue((not r.is_exception) and r.response)
-
 
     def testHasPriceDiscount(self):
         self.m.add_policy(self.u, 20, "hasPrice", "", 25)  # empty item so it checks total price of basket
 
         r = self.m.get_my_policies(self.u)
-        #print(r.exception, r.response)
+        # print(r.exception, r.response)
         self.assertTrue((not r.is_exception) and r.response == [[1, "hasPrice", "", 25, 20]])
         r = self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
         self.assertTrue((not r.is_exception) and r.response)
         r = self.m.get_shop_policies(self.u, "shopname")
-            # print(r.exception, r.response)
+        # print(r.exception, r.response)
         self.assertTrue((not r.is_exception) and r.response == [["discount", 1, 20]])
         self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 4)
         r = self.m.calculate_cart_price(self.u)
-        #print(r.exception,r.response)
+        # print(r.exception,r.response)
         self.assertTrue((not r.is_exception) and r.response == 20)
         self.m.shopping_carts_add_item(self.u, "itemname2", "shopname", 5)
         r = self.m.calculate_cart_price(self.u)
-        #print(r.exception, r.response)
+        # print(r.exception, r.response)
         self.assertTrue((not r.is_exception) and r.response == 24)
 
     def testHasAmount(self):
@@ -211,7 +208,6 @@ class MyTestCase(unittest.TestCase):
         r = self.m.validate_purchase_policy(self.u)
         self.assertTrue((not r.is_exception) and r.response)
 
-
     def testHasAmountDiscount(self):
         r = self.m.add_policy(self.u, 10, "hasAmount", "itemname1", 4)
         self.assertTrue((not r.is_exception) and r.response)
@@ -226,36 +222,33 @@ class MyTestCase(unittest.TestCase):
         r = self.m.shopping_carts_check_content(self.u)
         self.assertTrue((not r.is_exception) and r.response == [["shopname", [["itemname1", 4]]]])
         r = self.m.calculate_cart_price(self.u)
-        self.assertTrue((not r.is_exception) and r.response == 18) #oridinal price is 4*5=20 with 10% discount is 18
+        self.assertTrue((not r.is_exception) and r.response == 18)  # oridinal price is 4*5=20 with 10% discount is 18
 
     def testComplicated(self):
-        self.m.add_policy(self.u,5,"isItem", "itemname1")
-        self.m.add_policy(self.u,20,"isShop")
+        self.m.add_policy(self.u, 10, "isItem", "itemname1")
+        self.m.add_policy(self.u, 20, "isShop")
         self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
         self.m.add_discount_policy_to_shop(self.u, "shopname", 2)
-        self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 4)
+        self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 20)
         r = self.m.calculate_cart_price(self.u)
-        self.assertTrue((not r.is_exception) and r.response == 16)
-        self.m.compose_policy(self.u,"add",1,2)
+        self.assertTrue((not r.is_exception) and r.response == 72)
+        self.m.compose_policy(self.u, "add", 1, 2)
         self.m.add_discount_policy_to_shop(self.u, "shopname", 3)
         r = self.m.calculate_cart_price(self.u)
-        self.assertTrue((not r.is_exception) and r.response == 15)
-        self.m.shopping_carts_add_item(self.u, "itemname2", "shopname", 5)
+
+        self.assertTrue((not r.is_exception) and r.response == 50.4)
+        self.m.shopping_carts_add_item(self.u, "itemname2", "shopname", 10)
         r = self.m.calculate_cart_price(self.u)
-        self.assertTrue((not r.is_exception) and r.response == 23)
+        self.assertTrue((not r.is_exception) and r.response == 66.4)
         self.m.add_policy(self.u, 50, "isItem", "itemname2")
-        self.m.add_policy(self.u, 0, "hasAmount", "itemname1", 4)
+        self.m.add_policy(self.u, 0, "hasAmount", "itemname1", 6)
         self.m.compose_policy(self.u, "and", 4, 5)
         self.m.add_discount_policy_to_shop(self.u, "shopname", 6)
         r = self.m.calculate_cart_price(self.u)
-        self.assertTrue((not r.is_exception) and r.response == 20)
-        self.m.shopping_carts_delete_item(self.u,"itemname1","shopname",1)
+        self.assertTrue((not r.is_exception) and r.response == 58.4)
+        self.m.shopping_carts_delete_item(self.u, "itemname1", "shopname", 15)
         r = self.m.calculate_cart_price(self.u)
-        self.assertTrue((not r.is_exception) and r.response == 19.25)
-
-
-
-
+        self.assertTrue((not r.is_exception) and r.response == 28.6)
 
 
 if __name__ == '__main__':
