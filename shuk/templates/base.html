@@ -8,37 +8,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shuk Potato - Home</title>
 </head>
-<body>
+<body onunload="deleteAllCookies()">
 <div class="menubarcontainer">
     <ul>
-        <li><ul class="basemenubar">
-        {% if userStatus != "" %}
-            <li><a href="{% url 'shops' %}">Shops</a></li>
-            <li><a href="{% url 'cart' %}">Cart</a></li>
-        {%endif%}
-        {% if userStatus == "Guest" %}
-            <li><a href="{% url 'login' %}">Login</a></li>
-            <li><a href="{% url 'register' %}">Register</a></li>
-            <li><a href="{% url 'exit' %}">Exit</a></li>
-        {% elif userStatus != "" %}<!--So it is a memeber:-->
-            <li><a href="{% url 'manage' %}">Manage</a></li>
-            <li><a href="{% url 'exit' %}">Logout</a></li>
-        {%endif%}
-    </ul></li>
-    <li>
-    <form class="searchform" onsubmit="event.preventDefault();" role="search">
-        <input id="search" type="search" placeholder="Search..." autofocus required />
-        <button type="submit">Go</button>    
-      </form></li>
+        
+        <div class="center">
+            <li>
+                <h1>Shuk potato ({{token}})</h1>
+            </li>
+       </div>
+       <div class="center">
+            <li>
+                {% if userStatus != "" %}
+                    <h3>Hello {{userStatus}}</h3>
+                {%endif%}
+            </li>
+        </div>
+        <div class="center">
+            <li>
+                <ul class="basemenubar">
+                {% if userStatus != "" %}
+                    <li><a href="{% url 'shops' %}">Shops</a></li>
+                    <li><a href="{% url 'cart' %}">My Cart</a></li>
+                {%endif%}
+                {% if userStatus == "" or userStatus == "Guest" %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                {%endif%}
+                {% if userStatus == "Guest" %}
+                    <li><a href="{% url 'exit' %}">Exit</a></li>
+                {% elif userStatus != "" %}<!--So it is a memeber:-->
+                    <li><a href="{% url 'manage' %}">Manage</a></li>
+                    <li><a href="{% url 'exit' %}">Logout</a></li>
+                {%endif%}
+                </ul>  
+            </li>
+        </div>
+    
+    <div class="center">
+        <li>
+            <form action="{% url 'search'%}"class="searchform" method="get" role="search">
+                <input id="search" type="search" placeholder="Search..." autofocus required />
+                <button type="submit">Go</button>    
+            </form>
+        </li>
+    </div>
+   
+  
     </ul>
 </div>
     
     <header class="page-header">
         <div class="container">
-            <h1>Shuk potato ({{token}})</h1>
-            {% if userStatus != "" %}
-                <h3>Hello {{userStatus}}</h3>
-            {%endif%}
+           
             
         </div>
       </header>
@@ -67,9 +89,17 @@
                     }
 
                 }
-
+                
             </script>
         {%endif%}
+
+        {% if jsmessage != "" %}
+            <script type="text/javascript">
+                window.onload = function(){
+                    alert("{{jsmessage}}")
+                }
+            </script>
+        {% endif %}
           </div>
           
       </main>

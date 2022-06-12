@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if userStatus == "Guest" %}
+<div class="center"><h1>You have to login to create a shop.</h1></div>
+{% else %}
 <form class="LoginScreen" action="{% url 'createshop' %}" method="POST">
     {% csrf_token %}
     <div class="LoginContainer">
@@ -11,8 +14,8 @@
         {% if errormessage != '' %}
             <span class="errormessage">{{errormessage}}</span>
         {% endif %}
-        <button type="submit">Create Shop</button>
+        <div class="center"><button type="submit" class="bluebutton">Create Shop</button></div>
     </div>
 </form>
-
+{% endif %}
 {% endblock %}

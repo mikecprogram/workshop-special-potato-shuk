@@ -13,8 +13,9 @@ urlpatterns = [
 
     re_path(r'^art$',views.art),
     re_path(r'^manage$',views.manage, name='manage'),
+    re_path(r'^premissions',views.premissions, name='premissions'),
     re_path(r'^makemanager$',views.makemanager),
-    re_path(r'^searchItems$',views.searchItems),
+    re_path(r'^searchItems$',views.searchItems,name = 'search'),
     re_path(r'^login$',views.login,name = 'login'),
     re_path(r'^register$',views.register,name = 'register'),
     re_path(r'^shop$',views.shops,name = 'shop'),
@@ -23,6 +24,7 @@ urlpatterns = [
     re_path(r'^exit$',views.exit, name='exit'),
     re_path(r'^manageItemsShop',views.manage, name='manageItemsShop'),
     re_path(r'^manageItemsShop/(?P<shopname>[\w ]+)/$',views.shop),
+    re_path(r'^storeHistoryPurchases',views.storeHistoryPurchases, name='storeHistoryPurchases'),
 
     
     re_path(r'ws/socket-server/',views.ChatConsumer.as_asgi()),

@@ -61,8 +61,7 @@ maxtimeonline = 1  # 60 * 10  # 10 minutes
 class Market():
 
     def prid(self, txt):
-        if debug:
-            print(txt)
+        raise Exception(txt)
 
     def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password,
                  maxtimeonline=60 * 10):  # 10 minutes
@@ -89,13 +88,11 @@ class Market():
     def isToken(self, token):
         if (not (token in self._onlineVisitors)):
             self.prid("The token was not found")
-            return False
         currentTime = time.time()
         if (currentTime - self._onlineDate[token] < self._maxtimeonline):
             self._onlineDate[token] = currentTime
             return True
         self.prid("Session time out for token %d" % token)
-        return False
 
     # sync me on [enter]
     def enter(self):
@@ -105,11 +102,12 @@ class Market():
         currentToken = self._nextToken
         self._nextToken = self._nextToken + 1
         self._enterLock.release()
-        currentToken = self._nextToken
         self._onlineVisitors[currentToken] = User(self)
         self._onlineDate[currentToken] = time.time()
         return currentToken
-
+    def get_user_state(self, token):
+        if self.isToken(token):
+            return self._onlineVisitors[token].get_state()
     def exit(self, token):
         if self.isToken(token):
             self._onlineVisitors[token].exit()
@@ -141,6 +139,7 @@ class Market():
 
     def is_active(self, token):
         return self._onlineVisitors.get(token) is not None
+
 
     def is_logged_in(self, token):
         u = self._onlineVisitors.get(token)
@@ -186,11 +185,13 @@ class Market():
             if not (is_valid_password(password)):
                 raise Exception("Password is not valid")
             if username in self._members:
+                print(self._members)
                 member = self._members[username]
                 hashed = self._security.hash(password)
                 if member.isHashedCorrect(hashed):
                     user = self.getUser(token)
                     user.login(member)
+                    self._onlineVisitors
                     return True
                 else:
                     raise Exception("Wrong password")
@@ -384,6 +385,7 @@ class Market():
             raise Exception('Timed out token!')
 
     def getUser(self, token):
+        #Todo, why is alex tf is online ?!?!
         return self._onlineVisitors[token]
 
     """

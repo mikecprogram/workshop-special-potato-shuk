@@ -70,25 +70,16 @@ ul {
 textarea:focus, input:focus{
   outline: none;
 }
-.LoginContainer{
-  
-}
 .LoginContainer>h1{
   text-align: center;
   text-shadow: none;
 }
 .LoginScreen{
   margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
   width: fit-content;
   min-width: 300px;
   margin: 10px;
   border-radius: 15px;
-  overflow: hidden;
   background-color: rgb(213,219,224);
 }
 .LoginContainer>p>.form-control{
@@ -100,29 +91,12 @@ textarea:focus, input:focus{
   border: 0;
   margin-bottom: 15px;
 }
-.entershop{
+
+.LoginScreen>div>button{
   margin-top: 5px;
   height: 30px;
-  width: 100%;
-  clip-path: content-box;
-  border: 0;
-  border: 1px solid #ccc;
-  border-radius: 125px;
-  -moz-box-shadow: inset 0 13px 25px rgba(89, 0, 255, 0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
-  
-  box-shadow: inset 0 13px 25px rgba(89, 0, 255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
-  cursor: pointer;
-  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
-  background: #4A90E2;
-  border-color: #3672B6;
-  color: #000;
-  position: relative;
-  transition: all ease .3s;
-}
-.LoginScreen>button{
-  margin-top: 5px;
-  height: 30px;
-  width: 100%;
+  width: 80px;
+  text-align: center;
   clip-path: content-box;
   border: 0;
   border: 1px solid #ccc;
@@ -138,18 +112,41 @@ textarea:focus, input:focus{
   position: relative;
   transition: all ease .3s;
 }
-.LoginScreen>button:before,.entershop:before {
+.center,.LoginScreen{
+  display: table;
+  margin: 0 auto;
+}
+.bluebutton { 
+  margin-top: 5px;
+  height: 30px;
+  width:100%;
+  clip-path: content-box;
+  border: 0;
+  border: 1px solid #ccc;
+  border-radius: 125px;
+  -moz-box-shadow: inset 0 13px 25px rgba(89, 0, 255, 0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  
+  box-shadow: inset 0 13px 25px rgba(89, 0, 255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  cursor: pointer;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
+  background: #4A90E2;
+  border-color: #3672B6;
+  color: #000;
+  position: relative;
+  transition: all ease .3s;
+}
+.LoginScreen>div>button:before,.bluebutton:before {
   background: linear-gradient(rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%);
   border-radius: 125px;
   content:'';
   height: 18px;
-  left: 2%;
+  left: 3%;
   position: absolute;
   top: 1px;
   transition: all ease .3s;
-  width: 96%;
+  width: 94%;
 }
-.LoginScreen>button:hover {
+.LoginScreen>div>button:hover,.bluebutton:hover {
   box-shadow: inset 0 13px 25px rgba(255,255,255,0.8), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.2);
 }
 
@@ -171,18 +168,15 @@ textarea:focus, input:focus{
   width: 100%;
   text-align: center;
 }
-.basemenubar{
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  background-color: #333;
-}
 .menubarcontainer{
   display: flex;
   align-items: center; 
   justify-content: center;
 }
 .basemenubar {
+  list-style-type: none;
+  margin:0 0 10px 0;
+  background-color: #333;
   justify-content: center;
 	border-radius: 25px;
 	height: fit-content;
@@ -191,8 +185,8 @@ textarea:focus, input:focus{
 	-webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);  
 	align-items: center;
-	padding: 0 10px;
-	margin: 50px 0 0 0;
+	padding: 0;
+
 }
 .basemenubar li {
 		list-style: none;
@@ -240,7 +234,7 @@ color: black;
 .searchform {
   position: relative;
   width: 30rem;
-  background: #57bd84;
+  background: rgb(198, 198, 198);
   border-radius: 25px;
 }
 .searchform label {
@@ -253,15 +247,16 @@ color: black;
   overflow: hidden;
 }
 .searchform button {
+  cursor:pointer;
   position: absolute;
   top: 0;
   right: 0;
   width: 6rem;
   font-weight: bold;
-  background: #57bd84;
+  background: rgb(198, 198, 198);
   border-radius: 25px;
 }
-.searchform > button, input{
+.searchform > button,input{
   height: 2rem;
   font-family: 'Lato', sans-serif;
   border: 0;
@@ -269,9 +264,12 @@ color: black;
   font-size: 1.8rem;
 }
 input[type="search"] {
+  -moz-box-shadow: inset 0 13px 25px rgba(255,255,255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  
+  box-shadow: inset 0 13px 25px rgba(255,255,255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
   outline: 0; 
   width: 100% - 6rem;
-  background: #fff;
+  background: rgba(200,200,200, .7);
   padding: 0 1.6rem;
   border-radius: 25px;
   appearance: none; 
@@ -279,4 +277,7 @@ input[type="search"] {
   transition-property: width, border-radius;
   z-index: 1;
   position: relative;
+}
+h1{
+  margin:0;
 }

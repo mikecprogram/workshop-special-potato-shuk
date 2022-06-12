@@ -1,12 +1,13 @@
+import sys
 from http.client import HTTPException
 from operator import mod
 from unicodedata import category
 from urllib import response
 from django import forms
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
-from SystemService import SystemService
-from potato.service import Service
+sys.path.append( '..' )
+from Dev.ServiceLayer.SystemService import SystemService
 from .models import ItemInBasket, Shop, StockItem
 
 from email import message
@@ -24,15 +25,19 @@ if res.isexc:
     print(response.exception)
 
 def getToken(request):
-    # TODO: check if the token is valid, else, do enter()
     if 'tokenuser' in request.COOKIES:
-        return int(request.COOKIES['tokenuser'])
-    else:
-        res = m.enter()
-        if res.isexc :
-            print("Bug")
-            print(res.exc)
-        return res.res
+        token = int(request.COOKIES['tokenuser'])
+        res = m.is_token_valid(token)
+        if res.res:
+            print('tok')
+            return token
+    res = m.get_into_the_Trading_system_as_a_guest()
+    print("got token:")
+    print(res)
+    if res.isexc:
+        print("Bug")
+        print(res.exc)
+    return res.res
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, code):
@@ -46,9 +51,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         }))
 
     async def receive(self, text_data=None, bytes_data=None):
-        text_data_json = await json.loads(text_data)
-        message = await text_data_json['message']
-        await print("Consumer connected via cookie %s" % message)
+        text_data_json = json.loads(text_data)
+        message = text_data_json['message']
+        print("Consumer connected via cookie %s" % message)
         await notifyPlugin.addConnection(self, message)
 
 
@@ -114,33 +119,29 @@ class LoginRegisterForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
 
-    password = forms.CharField(
+    password = forms.CharField(min_length=8,
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
 
 
-class AddShopForm(forms.Form):  # Note that it is not inheriting from forms.ModelForm
+class CreateShopForm(forms.Form):  # Note that it is not inheriting from forms.ModelForm
     shopname = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Shop name'}))
-    shopAddress = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Address'}))
-    shopManager = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Manager Name'}))
 
 
 def createShop(request):
     tokenuser = getToken(request)
     errormessage = ''
-    form = AddShopForm()
+    form = CreateShopForm()
     if request.method == 'POST':
-        form = AddShopForm(request.POST)
+        form = CreateShopForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
             shopname = cd.get('shopname')
-            shopAddress = cd.get('shopAddress')
-            shopManager = cd.get('shopManager')
-            print("Create new Shop %s %s %s" % (cd.get('shopname'),
-                  cd.get('shopAddress'), cd.get('shopManager')))
-            errormessage = "Error while Creating new shop"
+            res = m.shop_open(tokenuser,shop)
+            if(res.isexc):
+                errormessage = "Error: %s"% res.exc
+            else:
+                return redirect('manage')
     return makerender(request, tokenuser, 'createshop.html',
                       {"form": form,  "errormessage": errormessage, })
 
@@ -156,7 +157,12 @@ def login(request):
             username = cd.get('username')
             password = cd.get('password')
             print("LOGIN %s %s" % (cd.get('username'), cd.get('password')))
-            errormessage = "Error while login"
+            res = m.login_into_the_trading_system(tokenuser,username,password)
+            if res.isexc:
+                errormessage = res.exc
+            else:
+                return makerender(request, tokenuser, 'homepage.html',
+                      {'tokenuser': tokenuser})
     return makerender(request, tokenuser, 'loginregister.html',
                       {"form": form, 'state': "Login", "screen": "login", "errormessage": errormessage,
                        'tokenuser': tokenuser})
@@ -174,8 +180,12 @@ def register(request):
             username = cd.get('username')
             password = cd.get('password')
             print("Register %s %s" % (cd.get('username'), cd.get('password')))
-            service.login(tokenuser, username,password)
-            errormessage = "WOW"
+            res = m.registration_for_the_trading_system(tokenuser,username,password)
+            if res.isexc:
+                errormessage = res.exc
+            else:
+                return makerender(request, tokenuser, 'homepage.html',
+                      {'tokenuser': tokenuser,'jsmessage':'You have registered successfully'})
     return makerender(request, tokenuser, 'loginregister.html',
                   {"form": form, 'state': "Register", "screen": "register", "errormessage": errormessage,
                    'tokenuser': tokenuser})
@@ -203,10 +213,9 @@ def shop(request, shopname):
 def shops(request):
     tokenuser = getToken(request)
     shops = []  # todo: get shops from servise
-    shops.append(Shop("Shop for Fun", "Open 24/7",
-                 "Michael with Tomer", "Michael"))
-    shops.append(Shop("Brown", "Open 24/7", "Michael with Tomer", "Michael"))
-    shops.append(Shop("Blue", "Open 24/7", "Michael with Tomer", "Michael"))
+    shops.append(Shop(5,"Wow","Open","Me",['one'],['Two'],'None.'))
+    shops.append(Shop(5,"Wow","Open","Me",['one'],['Two'],'None.'))
+    shops.append(Shop(5,"Wow","Open","Me",['one'],['Two'],'None.'))
     return makerender(request, tokenuser, 'shops.html', {'itemslist': shops})
 
 
@@ -222,14 +231,7 @@ def item(request, itemname):
 
 def exit(request):
     tokenuser = getToken(request)
-    service.exit(tokenuser)
-    response = render(request, 'exit.html',{"userStatus":""})
-    response.delete_cookie('tokenuser')
-    return response
-
-def exit(request):
-    tokenuser = getToken(request)
-    service.exit(tokenuser)
+    m.Trading_system_quitting(tokenuser)
     response = render(request, 'exit.html',{"userStatus":""})
     response.delete_cookie('tokenuser')
     return response
@@ -245,19 +247,34 @@ def manage(request):
     shop2 = Shop(2,"Awesome Shop","Open","Finder",["Who?","He?"],["No one"],"None.")
     shops = [shop1,shop2]
     userlist = ["What?","When?"]
+    m.get_founded_shops(tokenuser)
     return makerender(request,tokenuser, 'manage.html',{'itemslist':shops,"userlist":userlist})
 
 def makemanager(request):
     tokenuser = getToken(request)
-    
     return makerender(request,tokenuser, 'makemanager.html')
+
+def storeHistoryPurchases(request):
+    tokenuser = getToken(request)
+    return makerender(request,tokenuser, 'storeHistoryPurchases.html')
+
+def premissions(request):
+    tokenuser = getToken(request)
+    return makerender(request,tokenuser, 'premissions.html')
+
+
 
 @csrf_exempt
 def makerender(request, tokenuser, page, optparams=None):
     if optparams is None:
         optparams = {}
     optparams['token'] = tokenuser
-    optparams['userStatus'] = service.getUserStatus()#should return Guest or Username
+    if not('jsmessage' in optparams):
+        optparams['jsmessage'] = ""
+    print("State:::")
+    print(m.get_user_state(tokenuser).res)
+    optparams['userStatus'] = m.get_user_state(tokenuser).res#should return Guest or Username
     response = render(request, page, optparams)
+
     response.set_cookie('tokenuser', tokenuser)
     return response

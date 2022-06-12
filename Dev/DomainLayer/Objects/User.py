@@ -155,3 +155,7 @@ class User:
 
     def is_admin(self):
         return self.getMember().is_admin()
+    def get_state(self):
+        if self.isMember():
+            return self.getMember().get_username()
+        return "Guest"

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Manage shop premissions</h1>
+<h3>Shop Name: {{item.name}}</h3>
+<h2>Founded by :{{item.founder}}</h2>
+<h2>Owned by :{{item.owners}}</h2>
+<h2>Managed by :{{item.managers}}</h2>
+<h2>Managed premissions to:{{item.manager}}</h2>
+
+<form action="" method="POST">
+    <input type="checkbox" id="premission1" name="premission1" value="premission1">
+    <label for="premission1">manage Store</lventoryabel><br>
+    <input type="checkbox" id="premission2" name="premission2" value="premission2">
+    <label for="premission2">manage types & rules discountes</label><br>
+    <input type="checkbox" id="premission3" name="premission3" value="premission3">
+    <label for="premission3">Determining traceability constraints after the store</label><br>
+    <input type="checkbox" id="premission4" name="premission4" value="premission4">
+    <label for="premission4">Appointment of a store owner</label><br>
+    <input type="checkbox" id="premission5" name="premission5" value="premission5">
+    <label for="premission5">Removing a store owner appointment</label><br>
+    <input type="checkbox" id="premission6" name="premission6" value="premission6">
+    <label for="premission6">Appointment of a store manager</label><br>
+    <input type="checkbox" id="premission7" name="premission7" value="premission7">
+    <label for="premission7">Changing store manager premissions</label><br>
+    <input type="checkbox" id="premission8" name="premission8" value="premission8">
+    <label for="premission8">Removing of a store manager</label><br>
+    <input type="checkbox" id="premission9" name="premission9" value="premission9">
+    <label for="premission9">Closing a store</label><br>
+    <input type="checkbox" id="premission10" name="premission10" value="premission10">
+    <label for="premission10">Opening a closed store</label><br>
+    <input type="checkbox" id="premission11" name="premission11" value="premission11">
+    <label for="premission11">Get information about store jobs</label><br>
+    <input type="checkbox" id="premission12" name="premission12" value="premission12">
+    <label for="premission12">Information Geting and Posting</label><br>
+    <input type="checkbox" id="premission13" name="premission13" value="premission13">
+    <label for="premission13">Getting Store Purchases History</label><br><br>
+    <input type="submit" value="Submit">
+  </form>
+
+{% endblock %}
+

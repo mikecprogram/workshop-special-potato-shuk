@@ -6,14 +6,30 @@ from typing import List, Set
 
 from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
 from Dev.DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
-from Dev.DomainLayer.Objects.Market import Market as market
+from Dev.DomainLayer.Objects.Market import Market
 from Dev.DomainLayer.Objects.PaymentService import PaymentService
 from Dev.DomainLayer.Objects.ShippingService import ShippingService
 
 
 class SystemService(BridgeInterface):
     def __init__(self):
-        self.market: market = None
+        self.market: Market = None
+
+    def get_user_state(self, user_id: int)-> Response[bool]:
+        try:
+            if self.market is None:
+                Response(exception="you have to initialize the system")
+            return Response(self.market.get_user_state(user_id))
+        except Exception as e:
+            return Response(exception=e.__str__())
+
+    def is_token_valid(self, user_id: int)-> Response[bool]:
+        try:
+            if self.market is None:
+                Response(exception="you have to initialize the system")
+            return Response(self.market.isToken(user_id))
+        except Exception as e:
+            return Response(exception=e.__str__())
 
     def get_into_the_Trading_system_as_a_guest(self) -> Response[int]:
         try:
@@ -30,7 +46,7 @@ class SystemService(BridgeInterface):
         try:
             if self.market is not None:
                 Response(exception="system have been initialized before")
-            self.market: market = market(external_payment_service, external_supplement_service, system_admin_name,
+            self.market: Market = Market(external_payment_service, external_supplement_service, system_admin_name,
                                          password, MaxTimeOnline)
             return Response(True)
         except Exception as e:

@@ -13,11 +13,11 @@ class Service():
     def exit(self,token):
         pass
     def enter(self):
-        token = self.m.get_into_the_Trading_system_as_a_guest()
-        if response.isexc:
+        res = self.m.get_into_the_Trading_system_as_a_guest()
+        if res.isexc:
             print("BUG:")
-            print(response.exc)
-        token = token.res
+            print(res.exc)
+        token = res.res
         return token
     def getUserStatus(self):
         return "Mike"
@@ -25,5 +25,5 @@ class Service():
         return "False!"
     def register(self, token,username):
         response = self.m.registration_for_the_trading_system(self.u,"username","password")
-        
+
         return "False!"

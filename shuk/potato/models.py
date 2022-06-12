@@ -29,3 +29,12 @@ class Shop():
             self.owners = owners
             self.managers = managers
             self.purchases_history = purchases_history
+class MemberWithPermissions():
+    def __init__(self,id,name, status, founder, owners,managers,purchases_history):
+            self.id = id
+            self.name = name
+            self.status = status
+            self.founder = founder
+            self.owners = owners
+            self.managers = managers
+            self.purchases_history = purchases_history
