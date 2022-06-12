@@ -101,27 +101,27 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def get_owned_shops(self, user_id, username) -> Response[List[str]]:
+    def get_owned_shops(self, user_id) -> Response[List[str]]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.get_owned_shops(user_id, username))
+            return Response(self.market.get_owned_shops(user_id))
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def get_founded_shops(self, user_id, username) -> Response[List[str]]:
+    def get_founded_shops(self, user_id) -> Response[List[str]]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.get_founded_shops(user_id, username))
+            return Response(self.market.get_founded_shops(user_id))
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def get_managed_shops(self, user_id, username) -> Response[List[str]]:
+    def get_managed_shops(self, user_id) -> Response[List[str]]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.get_founded_shops(user_id, username))
+            return Response(self.market.get_managed_shops(user_id))
         except Exception as e:
             return Response(exception=e.__str__())
 

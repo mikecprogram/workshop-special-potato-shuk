@@ -116,6 +116,7 @@ class Market():
             return True
         return False
 
+
     def register(self, token, username, password):
         if self.isToken(token):
             user = self.getUser(token)
@@ -185,7 +186,6 @@ class Market():
             if not (is_valid_password(password)):
                 raise Exception("Password is not valid")
             if username in self._members:
-                print(self._members)
                 member = self._members[username]
                 hashed = self._security.hash(password)
                 if member.isHashedCorrect(hashed):
@@ -605,3 +605,34 @@ class Market():
         finally:
             self._membersLock.release()
             self._enterLock.release()
+
+    def get_founded_shops(self, token):
+        self._enterLock.acquire()
+        if self.isToken(token) and self.is_logged_in(token):
+            output = self.getUser(token).getMember().get_founder_shops()
+            self._enterLock.release()
+            return output
+        else:
+            self._enterLock.release()
+            raise Exception("gfasgfsa"+str(self.is_logged_in(token))+'Timed out token!')
+
+    def get_managed_shops(self, token):
+        self._enterLock.acquire()
+        if self.isToken(token) and self.is_logged_in(token):
+            output = self.getUser(token).getMember().get_manage_shops()
+            self._enterLock.release()
+            return output
+        else:
+            self._enterLock.release()
+            raise Exception('Timed out token!')
+
+    def get_owned_shops(self, token):
+        self._enterLock.acquire()
+        if self.isToken(token) and self.is_logged_in(token):
+            output = self.getUser(token).getMember().get_owner_shops()
+            self._enterLock.release()
+            return output
+        else:
+            self._enterLock.release()
+            raise Exception('Timed out token!')
+

@@ -169,11 +169,11 @@ class Member:
     def get_member_info(self):
         output = "Member Name= " + self._username + "\n"
         if len(self.foundedShops) >0:
-            output += "founder for: " + str(list(self.foundedShops.values())) + " shops\n"
+            output += "founder for: " + str(list(self.foundedShops.keys())) + " shops\n"
         if len(self.ownedShops) > 0:
-            output += "owner for: " + str(list(self.ownedShops.values())) + " shops\n"
+            output += "owner for: " + str(list(self.ownedShops.keys())) + " shops\n"
         if len(self.managedShops) > 0:
-            output += "manager for: " + str(self.permissions) + "\n"
+            output += "manager for: " + str(self.permissions.keys()) + "\n"
         if self.admin is not None:
             output = output+"and he is Admin\n"
         return output
@@ -185,3 +185,12 @@ class Member:
 
     def does_have_role(self):
         return (len(self.foundedShops)+len(self.ownedShops)+len(self.managedShops)) > 0 or self.admin is not None
+
+    def get_founder_shops(self):
+        return list(self.foundedShops.keys())
+
+    def get_owner_shops(self):
+        return list(self.ownedShops.keys())
+
+    def get_manage_shops(self):
+        return list(self.permissions.keys())
