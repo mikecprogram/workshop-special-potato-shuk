@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Make manager:</h1>
+<div class="stockitemlist">
+    {% for item in itemslist %}
+        <div class="stockitem">
+            
+            <div class="stockitemcontainer">
+            <h3>Shop Name: {{item.name}}</h3>
+            <p>Shop Description: {{item.desc}}</p>
+            </div>
+            <form action="" method="POST">
+                <label for="browser">Choose your new manager from the list:</label>
+                <input list="browsers" name="browser" id="browser">
+                <datalist id="browsers">
+                {% for user in userlist %}
+                  <option value="{{user.username}}">
+                {% endfor %}
+                </datalist>
+                <input type="submit" value="{{item.name}}">
+              </form>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,282 @@
+*{
+  font-family: Arial, Helvetica, sans-serif;
+}
+body {
+    background-color: rgb(213,219,224);
+}
+h1 {
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+}
+p {
+  
+}
+.stockitemlist{
+  display: grid;
+  grid-template-columns: repeat(6,16.6%);
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.stockitem{
+  margin: 10px;
+  border-radius: 15px;
+  box-shadow: 0 8px 6px -6px black;
+  overflow: hidden;
+  background-color: aliceblue;
+}
+
+@media (max-width: 1500px) {
+  .stockitemlist { grid-template-columns: repeat(5,20%); }
+}
+@media (max-width: 1200px) {
+  .stockitemlist { grid-template-columns: repeat(4,25%); }
+}
+@media (max-width: 900px) {
+  .stockitemlist { grid-template-columns: repeat(3,33%); }
+}
+@media (max-width: 600px) {
+  .stockitemlist { grid-template-columns: repeat(2,50%); }
+}
+@media (max-width: 300px) {
+  .stockitemlist { grid-template-columns: 100%; }
+}
+.stockitem>.discountedprice{
+  text-decoration: line-through;
+}
+.stockitem>.left,.stockitem>.price,.stockitem>.price,.alignright{
+  text-align: right;
+}
+.stockitem>h3{
+  color: rgba(0, 0, 0, 0.6)
+}
+.stockitem>button{
+  width: 100%;
+  clip-path: content-box;
+  border: 0;
+  background-color: limegreen;
+}
+
+.stockitem>:not(button){
+  padding: 0 8px 1px 10px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+/*Login/Register*/
+textarea:focus, input:focus{
+  outline: none;
+}
+.LoginContainer{
+  
+}
+.LoginContainer>h1{
+  text-align: center;
+  text-shadow: none;
+}
+.LoginScreen{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: fit-content;
+  min-width: 300px;
+  margin: 10px;
+  border-radius: 15px;
+  overflow: hidden;
+  background-color: rgb(213,219,224);
+}
+.LoginContainer>p>.form-control{
+  width: 100%;
+  box-sizing: border-box;
+  clip-path: content-box;
+  box-shadow: 0 8px 6px -6px black;
+  -moz-box-shadow: 0 8px 6px -6px black;
+  border: 0;
+  margin-bottom: 15px;
+}
+.entershop{
+  margin-top: 5px;
+  height: 30px;
+  width: 100%;
+  clip-path: content-box;
+  border: 0;
+  border: 1px solid #ccc;
+  border-radius: 125px;
+  -moz-box-shadow: inset 0 13px 25px rgba(89, 0, 255, 0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  
+  box-shadow: inset 0 13px 25px rgba(89, 0, 255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  cursor: pointer;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
+  background: #4A90E2;
+  border-color: #3672B6;
+  color: #000;
+  position: relative;
+  transition: all ease .3s;
+}
+.LoginScreen>button{
+  margin-top: 5px;
+  height: 30px;
+  width: 100%;
+  clip-path: content-box;
+  border: 0;
+  border: 1px solid #ccc;
+  border-radius: 125px;
+  -moz-box-shadow: inset 0 13px 25px rgba(255,255,255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  
+  box-shadow: inset 0 13px 25px rgba(255,255,255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  cursor: pointer;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
+  background: #4A90E2;
+  border-color: #3672B6;
+  color: #000;
+  position: relative;
+  transition: all ease .3s;
+}
+.LoginScreen>button:before,.entershop:before {
+  background: linear-gradient(rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%);
+  border-radius: 125px;
+  content:'';
+  height: 18px;
+  left: 2%;
+  position: absolute;
+  top: 1px;
+  transition: all ease .3s;
+  width: 96%;
+}
+.LoginScreen>button:hover {
+  box-shadow: inset 0 13px 25px rgba(255,255,255,0.8), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.2);
+}
+
+.errormessage {
+  color: red;
+}
+.errormessage{animation: 1s ease-out 0s 1 FadeIn;}
+@keyframes FadeIn {
+    0% {
+      color: white;
+      background-color: RED;
+    }
+    100% {
+      color: RED;
+      background-color: rgba(0, 0, 0, 0);
+    }
+}
+.exittext{
+  width: 100%;
+  text-align: center;
+}
+.basemenubar{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: #333;
+}
+.menubarcontainer{
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+}
+.basemenubar {
+  justify-content: center;
+	border-radius: 25px;
+	height: fit-content;
+	display: inline-flex;
+	background-color: rgba(0, 0, 0, .7);
+	-webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);  
+	align-items: center;
+	padding: 0 10px;
+	margin: 50px 0 0 0;
+}
+.basemenubar li {
+		list-style: none;
+		color: white;
+		font-family: sans-serif;
+		font-weight: bold;
+		padding: 12px 16px;
+		margin: 0 8px;
+		position: relative;
+		cursor: pointer;
+		white-space: nowrap;
+    transition: .2s;
+}
+.basemenubar li:hover {
+  color: black;
+}
+.basemenubar li::before {
+  
+			content: " ";
+			position: absolute;
+			top: 0;
+			left:0;
+			height:100%;
+			width: 100%;
+			z-index:-1;
+			transition: .2s;
+			border-radius: 25px;
+}
+.basemenubar li:hover::before {
+background: linear-gradient(to bottom, #e8edec, #d2d1d3);
+box-shadow: 0px 3px 20px 0px black;
+transform: scale(1.2);
+color: black;
+}
+.menubarcontainer{
+  justify-content: center;
+  align-items: center;
+}
+.menubarcontainer > ul > li {
+  padding: 10px;
+}
+.basemenubar li a {
+  all: unset;
+}
+.searchform {
+  position: relative;
+  width: 30rem;
+  background: #57bd84;
+  border-radius: 25px;
+}
+.searchform label {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+.searchform button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6rem;
+  font-weight: bold;
+  background: #57bd84;
+  border-radius: 25px;
+}
+.searchform > button, input{
+  height: 2rem;
+  font-family: 'Lato', sans-serif;
+  border: 0;
+  color: #2f2f2f;
+  font-size: 1.8rem;
+}
+input[type="search"] {
+  outline: 0; 
+  width: 100% - 6rem;
+  background: #fff;
+  padding: 0 1.6rem;
+  border-radius: 25px;
+  appearance: none; 
+  transition: all .3s cubic-bezier(0, 0, 0.43, 1.49);
+  transition-property: width, border-radius;
+  z-index: 1;
+  position: relative;
+}

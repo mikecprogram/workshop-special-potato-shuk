@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Search Items</h1>
+
+<div class="stockitemlist">
+    <form action="" method="POST">
+        <label for="minPrice">min price:</label>
+        <input type="text" id="minPrice" name="minPrice">
+        <label for="maxprice">max price:</label>
+        <input type="text" id="maxPrice" name="maxPrice">
+        <label for="rating">rating:</label>
+        <input type="text" id="rating" name="rating">
+        <label for="category">category:</label>
+        <input type="text" id="category" name="category">
+        <label for="storeRating">storeRating:</label>
+        <input type="text" id="storeRating" name="storeRating">
+        <input type="submit" value="Search">
+    </form>
+    <!-- todo: items from all stores in the list  -->
+    {% for item in itemslist %}
+
+        <div class="stockitem">
+            <h3>{{item.shop}}</h4>
+            <h3>{{item.category}}</h3>
+            <h2>{{item.name}}</h2>
+            <p>{{item.desc}}</p>
+            <p class="price">{{item.price}}₪</p>
+            <p class="left">{{item.count}} left.</p>
+            <!-- todo: add functionality  -->
+            <button>Add to cart</button>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

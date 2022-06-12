@@ -1,0 +1,53 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Manage my shops</h1>
+<div class="stockitemlist">
+    {% for item in itemslist %}
+        <div class="stockitem">
+            <div class="stockitemcontainer">
+            <h3>Shop Name: {{item.name}}</h3>
+            <h2>Founded by :{{item.founder}}</h2>
+            <h2>Owned by :{{item.owners}}</h2>
+            <h2>Managed by :{{item.managers}}</h2>
+            </div>
+            <hr>
+            <form action="" method="POST">
+                <label>Choose your new manager from the list:</label>
+                <input list="browsers{{item.id}}" name="browser" class="browser">
+                <datalist id="browsers{{item.id}}">
+                {% for username in userlist %}
+                  <option value="{{username}}">
+                {% endfor %}
+                </datalist>
+                <button type="submit">Make manager</button>
+            </form>
+            <hr>
+            <form action="" method="POST">
+                <label>Choose your store owner from the list:</label>
+                <input list="owners{{item.id}}" name="browser" class="browser">
+                <datalist id="owners{{item.id}}">
+                {% for username in userlist %}
+                  <option value="{{username}}">
+                {% endfor %}
+                </datalist>
+                <button type="submit">Make owner</button>
+            </form>
+            <hr>
+            <form action="" method="POST">
+                <button action="submit" name="closeshop" value="True">close shop</button>
+            </form>
+            <hr>
+            <a href="{% url 'manageItemsShop'%}/{{item.name}}"><button>manage items</button></a>
+            <hr>
+            <!-- todo: add functionality  -->
+            <a href="{% url 'shop'%}/{{item.name}}"><button class="entershop">Enter Shop</button></a>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

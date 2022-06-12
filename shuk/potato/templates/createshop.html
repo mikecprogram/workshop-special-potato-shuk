@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form class="LoginScreen" action="{% url 'createshop' %}" method="POST">
+    {% csrf_token %}
+    <div class="LoginContainer">
+
+        <h1>Create Shop</h1>
+        {{form.as_p}}
+        
+        {% if errormessage != '' %}
+            <span class="errormessage">{{errormessage}}</span>
+        {% endif %}
+        <button type="submit">Create Shop</button>
+    </div>
+</form>
+
+{% endblock %}

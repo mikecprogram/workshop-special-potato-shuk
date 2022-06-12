@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form class="LoginScreen" action="{% url screen %}" method="POST">
+    {% csrf_token %}
+    <div class="LoginContainer">
+
+        <h1>Let's {{state}} !</h1>
+        {{form.as_p}}
+        
+        {% if state == 'Login' %}
+            <span class="alignright">Not registered? <br>click <a href="{% url 'register'%}">here</a></span>
+        {%else%}
+            <span class="alignright">Are you registered? <br>click <a href="{% url 'login'%}">here</a></span>
+        {% endif %}
+
+    </div>
+        {% if errormessage != '' %}
+            <span class="errormessage">{{errormessage}}</span>
+        {% endif %}
+        <button type="submit">{{state}}</button>
+    </div>
+</form>
+{% endblock %}

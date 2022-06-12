@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<a href="{% url 'createshop' %}">Create New Shop</a>
+<h1>Shops List:</h1>
+<div class="stockitemlist">
+    {% for item in itemslist %}
+        <div class="stockitem">
+            
+            <div class="stockitemcontainer">
+            <h3>Shop Name: {{item.name}}</h3>
+            <p>Shop Description: {{item.desc}}</p>
+            <p class="price">{{item.price}}₪</p>
+            <p class="left">{{item.count}} left.</p>
+            
+            </div>
+            <!-- todo: add functionality  -->
+            <a href="{% url 'shop'%}/{{item.name}}"><button class="entershop">Enter Shop</button></a>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
