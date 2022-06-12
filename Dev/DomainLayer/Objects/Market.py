@@ -529,9 +529,9 @@ class Market():
         if self.isToken(token) and self.is_logged_in(token):
             if self.getUser(token).is_admin():
                 online_members = list(self._onlineVisitors.values())
-                self._enterLock.release()
                 online_members = [u.getUsername() for u in online_members if u.isMember()]
                 self._membersLock.acquire()
+                self._enterLock.release()
                 offline_members = list(self._members.keys())
                 self._membersLock.release()
                 offline_members = [mn for mn in offline_members if mn not in online_members]
@@ -634,5 +634,16 @@ class Market():
             return output
         else:
             self._enterLock.release()
+            raise Exception('Timed out token!')
+
+    def get_eligible_members_for_shop(self, token: int, shop_name: str):
+        self._enterLock.acquire()
+        if self.isToken(token):
+            self._membersLock.acquire()
+            self._enterLock.release()
+            output = [m.get_username() for m in self._members.values() if m.is_eligible_members(shop_name)]
+            self._membersLock.release()
+            return output
+        else:
             raise Exception('Timed out token!')
 

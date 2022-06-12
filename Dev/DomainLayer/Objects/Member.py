@@ -33,6 +33,9 @@ class Member:
     def get_username(self):
         return self._username
 
+    def is_eligible_members(self,shop_name):
+        return not (shop_name in self.ownedShops or shop_name in self.managedShops or shop_name in self.foundedShops)
+
     def addFoundedShop(self, shop):
         self.foundedShops[shop.getShopName()] = shop
         self.ownedShops[shop.getShopName()] = shop
