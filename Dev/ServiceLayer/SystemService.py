@@ -466,3 +466,12 @@ class SystemService(BridgeInterface):
 
         except Exception as e:
             return Response(exception=e.__str__())
+
+
+    def get_eligible_members_for_shop(self, user_id: int, shop_name: str) -> Response[str]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.get_eligible_members_for_shop(user_id, shop_name))
+        except Exception as e:
+            return Response(exception=e.__str__())
