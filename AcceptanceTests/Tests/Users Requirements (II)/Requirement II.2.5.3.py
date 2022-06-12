@@ -6,7 +6,7 @@ class MyTestCase(unittest.TestCase):
     def setUp(self):
         self.m=SystemService()
         self.m.initialization_of_the_system()
-        self.u=self.m.get_into_the_Trading_system_as_a_guest().response
+        self.u=self.m.get_into_the_Trading_system_as_a_guest().res
         self.m.registration_for_the_trading_system(self.u,"username","password")
         #need to login, create shop and add items to it for test
         self.m.login_into_the_trading_system(self.u,"username","password")
@@ -19,55 +19,55 @@ class MyTestCase(unittest.TestCase):
         
     def testPurchaseHistory(self):
         r=self.m.in_shop_purchases_history_request(self.u)
-        self.assertTrue((not r.is_exception) and r.response==[])
+        self.assertTrue((not r.isexc) and r.res == [])
         r=self.m.Shopping_cart_purchase(self.u)
-        self.assertTrue((not r.is_exception) and r.response)
+        self.assertTrue((not r.isexc) and r.res)
         r=self.m.in_shop_purchases_history_request("username")
-        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname1"]])
+        self.assertTrue((not r.isexc) and r.res == [["shopname", "itemname1"]])
         
     def testAfterRelog(self):
         self.m.logout(self.u)
         r=self.m.in_shop_purchases_history_request(self.u)
-        self.assertTrue((not r.is_exception) and r.response==[])
+        self.assertTrue((not r.isexc) and r.res == [])
         self.m.login_into_the_trading_system(self.u,"username","password")
         r=self.m.Shopping_cart_purchase(self.u)
-        self.assertTrue((not r.is_exception) and r.response)
+        self.assertTrue((not r.isexc) and r.res)
         r=self.m.in_shop_purchases_history_request("username")
-        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname1"]])
+        self.assertTrue((not r.isexc) and r.res == [["shopname", "itemname1"]])
 
     def testAddedAsGuest(self):
         self.m.logout(self.u)
         r=self.m.in_shop_purchases_history_request(self.u)
-        self.assertTrue((not r.is_exception) and r.response==[])
+        self.assertTrue((not r.isexc) and r.res == [])
         r=self.m.Shopping_cart_purchase(self.u)
         self.m.login_into_the_trading_system(self.u,"username","password")
-        self.assertTrue((not r.is_exception) and r.response)
+        self.assertTrue((not r.isexc) and r.res)
         r=self.m.in_shop_purchases_history_request("username")
-        self.assertTrue((not r.is_exception) and r.response==[])
+        self.assertTrue((not r.isexc) and r.res == [])
         
     def testMultiAdd(self):
         self.m.logout(self.u)
         r=self.m.in_shop_purchases_history_request(self.u)
-        self.assertTrue((not r.is_exception) and r.response==[])
+        self.assertTrue((not r.isexc) and r.res == [])
         self.m.shopping_carts_add_item(self.u,"itemname2","shopname",1)
         self.m.login_into_the_trading_system(self.u,"username","password")
         r=self.m.Shopping_cart_purchase(self.u)
-        self.assertTrue((not r.is_exception) and r.response)
+        self.assertTrue((not r.isexc) and r.res)
         r=self.m.in_shop_purchases_history_request("username")
-        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname1","itemname2"]])
+        self.assertTrue((not r.isexc) and r.res == [["shopname", "itemname1", "itemname2"]])
 
     def testMultiPurchase(self):
         self.m.logout(self.u)
         r=self.m.in_shop_purchases_history_request(self.u)
-        self.assertTrue((not r.is_exception) and r.response==[])
+        self.assertTrue((not r.isexc) and r.res == [])
         self.m.shopping_carts_add_item(self.u,"itemname2","shopname",1)
         r=self.m.Shopping_cart_purchase(self.u)
-        self.assertTrue((not r.is_exception) and r.response)
+        self.assertTrue((not r.isexc) and r.res)
         self.m.login_into_the_trading_system(self.u,"username","password")
         r=self.m.Shopping_cart_purchase(self.u)
-        self.assertTrue((not r.is_exception) and r.response)
+        self.assertTrue((not r.isexc) and r.res)
         r=self.m.in_shop_purchases_history_request("username")
-        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname1"]])
+        self.assertTrue((not r.isexc) and r.res == [["shopname", "itemname1"]])
         
 
 

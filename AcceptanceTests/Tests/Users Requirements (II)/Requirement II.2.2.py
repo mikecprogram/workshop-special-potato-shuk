@@ -8,7 +8,7 @@ class MyTestCase(unittest.TestCase):
 
     def setUp(self):
         self.m=SystemService()
-        self.u=self.m.get_into_the_Trading_system_as_a_guest().response
+        self.u=self.m.get_into_the_Trading_system_as_a_guest().res
         self.m.registration_for_the_trading_system(self.u,"username","password")
         #need to login, create shop and add items to it for test
         self.m.login_into_the_trading_system(self.u,"username","password")
@@ -24,50 +24,50 @@ class MyTestCase(unittest.TestCase):
     def testSearchName(self):
         r=self.m.general_items_searching(self.u,item_name="itemname1")
         
-        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname1"]]) 
+        self.assertTrue((not r.isexc) and r.res == [["shopname", "itemname1"]])
 
     def testSearchCategory(self):
         r=self.m.general_items_searching(self.u,category="animal objects")
-        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname1"],["shopname","itemname2"]])
+        self.assertTrue((not r.isexc) and r.res == [["shopname", "itemname1"], ["shopname", "itemname2"]])
         
     def testSearchKeyword(self):
         r=self.m.general_items_searching(self.u,item_keyword="cats")
         #print(r.exception,r.response)
-        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname1"]])
+        self.assertTrue((not r.isexc) and r.res == [["shopname", "itemname1"]])
 
     def testSearchMaxPrice(self):
         r=self.m.general_items_searching(self.u,item_maxPrice=3)
         #print(r.exception,r.response)
-        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname2"],["rockshop","itemname3"]])
+        self.assertTrue((not r.isexc) and r.res == [["shopname", "itemname2"], ["rockshop", "itemname3"]])
         
     def testSearchAll(self):
         r=self.m.general_items_searching(self.u,item_name="itemname2",category="animal objects",item_keyword="dogs",item_maxPrice=3)
         #print(r.exception,r.response)
-        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname2"]])
+        self.assertTrue((not r.isexc) and r.res == [["shopname", "itemname2"]])
         
     def testSearchBad(self):
         r=self.m.general_items_searching(self.u,item_name="itemname42")
-        self.assertTrue((not r.is_exception) and r.response==[]) 
+        self.assertTrue((not r.isexc) and r.res == [])
 
     def testSearchAny(self):
         r=self.m.general_items_searching(self.u)
-        self.assertTrue((not r.is_exception) and r.response==[['shopname', 'itemname1'], ['shopname', 'itemname2'], ['rockshop', 'itemname3']])
+        self.assertTrue((not r.isexc) and r.res == [['shopname', 'itemname1'], ['shopname', 'itemname2'], ['rockshop', 'itemname3']])
 
     def testSearchExclusive(self):
         r=self.m.general_items_searching(self.u,category="animal objects",item_maxPrice=1)
-        self.assertTrue((not r.is_exception) and r.response==[])
+        self.assertTrue((not r.isexc) and r.res == [])
         
     def testSearchPartialDesc(self):
         r=self.m.general_items_searching(self.u,item_keyword="ock")
-        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname1"],["shopname","itemname2"],["rockshop","itemname3"]])
+        self.assertTrue((not r.isexc) and r.res == [["shopname", "itemname1"], ["shopname", "itemname2"], ["rockshop", "itemname3"]])
         
     def testSearchPartialName(self):
         r=self.m.general_items_searching(self.u,item_keyword="ocks")
-        self.assertTrue((not r.is_exception) and r.response==[["shopname","itemname1"],["shopname","itemname2"],["rockshop","itemname3"]])
+        self.assertTrue((not r.isexc) and r.res == [["shopname", "itemname1"], ["shopname", "itemname2"], ["rockshop", "itemname3"]])
         
     def testSearchWhitespace(self):
         r=self.m.general_items_searching(self.u,item_keyword="ock ")
-        self.assertTrue((not r.is_exception) and r.response==[["rockshop","itemname3"]])
+        self.assertTrue((not r.isexc) and r.res == [["rockshop", "itemname3"]])
     
     
         

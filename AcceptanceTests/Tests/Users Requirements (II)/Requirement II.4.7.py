@@ -6,8 +6,8 @@ class MyTestCase(unittest.TestCase):
     def setUp(self):
         self.m=SystemService()
         self.m.initialization_of_the_system()
-        self.u=self.m.get_into_the_Trading_system_as_a_guest().response
-        self.u2=self.m.get_into_the_Trading_system_as_a_guest().response
+        self.u=self.m.get_into_the_Trading_system_as_a_guest().res
+        self.u2=self.m.get_into_the_Trading_system_as_a_guest().res
         self.m.registration_for_the_trading_system(self.u,"username","password")
         self.m.registration_for_the_trading_system(self.u,"username2","password2")
         #need to login, create shop and add items to it for test
@@ -20,9 +20,9 @@ class MyTestCase(unittest.TestCase):
         
     def testGood(self):
         r = self.m.shop_manager_assignment(self.u,"shopname","username2")
-        self.assertTrue((not r.is_exception) and r.response)
+        self.assertTrue((not r.isexc) and r.res)
         r = self.m.shop_manager_permissions_check(self.u,"username2","shopname")
-        self.assertTrue((not r.is_exception) and r.response)
+        self.assertTrue((not r.isexc) and r.res)
         r = self.m.shop_manager_permissions_add(self.u,"username2",1,"shopname")
 
     def happyCase(self):

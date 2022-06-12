@@ -6,10 +6,10 @@ class MyTestCase(unittest.TestCase):
     def setUp(self):
         self.m=SystemService()
         self.m.initialization_of_the_system()
-        self.u1=self.m.get_into_the_Trading_system_as_a_guest().response
-        self.u2=self.m.get_into_the_Trading_system_as_a_guest().response
-        self.u3=self.m.get_into_the_Trading_system_as_a_guest().response
-        self.u4=self.m.get_into_the_Trading_system_as_a_guest().response
+        self.u1=self.m.get_into_the_Trading_system_as_a_guest().res
+        self.u2=self.m.get_into_the_Trading_system_as_a_guest().res
+        self.u3=self.m.get_into_the_Trading_system_as_a_guest().res
+        self.u4=self.m.get_into_the_Trading_system_as_a_guest().res
 
         self.m.registration_for_the_trading_system(self.u1,"username1","password1")
         self.m.registration_for_the_trading_system(self.u2,"username2","password2")
@@ -34,14 +34,14 @@ class MyTestCase(unittest.TestCase):
         r1 = self.m.delete_shop_owner(self.u1,"shopname","username2")
         r2 = self.m.shop_owner_assignment(self.u3,"shopname","username4")
         #print(r2.exception)
-        self.assertTrue((not r1.is_exception) and ( r2.is_exception))
+        self.assertTrue((not r1.isexc) and (r2.isexc))
 
     def testBad(self):
         self.m.shop_owner_assignment(self.u1,"shopname","username2")
         self.m.shop_owner_assignment(self.u2,"shopname","username3")
         r1 = self.m.delete_shop_owner(self.u3,"shopname","username1")
         #print(r1.exception)
-        self.assertTrue((r1.is_exception))
+        self.assertTrue((r1.isexc))
 
 if __name__ == '__main__':
     unittest.main()

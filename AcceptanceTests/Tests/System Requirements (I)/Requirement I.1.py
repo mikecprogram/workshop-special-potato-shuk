@@ -12,7 +12,7 @@ class MyTestCase(unittest.TestCase):
         
     def testGood(self):
         r = self.m.initialization_of_the_system()
-        self.assertTrue((not r.is_exception) and r.response)
+        self.assertTrue((not r.isexc) and r.res)
 
 
 

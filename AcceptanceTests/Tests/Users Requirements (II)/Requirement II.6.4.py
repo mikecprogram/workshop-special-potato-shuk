@@ -15,7 +15,7 @@ class MyTestCase(unittest.TestCase):
         
     def testGood(self):
         r = self.m.in_shop_purchases_history_request(self.u)
-        self.assertTrue((not r.is_exception) and r.response)
+        self.assertTrue((not r.isexc) and r.res)
 
 
     def happyCase(self):

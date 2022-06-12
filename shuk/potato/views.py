@@ -5,7 +5,8 @@ from urllib import response
 from django import forms
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from potato.controller import Controller
+from SystemService import SystemService
+from potato.service import Service
 from .models import ItemInBasket, Shop, StockItem
 
 from email import message
@@ -16,20 +17,26 @@ from asgiref.sync import async_to_sync
 from .notificationPlugin import notificationPl
 
 notifyPlugin = notificationPl()
-service = Controller(notifyPlugin)
-
+m = SystemService()
+res = m.initialization_of_the_system()
+if res.isexc:
+    print("BUG:")
+    print(response.exception)
 
 def getToken(request):
     # TODO: check if the token is valid, else, do enter()
     if 'tokenuser' in request.COOKIES:
         return int(request.COOKIES['tokenuser'])
     else:
-        return service.enter()
-
+        res = m.enter()
+        if res.isexc :
+            print("Bug")
+            print(res.exc)
+        return res.res
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, code):
-        notifyPlugin.removeConnection(self)
+        await notifyPlugin.removeConnection(self)
 
     async def connect(self):
         await self.accept()
@@ -39,10 +46,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         }))
 
     async def receive(self, text_data=None, bytes_data=None):
-        text_data_json = json.loads(text_data)
-        message = text_data_json['message']
-        print("Consumer connected via cookie %s" % message)
-        notifyPlugin.addConnection(self, message)
+        text_data_json = await json.loads(text_data)
+        message = await text_data_json['message']
+        await print("Consumer connected via cookie %s" % message)
+        await notifyPlugin.addConnection(self, message)
 
 
 # Create your views here.

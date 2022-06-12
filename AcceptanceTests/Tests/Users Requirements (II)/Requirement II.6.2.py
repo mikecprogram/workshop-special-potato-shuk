@@ -6,11 +6,11 @@ class MyTestCase(unittest.TestCase):
     def setUp(self):
         self.m = SystemService()
         self.m.initialization_of_the_system()
-        self.u = self.m.get_into_the_Trading_system_as_a_guest().response
-        self.u1 = self.m.get_into_the_Trading_system_as_a_guest().response
-        self.u2 = self.m.get_into_the_Trading_system_as_a_guest().response
-        self.u3 = self.m.get_into_the_Trading_system_as_a_guest().response
-        self.u4 = self.m.get_into_the_Trading_system_as_a_guest().response
+        self.u = self.m.get_into_the_Trading_system_as_a_guest().res
+        self.u1 = self.m.get_into_the_Trading_system_as_a_guest().res
+        self.u2 = self.m.get_into_the_Trading_system_as_a_guest().res
+        self.u3 = self.m.get_into_the_Trading_system_as_a_guest().res
+        self.u4 = self.m.get_into_the_Trading_system_as_a_guest().res
 
         self.m.registration_for_the_trading_system(self.u1, "username1", "password1")
         self.m.registration_for_the_trading_system(self.u2, "username2", "password2")
@@ -36,7 +36,7 @@ class MyTestCase(unittest.TestCase):
         online_members=['username2', 'username3', 'username4']
         r = False
         for i in online_members:
-            r = r or self.m.delete_member(self.u,i).is_exception
+            r = r or self.m.delete_member(self.u,i).isexc
         #print(self.m.get_all_members_name(self.u).response)
         self.assertTrue(not r)
 
@@ -45,7 +45,7 @@ class MyTestCase(unittest.TestCase):
         online_members = ['Alex', 'username1']
         r = True
         for i in online_members:
-            r = r and self.m.delete_member(self.u, i).is_exception
+            r = r and self.m.delete_member(self.u, i).isexc
         #print(self.m.get_all_members_name(self.u).response)
         self.assertTrue(r)
 

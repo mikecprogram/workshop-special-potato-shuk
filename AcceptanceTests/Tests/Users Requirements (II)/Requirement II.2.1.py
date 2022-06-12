@@ -9,7 +9,7 @@ class MyTestCase(unittest.TestCase):
 
     def setUp(self):
         self.m=SystemService()
-        self.u=self.m.get_into_the_Trading_system_as_a_guest().response
+        self.u=self.m.get_into_the_Trading_system_as_a_guest().res
         self.m.registration_for_the_trading_system(self.u,"username","password")
         #need to login, create shop and add items to it for test
         self.m.login_into_the_trading_system(self.u,"username","password")
@@ -20,34 +20,34 @@ class MyTestCase(unittest.TestCase):
                
     def testGoodGuest(self):
         r=self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")      
-        self.assertTrue((not r.is_exception) and r.response == ["Shop name: shopname\nFounder: username\n",["itemname"]])
+        self.assertTrue((not r.isexc) and r.res == ["Shop name: shopname\nFounder: username\n", ["itemname"]])
         r=self.m.info_about_item_in_shop(self.u,"itemname","shopname")
-        self.assertTrue((not r.is_exception) and not r.response is None) 
+        self.assertTrue((not r.isexc) and not r.res is None)
         
     def testGoodMember(self): #in case information is defferent
         self.m.login_into_the_trading_system(self.u,"username","password")
         r=self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")
-        self.assertTrue((not r.is_exception) and r.response == ["Shop name: shopname\nFounder: username\n",["itemname"]])
+        self.assertTrue((not r.isexc) and r.res == ["Shop name: shopname\nFounder: username\n", ["itemname"]])
         r=self.m.info_about_item_in_shop(self.u,"itemname","shopname")
-        self.assertTrue((not r.is_exception) and not r.response is None) 
+        self.assertTrue((not r.isexc) and not r.res is None)
         
     def testbadShopGuest(self):
         r=self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"badshopname")
-        self.assertTrue(r.is_exception) 
+        self.assertTrue(r.isexc)
         
     def testbadShopMember(self):
         self.m.login_into_the_trading_system(self.u,"username","password")
         r=self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"badshopname")
-        self.assertTrue(r.is_exception) 
+        self.assertTrue(r.isexc)
         
     def testbadItemGuest(self):
         r=self.m.info_about_item_in_shop(self.u,"baditemname","shopname")
-        self.assertTrue((not r.is_exception) and r.response==None) 
+        self.assertTrue((not r.isexc) and r.res == None)
         
     def testbadShopMember(self):
         self.m.login_into_the_trading_system(self.u,"username","password")
         r=self.m.info_about_item_in_shop(self.u,"baditemname","shopname")
-        self.assertTrue((not r.is_exception) and r.response==None)
+        self.assertTrue((not r.isexc) and r.res == None)
     
         
 if __name__ == '__main__':
