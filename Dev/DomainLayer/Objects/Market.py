@@ -371,9 +371,13 @@ class Market():
     def Shopping_cart_purchase(self, token):
         if self.isToken(token):
             user = self.getUser(token)
-            # here call function to validate purchase, check payment and delivery.
-            # if any check fails we raise exception and dont get to the line: user.purchase()
+            if not user.validate_cart_purchase():
+                raise Exception('Cart did not pass purchase policy!')
+            price = user.calculate_cart_price()
+            #paymentServiceInterface.request_payment(price, None) or something similar, this interface is empty
             return user.purchase()
+        else:
+            raise Exception('Timed out token!')
 
     def get_inshop_purchases_history(self, token, shopname):
         if self.isToken(token):
