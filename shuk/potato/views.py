@@ -73,7 +73,7 @@ def cart(request):
     item1 = ItemInBasket(5, "Dairy", "Milk", "Cow's Milk", 20, 5, 6.5, 2)
     item2 = ItemInBasket(5, "Beverages", "Cola",
                          "Icy Coca Cola", 10, 7.5, 10, 1)
-    itemslist = [item1, item2]
+    itemslist = []
     return makerender(request, tokenuser, 'cart.html', {'itemslist': itemslist})
 
 
@@ -117,7 +117,7 @@ def homepage(request):
 # Note that it is not inheriting from forms.ModelForm
 class LoginRegisterForm(forms.Form):
     username = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username','autofocus':''}))
 
     password = forms.CharField(min_length=8,
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
@@ -125,7 +125,7 @@ class LoginRegisterForm(forms.Form):
 
 class CreateShopForm(forms.Form):  # Note that it is not inheriting from forms.ModelForm
     shopname = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Shop name'}))
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Shop name','autofocus':''}))
 
 
 def createShop(request):
@@ -137,7 +137,7 @@ def createShop(request):
         if form.is_valid():
             cd = form.cleaned_data
             shopname = cd.get('shopname')
-            res = m.shop_open(tokenuser,shop)
+            res = m.shop_open(tokenuser,shopname)
             if(res.isexc):
                 errormessage = "Error: %s"% res.exc
             else:
@@ -185,7 +185,7 @@ def register(request):
                 errormessage = res.exc
             else:
                 return makerender(request, tokenuser, 'homepage.html',
-                      {'tokenuser': tokenuser,'jsmessage':'You have registered successfully'})
+                      {'tokenuser': tokenuser},'You have registered successfully')
     return makerender(request, tokenuser, 'loginregister.html',
                   {"form": form, 'state': "Register", "screen": "register", "errormessage": errormessage,
                    'tokenuser': tokenuser})
@@ -232,7 +232,7 @@ def item(request, itemname):
 def exit(request):
     tokenuser = getToken(request)
     m.Trading_system_quitting(tokenuser)
-    response = render(request, 'exit.html',{"userStatus":""})
+    response = render(request, 'exit.html',{"userStatus":"",'jsmessage' :""})
     response.delete_cookie('tokenuser')
     return response
 
@@ -243,12 +243,36 @@ def searchItems(request):
 
 def manage(request):
     tokenuser = getToken(request)
-    shop1 = Shop(1,"Cool Shop","Open","Finder",["Who?","He?"],["No one"],"None.")
-    shop2 = Shop(2,"Awesome Shop","Open","Finder",["Who?","He?"],["No one"],"None.")
-    shops = [shop1,shop2]
+    counter = 0
+    found = []
+    own = []
+    manage = []
+    res = m.get_founded_shops(tokenuser)
+    if res.isexc :
+        return renderError(request,tokenuser, res.exc)
+    for shopname in res.res:
+        res = m.info_about_shop_in_the_market_and_his_items_name(tokenuser,shopname)
+        if res.isexc :
+            return renderError(request,tokenuser, res.exc)
+        s = res.res
+        res = m.get_eligible_members_for_shop(tokenuser,shopname)
+        if res.isexc :
+            return renderError(request,tokenuser, res.exc)
+        eligible = res.res
+        found.append(
+            {'name' : s['name'] ,'founder' : s['founder'],
+            'managers': ', '.join([m for m in s['managers']]),
+            'owners': ', '.join([m for m in s['owners']]),
+            'shopopen': s['shopopen'],
+            'eligible':eligible}
+        )
+        counter = counter + 1
     userlist = ["What?","When?"]
     m.get_founded_shops(tokenuser)
-    return makerender(request,tokenuser, 'manage.html',{'itemslist':shops,"userlist":userlist})
+    return makerender(request,tokenuser, 'manage.html',
+    {'found':found,
+    'own':own,
+    'manage':manage,"userlist":userlist})
 
 def makemanager(request):
     tokenuser = getToken(request)
@@ -263,16 +287,17 @@ def premissions(request):
     return makerender(request,tokenuser, 'premissions.html')
 
 
-
+def renderError(request, tokenuser,err):
+    return makerender(request,tokenuser, 'homepage.html',error=err)
 @csrf_exempt
-def makerender(request, tokenuser, page, optparams=None):
+def makerender(request, tokenuser, page, optparams=None,error =None):
     if optparams is None:
         optparams = {}
     optparams['token'] = tokenuser
-    if not('jsmessage' in optparams):
+    if error is None:
         optparams['jsmessage'] = ""
-    print("State:::")
-    print(m.get_user_state(tokenuser).res)
+    else:
+        optparams['jsmessage'] = error
     optparams['userStatus'] = m.get_user_state(tokenuser).res#should return Guest or Username
     response = render(request, page, optparams)
 

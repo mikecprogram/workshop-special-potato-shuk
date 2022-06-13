@@ -608,30 +608,42 @@ class Market():
 
     def get_founded_shops(self, token):
         self._enterLock.acquire()
-        if self.isToken(token) and self.is_logged_in(token):
-            output = self.getUser(token).getMember().get_founder_shops()
-            self._enterLock.release()
-            return output
+        if self.isToken(token):
+            if self.is_logged_in(token):
+                output = self.getUser(token).getMember().get_founder_shops()
+                self._enterLock.release()
+                return output
+            else:
+                self._enterLock.release()
+                raise Exception('Only logged in members can open this page.')
         else:
             self._enterLock.release()
-            raise Exception("gfasgfsa"+str(self.is_logged_in(token))+'Timed out token!')
+            raise Exception('Timed out token!')
 
     def get_managed_shops(self, token):
         self._enterLock.acquire()
-        if self.isToken(token) and self.is_logged_in(token):
-            output = self.getUser(token).getMember().get_manage_shops()
-            self._enterLock.release()
-            return output
+        if self.isToken(token):
+            if self.is_logged_in(token):
+                output = self.getUser(token).getMember().get_manage_shops()
+                self._enterLock.release()
+                return output
+            else:
+                self._enterLock.release()
+                raise Exception('Only logged in members can open this page.')
         else:
             self._enterLock.release()
             raise Exception('Timed out token!')
 
     def get_owned_shops(self, token):
         self._enterLock.acquire()
-        if self.isToken(token) and self.is_logged_in(token):
-            output = self.getUser(token).getMember().get_owner_shops()
-            self._enterLock.release()
-            return output
+        if self.isToken(token):
+            if self.is_logged_in(token):
+                output = self.getUser(token).getMember().get_owner_shops()
+                self._enterLock.release()
+                return output
+            else:
+                self._enterLock.release()
+                raise Exception('Only logged in members can open this page.')
         else:
             self._enterLock.release()
             raise Exception('Timed out token!')

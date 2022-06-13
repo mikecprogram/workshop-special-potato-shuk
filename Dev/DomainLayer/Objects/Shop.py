@@ -5,12 +5,6 @@ from Dev.DomainLayer.Objects.Stock import Stock
 from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
 import threading
 
-from enum import Enum
-
-
-class ShopState(Enum):
-    Open = 1
-    Closed = 0
 
 
 class Shop():
@@ -18,7 +12,7 @@ class Shop():
     def __init__(self, shopName: str, founder):
         self._name = shopName
         self._stock = Stock()
-        self._status = ShopState.Open  # need to confirm if we need shop's status such as closed/open. TODO
+        self._isOpen = True  # need to confirm if we need shop's status such as closed/open. TODO
         self._founder = founder
         self._owners = {founder.get_username(): founder}  # {ownerUsername, Member}
         self._managers = {}  # {managerUsername, Member}
@@ -36,8 +30,8 @@ class Shop():
     def getId(self, itemname):
         return self._stock.getId(itemname)
 
-    def get_status(self):
-        return self._status
+    def isOpen(self):
+        return self._isOpen
 
     def isAmount(self, itemid, amount):  # if the store has enough supply
         return True
@@ -160,15 +154,14 @@ class Shop():
             return assignee in self._managers_assignments[assigner]
 
     def close_shop(self):
-        if self._status is ShopState.Open:
-            self._status = ShopState.Closed
+        if self._isOpen:
+            self._isOpen = False
             # TODO add notifying and events system
             pass
             return True
         else:
             raise Exception('Closed shop could not be closed again!')
 
-        pass  # just change state of shop to closed TODO
 
     def is_manager(self, managerUsername):
         return managerUsername in self._managers
@@ -194,8 +187,9 @@ class Shop():
         return report
 
     def get_shop_report(self):
-        return ['Shop name: ' + self._name + '\n' + 'Founder: ' + self._founder.get_username() + '\n',
-                self._stock.get_items_report()]
+        return {'name' : self._name ,'founder' : self._founder.get_username(),'managers': [m for m in self._managers],
+                    'owners': [m for m in self._owners],
+                    'shopopen':self._isOpen}
 
     def aqcuirePurchaseLock(self):
         self._shop_lock.acquire()

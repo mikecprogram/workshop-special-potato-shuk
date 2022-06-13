@@ -3,22 +3,27 @@
 
 {% block content %}
 
+{% block createshopbutton %}
+    {% include 'createshopbutton.html' %}
+{% endblock %}
+
 <h1>Manage my shops</h1>
+<H2>Founded:</H2>
 <div class="stockitemlist">
-    {% for item in itemslist %}
+    {% for shop in found %}
         <div class="stockitem">
             <div class="stockitemcontainer">
-            <h3>Shop Name: {{item.name}}</h3>
-            <h2>Founded by :{{item.founder}}</h2>
-            <h2>Owned by :{{item.owners}}</h2>
-            <h2>Managed by :{{item.managers}}</h2>
+            <h3>Shop Name: {{shop.name}}</h3>
+            <h2>Founded by :{{shop.founder}}</h2>
+            <h2>Owned by :{{shop.owners}}</h2>
+            <h2>Managed by :{{shop.managers}}</h2>
             </div>
             <hr>
             <form action="" method="POST">
                 <label>Choose manager to edit premissions:</label>
-                <input list="premissions{{item.id}}" name="premissions" class="browser">
-                <datalist id="premissions{{item.id}}">
-                {% for username in userlist %}
+                <input list="premissions{{shop.id}}" name="premissions" class="browser">
+                <datalist id="premissions{{shop.id}}">
+                {% for username in shop.eligible %}
                   <option value="{{username}}">
                 {% endfor %}
                 </datalist>
@@ -27,9 +32,9 @@
             <hr>
             <form action="" method="POST">
                 <label>Choose your new manager from the list:</label>
-                <input list="browsers{{item.id}}" name="browser" class="browser">
-                <datalist id="browsers{{item.id}}">
-                {% for username in userlist %}
+                <input list="browsers{{shop.id}}" name="browser" class="browser">
+                <datalist id="browsers{{shop.id}}">
+                {% for username in shop.eligible %}
                   <option value="{{username}}">
                 {% endfor %}
                 </datalist>
@@ -38,9 +43,9 @@
             <hr>
             <form action="" method="POST">
                 <label>Remove your store manager from the list:</label>
-                <input list="owners{{item.id}}" name="browser" class="browser">
-                <datalist id="removemanagers{{item.id}}">
-                {% for username in userlist %}
+                <input list="owners{{shop.id}}" name="browser" class="browser">
+                <datalist id="removemanagers{{shop.id}}">
+                {% for username in shop.eligible %}
                   <option value="{{username}}">
                 {% endfor %}
                 </datalist>
@@ -49,8 +54,8 @@
             <hr>
             <form action="" method="POST">
                 <label>Choose your store owner from the list:</label>
-                <input list="owners{{item.id}}" name="browser" class="browser">
-                <datalist id="owners{{item.id}}">
+                <input list="owners{{shop.id}}" name="browser" class="browser">
+                <datalist id="owners{{shop.id}}">
                 {% for username in userlist %}
                   <option value="{{username}}">
                 {% endfor %}
@@ -60,8 +65,8 @@
             <hr>
             <form action="" method="POST">
                 <label>Remove your store owner from the list:</label>
-                <input list="owners{{item.id}}" name="browser" class="browser">
-                <datalist id="removeowners{{item.id}}">
+                <input list="owners{{shop.id}}" name="browser" class="browser">
+                <datalist id="removeowners{{shop.id}}">
                 {% for username in userlist %}
                   <option value="{{username}}">
                 {% endfor %}
@@ -69,7 +74,7 @@
                 <button type="submit">Make owner</button>
             </form>
             <hr>
-            {% if item.shopopen == True %}
+            {% if shop.shopopen == True %}
             <form action="" method="POST">
                 <button action="submit" name="reopenshop" value="True">reopen shop</button>
             </form>
@@ -81,16 +86,14 @@
             <hr>
             {% endif %}
             
-            <a href="{% url 'manageItemsShop'%}/{{item.name}}"><button>manage items</button></a>
+            <a href="{% url 'manageItemsShop'%}/{{shop.name}}"><button>manage items</button></a>
             <hr>
             <a href="{% url 'storeHistoryPurchases'"><button>show shop purchases history</button></a>
             <hr>
             <!-- todo: add functionality  -->
-            <a href="{% url 'shop'%}/{{item.name}}"><button class="entershop">Enter Shop</button></a>
+            <a href="{% url 'shop'%}/{{shop.name}}"><button class="entershop">Enter Shop</button></a>
         </div>
-
     {% endfor %}
-
 </div>
 
 {% endblock %}

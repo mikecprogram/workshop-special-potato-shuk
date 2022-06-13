@@ -12,7 +12,7 @@ p {
 }
 .stockitemlist{
   display: grid;
-  grid-template-columns: repeat(6,16.6%);
+  grid-template-columns: repeat(5,20%);
   flex-direction: row;
   flex-wrap: wrap;
 }
@@ -24,9 +24,6 @@ p {
   background-color: aliceblue;
 }
 
-@media (max-width: 1500px) {
-  .stockitemlist { grid-template-columns: repeat(5,20%); }
-}
 @media (max-width: 1200px) {
   .stockitemlist { grid-template-columns: repeat(4,25%); }
 }
@@ -91,22 +88,24 @@ textarea:focus, input:focus{
   border: 0;
   margin-bottom: 15px;
 }
-
 .LoginScreen>div>button{
-  margin-top: 5px;
-  height: 30px;
   width: 80px;
+}
+.bluebutton{
+  margin-top: 5px;
+  margin-bottom: 5px;
+  height: 30px;
   text-align: center;
   clip-path: content-box;
   border: 0;
   border: 1px solid #ccc;
   border-radius: 125px;
-  -moz-box-shadow: inset 0 13px 25px rgba(255,255,255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
-  
-  box-shadow: inset 0 13px 25px rgba(255,255,255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  -moz-box-shadow: inset 0 13px 25px rgba(0, 132, 255, 0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  transition: all ease .3s;
+  box-shadow: inset 0 13px 25px rgba(0, 132, 255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
   cursor: pointer;
   font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
-  background: #4A90E2;
+  background: linear-gradient(rgba(255,255, 255, 0.5) 0%, rgba(0,0,0,0) 100%);
   border-color: #3672B6;
   color: #000;
   position: relative;
@@ -116,38 +115,41 @@ textarea:focus, input:focus{
   display: table;
   margin: 0 auto;
 }
+/*
 .bluebutton { 
   margin-top: 5px;
   height: 30px;
   width:100%;
   clip-path: content-box;
   border: 0;
-  border: 1px solid #ccc;
-  border-radius: 125px;
-  -moz-box-shadow: inset 0 13px 25px rgba(89, 0, 255, 0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
   
-  box-shadow: inset 0 13px 25px rgba(89, 0, 255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  border-radius: 125px;
+
+  -moz-box-shadow: inset 0 13px 25px rgba(0, 132, 255, 0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  transition: all ease .3s;
+  box-shadow: inset 0 13px 25px rgba(0, 132, 255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  background: linear-gradient(rgba(255,255, 255, 0.5) 0%, rgba(0,0,0,0) 100%);
   cursor: pointer;
   font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
-  background: #4A90E2;
   border-color: #3672B6;
   color: #000;
   position: relative;
   transition: all ease .3s;
-}
-.LoginScreen>div>button:before,.bluebutton:before {
+}*/
+.bluebutton:before {
   background: linear-gradient(rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%);
   border-radius: 125px;
   content:'';
   height: 18px;
-  left: 3%;
+  left: 10%;
   position: absolute;
-  top: 1px;
+  top: 0;
   transition: all ease .3s;
-  width: 94%;
+  width: 80%;
+  z-index: 2;
 }
 .LoginScreen>div>button:hover,.bluebutton:hover {
-  box-shadow: inset 0 13px 25px rgba(255,255,255,0.8), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.2);
+  box-shadow: inset 0 13px 25px rgba(0, 132, 255,0.3), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
 }
 
 .errormessage {
@@ -233,43 +235,72 @@ color: black;
 }
 .searchform {
   position: relative;
-  width: 30rem;
-  background: rgb(198, 198, 198);
   border-radius: 25px;
 }
-.searchform label {
-  position: absolute;
-  clip: rect(1px, 1px, 1px, 1px);
-  padding: 0;
-  border: 0;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
+.searchform button:active{
+  box-shadow: inset 0 13px 25px rgba(0, 132, 255,1), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
 }
-.searchform button {
+.searchform button:hover{
+  box-shadow: inset 0 13px 25px rgba(0, 132, 255,0.3), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+}
+.searchform button::before{
+  background: linear-gradient(rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%);
+  border-radius: 125px;
+  content:'';
+  height: 18px;
+  left: 82%;
+  position: absolute;
+  top: 3px;
+  transition: all ease .3s;
+  width: 16%;
+  z-index: 2;
+}
+.searchform button{
   cursor:pointer;
-  position: absolute;
   top: 0;
-  right: 0;
-  width: 6rem;
   font-weight: bold;
-  background: rgb(198, 198, 198);
+  width: 20%;
   border-radius: 25px;
+  height: 2rem;
+  font-family: 'Lato', sans-serif;
+  border: solid 1px rgba(0, 95, 184, 0.5);
+  -moz-box-shadow: inset 0 13px 25px rgba(0, 132, 255, 0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  transition: all ease .3s;
+  box-shadow: inset 0 13px 25px rgba(0, 132, 255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  background: linear-gradient(rgba(255,255, 255, 0.5) 0%, rgba(0,0,0,0) 100%);
+  font-size: 1.5rem;
 }
-.searchform > button,input{
+.searchform input{
   height: 2rem;
   font-family: 'Lato', sans-serif;
   border: 0;
   color: #2f2f2f;
   font-size: 1.8rem;
 }
+input{
+  font-family: 'Lato', sans-serif;
+  font-size: 1.5rem;
+
+}
+/*
+input[type="search"] ::before{
+  background: linear-gradient(rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%);
+  border-radius: 125px;
+  content:'';
+  height: 18px;
+  left: 3%;
+  position: absolute;
+  top: 1px;
+  transition: all ease .3s;
+  width: 90%;
+  z-index: 2;
+}*/
 input[type="search"] {
-  -moz-box-shadow: inset 0 13px 25px rgba(255,255,255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  background: linear-gradient(rgba(255,255, 255, 1) 0%, rgba(0,0,0,0) 100%);
+  -moz-box-shadow: inset 0 13px 25px rgba(0,0,0,0.5), 0 3px 5px rgba(255,255,255,0.2), 0 10px 13px rgba(255,255,255,0.1);
   
-  box-shadow: inset 0 13px 25px rgba(255,255,255,0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
-  outline: 0; 
-  width: 100% - 6rem;
-  background: rgba(200,200,200, .7);
+  box-shadow: inset 0 13px 25px rgba(0,0,0,0.1), 0 3px 5px rgba(255,255,255,0.2), 0 10px 13px rgba(255,255,255,0.1);
+  outline: solid 1px darkgray;
   padding: 0 1.6rem;
   border-radius: 25px;
   appearance: none; 
@@ -277,6 +308,7 @@ input[type="search"] {
   transition-property: width, border-radius;
   z-index: 1;
   position: relative;
+  width: 79%;
 }
 h1{
   margin:0;

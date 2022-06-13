@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Here is a the shopping cart:</h1>
-
+<h1>My shopping cart:</h1>
+{% if itemslist|length == 0 %}
+        <div class = "center"><h1>Your cart is empty.</h1></div>
+    {% endif %}
 <div class="stockitemlist">
-
+    
     {% for item in itemslist %}
 
         <div class="stockitem">
