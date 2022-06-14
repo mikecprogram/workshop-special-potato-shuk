@@ -73,9 +73,13 @@
             
         {% if userStatus != "" %}
             <script type="text/javascript">
+                console.log("js")
                 let url=`ws://${window.location.host}/ws/socket-server/`
+                console.log("attempt")
                 const chatSocket = new WebSocket(url)
+                console.log("success")
                 chatSocket.onmessage = function(e){
+                    console.log("rec")
                     let data = JSON.parse(e.data)
                     if (data.type === 'connection_established'){
                         /*Get cookie:*/

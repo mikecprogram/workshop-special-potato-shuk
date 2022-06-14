@@ -11,7 +11,7 @@ urlpatterns = [
     re_path(r'^cart$',views.cart, name='cart'),
     re_path(r'^item/(?P<itemname>[\w ]+)/$',views.item,name = 'item'),
 
-    re_path(r'^art$',views.art),
+
     re_path(r'^manage$',views.manage, name='manage'),
     re_path(r'^premissions',views.premissions, name='premissions'),
     re_path(r'^makemanager$',views.makemanager),
@@ -20,6 +20,8 @@ urlpatterns = [
     re_path(r'^register$',views.register,name = 'register'),
     re_path(r'^shop$',views.shops,name = 'shop'),
     re_path(r'^shops$',views.shops, name = "shops"),
+    re_path(r'^shop/(?P<shopname>[\w ]+)/additem$',views.additem),
+    re_path(r'^shop/(?P<shopname>[\w ]+)/edititem$',views.edititem),
     re_path(r'^shop/(?P<shopname>[\w ]+)/$',views.shop),
     re_path(r'^exit$',views.exit, name='exit'),
     re_path(r'^manageItemsShop',views.manage, name='manageItemsShop'),

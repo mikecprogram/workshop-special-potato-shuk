@@ -3,8 +3,8 @@
 
 {% block content %}
 
-{% block createshopbutton %}
-    {% include 'createshopbutton.html' %}
+{% block createshopbutton%}
+    {% include 'createshopbutton.html'%}
 {% endblock %}
 
 <h1>Manage my shops</h1>
@@ -27,7 +27,7 @@
                   <option value="{{username}}">
                 {% endfor %}
                 </datalist>
-                <a href="{% url 'premissions'"><button type="submit">Edit Premission</button></a>
+                <a href="{% url 'premissions'"><button class= "bluebutton" type="submit">Edit Premission</button></a>
             </form>
             <hr>
             <form action="" method="POST">
@@ -38,7 +38,7 @@
                   <option value="{{username}}">
                 {% endfor %}
                 </datalist>
-                <button type="submit">Make manager</button>
+                <button class= "bluebutton" type="submit">Make manager</button>
             </form>
             <hr>
             <form action="" method="POST">
@@ -49,7 +49,7 @@
                   <option value="{{username}}">
                 {% endfor %}
                 </datalist>
-                <button type="submit">Make owner</button>
+                <button class= "bluebutton" type="submit">Make owner</button>
             </form>
             <hr>
             <form action="" method="POST">
@@ -60,7 +60,7 @@
                   <option value="{{username}}">
                 {% endfor %}
                 </datalist>
-                <button type="submit">Make owner</button>
+                <button class= "bluebutton" type="submit">Make owner</button>
             </form>
             <hr>
             <form action="" method="POST">
@@ -71,27 +71,27 @@
                   <option value="{{username}}">
                 {% endfor %}
                 </datalist>
-                <button type="submit">Make owner</button>
+                <button class= "bluebutton" type="submit">Make owner</button>
             </form>
             <hr>
             {% if shop.shopopen == True %}
             <form action="" method="POST">
-                <button action="submit" name="reopenshop" value="True">reopen shop</button>
+                <button class= "bluebutton" action="submit" name="reopenshop" value="True">reopen shop</button>
             </form>
             <hr>
             {%else%}
             <form action="" method="POST">
-                <button action="submit" name="closeshop" value="True">close shop</button>
+                <button class= "bluebutton" action="submit" name="closeshop" value="True">close shop</button>
             </form>
             <hr>
             {% endif %}
             
-            <a href="{% url 'manageItemsShop'%}/{{shop.name}}"><button>manage items</button></a>
+            <a href="{% url 'manageItemsShop'%}/{{shop.name}}"><button class= "bluebutton">manage items</button></a>
             <hr>
-            <a href="{% url 'storeHistoryPurchases'"><button>show shop purchases history</button></a>
+            <a href="{% url 'storeHistoryPurchases'"><button class= "bluebutton">show shop purchases history</button></a>
             <hr>
             <!-- todo: add functionality  -->
-            <a href="{% url 'shop'%}/{{shop.name}}"><button class="entershop">Enter Shop</button></a>
+            <a href="{% url 'shop'%}/{{shop.name}}"><button class= "bluebutton">Enter Shop</button></a>
         </div>
     {% endfor %}
 </div>

@@ -2,9 +2,15 @@
 
 {% block content %}
 <h1>My shopping cart:</h1>
-{% if itemslist|length == 0 %}
+{% if amountOfItems == 0 %}
         <div class = "center"><h1>Your cart is empty.</h1></div>
-    {% endif %}
+{% else %}
+<form action="" method="post" id="purchaseForm">
+    {% csrf_token %}
+    <div class="center"><button class="bluebutton" type="submit" name="purhcase" value="True">Purchase Cart</button></div>
+</form>
+
+{% endif %}
 <div class="stockitemlist">
     
     {% for item in itemslist %}

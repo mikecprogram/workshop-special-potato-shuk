@@ -5,12 +5,24 @@
 <h2>Founded by :{{founder}}</h2>
 <h2>Owned by :{{owners}}</h2>
 <h2>Managed by :{{managers}}</h2>
-
+{% if showAddItem %}
+<div class="center"><a href="additem"><button class="bluebutton">Add Item</button></a></div>
+{% endif %}
 <div class="stockitemlist">
 
     {% for item in itemslist %}
 
         <div class="stockitem">
+            <ul class="inlineme">
+                <li>
+            <form action="{% url 'shop'%}/{{shopname}}/edititem" method="GET">
+                <div class="center"><button class="yellowbutton" type="submit" name="edit" value="{{item.name}}">Edit</button></div>
+            </form></li>
+            <li><form action="" method="POST">
+                <div class="center"><button class="redbutton" type="submit" name="delete" value="{{item.name}}">Delete</button></div>
+                </form></li>
+                </ul>
+
             <h3>{{item.category}}</h3>
             <h2>{{item.name}}</h2>
             <p>{{item.desc}}</p>

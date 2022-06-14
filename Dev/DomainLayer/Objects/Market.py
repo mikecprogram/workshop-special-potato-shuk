@@ -1,5 +1,4 @@
 from operator import is_
-import time
 import threading
 import sys
 
@@ -69,7 +68,6 @@ class Market():
         self._members = {}
         self._membersLock = threading.Lock()
         self._onlineVisitors = {}  # {token, User}
-        self._onlineDate = {}  # hashmap  used only by isToken,enter
         self._nextToken = -1
         self._enterLock = threading.Lock()
         self._nextPolicy = 1
@@ -88,11 +86,7 @@ class Market():
     def isToken(self, token):
         if (not (token in self._onlineVisitors)):
             self.prid("The token was not found")
-        currentTime = time.time()
-        if (currentTime - self._onlineDate[token] < self._maxtimeonline):
-            self._onlineDate[token] = currentTime
-            return True
-        self.prid("Session time out for token %d" % token)
+        return True
 
     # sync me on [enter]
     def enter(self):
@@ -103,7 +97,6 @@ class Market():
         self._nextToken = self._nextToken + 1
         self._enterLock.release()
         self._onlineVisitors[currentToken] = User(self)
-        self._onlineDate[currentToken] = time.time()
         return currentToken
     def get_user_state(self, token):
         if self.isToken(token):
@@ -112,7 +105,6 @@ class Market():
         if self.isToken(token):
             self._onlineVisitors[token].exit()
             del self._onlineVisitors[token]
-            del self._onlineDate[token]
             return True
         return False
 

@@ -111,6 +111,57 @@ textarea:focus, input:focus{
   position: relative;
   transition: all ease .3s;
 }
+.inlineme{
+  list-style-type: none;
+  display: table;
+  margin: 0 auto;
+  padding: 0;
+}
+.inlineme li{
+  margin-right: 10px;
+  margin-left: 10px;
+  float: left;
+}
+.redbutton{
+  margin-top: 5px;
+  margin-bottom: 5px;
+  height: 30px;
+  text-align: center;
+  clip-path: content-box;
+  border: 0;
+  border: 1px solid #ccc;
+  border-radius: 125px;
+  -moz-box-shadow: inset 0 13px 25px rgba(255, 0, 0, 0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  transition: all ease .3s;
+  box-shadow: inset 0 13px 25px rgba(255, 0, 0, 0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  cursor: pointer;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
+  background: linear-gradient(rgba(255,255, 255, 0.5) 0%, rgba(0,0,0,0) 100%);
+  border-color: #b63636;
+  color: #000;
+  position: relative;
+  transition: all ease .3s;
+}
+.yellowbutton{
+  margin-top: 5px;
+  margin-bottom: 5px;
+  height: 30px;
+  text-align: center;
+  clip-path: content-box;
+  border: 0;
+  border: 1px solid #ccc;
+  border-radius: 125px;
+  -moz-box-shadow: inset 0 13px 25px rgba(251, 255, 0, 0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  transition: all ease .3s;
+  box-shadow: inset 0 13px 25px rgba(251, 255, 0, 0.5), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+  cursor: pointer;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
+  background: linear-gradient(rgba(255,255, 255, 0.5) 0%, rgba(0,0,0,0) 100%);
+  border-color: #b6a336;
+  color: #000;
+  position: relative;
+  transition: all ease .3s;
+}
 .center,.LoginScreen{
   display: table;
   margin: 0 auto;
@@ -136,7 +187,7 @@ textarea:focus, input:focus{
   position: relative;
   transition: all ease .3s;
 }*/
-.bluebutton:before {
+.bluebutton:before,.redbutton:before ,.yellowbutton:before{
   background: linear-gradient(rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%);
   border-radius: 125px;
   content:'';
@@ -151,7 +202,12 @@ textarea:focus, input:focus{
 .LoginScreen>div>button:hover,.bluebutton:hover {
   box-shadow: inset 0 13px 25px rgba(0, 132, 255,0.3), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
 }
-
+.redbutton:hover {
+  box-shadow: inset 0 13px 25px rgba(255, 0, 0, 0.3), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+}
+.yellowbutton:hover {
+  box-shadow: inset 0 13px 25px rgba(251, 255, 0, 0.3), 0 3px 5px rgba(0,0,0,0.2), 0 10px 13px rgba(0,0,0,0.1);
+}
 .errormessage {
   color: red;
 }
