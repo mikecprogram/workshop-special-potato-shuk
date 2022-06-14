@@ -79,7 +79,7 @@ class ShoppingBasket:
                 if not (self.shop.isAmount(id, amount)):
                     raise Exception("Not enough left from item %d" % id)
                 self.shop.purchase(user, id, amount)
-
+                del self.stockItems[id]
         except Exception as e:
             self.shop.releaseReleaseLock()
             raise e

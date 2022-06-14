@@ -23,6 +23,9 @@ class StockItem:
     def getID(self):
         return self._id
 
+    def setCount(self,count):
+            self._count=count
+
     def getShopName(self):
         return self._shopname
 

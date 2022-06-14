@@ -361,15 +361,20 @@ class Market():
         return s.remove_policy(policyID)
 
     def Shopping_cart_purchase(self, token):
-        if self.isToken(token):
-            user = self.getUser(token)
-            if not user.validate_cart_purchase():
-                raise Exception('Cart did not pass purchase policy!')
-            price = user.calculate_cart_price()
-            #paymentServiceInterface.request_payment(price, None) or something similar, this interface is empty
-            return user.purchase()
-        else:
-            raise Exception('Timed out token!')
+        self._enterLock.acquire()
+        try:
+            if self.isToken(token):
+                user = self.getUser(token)
+                if not user.validate_cart_purchase():
+                    raise Exception('Cart did not pass purchase policy!')
+                price = user.calculate_cart_price()
+                self._externalServices.execute_shipment()
+                self._externalServices.execute_payment()
+                return user.purchase()
+            else:
+                raise Exception('Timed out token!')
+        finally:
+            self._enterLock.release()
 
     def get_inshop_purchases_history(self, token, shopname):
         if self.isToken(token):

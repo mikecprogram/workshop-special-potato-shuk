@@ -34,7 +34,7 @@ class Shop():
         return self._isOpen
 
     def isAmount(self, itemid, amount):  # if the store has enough supply
-        return True
+        return self._stock.checkAmount(itemid,amount)
 
     def itemExists(self, itemid):
         return True
@@ -197,8 +197,8 @@ class Shop():
     def releaseReleaseLock(self):
         self._shop_lock.release()
 
-    def purchase(self, user, id, amount):
-        return True
+    def purchase(self, user, item_name, amount):
+        return self._stock.purchase(item_name,amount)
 
     def search(self, item_name, category, item_keyword, item_maxPrice):
         r = self._stock.search(item_name, category, item_keyword, item_maxPrice, self._name)

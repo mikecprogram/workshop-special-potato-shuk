@@ -70,6 +70,16 @@ class Stock:
                 return True
         raise Exception('No such items in stock!')
 
+    def purchase(self,item_name, amount):
+        for n, i in self._stockItems.items():
+            if i.getName() == item_name:
+                if i.getCount()<amount:
+                    raise Exception('Not enough items in stock!')
+                i.setCount(i.getCount()-amount)
+                return True
+        raise Exception('No such items in stock!')
+
+
     def removeCategory(self, categoryName):
         if self._categories.get(categoryName) is not None:
             self._categories.pop(categoryName)
@@ -82,7 +92,9 @@ class Stock:
             report.append(self._stockItems[stockItemId].getName())
 
         return report
-    
+
+
+
     def search(self, item_name, category, item_keyword, item_maxPrice, name):
         ret=[]
         
