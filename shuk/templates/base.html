@@ -48,7 +48,7 @@
     <div class="center">
         <li>
             <form action="{% url 'search'%}"class="searchform" method="get" role="search">
-                <input id="search" type="search" placeholder="Search..." autofocus required />
+                <input id="search" type="search" placeholder="Search..." required />
                 <button type="submit">Go</button>    
             </form>
         </li>
@@ -64,7 +64,7 @@
             
         </div>
       </header>
-      <main class="container">
+      
           <div>
             
             <br>
@@ -73,9 +73,13 @@
             
         {% if userStatus != "" %}
             <script type="text/javascript">
+                console.log("js")
                 let url=`ws://${window.location.host}/ws/socket-server/`
+                console.log("attempt")
                 const chatSocket = new WebSocket(url)
+                console.log("success")
                 chatSocket.onmessage = function(e){
+                    console.log("rec")
                     let data = JSON.parse(e.data)
                     if (data.type === 'connection_established'){
                         /*Get cookie:*/

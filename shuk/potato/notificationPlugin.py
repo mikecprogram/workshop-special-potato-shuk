@@ -19,8 +19,11 @@ class notificationPl:
         #print(len(self.connections))
 
     async def removeConnection(self, conn):
+        print("ENTER removeConnection")
         while conn in self.connections:
             del self.connections[conn]
+            print("loop")
+        print("Exit")
         #for debugging:
         #print(len(self.connections))
    

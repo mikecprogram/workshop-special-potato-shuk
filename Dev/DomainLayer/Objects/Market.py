@@ -1,5 +1,4 @@
 from operator import is_
-import time
 import threading
 import sys
 
@@ -69,7 +68,6 @@ class Market():
         self._members = {}
         self._membersLock = threading.Lock()
         self._onlineVisitors = {}  # {token, User}
-        self._onlineDate = {}  # hashmap  used only by isToken,enter
         self._nextToken = -1
         self._enterLock = threading.Lock()
         self._nextPolicy = 1
@@ -88,11 +86,7 @@ class Market():
     def isToken(self, token):
         if (not (token in self._onlineVisitors)):
             self.prid("The token was not found")
-        currentTime = time.time()
-        if (currentTime - self._onlineDate[token] < self._maxtimeonline):
-            self._onlineDate[token] = currentTime
-            return True
-        self.prid("Session time out for token %d" % token)
+        return True
 
     # sync me on [enter]
     def enter(self):
@@ -103,7 +97,6 @@ class Market():
         self._nextToken = self._nextToken + 1
         self._enterLock.release()
         self._onlineVisitors[currentToken] = User(self)
-        self._onlineDate[currentToken] = time.time()
         return currentToken
     def get_user_state(self, token):
         if self.isToken(token):
@@ -112,7 +105,6 @@ class Market():
         if self.isToken(token):
             self._onlineVisitors[token].exit()
             del self._onlineVisitors[token]
-            del self._onlineDate[token]
             return True
         return False
 
@@ -612,30 +604,42 @@ class Market():
 
     def get_founded_shops(self, token):
         self._enterLock.acquire()
-        if self.isToken(token) and self.is_logged_in(token):
-            output = self.getUser(token).getMember().get_founder_shops()
-            self._enterLock.release()
-            return output
+        if self.isToken(token):
+            if self.is_logged_in(token):
+                output = self.getUser(token).getMember().get_founder_shops()
+                self._enterLock.release()
+                return output
+            else:
+                self._enterLock.release()
+                raise Exception('Only logged in members can open this page.')
         else:
             self._enterLock.release()
-            raise Exception("gfasgfsa"+str(self.is_logged_in(token))+'Timed out token!')
+            raise Exception('Timed out token!')
 
     def get_managed_shops(self, token):
         self._enterLock.acquire()
-        if self.isToken(token) and self.is_logged_in(token):
-            output = self.getUser(token).getMember().get_manage_shops()
-            self._enterLock.release()
-            return output
+        if self.isToken(token):
+            if self.is_logged_in(token):
+                output = self.getUser(token).getMember().get_manage_shops()
+                self._enterLock.release()
+                return output
+            else:
+                self._enterLock.release()
+                raise Exception('Only logged in members can open this page.')
         else:
             self._enterLock.release()
             raise Exception('Timed out token!')
 
     def get_owned_shops(self, token):
         self._enterLock.acquire()
-        if self.isToken(token) and self.is_logged_in(token):
-            output = self.getUser(token).getMember().get_owner_shops()
-            self._enterLock.release()
-            return output
+        if self.isToken(token):
+            if self.is_logged_in(token):
+                output = self.getUser(token).getMember().get_owner_shops()
+                self._enterLock.release()
+                return output
+            else:
+                self._enterLock.release()
+                raise Exception('Only logged in members can open this page.')
         else:
             self._enterLock.release()
             raise Exception('Timed out token!')

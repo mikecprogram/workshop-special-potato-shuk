@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if userStatus != "Guest" %}
-<div class="center"><a href="{% url 'createshop' %}"><button class="bluebutton">Create New Shop</button></a></div>
-{% endif %}
+
+{% block createshopbutton %}
+    {% include 'createshopbutton.html' %}
+{% endblock %}
+
 <h1>Shops List:</h1>
 <div class="stockitemlist">
     {% for item in itemslist %}

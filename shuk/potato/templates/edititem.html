@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form class="LoginScreen" action="" method="POST">
+    {% csrf_token %}
+    <div class="LoginContainer">
+
+        <h1>Edit item from shop {{shopname}}</h1>
+        {{form.as_p}}
+
+    </div>
+        {% if errormessage != '' %}
+            <span class="errormessage">{{errormessage}}</span>
+        {% endif %}
+        <div class="center"><button type="submit" class="bluebutton">Save</button></div>
+    </div>
+</form>
+
+{% endblock %}

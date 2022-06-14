@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+
 <form class="LoginScreen" action="{% url screen %}" method="POST">
     {% csrf_token %}
     <div class="LoginContainer">
@@ -10,7 +12,7 @@
         
         {% if state == 'Login' %}
             <span class="alignright">Not registered? <br>click <a href="{% url 'register'%}">here</a></span>
-        {%else%}
+        {% else %}
             <span class="alignright">Are you registered? <br>click <a href="{% url 'login'%}">here</a></span>
         {% endif %}
 
@@ -18,7 +20,7 @@
         {% if errormessage != '' %}
             <span class="errormessage">{{errormessage}}</span>
         {% endif %}
-        <div class="center"><button type="submit">{{state}}</button></div>
+        <div class="center"><button type="submit" class="bluebutton">{{state}}</button></div>
     </div>
 </form>
 {% endblock %}
