@@ -85,6 +85,7 @@ class Stock:
         item_price = float(item_price)
         if itemname in self._stockItems.keys():
             i = self._stockItems[itemname]
+            self._stockItems[itemname] = None
             if new_name == "":
                     raise Exception("Name of item can't be null")
             if item_desc == "":
@@ -96,6 +97,7 @@ class Stock:
             if category == "":
                 raise Exception("Category of item can't be null")
             i.setName(new_name)
+            self._stockItems[new_name] = i
             i.setDesc(item_desc)
             i.setPrice(item_price)
             i.setAmount(amount)
