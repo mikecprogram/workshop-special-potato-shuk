@@ -9,10 +9,10 @@ import threading
 
 class Shop():
 
-    def __init__(self, shop_name: str, founder):
-        self._name = shop_name
+    def __init__(self, shopName: str, founder):
+        self._name = shopName
         self._stock = Stock()
-        self._is_open = True  # need to confirm if we need shop's status such as closed/open. TODO
+        self._isOpen = True  # need to confirm if we need shop's status such as closed/open. TODO
         self._founder = founder
         self._owners = {founder.get_username(): founder}  # {ownerUsername, Member}
         self._managers = {}  # {managerUsername, Member}
@@ -25,81 +25,64 @@ class Shop():
         self._managers_assignments = {}
         self._purchases_history = PurchaseHistory()
         self._shop_lock = threading.Lock()
+        pass
 
     def getId(self, itemname):
         return self._stock.getId(itemname)
 
     def isOpen(self):
-        return self._is_open
+        return self._isOpen
 
-    def isAmount(self, itemname, amount):  # if the store has enough supply
-        return self._stock.isAmount(itemname,amount)
+    def isAmount(self, itemid, amount):  # if the store has enough supply
+        return True
 
-    def itemExists(self, itemname):
-        return self._stock.itemExists(itemname)
-        
+    def itemExists(self, itemid):
+        return True
+
     def getShopName(self):
         return self._name
 
-    def add_item(self, username:str, item_name:str, category:str, item_desc:str, item_price: float, amount: int):
-        item_name = item_name.strip()
-        item_desc = item_desc.strip()
-        amount = int(amount)
-        item_price = float(item_price)
+    def add_item_lock(self, item: StockItem):
+        self._shop_lock.acquire()
+        r = self._stock.addStockItem(item)
+        self._shop_lock.release()
+        return r
 
-        if amount < 0:
-            raise Exception('Amount of item can not be negative')
-        if item_price < 0:
-            raise Exception('Price of item can not be negative')
-        if item_name == "" or item_name is None:
-            raise Exception('Item name must not be null')
-        if (username != self._founder.get_username()) and not (username in self._owners.keys()) and not (username in self._managers.keys()):
-            raise Exception('You do not have the sufficient permissions to add item')
-            
+    def add_item(self, username, item_name, category, item_desc, item_price, amount):
+        if not (username in self._owners.keys()) and not (username in self._managers.keys()):
+            return False
+        if (amount < 0 or item_price < 0 or item_name == ""):
+            return False
         nid = self._stock.getNextId()
-        item = StockItem(nid, None, item_name, item_desc, amount, None, None, item_price, self._name)
-        try:
-            self._shop_lock.acquire()
-            r = self._stock.addStockItem(category,item)
-            self._shop_lock.release()
-            return r
-        except Exception as e:
-            self._shop_lock.release()
-            raise e
+        item = StockItem(nid, category, item_name, item_desc, amount, None, None, item_price, self._name)
+        # print(item.toString())
+        r = self.add_item_lock(item)
+        # print (self._stock.search(None,None,None,None,self._name))
+        return r
 
-    def remove_item(self, item_name):
-        try:
-            self._shop_lock.acquire()
-            r = self._stock.removeStockItem(item_name)
-            self._shop_lock.release()
-            return r
-        except Exception as e:
-            self._shop_lock.release()
-            raise e
+    def remove_item(self, item_name, amount):
+        if (amount < 0):
+            raise Exception('Bad amount to delete')
+        self._shop_lock.acquire()
+        r = self._stock.removeStockItem(item_name, amount)
+        self._shop_lock.release()
+        return r
 
-
-    def editItem(self, itemname, new_name, item_desc,category, item_price,count):
-        try:
-            self._shop_lock.acquire()
-            r = self._stock.editStockItem(itemname, new_name, item_desc,category, item_price,count)
-            self._shop_lock.release()
-            return r
-        except Exception as e:
-            self._shop_lock.release()
-            raise e
+    def editItem(self, itemname, new_name, item_desc, item_price):
+        if (item_price is not None and item_price < 0) or (new_name is not None and new_name == ""):
+            raise Exception('Bad details')
+        self._shop_lock.acquire()
+        r = self._stock.editStockItem(itemname, new_name, item_desc, item_price)
+        self._shop_lock.release()
+        return r
 
     def checkAmount(self, item_name, amount):
-        amount = int(amount)
         if amount < 0:
-            raise Exception("You can't remove negative amount of item")
-        try:
-            self._shop_lock.acquire()
-            r = self._stock.checkAmount(item_name, amount)
-            self._shop_lock.release()
-            return r
-        except Exception as e:
-            self._shop_lock.release()
-            raise e
+            raise Exception('Bad amount')
+        self._shop_lock.acquire()
+        r = self._stock.checkAmount(item_name, amount)
+        self._shop_lock.release()
+        return r
 
     def assign_owner(self, assigner_member_object, assignee_member_object):
         if assignee_member_object.get_username() in self._owners:
@@ -174,16 +157,17 @@ class Shop():
         if self._isOpen:
             self._isOpen = False
             # TODO add notifying and events system
+            pass
             return True
         else:
             raise Exception('Closed shop could not be closed again!')
 
-    #Returns whether usernae is manager
-    def is_manager(self, manager_username:str) -> bool:
-        return manager_username in self._managers
 
-    def is_owner(self, owner_username: str) -> bool:
-        return self._owners[owner_username] is not None or self._founder.get_username() == owner_username
+    def is_manager(self, managerUsername):
+        return managerUsername in self._managers
+
+    def is_owner(self, ownerUsername):
+        return self._owners[ownerUsername] is not None or self._founder.get_username() == ownerUsername
 
     def getTotalDiscount(self, user):
         totaldiscount = 1
@@ -205,27 +189,21 @@ class Shop():
     def get_shop_report(self):
         return {'name' : self._name ,'founder' : self._founder.get_username(),'managers': [m for m in self._managers],
                     'owners': [m for m in self._owners],
-                    'shopopen':self.isOpen(),
-                'items':self._stock.get_items_report()}
+                    'shopopen':self._isOpen}
 
     def aqcuirePurchaseLock(self):
-        '''acquires the lock of the shop'''
         self._shop_lock.acquire()
 
-    def release_release_lock(self):
-        '''release the lock of the shop'''
+    def releaseReleaseLock(self):
         self._shop_lock.release()
 
-    
-    def purchase(self, user, itemname: str, amount: int):
-        '''Perform purchase'''
-        self._purchases_history.append("User %s bought %d of %s "%(user.get_state(),amount,itemname))
-        self._stock.purchase(itemname,amount)
+    def purchase(self, user, id, amount):
         return True
 
-    def search(self, query:str,category:str,item_min_price:float, item_max_price:float):
-        '''Performs search (non exclusive) - an item is found by query in his name/desc/category'''
-        return self._stock.search(query,category,item_min_price, item_max_price)
+    def search(self, item_name, category, item_keyword, item_maxPrice):
+        r = self._stock.search(item_name, category, item_keyword, item_maxPrice, self._name)
+        # print(r)
+        return r
 
     def getItemInfo(self, name):
         return self._stock.getItemInfo(name)

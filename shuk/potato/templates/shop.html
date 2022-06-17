@@ -10,7 +10,7 @@
 {% endif %}
 <div class="stockitemlist">
 
-    {% for item in items %}
+    {% for item in itemslist %}
 
         <div class="stockitem">
             <ul class="inlineme">
@@ -18,23 +18,20 @@
             <form action="{% url 'shop'%}/{{shopname}}/edititem" method="GET">
                 <div class="center"><button class="yellowbutton" type="submit" name="edit" value="{{item.name}}">Edit</button></div>
             </form></li>
-            <li>
-                <form action="" method="POST">
-                    <div class="center"><button class="redbutton" type="submit" name="deleteItem" value="{{item.name}}">Delete</button></div>
-                </form>
-            </li>
+            <li><form action="" method="POST">
+                <div class="center"><button class="redbutton" type="submit" name="delete" value="{{item.name}}">Delete</button></div>
+                </form></li>
                 </ul>
 
             <h3>{{item.category}}</h3>
             <h2>{{item.name}}</h2>
-            <p>{{item.description|linebreaks}}</p>
+            <p>{{item.desc}}</p>
             <p class="price">{{item.price}}₪</p>
-            <p class="left">{{item.amount}} left.</p>
+            <p class="left">{{item.count}} left.</p>
             <!-- todo: add functionality  -->
             <form class="AddToCartform" action="" method="POST">
-                {% csrf_token %}
-                Amount: <input  type ="number" value=1 min="1" max="{{item.amount}}" step="1" name="quantity">
-                <div class="center"><button class="bluebutton" type="submit"name="addItemToCart" value="{{item.name}}">Add to cart</button></div>
+                Amount: <input  type ="number" value=1 min="1" max="{{item.count}}" step="1" name="quantity">
+                <div class="center"><button class="bluebutton" type="submit"name="addItemToCart" value="{{item.id}}">Add to cart</button></div>
             </form>
         </div>
 

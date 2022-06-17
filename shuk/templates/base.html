@@ -29,7 +29,7 @@
                 <ul class="basemenubar">
                 {% if userStatus != "" %}
                     <li><a href="{% url 'shops' %}">Shops</a></li>
-                    <li><a href="{% url 'cart' %}">My Cart ({{cartamount}})</a></li>
+                    <li><a href="{% url 'cart' %}">My Cart</a></li>
                 {%endif%}
                 {% if userStatus == "" or userStatus == "Guest" %}
                     <li><a href="{% url 'login' %}">Login</a></li>
@@ -48,7 +48,7 @@
     <div class="center">
         <li>
             <form action="{% url 'search'%}"class="searchform" method="get" role="search">
-                <input id="search" type="search" name="q" placeholder="Search..." value="{{searchterm}}" required />
+                <input id="search" type="search" placeholder="Search..." required />
                 <button type="submit">Go</button>    
             </form>
         </li>

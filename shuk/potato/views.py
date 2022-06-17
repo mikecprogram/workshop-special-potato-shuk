@@ -1,4 +1,3 @@
-from pydoc import describe
 import sys
 from http.client import HTTPException
 from operator import mod
@@ -71,27 +70,14 @@ def templateforview(request):
 
 def cart(request):
     tokenuser = getToken(request)
-    jsmessage = ""
     if request.method == 'POST':
-        jsmessage = 'Purchase successfully!'
-        res = m.Shopping_cart_purchase(tokenuser)
-        if res.isexc:
-            jsmessage = res.exc
-            print(res.exc)
-    res = m.shopping_carts_check_content(tokenuser)
-    print("---------------")
-    print(res.res)
-    len_results = 0
-    answer = None
-    if res.isexc:
-        renderError(request,tokenuser,res.exc)
-    else:
-        answer = res.res
-        print(answer)
-        for _,items in answer:
-            len_results += len(items)
-    
-    return makerender(request, tokenuser, 'cart.html', {'answer': answer,'amountOfItems':len_results},error=jsmessage)
+        return makerender(request, tokenuser, 'cart.html', {'itemslist': [],'amountOfItems':0,'jsmessage':'Purchase successfully!'})
+    item1 = ItemInBasket(5, "Dairy", "Milk", "Cow's Milk", 20, 5, 6.5, 2)
+    item2 = ItemInBasket(5, "Beverages", "Cola",
+                         "Icy Coca Cola", 10, 7.5, 10, 1)
+    itemslist = []
+    amountOfItems = len(itemslist)
+    return makerender(request, tokenuser, 'cart.html', {'itemslist': itemslist,'amountOfItems':1})
 
 
 def art(request):
@@ -156,7 +142,7 @@ def createShop(request):
             shopname = cd.get('shopname')
             res = m.shop_open(tokenuser,shopname)
             if(res.isexc):
-                errormessage = "Error: %s" % res.exc
+                errormessage = "Error: %s"% res.exc
             else:
                 return redirect('manage')
     return makerender(request, tokenuser, 'createshop.html',
@@ -200,7 +186,8 @@ def register(request):
             if res.isexc:
                 errormessage = res.exc
             else:
-                return login(request)
+                return makerender(request, tokenuser, 'homepage.html',
+                      {'tokenuser': tokenuser},'You have registered successfully')
     return makerender(request, tokenuser, 'loginregister.html',
                   {"form": form, 'state': "Register", "screen": "register", "errormessage": errormessage,
                    'tokenuser': tokenuser})
@@ -210,8 +197,8 @@ class AddItemForm(forms.Form):
     category = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Category'}))
     description = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}))
-    amount = forms.IntegerField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Description'}))
+    count = forms.IntegerField(
         widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Count','min':0}))
     price = forms.FloatField(
         widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Price','min':0}))
@@ -227,9 +214,9 @@ def additem(request, shopname):
             name = cd.get('name')
             category = cd.get('category')
             description = cd.get('description')
-            amount = cd.get('amount')
+            count = cd.get('count')
             price = cd.get('price')
-            res = m.adding_item_to_the_shops_stock(tokenuser,name, shopname,category,description,price,amount)
+            res = m.adding_item_to_the_shops_stock(tokenuser,name, shopname,category,description,price,count)
             if res.isexc :
                 return makerender(request, tokenuser, 'additem.html', {'shopname': shopname,'form':form},error=res.exc)
             return redirect('/shop/%s/'%shopname)
@@ -240,79 +227,57 @@ def edititem(request, shopname):
     errormessage = ''
     #This request had a user press save
     if request.method == 'POST':
-        olditemname = request.GET['edit']
         form = AddItemForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
             name = cd.get('name')
             category = cd.get('category')
             description = cd.get('description')
-            amount = cd.get('amount')
+            count = cd.get('count')
             price = cd.get('price')
             print("Price : %f" % price)
-            res = m.change_items_details_in_shops_stock(tokenuser,olditemname, shopname,name,description,category,price,amount)
+            res = m.change_items_details_in_shops_stock(tokenuser,name, shopname,category,description,
+            price,count)
             if res.isexc :
                 return makerender(request, tokenuser, 'edititem.html', {'shopname': shopname,'form':form},error=res.exc)
             return redirect('/shop/%s/'%shopname)        
     #This request is only for showing the initial edit page
-    
+    itemid = request.GET['edit']
+    print(itemid)
+    print(type(itemid))
+    form = AddItemForm(initial={'name':'banana'})
     if request.method == 'GET':
-        itemname = request.GET['edit']
-        res = m.info_about_item_in_shop(tokenuser,itemname,shopname)
-        if res.isexc:
-            return redirect('/shop/%s/'%shopname)  
-        form = AddItemForm(initial=res.res)
         return makerender(request, tokenuser, 'edititem.html', {'shopname': shopname,'form':form})
     return redirect('/shop/%s/'%shopname)
 @csrf_exempt
 def shop(request, shopname):
     tokenuser = getToken(request)
-    errormessage = ""
-    if request.method == 'POST':#Add to cart or deleteItem
-        if 'deleteItem' in request.POST:
-            itemname = request.POST['deleteItem']
-            print("delelting %s" % itemname)
-            res = m.deleting_item_from_shop_stock(tokenuser,itemname,shopname)
-            if res.isexc:
-                errormessage = res.exc
-            
-        if 'addItemToCart' in request.POST:
-            itemname = request.POST['addItemToCart']
-            quantity = int(request.POST['quantity'])
-            print(itemname)
-            print(quantity)
-            res = m.shopping_carts_add_item(tokenuser,itemname,shopname,quantity)
-            if res.isexc:
-                errormessage = res.exc
-
-    shopinfo = m.info_about_shop_in_the_market_and_his_items_name(tokenuser,shopname)
-    if shopinfo.isexc:
-        return renderError(request,tokenuser,shopinfo.exc)
-    shopinfo = shopinfo.res
-    #TODO, fetch also the discounts
     
-    showAddItem = True
+    if request.method == 'POST':
+        if 'addItemToCart' in request.POST:
+            itemid = request.POST['addItemToCart']
+            quantity = request.POST['quantity']
+            print(itemid)
+            print(quantity)
 
-    return makerender(request, tokenuser, 'shop.html',\
-     {'shopname': shopinfo['name'],\
-      'items': shopinfo['items'], \
-      'founder' : shopinfo['founder'], \
-      'owners' : shopinfo['owners'], \
-      'managers' : shopinfo['managers'],\
-      'showAddItem': showAddItem},\
-        error = errormessage)
+    showAddItem = True
+    st1 = StockItem(1, "Dairy", "Milk", "Fresh %s's milk" %
+                    shopname, 5, None, None, 5.90)
+    st2 = StockItem(5, "Alcohol", "Beer", "Root beer", 8, None, None, 7.90)
+
+    sts = [st1, st2]
+    sts = sts + sts
+    sts = sts + sts
+    sts = sts + sts
+    return makerender(request, tokenuser, 'shop.html', {'shopname': shopname, 'itemslist': sts, 'showAddItem': showAddItem})
 
 
 def shops(request):
     tokenuser = getToken(request)
-    #res = m.get()
-    #if res.isexc:
-    #    return renderError(request,tokenuser,res.exc)
-
     shops = []  # todo: get shops from servise
     shops.append(Shop(5,"Wow","Open","Me",['one'],['Two'],'None.'))
-    shops.append(Shop(5,"Mi","Open","Me",['one'],['Two'],'None.'))
-    shops.append(Shop(5,"Ma","Open","Me",['one'],['Two'],'None.'))
+    shops.append(Shop(5,"Wow","Open","Me",['one'],['Two'],'None.'))
+    shops.append(Shop(5,"Wow","Open","Me",['one'],['Two'],'None.'))
     return makerender(request, tokenuser, 'shops.html', {'itemslist': shops})
 
 
@@ -333,38 +298,10 @@ def exit(request):
     response.delete_cookie('tokenuser')
     return response
 
-class SearchForm(forms.Form):  # Note that it is not inheriting from forms.ModelForm
-    q = forms.CharField(required=False,disabled=True,label=False,
-        widget=forms.TextInput(attrs={'hidden' : True,'readonly':'','class': 'form-control', 'placeholder': 'Price','min':0}))
-    category = forms.CharField(required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Price','min':0}))
-    min_Price = forms.FloatField(required=False,
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Price','min':0}))
-
-    max_Price = forms.FloatField(required=False,
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Price','min':0}))
-
-
-
-def search(request):
+def searchItems(request):
     tokenuser = getToken(request)
-    answer = None
-    len_results = 0
-    query = ""
-    category = request.GET['category'] if 'category' in request.GET else ""
-    min_Price = request.GET['min_Price'] if 'min_Price' in request.GET else 0
-    max_Price = request.GET['max_Price'] if 'max_Price' in request.GET else 0
-    if request.method == 'GET':
-        query = request.GET['q']
-        res = m.general_items_searching(tokenuser,query,category, min_Price,max_Price)
-        if res.isexc:
-            print(res.exc)
-            renderError(request,tokenuser,res.exc)
-        else:
-            answer = res.res
-            for _,items in answer:
-                len_results += len(items)
-    return makerender(request,tokenuser, 'searchItems.html',{'len_results':len_results,'answer':answer,'searchterm': query,'category':category,'min_Price':min_Price,'max_Price':max_Price})
+    
+    return makerender(request,tokenuser, 'searchItems.html')
 
 def manage(request):
     tokenuser = getToken(request)
@@ -384,19 +321,19 @@ def manage(request):
         if res.isexc :
             return renderError(request,tokenuser, res.exc)
         eligible = res.res
-        found.append(\
-            {'name' : s['name'] ,'founder' : s['founder'],\
-            'managers': ', '.join([m for m in s['managers']]),\
-            'owners': ', '.join([m for m in s['owners']]),\
-            'shopopen': s['shopopen'],\
-            'eligible':eligible}\
+        found.append(
+            {'name' : s['name'] ,'founder' : s['founder'],
+            'managers': ', '.join([m for m in s['managers']]),
+            'owners': ', '.join([m for m in s['owners']]),
+            'shopopen': s['shopopen'],
+            'eligible':eligible}
         )
         counter = counter + 1
     userlist = ["What?","When?"]
     m.get_founded_shops(tokenuser)
-    return makerender(request,tokenuser, 'manage.html',\
-    {'found':found,\
-    'own':own,\
+    return makerender(request,tokenuser, 'manage.html',
+    {'found':found,
+    'own':own,
     'manage':manage,"userlist":userlist})
 
 def makemanager(request):
@@ -412,15 +349,13 @@ def premissions(request):
     return makerender(request,tokenuser, 'premissions.html')
 
 
-def renderError(request, tokenuser,err, page = "homepage.html"):
-    return makerender(request,tokenuser, page,error=err)
+def renderError(request, tokenuser,err):
+    return makerender(request,tokenuser, 'homepage.html',error=err)
 @csrf_exempt
 def makerender(request, tokenuser, page, optparams=None,error =None):
     if optparams is None:
         optparams = {}
     optparams['token'] = tokenuser
-    cartamount = 7
-    optparams['cartamount'] = cartamount
     if error is None:
         optparams['jsmessage'] = ""
     else:

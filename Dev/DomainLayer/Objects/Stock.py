@@ -5,114 +5,70 @@ class Stock:
 
     def __init__(self):
         self._categories = {}  # {CategoryName, Category}
-        self._stockItems = {}  # {stockItemName, stockItem}
+        self._stockItems = {}  # {stockItemId, stockItem}
         pass
     def getNextId(self):
         i=1
         while i in self._stockItems.keys():
             i=i+1
         return i
-    def purchase(self,itemname:str,amount:int):
-        '''Removes amount from count of stockItem'''
-        if itemname in list(self._stockItems):
-            self._stockItems[itemname].remove(amount)
-            return 0;
-        raise Exception("No such item %s in this shop." % (itemname))
 
-    def getItemInfo(self,name):##WTF why the iteration?!
-        if name in self._stockItems.keys():
-            item = self._stockItems[name]
-            return item.get_item_report_dict()
-        raise Exception("No such item %s in this shop." % (name))
+    def getItemInfo(self,name):
+        for k,i in self._stockItems.items():
+            if(i.getName()==name):
+                return i.toString()
+        return None
 
     def getItem(self, name):
-        if name in self._stockItems.keys():
-            item = self._stockItems[name]
-            return item
-        raise Exception("No such item %s in this shop." % (name))
+        for k,i in self._stockItems.items():
+            if(i.getName()==name):
+                return i
+        return None
             
-    def addItemToCategory(self,categoryName,item):
-        if not(item.getCategory() is None):
-            item.removeCategory()
-        if categoryName in self._categories.keys():
-            cat = self._categories[categoryName]
-            cat.safe_addstockItem(item)
-            item.setCategory(cat)
-        else:
-            self._categories[categoryName] = Category(categoryName)
-            cat = self._categories[categoryName]
-            cat.safe_addstockItem(item)
-            item.setCategory(cat)
-            
+
     def addCategory(self, category):
         if self._categories.get(category.get_catagoryName()) is None:
             self._categories[category.get_catagoryName()] = category
         else:
             raise Exception('Category is already exist!')
 
-    def addStockItem(self,categoryName, stockItem : StockItem):
-        if not(stockItem._name in self._stockItems.keys()):
-            self._stockItems[stockItem._name] = stockItem
-            self.addItemToCategory(categoryName,stockItem)
+    def addStockItem(self, stockItem: StockItem):
+        if self._stockItems.get(stockItem.getID()) is None:
+            self._stockItems[stockItem.getID()] = stockItem
             return True
         else:
-            raise Exception('An item with the same name (%s) already exists in this shop' % stockItem._name)
+            raise Exception('Stock item is already exist!')
 
-    def removeStockItem(self, itemname):#DOES WHAT IT SAYS- DELETES THE ENITRE ITEM FROM STOCK!!!
-        itemname = itemname.strip()
-        if itemname in self._stockItems.keys():
-            self._stockItems[itemname].removeCategory()
-            del self._stockItems[itemname]
-        else:
-            raise Exception('No such item as %s to delete.' % itemname)
+    def removeStockItem(self, itemname, amount):
+        for n,i in self._stockItems.items():
+            if i.getName()==itemname:
+                #print(1111)
+                if i.getCount()<amount:
+                    raise Exception('Not enough items in stock!')
+                if i.getCount()==amount:
+                    self._stockItems.pop(n)
+                self._stockItems[n].remove(amount)
+        return True
 
-    def editStockItem(self,itemname, new_name, item_desc,category, item_price,amount):
-        if new_name is None:
-            raise Exception("Name of item can't be null")
-        if item_desc  is None:
-            raise Exception("Description of item can't be null")
-        if item_price  is None:
-            raise Exception("Price of item can't be negative")
-        if amount is None:
-            raise Exception("Amount of item can't be negative")
-        if category is None:
-            raise Exception("Category of item can't be null")
-        itemname = itemname.strip()
-        new_name = new_name.strip()
-        item_desc = item_desc.strip()
-        category = category.strip()
-        amount = int(amount)
-        item_price = float(item_price)
-        if itemname in self._stockItems.keys():
-            i = self._stockItems[itemname]
-            if new_name == "":
-                    raise Exception("Name of item can't be null")
-            if item_desc == "":
-                raise Exception("Description of item can't be null")
-            if item_price < 0:
-                raise Exception("Price of item can't be negative")
-            if amount < 0:
-                raise Exception("Amount of item can't be negative")
-            if category == "":
-                raise Exception("Category of item can't be null")
-            i.setName(new_name)
-            i.setDesc(item_desc)
-            i.setPrice(item_price)
-            i.setAmount(amount)
-            self.addItemToCategory(category,i)
-            return True
-        else:
-            raise Exception("No such item such as %s" % itemname)
+    def editStockItem(self,itemname, new_name, item_desc, item_price):
+        for n, i in self._stockItems.items():
+            if i.getName() == itemname:
+
+                if new_name is not None:
+                    i.setName(new_name)
+                if item_desc is not None:
+                    i.setDesc(item_desc)
+                if item_price is not None:
+                    i.setPrice(item_price)
+        return True
 
     def checkAmount(self,item_name, amount):
-        print(item_name)
-        for item in self._stockItems.values():
-            print(item.getName())
-            if item.getName() == item_name:
-                if item.getCount() < amount:
+        for n, i in self._stockItems.items():
+            if i.getName() == item_name:
+                if i.getCount()<amount:
                     raise Exception('Not enough items in stock!')
                 return True
-        raise Exception('No such items in stock! %s' % item_name)
+        raise Exception('No such items in stock!')
 
     def removeCategory(self, categoryName):
         if self._categories.get(categoryName) is not None:
@@ -121,42 +77,31 @@ class Stock:
             raise Exception('Category does not exist!')
 
     def get_items_report(self):
-        return [stockItem.get_item_report_dict() for stockItem in self._stockItems.values()]
+        report = []
+        for stockItemId in self._stockItems:
+            report.append(self._stockItems[stockItemId].getName())
 
-
-    def itemExists(self,itemname):
-        return itemname in self._stockItems.keys()
-    def isAmount(self, itemname, amount):
-        if itemname in self._stockItems.keys():
-            if self._stockItems[itemname].getCount() >=amount:
-                return True
-            else:
-                return False
-        else:
-            raise Exception("Item %s does not exist in stock" % itemname)
-    def search(self, query,category,item_minPrice, item_maxPrice):
-        
+        return report
+    
+    def search(self, item_name, category, item_keyword, item_maxPrice, name):
         ret=[]
         
-        for item in self._stockItems.values():
-            c=item.getCategory().get_catagoryName()
+        for i,item in self._stockItems.items():
+            c=item.getCategory()
             n=item.getName()
             p=item.getPrice()
             d=item.getDesc()
             #print(n,p,item_maxPrice)
-            if query in c or query in n or query in d:#at least one match
-                if item_minPrice != 0:
-                    if p < item_minPrice:
-                        continue
-                if item_maxPrice != 0:
-                    if p > item_maxPrice:
-                        continue
-                if category != "":
-                    if category != c:
-                        continue
-                ret.append(item.get_item_report_dict())
-        if len(ret) == 0:
-            return None
+            if category is not None and not c==category:
+                continue
+            if item_name is not None and not n==item_name:
+                continue
+            if item_maxPrice is not None and p>item_maxPrice:
+                continue
+            if item_keyword is not None:
+                if(item_keyword not in c and item_keyword not in n and item_keyword not in d):
+                    continue
+            ret.append([name,n])
         #print(ret)
         return ret
 

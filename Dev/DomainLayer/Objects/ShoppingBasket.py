@@ -7,7 +7,13 @@ class ShoppingBasket:
     def __init__(self, shoppingCart, shop):
         self.shoppingCart = shoppingCart
         self.shop = shop
-        self.stockItems = {}  # {itemname, count}
+        self.stockItems = {}  # load
+
+    def getItemByName(self, itemName):
+        for i in self.stockItems:
+            if i[0] == itemName:
+                return i
+        return None
 
     def validate_purchase(self, user):
         for name in self.stockItems.keys():
@@ -17,8 +23,8 @@ class ShoppingBasket:
 
     def calculate_price(self, user):
         sum = 0
-        for itemname in self.stockItems.keys():
-            nu = self.shop.calculate_price(user, itemname, self.stockItems[itemname])
+        for name in self.stockItems.keys():
+            nu = self.shop.calculate_price(user, name, self.stockItems[name])
             #print(name, nu)
             sum += nu
         return sum
@@ -32,7 +38,7 @@ class ShoppingBasket:
     def addItem(self, item_name, amount):
         if not (self.shop.itemExists(item_name)):
             raise Exception("No such item found in shop")
-        if not (item_name in self.stockItems.keys()):
+        if not (item_name in self.stockItems):
             self.stockItems[item_name] = 0
         if not (self.shop.isAmount(item_name, self.stockItems[item_name] + amount)):
             raise Exception("No such amount available in shop")
@@ -55,13 +61,9 @@ class ShoppingBasket:
 
     def checkBasket(self):
         # return self.stockItems
-        print("!!!!!!!!!")
-        print(self.stockItems)
         ret = []
         for name, amount in self.stockItems.items():
-            item = self.shop.getItemInfo(name)
-            item['count'] = amount
-            ret.append(item)
+            ret.append([name, amount])
         return ret
 
     def clear(self):
@@ -72,17 +74,17 @@ class ShoppingBasket:
     def purchase(self, user):
         self.shop.aqcuirePurchaseLock()
         try:
-            for name in self.stockItems:
-                amount = self.stockItems[name]
-                if not (self.shop.isAmount(name, amount)):
-                    raise Exception("Not enough left from item %d" % name)
-                self.shop.purchase(user, name, amount)
+            for id in self.stockItems:
+                amount = self.stockItems[id]
+                if not (self.shop.isAmount(id, amount)):
+                    raise Exception("Not enough left from item %d" % id)
+                self.shop.purchase(user, id, amount)
 
-        except Exception as exception:
-            self.shop.release_release_lock()
-            raise exception
+        except Exception as e:
+            self.shop.releaseReleaseLock()
+            raise e
         self.stockItems.clear()
-        self.shop.release_release_lock()
+        self.shop.releaseReleaseLock()
         return True
 
     def to_string(self, customer_token):

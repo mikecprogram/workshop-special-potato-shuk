@@ -2,7 +2,6 @@
 
 {% block content %}
 <h1>My shopping cart:</h1>
-
 {% if amountOfItems == 0 %}
         <div class = "center"><h1>Your cart is empty.</h1></div>
 {% else %}
@@ -11,29 +10,33 @@
     <div class="center"><button class="bluebutton" type="submit" name="purhcase" value="True">Purchase Cart</button></div>
 </form>
 
-{% for shopname, items in answer.items %}
-<hr>
-<h2>From shop {{shopname}}:</h2>
-    <br>
+{% endif %}
 <div class="stockitemlist">
     
-        {% for item in items %}
+    {% for item in itemslist %}
+
         <div class="stockitem">
             <h3>{{item.category}}</h3>
             <h2>{{item.name}}</h2>
-            <p>{{item.description|linebreaks}}</p>
-            <p class="price">{{item.price}}₪</p>
-            <p class="center">{{item.amount}} left.</p>
-            <!-- todo: add functionality  -->
-            <form class="AddToCartform" action="" method="POST">
+            <p>{{item.desc}}</p>
+            <p class="price">Price: {{item.fullPrice}}₪</p>
+            <p class="discountedprice">Discounted price : {{item.discountedPrice}}₪</p>
+            <p class="left">{{item.count}} left.</p>
+            <!-- todo: add plus&minus button functionality  -->
+            <form action="" method="post" id="myForm">
                 {% csrf_token %}
-                Amount: <input  type ="number" value={{item.count}} min="0" max="{{item.amount}}" step="1" name="quantity">
-                <div class="center"><button class="bluebutton" type="submit"name="addItemToCart" value="{{item.name}}">Change amount</button></div>
+                <button type="submit" class="btn btn-sm btn-info" name="something">-</button>
             </form>
+            <p> Quantity: {{item.quantity}} </p>
+            <form action="" method="post" id="myForm">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-info" name="something">+</button>
+            </form>
+            <button>Remove from cart</button>
         </div>
-        {% endfor %}
+
+    {% endfor %}
+
 </div>
-{% endfor %}
-{% endif %}
 
 {% endblock %}
