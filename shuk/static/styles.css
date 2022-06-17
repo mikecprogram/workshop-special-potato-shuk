@@ -369,3 +369,6 @@ input[type="search"] {
 h1{
   margin:0;
 }
+.SearchParams{
+  max-width: 250px;
+}

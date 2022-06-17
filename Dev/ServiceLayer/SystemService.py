@@ -2,7 +2,7 @@ from pickle import NONE
 import sys
 from Dev.ServiceLayer.BridgeInterface import BridgeInterface
 from Dev.ServiceLayer.Response import Response
-from typing import List, Set
+from typing import Dict, List, Set
 
 from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
 from Dev.DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
@@ -168,14 +168,13 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def general_items_searching(self, user_id: int, item_name: str = None, category: str = None,
-                                item_keyword: str = None, item_maxPrice: int = None) -> Response[
-        List[List[str]]]:  # [[shop_name, item_name1] , [shop_name,item_name2] ...]
+    def general_items_searching(self, user_id: int, query:str,category="",item_minPrice:float = 0, item_maxPrice:float = 0) -> Response[
+        Dict[str,Dict]]:  # [[shop_name, item_name1] , [shop_name,item_name2] ...]
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
             return Response(
-                self.market.general_items_searching(user_id, item_name, category, item_keyword, item_maxPrice))
+                self.market.general_items_searching(user_id,query,category,item_minPrice, item_maxPrice))
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -187,8 +186,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shopping_carts_check_content(self, user_id: int) -> Response[List[List[
-        str]]]:  # List[List[str]]: #[[shop_name, item_name1,item_name2..] , [shop_name, item_name1,item_name2..] ...]
+    def shopping_carts_check_content(self, user_id: int) ->Dict[str,Dict]:  # List[List[str]]: #[[shop_name, item_name1,item_name2..] , [shop_name, item_name1,item_name2..] ...]
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
@@ -219,6 +217,7 @@ class SystemService(BridgeInterface):
                 return Response(exception="you have to initialize the system")
             return Response(self.market.Shopping_cart_purchase(user_id))
         except Exception as e:
+            raise e
             return Response(exception=e.__str__())
 
     def get_cart_price(self, token) -> Response[int]:
@@ -346,24 +345,24 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def deleting_item_from_shop_stock(self, user_id: int, item_name: str, shop_name: str, amount: int) -> Response[
+    def deleting_item_from_shop_stock(self, user_id: int, item_name: str, shop_name: str) -> Response[
         bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.deleting_item_from_shop_stock(user_id, item_name, shop_name, amount))
+            return Response(self.market.deleting_item_from_shop_stock(user_id, item_name, shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def change_items_details_in_shops_stock(self, user_id: int, item_name: str, shop_name: str, new_name=None,
-                                            item_desc: str = None,
-                                            item_price: float = None) -> Response[bool]:
+    def change_items_details_in_shops_stock(self, user_id: int, item_name: str, shop_name: str, new_name,
+                                            item_desc: str,category: str,
+                                            item_price: float ,amount: int) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
             return Response(
-                self.market.change_items_details_in_shops_stock(user_id, item_name, shop_name, new_name, item_desc,
-                                                                item_price))
+                self.market.change_items_details_in_shops_stock(user_id, item_name, shop_name, new_name, item_desc,category,
+                                                                item_price,amount))
         except Exception as e:
             return Response(exception=e.__str__())
 

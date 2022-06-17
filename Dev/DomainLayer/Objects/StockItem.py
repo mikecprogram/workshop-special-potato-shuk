@@ -66,8 +66,13 @@ class StockItem:
 
     def canPurchase(self, user):
         return True
+        
+    def setAmount(self, amount):
+        self._count = amount
 
     def remove(self, amount):
+        if self._count - amount < 0:
+            raise "Item cant have negative amount!!!"
         self._count-=amount
 
     def getTotalDiscount(self, user):
@@ -86,6 +91,15 @@ class StockItem:
 
     def getCategory(self) -> Category:
         return self._category
-
+    def setCategory(self,cat: Category):
+        self._category = cat
+    def removeCategory(self):
+        self._category.removeItem(self)
+        self._category = None
     def get_item_report(self):
         return 'Item: ' + self._name + '\n' + 'Price: ' + self._price + '\n' + 'Amount: ' + self._count + '\n' + 'id: ' + self._id +'\n'
+    def get_item_report_dict(self):
+        return {'name' : self._name , 'price' : self._price ,
+        'amount' : self._count ,'id' : self._id ,
+        'category':self.getCategory().get_catagoryName(),
+        'description':self._desc}

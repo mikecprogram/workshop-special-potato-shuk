@@ -180,6 +180,7 @@ class Member:
         if self.admin is not None:
             output = output+"and he is Admin\n"
         return output
+        
     def delete_shop_owner(self,shop_name, owner_name):
         if self.is_owned_shop(shop_name):
             self.ownedShops[shop_name].delete_owner(self._username,owner_name)

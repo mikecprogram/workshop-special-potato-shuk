@@ -1,4 +1,5 @@
 ##from .Logger import Logger
+from hashlib import sha1
 from tkinter import E
 from Dev.DomainLayer.Objects.ShoppingBasket import ShoppingBasket
 from Dev.DomainLayer.Objects.Shop import Shop
@@ -10,27 +11,16 @@ class ShoppingCart:
         self._cartPrice = None
         self.shoppingBaskets = {}   # {shopName, ShoppingBasket}
 
-    def getBasketByShop(self, shopname):
-        for b in self.shoppingBaskets:
-            if b == shopname:
-                return self.shoppingBaskets[b]
-        return None
+    def getBasketByShop(self, shop):
+        if shop.getShopName() not in self.shoppingBaskets.keys():
+            self.shoppingBaskets[shop.getShopName()] = ShoppingBasket(self,shop)
+        return self.shoppingBaskets[shop.getShopName()]
 
     def addItem(self, shop, item_name, amount):
-        b = self.getBasketByShop(shop.getShopName())
-        if b is None:
-            b = ShoppingBasket(self, shop)
-            self.shoppingBaskets[shop.getShopName()] = b
-        b.addItem(item_name, amount)
+       self.getBasketByShop(shop).addItem(item_name, amount)
 
     def removeItem(self, shopName, item_name,amount):
-        b = self.getBasketByShop(shopName)
-        if b is None:
-            raise ("removing too from non existant basket!")
-        ret = b.removeItem(item_name,amount)
-        if not b.checkBasket():
-            self.shoppingBaskets.pop(shopName)
-        return ret
+        self.getBasketByShop(shopName).removeItem(item_name,amount)
 
     def validate_purchase(self):
         for name, basket in self.shoppingBaskets.items():
@@ -45,10 +35,11 @@ class ShoppingCart:
         return sum
 
     def checkBaskets(self):
-        ans = []
+        ans = {}
         for name in self.shoppingBaskets:
+            print(name)
             b = self.shoppingBaskets[name]
-            ans.append([b.shop.getShopName(),b.checkBasket()])
+            ans[b.shop.getShopName()] = b.checkBasket()
         return ans
 
     def checkBasket(self, shopname):
