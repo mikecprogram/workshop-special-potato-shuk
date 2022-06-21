@@ -38,7 +38,7 @@ class MyTestCase(unittest.TestCase):
         for i in online_members:
             r = r or self.m.delete_member(self.u,i).isexc
         #print(self.m.get_all_members_name(self.u).response)
-        self.assertTrue(not r)
+        self.assertTrue(not r,r.exc)
 
     def testBad(self):
         #print(self.m.get_all_members_name(self.u).response)
@@ -47,7 +47,7 @@ class MyTestCase(unittest.TestCase):
         for i in online_members:
             r = r and self.m.delete_member(self.u, i).isexc
         #print(self.m.get_all_members_name(self.u).response)
-        self.assertTrue(r)
+        self.assertTrue(r,r.exc)
 
 
 if __name__ == '__main__':

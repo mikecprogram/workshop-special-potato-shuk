@@ -15,19 +15,19 @@ class MyTestCase(unittest.TestCase):
 
     def testGood1(self):
         r = self.m.get_all_members_name(self.u)
-        self.assertTrue((not r.isexc) and r.res[0][0] == "Alex" and r.res[1][0] == "username")
+        self.assertTrue((not r.isexc) and r.res[0][0] == "Alex" and r.res[1][0] == "username",r.exc)
 
     def testBad1(self):
         r = self.m.get_all_members_name(self.u2)
-        self.assertTrue(r.isexc)
+        self.assertTrue(r.isexc,r.exc)
 
     def testGood2(self):
         r = self.m.get_member_info(self.u,"Alex")
-        self.assertTrue((not r.isexc) and "Admin" in r.res)
+        self.assertTrue((not r.isexc) and "Admin" in r.res,r.exc)
 
     def testBad2(self):
         r = self.m.get_member_info(self.u, "notMember")
-        self.assertTrue(r.isexc)
+        self.assertTrue(r.isexc,r.exc)
 
 if __name__ == '__main__':
     unittest.main()

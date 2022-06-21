@@ -26,15 +26,15 @@ class MyTestCase(unittest.TestCase):
         
     def testSaveCartBadName(self):
         r=self.m.shopping_carts_add_item(self.u,"baditemname1","shopname",1)
-        self.assertTrue(r.isexc)
+        self.assertTrue(r.isexc,r.exc)
         
     def testSaveCartBadShop(self):
         r=self.m.shopping_carts_add_item(self.u,"itemname1","badshopname",1)
-        self.assertTrue(r.isexc)
+        self.assertTrue(r.isexc,r.exc)
 
     def testSaveCartBadAmount(self):
         r=self.m.shopping_carts_add_item(self.u,"itemname1","shopname",100)
-        self.assertTrue(r.isexc)
+        self.assertTrue(r.isexc,r.exc)
         
         
         

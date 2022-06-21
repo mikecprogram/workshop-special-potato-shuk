@@ -28,7 +28,7 @@ class MyTestCase(unittest.TestCase):
             print(r.exc)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         #r = self.m.shop_manager_permissions_check(self.u,"username2","shopname")
-        #self.assertTrue((not r.is_exception) and r.response)
+        #self.assertTrue((not r.is_exception) and r.response,r.exc)
 
     def testDouble(self):
         t1=threading.Thread(target=self.assignusertoshop,args=[self.u,"username2","shopname"])
@@ -41,7 +41,7 @@ class MyTestCase(unittest.TestCase):
 
     def assignusertoshop(self,tok,shopname,username):
         r1 = self.m.shop_manager_assignment(tok,shopname,username)
-        self.assertTrue((not r1.isexc) and r1.res)
+        self.assertTrue((not r1.isexc) and r1.res,r.exc)
 
 
 

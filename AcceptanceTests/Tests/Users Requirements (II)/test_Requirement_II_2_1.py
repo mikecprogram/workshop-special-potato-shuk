@@ -21,34 +21,34 @@ class MyTestCase(unittest.TestCase):
                
     def testGoodGuest(self):
         r=self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")      
-        self.assertTrue((not r.isexc) and r.res == ["Shop name: shopname\nFounder: username\n", ["itemname"]])
+        self.assertTrue((not r.isexc) and r.res == ["Shop name: shopname\nFounder: username\n", ["itemname"]],r.exc)
         r=self.m.info_about_item_in_shop(self.u,"itemname","shopname")
-        self.assertTrue((not r.isexc) and not r.res is None)
+        self.assertTrue((not r.isexc) and not r.res is None, r.exc)
         
     def testGoodMember(self): #in case information is defferent
         self.m.login_into_the_trading_system(self.u,"username","password")
         r=self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")
-        self.assertTrue((not r.isexc) and r.res == ["Shop name: shopname\nFounder: username\n", ["itemname"]])
+        self.assertTrue((not r.isexc) and r.res == ["Shop name: shopname\nFounder: username\n", ["itemname"]],r.exc)
         r=self.m.info_about_item_in_shop(self.u,"itemname","shopname")
-        self.assertTrue((not r.isexc) and not r.res is None)
+        self.assertTrue((not r.isexc) and not r.res is None, r.exc)
         
     def testbadShopGuest(self):
         r=self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"badshopname")
-        self.assertTrue(r.isexc)
+        self.assertTrue(r.isexc,r.exc)
         
     def testbadShopMember(self):
         self.m.login_into_the_trading_system(self.u,"username","password")
         r=self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"badshopname")
-        self.assertTrue(r.isexc)
+        self.assertTrue(r.isexc,r.exc)
         
     def testbadItemGuest(self):
         r=self.m.info_about_item_in_shop(self.u,"baditemname","shopname")
-        self.assertTrue((not r.isexc) and r.res == None)
+        self.assertTrue((not r.isexc) and r.res == None, r.exc)
         
     def testbadShopMember(self):
         self.m.login_into_the_trading_system(self.u,"username","password")
         r=self.m.info_about_item_in_shop(self.u,"baditemname","shopname")
-        self.assertTrue((not r.isexc) and r.res == None)
+        self.assertTrue((not r.isexc) and r.res == None,r.exc)
     
         
 if __name__ == '__main__':

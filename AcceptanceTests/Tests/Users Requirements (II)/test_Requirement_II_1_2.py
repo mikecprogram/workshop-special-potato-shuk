@@ -5,7 +5,7 @@ import sys
 from Dev.ServiceLayer.SystemService import *
 
 
-class MyTestCase(unittest.TestCase):
+class MyTestCase1(unittest.TestCase):
 
     def setUp(self):
         self.m=SystemService()
@@ -17,7 +17,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         self.m.Trading_system_quitting(self.u)
         r = self.m.is_active(self.u)
-        self.assertTrue((not r.isexc) and (not r.res))
+        self.assertTrue((not r.isexc) and (not r.res),r.exc)
         
 if __name__ == '__main__':
     unittest.main()

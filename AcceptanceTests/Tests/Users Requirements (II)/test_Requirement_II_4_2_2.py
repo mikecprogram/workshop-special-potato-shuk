@@ -19,22 +19,22 @@ class MyTestCase(unittest.TestCase):
     """
     def testIsItem(self):
         r = self.m.add_policy(self.u, 10, "isItem", "itemname")
-        self.assertTrue((not r.is_exception) and r.response)
+        self.assertTrue((not r.is_exception) and r.response,r.exc)
         r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.is_exception) and r.response == [[1, "isItem", "itemname", 10]])
+        self.assertTrue((not r.is_exception) and r.response == [[1, "isItem", "itemname", 10]],r.exc)
         r = self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
-        self.assertTrue((not r.is_exception) and r.response)
+        self.assertTrue((not r.is_exception) and r.response,r.exc)
         r = self.m.get_shop_policies(self.u, "shopname")
-        self.assertTrue((not r.is_exception) and r.response == [["discount", 1, 10]])
+        self.assertTrue((not r.is_exception) and r.response == [["discount", 1, 10]],r.exc)
 
 
     def testIsCategory(self):
         r = self.m.add_policy(self.u, 10, "isCategory", "animal objects")
-        self.assertTrue((not r.is_exception) and r.response)
+        self.assertTrue((not r.is_exception) and r.response,r.exc)
         r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.is_exception) and r.response == [[1, "isCategory", "animal objects", 10]])
+        self.assertTrue((not r.is_exception) and r.response == [[1, "isCategory", "animal objects", 10]],r.exc)
         r = self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
-        self.assertTrue((not r.is_exception) and r.response)
+        self.assertTrue((not r.is_exception) and r.response,r.exc)
         r = self.m.get_shop_policies(self.u, "shopname")
         self.assertTrue((not r.is_exception) and r.response == [["discount", 1, 10]])"""
 
@@ -42,11 +42,11 @@ class MyTestCase(unittest.TestCase):
         r = self.m.add_policy(self.u, 10, "hasAmount", "itemname", 4)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.isexc) and r.res == [[1, "hasAmount", "itemname", 4, 10]])
+        self.assertTrue((not r.isexc) and r.res == [[1, "hasAmount", "itemname", 4, 10]],r.exc)
         r = self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_shop_policies(self.u, "shopname")
-        self.assertTrue((not r.isexc) and r.res == [["discount", 1, 10]])
+        self.assertTrue((not r.isexc) and r.res == [["discount", 1, 10]],r.exc)
 
 
 
@@ -54,22 +54,22 @@ class MyTestCase(unittest.TestCase):
         r = self.m.add_policy(self.u, 10, "isShop")
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.isexc) and r.res == [[1, "isShop", 10]])
+        self.assertTrue((not r.isexc) and r.res == [[1, "isShop", 10]],r.exc)
         r = self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_shop_policies(self.u, "shopname")
-        self.assertTrue((not r.isexc) and r.res == [["discount", 1, 10]])
+        self.assertTrue((not r.isexc) and r.res == [["discount", 1, 10]],r.exc)
 
 
     def testHasPriceDiscount(self):
         r = self.m.add_policy(self.u, 10, "hasPrice", "itemname", 4)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10]])
+        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10]],r.exc)
         r = self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_shop_policies(self.u, "shopname")
-        self.assertTrue((not r.isexc) and r.res == [["discount", 1, 10]])
+        self.assertTrue((not r.isexc) and r.res == [["discount", 1, 10]],r.exc)
 
 
     def testMulti(self):
@@ -78,38 +78,38 @@ class MyTestCase(unittest.TestCase):
         r = self.m.add_policy(self.u, 10, "isItem", "itemname")
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10], [2, "isItem", "itemname", 10]])
+        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10], [2, "isItem", "itemname", 10]],r.exc)
         r = self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.add_purchase_policy_to_shop(self.u, "shopname", 2)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_shop_policies(self.u, "shopname")
-        self.assertTrue((not r.isexc) and r.res == [["discount", 1, 10], ["purchase", 2]])
+        self.assertTrue((not r.isexc) and r.res == [["discount", 1, 10], ["purchase", 2]],r.exc)
 
     def testNot(self):
         r = self.m.add_policy(self.u, 10, "hasPrice", "itemname", 4)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10]])
+        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10]],r.exc)
         r = self.m.compose_policy(self.u, "not", 1)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10], [2, "not", 1]])
+        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10], [2, "not", 1]],r.exc)
         r = self.m.add_purchase_policy_to_shop(self.u, "shopname", 2)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_shop_policies(self.u, "shopname")
-        self.assertTrue((not r.isexc) and r.res == [["purchase", 2]])
+        self.assertTrue((not r.isexc) and r.res == [["purchase", 2]],r.exc)
 
 
     def testAnd(self):
         r = self.m.add_policy(self.u, 10, "hasPrice", "itemname", 4)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10]])
+        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10]],r.exc)
         r = self.m.add_policy(self.u, 10, "isItem", "itemname")
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10], [2, "isItem", "itemname", 10]])
+        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10], [2, "isItem", "itemname", 10]],r.exc)
         r = self.m.compose_policy(self.u, "and", 1, 2)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
@@ -118,18 +118,18 @@ class MyTestCase(unittest.TestCase):
         r = self.m.add_purchase_policy_to_shop(self.u, "shopname", 3)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_shop_policies(self.u, "shopname")
-        self.assertTrue((not r.isexc) and r.res == [["purchase", 3]])
+        self.assertTrue((not r.isexc) and r.res == [["purchase", 3]],r.exc)
 
 
     def testOr(self):
         r = self.m.add_policy(self.u, 10, "hasPrice", "itemname", 4)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10]])
+        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10]],r.exc)
         r = self.m.add_policy(self.u, 10, "isItem", "itemname")
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10], [2, "isItem", "itemname", 10]])
+        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10], [2, "isItem", "itemname", 10]],r.exc)
         r = self.m.compose_policy(self.u, "or", 1, 2)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
@@ -138,18 +138,18 @@ class MyTestCase(unittest.TestCase):
         r = self.m.add_purchase_policy_to_shop(self.u, "shopname", 3)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_shop_policies(self.u, "shopname")
-        self.assertTrue((not r.isexc) and r.res == [["purchase", 3]])
+        self.assertTrue((not r.isexc) and r.res == [["purchase", 3]],r.exc)
 
 
     def testXor(self):
         r = self.m.add_policy(self.u, 10, "hasPrice", "itemname", 4)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10]])
+        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10]],r.exc)
         r = self.m.add_policy(self.u, 10, "isItem", "itemname")
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
-        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10], [2, "isItem", "itemname", 10]])
+        self.assertTrue((not r.isexc) and r.res == [[1, "hasPrice", "itemname", 4, 10], [2, "isItem", "itemname", 10]],r.exc)
         r = self.m.compose_policy(self.u, "xor", 1, 2)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_my_policies(self.u)
@@ -158,7 +158,7 @@ class MyTestCase(unittest.TestCase):
         r = self.m.add_purchase_policy_to_shop(self.u, "shopname", 3)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_shop_policies(self.u, "shopname")
-        self.assertTrue((not r.isexc) and r.res == [["purchase", 3]])
+        self.assertTrue((not r.isexc) and r.res == [["purchase", 3]],r.exc)
 
     def testDelete(self):
         r = self.m.add_policy(self.u, 10, "hasPrice", "itemname", 4)
@@ -173,11 +173,11 @@ class MyTestCase(unittest.TestCase):
         r = self.m.add_purchase_policy_to_shop(self.u, "shopname", 2)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_shop_policies(self.u, "shopname")
-        self.assertTrue((not r.isexc) and r.res == [["discount", 1, 10], ["purchase", 2]])
+        self.assertTrue((not r.isexc) and r.res == [["discount", 1, 10], ["purchase", 2]],r.exc)
         r = self.m.delete_policy(self.u,"shopname",1)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.get_shop_policies(self.u, "shopname")
-        self.assertTrue((not r.isexc) and r.res == [["purchase", 2]])
+        self.assertTrue((not r.isexc) and r.res == [["purchase", 2]],r.exc)
 
 
 

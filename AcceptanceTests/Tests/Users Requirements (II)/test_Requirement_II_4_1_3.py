@@ -23,19 +23,19 @@ class MyTestCase(unittest.TestCase):
         lst_old = self.m.general_items_searching(self.u,item_keyword="clocks")
         self.m.change_items_details_in_shops_stock(self.u,"itemname1","shopname",item_desc="AAA")
         lst_new = self.m.general_items_searching(self.u,item_keyword="clocks")
-        self.assertTrue(len(lst_old.res) == 1 and len(lst_new.res) == 0)
+        self.assertTrue(len(lst_old.res) == 1 and len(lst_new.res) == 0,r.exc)
 
     def testBadName(self):
         lst_old = self.m.general_items_searching(self.u,item_keyword="clocks")
         self.m.change_items_details_in_shops_stock(self.u,"itemname1","shopname",new_name="")
         lst_new = self.m.general_items_searching(self.u,item_keyword="clocks")
-        self.assertTrue(len(lst_old.res) == 1 and len(lst_new.res) == 1)
+        self.assertTrue(len(lst_old.res) == 1 and len(lst_new.res) == 1,r.exc)
 
     def testBadPrice(self):
         lst_old = self.m.general_items_searching(self.u,item_keyword="clocks")
         self.m.change_items_details_in_shops_stock(self.u,"itemname1","shopname",item_price=-10)
         lst_new = self.m.general_items_searching(self.u,item_keyword="clocks")
-        self.assertTrue(len(lst_old.res) == 1 and len(lst_new.res) == 1)
+        self.assertTrue(len(lst_old.res) == 1 and len(lst_new.res) == 1,r.exc)
 
         
 if __name__ == '__main__':

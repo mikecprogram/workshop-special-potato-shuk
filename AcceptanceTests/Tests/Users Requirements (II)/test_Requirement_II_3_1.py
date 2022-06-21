@@ -11,46 +11,46 @@ class MyTestCase(unittest.TestCase):
 
     def testGood(self):
         self.assertFalse(self.m.isActive(self.u))
-        self.assertTrue(self.m.isMember(self.u))
+        self.assertTrue(self.m.isMember(self.u),r.exc)
         self.m.login(self.u,"username","password")
-        self.assertTrue(self.m.isActive(self.u))
-        self.assertTrue(self.m.isMember(self.u))
+        self.assertTrue(self.m.isActive(self.u),r.exc)
+        self.assertTrue(self.m.isMember(self.u),r.exc)
         self.m.logout(self.u)
         self.assertFalse(self.m.isLoggedin(self.u))
-        self.assertTrue(self.m.isMember(self.u))
+        self.assertTrue(self.m.isMember(self.u),r.exc)
 
     def testBadLogout(self):
         self.assertFalse(self.m.isActive(self.u))
-        self.assertTrue(self.m.isMember(self.u))
+        self.assertTrue(self.m.isMember(self.u),r.exc)
         self.m.login(self.u,"username","password")
-        self.assertTrue(self.m.isActive(self.u))
-        self.assertTrue(self.m.isMember(self.u))
+        self.assertTrue(self.m.isActive(self.u),r.exc)
+        self.assertTrue(self.m.isMember(self.u),r.exc)
         #self.m.logout(self.u) # the logout not working
-        self.assertTrue(self.m.isLoggedin(self.u))
-        self.assertTrue(self.m.isMember(self.u))
+        self.assertTrue(self.m.isLoggedin(self.u),r.exc)
+        self.assertTrue(self.m.isMember(self.u),r.exc)
 
     def testBadLogoutNoLogin(self):
         self.assertFalse(self.m.isActive(self.u))
-        self.assertTrue(self.m.isMember(self.u))
+        self.assertTrue(self.m.isMember(self.u),r.exc)
         #self.m.login(self.u,"username","password")
         self.assertFalse(self.m.isActive(self.u))
-        self.assertTrue(self.m.isMember(self.u))
+        self.assertTrue(self.m.isMember(self.u),r.exc)
         self.m.logout(self.u) # the logout not working
         self.assertFalse(self.m.isLoggedin(self.u))
-        self.assertTrue(self.m.isMember(self.u))
+        self.assertTrue(self.m.isMember(self.u),r.exc)
 
     def testBadLogoutDouble(self):
         self.assertFalse(self.m.isActive(self.u))
-        self.assertTrue(self.m.isMember(self.u))
+        self.assertTrue(self.m.isMember(self.u),r.exc)
         self.m.login(self.u,"username","password")
-        self.assertTrue(self.m.isActive(self.u))
-        self.assertTrue(self.m.isMember(self.u))
+        self.assertTrue(self.m.isActive(self.u),r.exc)
+        self.assertTrue(self.m.isMember(self.u),r.exc)
         self.m.logout(self.u)
         self.assertFalse(self.m.isLoggedin(self.u))
-        self.assertTrue(self.m.isMember(self.u))
+        self.assertTrue(self.m.isMember(self.u),r.exc)
         self.m.logout(self.u)
         self.assertFalse(self.m.isLoggedin(self.u))
-        self.assertTrue(self.m.isMember(self.u))
+        self.assertTrue(self.m.isMember(self.u),r.exc)
 
 
 if __name__ == '__main__':

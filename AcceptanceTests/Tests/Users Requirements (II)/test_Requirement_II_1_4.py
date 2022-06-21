@@ -32,9 +32,9 @@ class MyTestCase(unittest.TestCase):
         r = self.m.is_member("username")
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.login_into_the_trading_system(self.u,"badusername","password")
-        self.assertTrue(r.isexc)
-        r = self.m.is_login(u)
-        self.assertTrue((not r.isexc) and (not r.res))
+        self.assertTrue(r.isexc,r.exc)
+        r = self.m.is_login(u)# Will throw exception if disconnected!
+        self.assertTrue(r.isexc,r.exc)
         
     def testBadPass(self):
         u=self.u
@@ -43,9 +43,9 @@ class MyTestCase(unittest.TestCase):
         r = self.m.is_member("username")
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.login_into_the_trading_system(self.u,"username","badpassword")
-        self.assertTrue(r.isexc)
-        r = self.m.is_login(u)
-        self.assertTrue((not r.isexc) and (not r.res))
+        self.assertTrue(r.isexc,r.exc)
+        r = self.m.is_login(u)# Will throw exception if disconnected!
+        self.assertTrue(r.isexc,r.exc)
         
     def testDoubleLogin(self):
         u=self.u
@@ -58,7 +58,7 @@ class MyTestCase(unittest.TestCase):
         r = self.m.is_login(u)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.login_into_the_trading_system(self.u,"username","password")
-        self.assertTrue(r.isexc)
+        self.assertTrue(r.isexc,r.exc)
         r = self.m.is_login(u)
         self.assertTrue((not r.isexc) and r.res ,r.exc)
     

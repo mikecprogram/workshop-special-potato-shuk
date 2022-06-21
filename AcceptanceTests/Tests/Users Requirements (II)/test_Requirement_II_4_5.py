@@ -34,14 +34,14 @@ class MyTestCase(unittest.TestCase):
         r1 = self.m.delete_shop_owner(self.u1,"shopname","username2")
         r2 = self.m.shop_owner_assignment(self.u3,"shopname","username4")
         #print(r2.exception)
-        self.assertTrue((not r1.isexc) and (r2.isexc))
+        self.assertTrue((not r1.isexc) and (r2.isexc),r.exc)
 
     def testBad(self):
         self.m.shop_owner_assignment(self.u1,"shopname","username2")
         self.m.shop_owner_assignment(self.u2,"shopname","username3")
         r1 = self.m.delete_shop_owner(self.u3,"shopname","username1")
         #print(r1.exception)
-        self.assertTrue((r1.isexc))
+        self.assertTrue((r1.isexc),r.exc)
 
 if __name__ == '__main__':
     unittest.main()

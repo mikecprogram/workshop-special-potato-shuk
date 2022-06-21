@@ -1,9 +1,9 @@
 import unittest
 import sys
 #this is how you import from different folder in python:
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
+#sys.path.insert(0, r'C:\Users\USER\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
 
-from SystemService import *
+from Dev.ServiceLayer.SystemService import *
 
 class MyTestCase(unittest.TestCase):
     def setUp(self):
@@ -30,7 +30,7 @@ class MyTestCase(unittest.TestCase):
         # logout
         self.m.logout(self.u)
         r = self.m.is_login(self.u)
-        self.assertTrue((not r.isexc) and (not r.res))
+        self.assertTrue((not r.isexc) and (not r.res),r.exc)
 
     def testBad(self):
         r = self.m.is_active(self.u)
@@ -42,11 +42,11 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         #open a shop
         r = self.m.shop_open(self.u,"")
-        self.assertTrue(r.isexc)
+        self.assertTrue(r.isexc,r.exc)
         # logout
         self.m.logout(self.u)
         r = self.m.is_login(self.u)
-        self.assertTrue((not r.isexc) and (not r.res))
+        self.assertTrue((not r.isexc) and (not r.res),r.exc)
     
     def testBadDoubleShopName(self):
         r = self.m.is_active(self.u)
@@ -62,11 +62,11 @@ class MyTestCase(unittest.TestCase):
         r = self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")
         self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.shop_open(self.u,"shopname")
-        self.assertTrue(r.isexc)
+        self.assertTrue(r.isexc,r.exc)
         # logout
         self.m.logout(self.u)
         r = self.m.is_login(self.u)
-        self.assertTrue((not r.isexc) and (not r.res))
+        self.assertTrue((not r.isexc) and (not r.res),r.exc)
 
 
 
