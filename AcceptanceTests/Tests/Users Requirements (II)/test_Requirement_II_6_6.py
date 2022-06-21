@@ -16,8 +16,8 @@ class MyTestCase(unittest.TestCase):
 
     def testGood1(self):
         r = self.m.get_all_members_name(self.u)
-        self.assertEqual(r.res[1][0], "username", , r.res)
-        self.assertEqual(r.res[0][0], "Alex", , r.res)
+        self.assertEqual(r.res[1][0], "username", r.res)
+        self.assertEqual(r.res[0][0], "Alex", r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testBad1(self):

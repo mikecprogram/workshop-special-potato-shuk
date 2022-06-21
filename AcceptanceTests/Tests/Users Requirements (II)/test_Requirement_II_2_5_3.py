@@ -21,45 +21,45 @@ class MyTestCase(unittest.TestCase):
 
     def testPurchaseHistory(self):
         r = self.m.in_shop_purchases_history_request(self.u)
-        self.assertEqual(r.res, [], , r.res)
+        self.assertEqual(r.res, [], r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.Shopping_cart_purchase(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.in_shop_purchases_history_request("username")
-        self.assertEqual(r.res, [["shopname", "itemname1"]], , r.res)
+        self.assertEqual(r.res, [["shopname", "itemname1"]], r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testAfterRelog(self):
         self.m.logout(self.u)
         r = self.m.in_shop_purchases_history_request(self.u)
-        self.assertEqual(r.res, [], , r.res)
+        self.assertEqual(r.res, [], r.res)
         self.assertTrue((not r.isexc), r.exc)
         self.m.login_into_the_trading_system(self.u, "username", "password")
         r = self.m.Shopping_cart_purchase(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.in_shop_purchases_history_request("username")
-        self.assertEqual(r.res, [["shopname", "itemname1"]], , r.res)
+        self.assertEqual(r.res, [["shopname", "itemname1"]], r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testAddedAsGuest(self):
         self.m.logout(self.u)
         r = self.m.in_shop_purchases_history_request(self.u)
-        self.assertEqual(r.res, [], , r.res)
+        self.assertEqual(r.res, [], r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.Shopping_cart_purchase(self.u)
         self.m.login_into_the_trading_system(self.u, "username", "password")
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.in_shop_purchases_history_request("username")
-        self.assertEqual(r.res, [], , r.res)
+        self.assertEqual(r.res, [], r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testMultiAdd(self):
         self.m.logout(self.u)
         r = self.m.in_shop_purchases_history_request(self.u)
-        self.assertEqual(r.res, [], , r.res)
+        self.assertEqual(r.res, [], r.res)
         self.assertTrue((not r.isexc), r.exc)
         self.m.shopping_carts_add_item(self.u, "itemname2", "shopname", 1)
         self.m.login_into_the_trading_system(self.u, "username", "password")
@@ -67,13 +67,13 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.in_shop_purchases_history_request("username")
-        self.assertEqual(r.res, [["shopname", "itemname1", "itemname2"]], , r.res)
+        self.assertEqual(r.res, [["shopname", "itemname1", "itemname2"]], r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testMultiPurchase(self):
         self.m.logout(self.u)
         r = self.m.in_shop_purchases_history_request(self.u)
-        self.assertEqual(r.res, [], , r.res)
+        self.assertEqual(r.res, [], r.res)
         self.assertTrue((not r.isexc), r.exc)
         self.m.shopping_carts_add_item(self.u, "itemname2", "shopname", 1)
         r = self.m.Shopping_cart_purchase(self.u)
@@ -84,7 +84,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.in_shop_purchases_history_request("username")
-        self.assertEqual(r.res, [["shopname", "itemname1"]], , r.res)
+        self.assertEqual(r.res, [["shopname", "itemname1"]], r.res)
         self.assertTrue((not r.isexc), r.exc)
 
 

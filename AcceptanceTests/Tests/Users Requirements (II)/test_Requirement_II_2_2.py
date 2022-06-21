@@ -26,36 +26,36 @@ class MyTestCase(unittest.TestCase):
     def testSearchName(self):
         r = self.m.general_items_searching(self.u, item_name="itemname1")
 
-        self.assertEqual(r.res, [["shopname", "itemname1"]], , r.res)
+        self.assertEqual(r.res, [["shopname", "itemname1"]], r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testSearchCategory(self):
         r = self.m.general_items_searching(self.u, category="animal objects")
-        self.assertEqual(r.res, [["shopname", "itemname1"], ["shopname", "itemname2"]], , r.res)
+        self.assertEqual(r.res, [["shopname", "itemname1"], ["shopname", "itemname2"]], r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testSearchKeyword(self):
         r = self.m.general_items_searching(self.u, item_keyword="cats")
         # print(r.exception,r.response)
-        self.assertEqual(r.res, [["shopname", "itemname1"]], , r.res)
+        self.assertEqual(r.res, [["shopname", "itemname1"]], r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testSearchMaxPrice(self):
         r = self.m.general_items_searching(self.u, item_maxPrice=3)
         # print(r.exception,r.response)
-        self.assertEqual(r.res, [["shopname", "itemname2"], ["rockshop", "itemname3"]], , r.res)
+        self.assertEqual(r.res, [["shopname", "itemname2"], ["rockshop", "itemname3"]], r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testSearchAll(self):
         r = self.m.general_items_searching(self.u, item_name="itemname2", category="animal objects",
                                            item_keyword="dogs", item_maxPrice=3)
         # print(r.exception,r.response)
-        self.assertEqual(r.res, [["shopname", "itemname2"]], , r.res)
+        self.assertEqual(r.res, [["shopname", "itemname2"]], r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testSearchBad(self):
         r = self.m.general_items_searching(self.u, item_name="itemname42")
-        self.assertEqual(r.res, [], , r.res)
+        self.assertEqual(r.res, [], r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testSearchAny(self):
@@ -66,7 +66,7 @@ class MyTestCase(unittest.TestCase):
 
     def testSearchExclusive(self):
         r = self.m.general_items_searching(self.u, category="animal objects", item_maxPrice=1)
-        self.assertEqual(r.res, [], , r.res)
+        self.assertEqual(r.res, [], r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testSearchPartialDesc(self):
@@ -83,7 +83,7 @@ class MyTestCase(unittest.TestCase):
 
     def testSearchWhitespace(self):
         r = self.m.general_items_searching(self.u, item_keyword="ock ")
-        self.assertEqual(r.res, [["rockshop", "itemname3"]], , r.res)
+        self.assertEqual(r.res, [["rockshop", "itemname3"]], r.res)
         self.assertTrue((not r.isexc), r.exc)
 
 

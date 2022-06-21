@@ -23,7 +23,7 @@ class MyTestCase(unittest.TestCase):
     def testDisplayCart(self):
         self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 1)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], , r.res)
+        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], r.res)
         self.assertTrue((not r.isexc), r.exc)
         self.m.shopping_carts_add_item(self.u, "itemname2", "shopname", 1)
         self.m.shopping_carts_add_item(self.u, "itemname3", "rockshop", 1)
@@ -35,31 +35,31 @@ class MyTestCase(unittest.TestCase):
     def testEditCart(self):
         self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 1)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], , r.res)
+        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_delete_item(self.u, "itemname1", "shopname", 1)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [], , r.res)
+        self.assertEqual(r.res, [], r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testDeleteBadAmount(self):
         self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 1)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], , r.res)
+        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_delete_item(self.u, "itemname1", "shopname", 51)
         self.assertTrue(r.isexc, r.exc)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], , r.res)
+        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], r.res)
         self.assertTrue((not r.isexc), r.exc)
         # if deletion failed no change should be made
 
     def testDeleteBadShop(self):
         self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 1)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], , r.res)
+        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_delete_item(self.u, "itemname1", "badshopname", 1)
         self.assertTrue(r.isexc, r.exc)
@@ -70,7 +70,7 @@ class MyTestCase(unittest.TestCase):
     def testDeleteBadItem(self):
         self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 1)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], , r.res)
+        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_delete_item(self.u, "baditemname1", "shopname", 1)
         self.assertTrue(r.isexc, r.exc)

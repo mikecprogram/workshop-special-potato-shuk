@@ -20,7 +20,7 @@ class MyTestCase(unittest.TestCase):
 
     def testGoodGuest(self):
         r = self.m.info_about_shop_in_the_market_and_his_items_name(self.u, "shopname")
-        self.assertEqual(r.res, ["Shop name: shopname\nFounder: username\n", ["itemname"]], , r.res)
+        self.assertEqual(r.res, ["Shop name: shopname\nFounder: username\n", ["itemname"]] , r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.info_about_item_in_shop(self.u, "itemname", "shopname")
         self.assertTrue(not r.res is None, r.exc)
@@ -29,7 +29,7 @@ class MyTestCase(unittest.TestCase):
     def testGoodMember(self):  # in case information is defferent
         self.m.login_into_the_trading_system(self.u, "username", "password")
         r = self.m.info_about_shop_in_the_market_and_his_items_name(self.u, "shopname")
-        self.assertEqual(r.res, ["Shop name: shopname\nFounder: username\n", ["itemname"]], , r.res)
+        self.assertEqual(r.res, ["Shop name: shopname\nFounder: username\n", ["itemname"]] , r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.info_about_item_in_shop(self.u, "itemname", "shopname")
         self.assertTrue(not r.res is None, r.exc)
@@ -56,7 +56,7 @@ def testbadItemGuest(self):
 def testbadShopMember(self):
     self.m.login_into_the_trading_system(self.u, "username", "password")
     r = self.m.info_about_item_in_shop(self.u, "baditemname", "shopname")
-    self.assertEqual(r.res, None, , r.res)
+    self.assertEqual(r.res, None , r.res)
     self.assertTrue((not r.isexc), r.exc)
 
 
