@@ -55,8 +55,6 @@ class ShoppingBasket:
 
     def checkBasket(self):
         # return self.stockItems
-        print("!!!!!!!!!")
-        print(self.stockItems)
         ret = []
         for name, amount in self.stockItems.items():
             item = self.shop.getItemInfo(name)

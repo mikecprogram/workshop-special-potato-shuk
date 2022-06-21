@@ -30,30 +30,11 @@ class Stock:
             item = self._stockItems[name]
             return item
         raise Exception("No such item %s in this shop." % (name))
-            
-    def addItemToCategory(self,categoryName,item):
-        if not(item.getCategory() is None):
-            item.removeCategory()
-        if categoryName in self._categories.keys():
-            cat = self._categories[categoryName]
-            cat.safe_addstockItem(item)
-            item.setCategory(cat)
-        else:
-            self._categories[categoryName] = Category(categoryName)
-            cat = self._categories[categoryName]
-            cat.safe_addstockItem(item)
-            item.setCategory(cat)
-            
-    def addCategory(self, category):
-        if self._categories.get(category.get_catagoryName()) is None:
-            self._categories[category.get_catagoryName()] = category
-        else:
-            raise Exception('Category is already exist!')
 
-    def addStockItem(self,categoryName, stockItem : StockItem):
+
+    def addStockItem(self, stockItem : StockItem):
         if not(stockItem._name in self._stockItems.keys()):
             self._stockItems[stockItem._name] = stockItem
-            self.addItemToCategory(categoryName,stockItem)
             return True
         else:
             raise Exception('An item with the same name (%s) already exists in this shop' % stockItem._name)
@@ -107,20 +88,13 @@ class Stock:
             raise Exception("No such item such as %s" % itemname)
 
     def checkAmount(self,item_name, amount):
-        print(item_name)
         for item in self._stockItems.values():
-            print(item.getName())
             if item.getName() == item_name:
                 if item.getCount() < amount:
                     raise Exception('Not enough items in stock!')
                 return True
         raise Exception('No such items in stock! %s' % item_name)
 
-    def removeCategory(self, categoryName):
-        if self._categories.get(categoryName) is not None:
-            self._categories.pop(categoryName)
-        else:
-            raise Exception('Category does not exist!')
 
     def get_items_report(self):
         return [stockItem.get_item_report_dict() for stockItem in self._stockItems.values()]

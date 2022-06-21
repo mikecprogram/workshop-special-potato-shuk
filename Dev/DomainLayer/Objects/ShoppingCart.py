@@ -37,7 +37,6 @@ class ShoppingCart:
     def checkBaskets(self):
         ans = {}
         for name in self.shoppingBaskets:
-            print(name)
             b = self.shoppingBaskets[name]
             ans[b.shop.getShopName()] = b.checkBasket()
         return ans

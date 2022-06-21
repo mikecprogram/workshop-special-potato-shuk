@@ -57,10 +57,10 @@ class Shop():
             raise Exception('You do not have the sufficient permissions to add item')
             
         nid = self._stock.getNextId()
-        item = StockItem(nid, None, item_name, item_desc, amount, None, None, item_price, self._name)
+        item = StockItem(nid, category, item_name, item_desc, amount, None, None, item_price, self._name)
         try:
             self._shop_lock.acquire()
-            r = self._stock.addStockItem(category,item)
+            r = self._stock.addStockItem(item)
             self._shop_lock.release()
             return r
         except Exception as e:

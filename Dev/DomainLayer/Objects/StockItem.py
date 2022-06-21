@@ -89,9 +89,9 @@ class StockItem:
             finalPrice = finalPrice * (1-totaldiscount)
         return finalPrice
 
-    def getCategory(self) -> Category:
+    def getCategory(self) -> str:
         return self._category
-    def setCategory(self,cat: Category):
+    def setCategory(self,cat):
         self._category = cat
     def removeCategory(self):
         self._category.removeItem(self)
@@ -100,6 +100,6 @@ class StockItem:
         return 'Item: ' + self._name + '\n' + 'Price: ' + self._price + '\n' + 'Amount: ' + self._count + '\n' + 'id: ' + self._id +'\n'
     def get_item_report_dict(self):
         return {'name' : self._name , 'price' : self._price ,
-        'amount' : self._count ,'id' : self._id ,
-        'category':self.getCategory().get_catagoryName(),
+        'amount' : self._count ,
+        'category':self.getCategory(),
         'description':self._desc}
