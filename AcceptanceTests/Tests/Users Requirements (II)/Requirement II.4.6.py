@@ -26,7 +26,7 @@ class MyTestCase(unittest.TestCase):
         r = self.m.shop_manager_assignment(self.u,"shopname","username2")
         if r.isexc :
             print(r.exc)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         #r = self.m.shop_manager_permissions_check(self.u,"username2","shopname")
         #self.assertTrue((not r.is_exception) and r.response)
 

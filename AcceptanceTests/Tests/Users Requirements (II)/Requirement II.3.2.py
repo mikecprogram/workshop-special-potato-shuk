@@ -15,17 +15,17 @@ class MyTestCase(unittest.TestCase):
 
     def testGood(self):
         r = self.m.is_active(self.u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.is_member("username")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         self.m.login_into_the_trading_system(self.u,"username","badpassword")
         r = self.m.is_login(self.u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         #open a shop
         r = self.m.shop_open(self.u,"shopname")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         # logout
         self.m.logout(self.u)
         r = self.m.is_login(self.u)
@@ -33,12 +33,12 @@ class MyTestCase(unittest.TestCase):
 
     def testBad(self):
         r = self.m.is_active(self.u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.is_member("username")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         self.m.login_into_the_trading_system(self.u,"username","badpassword")
         r = self.m.is_login(self.u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         #open a shop
         r = self.m.shop_open(self.u,"")
         self.assertTrue(r.isexc)
@@ -49,17 +49,17 @@ class MyTestCase(unittest.TestCase):
     
     def testBadDoubleShopName(self):
         r = self.m.is_active(self.u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.is_member("username")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         self.m.login_into_the_trading_system(self.u,"username","badpassword")
         r = self.m.is_login(self.u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         #open a shop
         r = self.m.shop_open(self.u,"shopname")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.info_about_shop_in_the_market_and_his_items_name(self.u,"shopname")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.shop_open(self.u,"shopname")
         self.assertTrue(r.isexc)
         # logout

@@ -16,20 +16,20 @@ class MyTestCase(unittest.TestCase):
     def testGood(self):
         u=self.u
         r = self.m.is_active(u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.is_member("username")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.login_into_the_trading_system(self.u,"username","password")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.is_login(u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         
     def testBadUser(self):
         u=self.u
         r = self.m.is_active(u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.is_member("username")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.login_into_the_trading_system(self.u,"badusername","password")
         self.assertTrue(r.isexc)
         r = self.m.is_login(u)
@@ -38,9 +38,9 @@ class MyTestCase(unittest.TestCase):
     def testBadPass(self):
         u=self.u
         r = self.m.is_active(u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.is_member("username")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.login_into_the_trading_system(self.u,"username","badpassword")
         self.assertTrue(r.isexc)
         r = self.m.is_login(u)
@@ -49,17 +49,17 @@ class MyTestCase(unittest.TestCase):
     def testDoubleLogin(self):
         u=self.u
         r = self.m.is_active(u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.is_member("username")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.login_into_the_trading_system(self.u,"username","password")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.is_login(u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.login_into_the_trading_system(self.u,"username","password")
         self.assertTrue(r.isexc)
         r = self.m.is_login(u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
     
         
 if __name__ == '__main__':

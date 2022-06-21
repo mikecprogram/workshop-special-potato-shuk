@@ -22,7 +22,7 @@ class MyTestCase(unittest.TestCase):
     def testSaveCartItemsGood(self):
         r=self.m.shopping_carts_add_item(self.u,"itemname1","shopname",1)
 
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         
     def testSaveCartBadName(self):
         r=self.m.shopping_carts_add_item(self.u,"baditemname1","shopname",1)

@@ -16,7 +16,7 @@ class MyTestCase(unittest.TestCase):
         
     def testGood(self):
         r = self.m.shops_roles_info_request(self.u,"shopname")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
 
 
     def happyCase(self):

@@ -13,7 +13,7 @@ class MyTestCase(unittest.TestCase):
         
     def testGood(self):
         r = self.m.is_active(self.u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         self.m.Trading_system_quitting(self.u)
         r = self.m.is_active(self.u)
         self.assertTrue((not r.isexc) and (not r.res))

@@ -19,16 +19,16 @@ class MyTestCase(unittest.TestCase):
     def testPurchase(self):
         self.m.logout(self.u)
         r=self.m.shopping_carts_add_item(self.u,"itemname1","shopname",1)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.Shopping_cart_purchase(self.u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
 
     def testAddedAsMember(self):
         r=self.m.shopping_carts_add_item(self.u,"itemname1","shopname",1)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         self.m.logout(self.u)
         r=self.m.Shopping_cart_purchase(self.u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
 
 
 

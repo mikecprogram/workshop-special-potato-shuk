@@ -14,16 +14,16 @@ class MyTestCase(unittest.TestCase):
     def testGood(self):
         u=self.m.get_into_the_Trading_system_as_a_guest()
         r = self.m.is_active(u.res)
-        self.assertTrue(not r.isexc and r.res)
+        self.assertTrue(not r.isexc and r.res,r.exc)
     def testDouble(self):
         u=self.m.get_into_the_Trading_system_as_a_guest()
         r = self.m.is_active(u.res)
-        self.assertTrue(not r.isexc and r.res)
+        self.assertTrue(not r.isexc and r.res ,r.exc)
         u2=self.m.get_into_the_Trading_system_as_a_guest()
         r = self.m.is_active(u2.res)
-        self.assertTrue(not r.isexc and r.res)
+        self.assertTrue(not r.isexc and r.res ,r.exc)
         r = self.m.is_active(u.res)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         self.assertFalse(u==u2)
         
 if __name__ == '__main__':

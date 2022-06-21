@@ -33,7 +33,7 @@ class MyTestCase(unittest.TestCase):
         r=self.m.shopping_carts_check_content(self.u)
         self.assertTrue((not r.isexc) and r.res == [["shopname", [["itemname1", 1]]]])
         r=self.m.shopping_carts_delete_item(self.u,"itemname1","shopname",1)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.shopping_carts_check_content(self.u)
         self.assertTrue((not r.isexc) and r.res == [])
         

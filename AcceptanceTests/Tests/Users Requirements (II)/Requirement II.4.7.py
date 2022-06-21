@@ -20,9 +20,9 @@ class MyTestCase(unittest.TestCase):
         
     def testGood(self):
         r = self.m.shop_manager_assignment(self.u,"shopname","username2")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.shop_manager_permissions_check(self.u,"username2","shopname")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.shop_manager_permissions_add(self.u,"username2",1,"shopname")
 
     def happyCase(self):

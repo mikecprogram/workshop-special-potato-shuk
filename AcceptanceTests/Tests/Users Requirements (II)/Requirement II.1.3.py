@@ -13,28 +13,28 @@ class MyTestCase(unittest.TestCase):
         
     def testGood(self):
         r = self.m.is_active(self.u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.registration_for_the_trading_system(self.u,"username","password")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.is_member("username")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         
     def testDoubleUser(self):
         r = self.m.is_active(self.u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.registration_for_the_trading_system(self.u,"username","password")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r = self.m.is_member("username")
 
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.registration_for_the_trading_system(self.u,"username","password")
         self.assertTrue(r.isexc)
         r = self.m.is_member("username")
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         
     def testNoUser(self):
         r = self.m.is_active(self.u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.registration_for_the_trading_system(self.u,"","password")
         self.assertTrue(r.isexc)
         r = self.m.is_member("")
@@ -42,7 +42,7 @@ class MyTestCase(unittest.TestCase):
         
     def testNoPass(self):
         r = self.m.is_active(self.u)
-        self.assertTrue((not r.isexc) and r.res)
+        self.assertTrue((not r.isexc) and r.res ,r.exc)
         r=self.m.registration_for_the_trading_system(self.u,"username","")
         self.assertTrue(r.isexc)
         r = self.m.is_member("username")
