@@ -32,22 +32,22 @@ class MyTestCase(unittest.TestCase):
         self.m.logout(self.u4)
 
     def testGood(self):
-        #print(self.m.get_all_members_name(self.u).response)
-        online_members=['username2', 'username3', 'username4']
+        # print(self.m.get_all_members_name(self.u).response)
+        online_members = ['username2', 'username3', 'username4']
         r = False
         for i in online_members:
-            r = r or self.m.delete_member(self.u,i).isexc
-        #print(self.m.get_all_members_name(self.u).response)
-        self.assertTrue(not r,r.exc)
+            r = r or self.m.delete_member(self.u, i).isexc
+        # print(self.m.get_all_members_name(self.u).response)
+        self.assertTrue(not r, r.exc)
 
     def testBad(self):
-        #print(self.m.get_all_members_name(self.u).response)
+        # print(self.m.get_all_members_name(self.u).response)
         online_members = ['Alex', 'username1']
         r = True
         for i in online_members:
             r = r and self.m.delete_member(self.u, i).isexc
-        #print(self.m.get_all_members_name(self.u).response)
-        self.assertTrue(r,r.exc)
+        # print(self.m.get_all_members_name(self.u).response)
+        self.assertTrue(r, r.exc)
 
 
 if __name__ == '__main__':

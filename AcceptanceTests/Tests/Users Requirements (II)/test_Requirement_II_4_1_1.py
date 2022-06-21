@@ -22,16 +22,18 @@ class MyTestCase(unittest.TestCase):
     def testGood(self):  # find all items with empty search
         lst_old = self.m.general_items_searching(self.u)
         # print(lst_old.exception, lst_old.response)
-        self.assertTrue(len(lst_old.res) == 0,r.exc)
+        self.assertEqual(len(lst_old.res), 0, , r.res)
         r = self.m.adding_item_to_the_shops_stock(self.u, "itemname1", "shopname", "animal objects", "cats and clocks",
                                                   5, 10)
-        self.assertTrue((not r.isexc) and r.res ,r.exc)
+        self.assertTrue(r.res, r.exc)
+        self.assertTrue((not r.isexc), r.exc)
         self.m.adding_item_to_the_shops_stock(self.u, "itemname2", "shopname", "animal objects", "dogs and locks", 2,
                                               50)
         self.m.adding_item_to_the_shops_stock(self.u, "itemname3", "rockshop", "rocks", "rock collection", 1, 5)
         lst_new = self.m.general_items_searching(self.u)
         # print(lst_new.response)
-        self.assertTrue(len(lst_old.res) == 0 and len(lst_new.res) == 3,r.exc)
+        self.assertEqual(len(lst_new.res), 3, , r.res)
+        self.assertEqual(len(lst_old.res), 0, , r.res)
 
     def testBad(self):  # cant find items that dont get added
         lst_old = self.m.general_items_searching(self.u)
@@ -39,7 +41,8 @@ class MyTestCase(unittest.TestCase):
         self.m.adding_item_to_the_shops_stock(self.u, "b", "shopname", "animal objects", "cats and clocks", 5, -10)
         self.m.adding_item_to_the_shops_stock(self.u, "", "shopname", "animal objects", "cats and clocks", 5, 10)
         lst_new = self.m.general_items_searching(self.u)
-        self.assertTrue(len(lst_old.res) == 0 and len(lst_new.res) == 0,r.exc)
+        self.assertEqual(len(lst_new.res), 0, , r.res)
+        self.assertEqual(len(lst_old.res), 0, , r.res)
 
 
 if __name__ == '__main__':

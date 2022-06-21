@@ -4,18 +4,19 @@ from Dev.ServiceLayer.SystemService import *
 
 class MyTestCase(unittest.TestCase):
     def setUp(self):
-        self.m=SystemService()
+        self.m = SystemService()
         self.m.initialization_of_the_system()
-        self.u=self.m.get_into_the_Trading_system_as_a_guest().res
-        self.m.registration_for_the_trading_system(self.u,"username","password")
-        #need to login, create shop and add items to it for test
-        self.m.login_into_the_trading_system(self.u,"username","password")
-        self.m.shop_open(self.u,"shopname")
+        self.u = self.m.get_into_the_Trading_system_as_a_guest().res
+        self.m.registration_for_the_trading_system(self.u, "username", "password")
+        # need to login, create shop and add items to it for test
+        self.m.login_into_the_trading_system(self.u, "username", "password")
+        self.m.shop_open(self.u, "shopname")
+
     def tearDown(self):
         self.m.logout(self.u)
-        
+
     def testGood(self):
-        #waiting to be implement
+        # waiting to be implement
         print("can't close shops")
 
     def happyCase(self):
