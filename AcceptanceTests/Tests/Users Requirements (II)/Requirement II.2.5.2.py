@@ -1,12 +1,13 @@
 import unittest
 import sys
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
-from SystemService import *
+# sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
+from Dev.ServiceLayer.SystemService import *
 
 class MyTestCase(unittest.TestCase):
     
     def setUp(self):
-        self.m=SystemService()
+        self.m = SystemService()
+        self.m.initialization_of_the_system()
         self.u=self.m.get_into_the_Trading_system_as_a_guest()
         self.m.registration_for_the_trading_system(self.u,"username","password")
         #need to login, create shop and add items to it for test

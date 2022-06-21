@@ -10,6 +10,7 @@ class MyTestCase(unittest.TestCase):
 
     def setUp(self):
         self.m=SystemService()
+        self.m.initialization_of_the_system()
         
     def testGood(self):
         u=self.m.get_into_the_Trading_system_as_a_guest()
