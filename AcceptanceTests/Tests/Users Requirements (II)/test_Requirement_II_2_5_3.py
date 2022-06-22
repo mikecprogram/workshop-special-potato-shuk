@@ -21,70 +21,80 @@ class MyTestCase(unittest.TestCase):
 
     def testPurchaseHistory(self):
         r = self.m.in_shop_purchases_history_request(self.u, "shopname")
-        self.assertEqual(r.res, [], r.res)
         self.assertTrue((not r.isexc), r.exc)
+        self.assertEqual(r.res, "", r.res)
+        price = self.m.calculate_cart_price(self.u).res
         r = self.m.Shopping_cart_purchase(self.u)
+
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
-        r = self.m.in_shop_purchases_history_request("username", "shopname")#WTF why usage of username instead of token?
-        self.assertEqual(r.res, [["shopname", "itemname1"]], r.res)
+        r = self.m.in_shop_purchases_history_request(self.u, "shopname")#WTF why usage of username instead of token?
+        self.assertEqual(r.res, "User '%s' bought %d of %s for %f.\n"%("username",1,"itemname1",price), r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testAfterRelog(self):
         self.m.logout(self.u)
         r = self.m.in_shop_purchases_history_request(self.u, "shopname")
-        self.assertEqual(r.res, [], r.res)
-        self.assertTrue((not r.isexc), r.exc)
+        self.assertTrue(r.isexc, r.exc)
         self.m.login_into_the_trading_system(self.u, "username", "password")
+        price = self.m.calculate_cart_price(self.u).res
         r = self.m.Shopping_cart_purchase(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
-        r = self.m.in_shop_purchases_history_request("username", "shopname")
-        self.assertEqual(r.res, [["shopname", "itemname1"]], r.res)
+        r = self.m.in_shop_purchases_history_request(self.u, "shopname")
+        self.assertEqual(r.res, "User '%s' bought %d of %s for %f.\n"%("username",1,"itemname1",price), r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testAddedAsGuest(self):
         self.m.logout(self.u)
         r = self.m.in_shop_purchases_history_request(self.u,"shopname")
-        self.assertEqual(r.res, None, r.res)
         self.assertTrue(r.isexc, r.exc)
+        self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 1)
+        price = self.m.calculate_cart_price(self.u).res
         r = self.m.Shopping_cart_purchase(self.u)
         self.m.login_into_the_trading_system(self.u, "username", "password")
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
-        r = self.m.in_shop_purchases_history_request("username","shopname")
-        self.assertEqual(r.res, None, r.res)
-        self.assertTrue( r.isexc, r.exc)
+        r = self.m.in_shop_purchases_history_request(self.u,"shopname")
+        self.assertEqual(r.res, "User '%s' bought %d of %s for %f.\n"%("Guest",1,"itemname1",price), r.res)
+        self.assertTrue(not r.isexc, r.exc)
 
     def testMultiAdd(self):
-        self.m.logout(self.u)
+        price1 = self.m.calculate_cart_price(self.u).res
         r = self.m.in_shop_purchases_history_request(self.u, "shopname")
-        self.assertEqual(r.res, [], r.res)
+        self.assertEqual(r.res, "", r.res)
         self.assertTrue((not r.isexc), r.exc)
-        self.m.shopping_carts_add_item(self.u, "itemname2", "shopname", 1)
+        self.m.shopping_carts_add_item(self.u, "itemname2", "shopname", 2)
+        price2 = self.m.calculate_item_price(self.u, "shopname","itemname2").res
         self.m.login_into_the_trading_system(self.u, "username", "password")
         r = self.m.Shopping_cart_purchase(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
-        r = self.m.in_shop_purchases_history_request("username", "shopname")
-        self.assertEqual(r.res, [["shopname", "itemname1", "itemname2"]], r.res)
+        r = self.m.in_shop_purchases_history_request(self.u, "shopname")
+        checkstring = ("User '%s' bought %d of %s for %f.\n"%("username",1,"itemname1",price1)) +("User '%s' bought %d of %s for %f.\n"%("username",2,"itemname2",price2))
+        self.assertEqual(r.res,checkstring , r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testMultiPurchase(self):
+        r = self.m.in_shop_purchases_history_request(self.u, "shopname")
+        self.assertEqual(r.res, "", r.res)
         self.m.logout(self.u)
         r = self.m.in_shop_purchases_history_request(self.u, "shopname")
-        self.assertEqual(r.res, [], r.res)
-        self.assertTrue((not r.isexc), r.exc)
-        self.m.shopping_carts_add_item(self.u, "itemname2", "shopname", 1)
+        self.assertTrue( r.isexc, r.exc)
+        self.m.shopping_carts_add_item(self.u, "itemname2", "shopname", 2)
+        price2 = self.m.calculate_item_price(self.u, "shopname","itemname2").res
+        checkstring = ("User '%s' bought %d of %s for %f.\n" % ("Guest", 2, "itemname2", price2))
+
         r = self.m.Shopping_cart_purchase(self.u)
-        self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         self.m.login_into_the_trading_system(self.u, "username", "password")
+        price1 = self.m.calculate_item_price(self.u, "shopname","itemname1").res
         r = self.m.Shopping_cart_purchase(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
-        r = self.m.in_shop_purchases_history_request("username", "shopname")
-        self.assertEqual(r.res, [["shopname", "itemname1"]], r.res)
+        r = self.m.in_shop_purchases_history_request(self.u, "shopname")
+        checkstring += ("User '%s' bought %d of %s for %f.\n" % ("username", 1, "itemname1", price1))
+        self.assertEqual(r.res,checkstring, r.res)
         self.assertTrue((not r.isexc), r.exc)
 
 

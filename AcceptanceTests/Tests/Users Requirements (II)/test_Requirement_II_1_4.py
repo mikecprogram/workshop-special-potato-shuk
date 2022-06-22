@@ -18,7 +18,7 @@ class MyTestCase(unittest.TestCase):
 
     def testGood(self):
         u = self.u
-        r = self.m.is_active(u)
+        r = self.m.is_token_valid(u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.is_member("username")
@@ -33,7 +33,7 @@ class MyTestCase(unittest.TestCase):
 
     def testBadUser(self):
         u = self.u
-        r = self.m.is_active(u)
+        r = self.m.is_token_valid(u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.is_member("username")
@@ -46,7 +46,7 @@ class MyTestCase(unittest.TestCase):
 
     def testBadPass(self):
         u = self.u
-        r = self.m.is_active(u)
+        r = self.m.is_token_valid(u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.is_member("username")
@@ -59,7 +59,7 @@ class MyTestCase(unittest.TestCase):
 
     def testDoubleLogin(self):
         u = self.u
-        r = self.m.is_active(u)
+        r = self.m.is_token_valid(u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.is_member("username")

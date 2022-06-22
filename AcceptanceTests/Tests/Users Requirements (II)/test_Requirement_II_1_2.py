@@ -13,13 +13,12 @@ class MyTestCase1(unittest.TestCase):
         self.u = self.m.get_into_the_Trading_system_as_a_guest().res
 
     def testGood(self):
-        r = self.m.is_active(self.u)
+        r = self.m.is_token_valid(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         self.m.Trading_system_quitting(self.u)
-        r = self.m.is_active(self.u)
-        self.assertTrue((not r.res), r.exc)
-        self.assertTrue((not r.isexc), r.exc)
+        r = self.m.is_token_valid(self.u)
+        self.assertTrue( r.isexc, r.exc)
 
 
 if __name__ == '__main__':

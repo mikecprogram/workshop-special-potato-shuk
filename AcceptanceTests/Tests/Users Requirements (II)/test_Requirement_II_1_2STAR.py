@@ -15,7 +15,7 @@ class MyTestCase(unittest.TestCase):
         self.m.registration_for_the_trading_system(self.u, "username", "password")
 
     def testLogout(self):
-        r = self.m.is_active(self.u)
+        r = self.m.is_token_valid(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.is_member("username")

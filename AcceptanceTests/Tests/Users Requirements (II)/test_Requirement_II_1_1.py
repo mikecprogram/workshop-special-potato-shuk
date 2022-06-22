@@ -21,20 +21,20 @@ class MyTestCase(unittest.TestCase):
 
     def testGood(self):
         u = self.m.get_into_the_Trading_system_as_a_guest()
-        r = self.m.is_active(u.res)
+        r = self.m.is_token_valid(u.res)
         self.assertTrue(r.res, r.exc)
         self.assertTrue(not r.isexc, r.exc)
 
     def testDouble(self):
         u = self.m.get_into_the_Trading_system_as_a_guest()
-        r = self.m.is_active(u.res)
+        r = self.m.is_token_valid(u.res)
         self.assertTrue(r.res, r.exc)
         self.assertTrue(not r.isexc, r.exc)
         u2 = self.m.get_into_the_Trading_system_as_a_guest()
-        r = self.m.is_active(u2.res)
+        r = self.m.is_token_valid(u2.res)
         self.assertTrue(r.res, r.exc)
         self.assertTrue(not r.isexc, r.exc)
-        r = self.m.is_active(u.res)
+        r = self.m.is_token_valid(u.res)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         self.assertFalse(u == u2)

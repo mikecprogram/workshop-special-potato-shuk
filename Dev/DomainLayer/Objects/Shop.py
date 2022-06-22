@@ -15,9 +15,9 @@ class Shop():
         self._founder = founder
         self._owners = {}  # {ownerUsername, Member} (ò_ó)!!!!!!!!!!!!!!!!!
         self._managers = {}  # {managerUsername, Member}
-        self._purchasePolicy = []
+        self._purchasePolicies = []
         self._purchaseLock = threading.Lock()
-        self._discountPolicy = []
+        self._discountPolicies = []
         self._discountLock = threading.Lock()
         # self._purchaseHistory = PurchaseHistory()
         self._owners_assignments = {}
@@ -185,7 +185,7 @@ class Shop():
 
     def getTotalDiscount(self, user):
         totaldiscount = 1
-        for discount in self._discountPolicy:
+        for discount in self._discountPolicies:
             totaldiscount = totaldiscount * discount.getDiscount(user)
         return totaldiscount
 
@@ -206,17 +206,17 @@ class Shop():
                 'shopopen': self.isOpen(),
                 'items': self._stock.get_items_report()}
 
-    def aqcuirePurchaseLock(self):
+    def aqcuire_lock(self):
         '''acquires the lock of the shop'''
         self._shop_lock.acquire()
 
-    def release_release_lock(self):
+    def release_lock(self):
         '''release the lock of the shop'''
         self._shop_lock.release()
 
-    def purchase(self, user, itemname: str, amount: int):
+    def purchase(self, user, itemname: str, amount: int, bought_price: float):
         '''Perform purchase'''
-        self._purchases_history.append("User %s bought %d of %s " % (user.get_state(), amount, itemname))
+        self._purchases_history.add(user.get_state(), itemname, amount, bought_price)
         self._stock.purchase(itemname, amount)
         return True
 
@@ -252,28 +252,28 @@ class Shop():
 
     def addPurchasePolicy(self, policy):
         self._purchaseLock.acquire()
-        self._purchasePolicy.append(policy)
+        self._purchasePolicies.append(policy)
         self._purchaseLock.release()
         return True
 
     def addDiscountPolicy(self, policy):
         self._discountLock.acquire()
-        self._discountPolicy.append(policy)
+        self._discountPolicies.append(policy)
         self._discountLock.release()
         return True
 
     def remove_policy(self, ID):
         done = False
         self._discountLock.acquire()
-        for d in self._discountPolicy:
+        for d in self._discountPolicies:
             if d.getID() == ID:
-                self._discountPolicy.remove(d)
+                self._discountPolicies.remove(d)
                 done = True
         self._discountLock.release()
         self._purchaseLock.acquire()
-        for d in self._purchasePolicy:
+        for d in self._purchasePolicies:
             if d.getID() == ID:
-                self._purchasePolicy.remove(d)
+                self._purchasePolicies.remove(d)
                 done = True
         self._purchaseLock.release()
         return done
@@ -283,15 +283,15 @@ class Shop():
 
     def getPolicies(self):
         ret = []
-        for p in self._discountPolicy:
+        for p in self._discountPolicies:
             ret.append(["discount", p.getID(), p.getDiscount()])
-        for p in self._purchasePolicy:
+        for p in self._purchasePolicies:
             ret.append(["purchase", p.getID()])
         return ret
 
     def validate_purchase(self, user, name):
         item = self._stock.getItem(name)
-        for policy in self._purchasePolicy:
+        for policy in self._purchasePolicies:
             if not policy.apply(user, item):
                 return False
         return True
@@ -302,9 +302,15 @@ class Shop():
         # print(name, disc,item.getPrice()*amount*disc)
         return round(item.getPrice() * amount * disc, 3)
 
+    def calculate_price_for_general_item(self, user, itemname):
+        item = self._stock.getItem(itemname)
+        disc = self.findDiscount(user, item)
+        # print(name, disc,item.getPrice()*amount*disc)
+        return round(item.getPrice() * disc, 3)
+
     def findDiscount(self, user, item):
         disc = 1
-        for policy in self._discountPolicy:
+        for policy in self._discountPolicies:
             # print(policy,policy.apply(user, item))
             if policy.apply(user, item):
                 d = policy.getDiscount()

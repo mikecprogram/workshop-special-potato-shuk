@@ -131,7 +131,9 @@ class Member:
         return self.permissions[shopName].can_close_shop()
 
     def get_inshop_purchases_history(self, shopname):
-        if self.is_owned_shop(shopname):
+        if self.is_founded_shop(shopname):
+            return self.foundedShops[shopname].get_inshop_purchases_history()
+        elif self.is_owned_shop(shopname):
             return self.ownedShops[shopname].get_inshop_purchases_history()
         elif self.is_managed_shop(shopname) and self.can_get_inshop_purchases_history(shopname):
             return self.managedShops[shopname].get_inshop_purchases_history()

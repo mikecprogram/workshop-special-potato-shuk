@@ -37,7 +37,8 @@ class User:
 
     def calculate_cart_price(self):
         return self._shoppingCart.calculate_price()
-
+    def calculate_item_price(self,shop,itemname):
+        return self._shoppingCart.calculate_item_price(shop,itemname)
     def login(self, member):
         if not (self.isMember()):
             self._state = member

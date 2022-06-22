@@ -128,9 +128,6 @@ class Market():
     def is_member(self, username):
         return username in self._members.keys()
 
-    def is_active(self, token):
-        return self._onlineVisitors.get(token) is not None
-
     def is_logged_in(self, token):
         u = self._onlineVisitors.get(token)
         if u is not None:
@@ -166,8 +163,16 @@ class Market():
             user = self.getUser(token)
             user.logout()
 
+    def is_logged_in_by_username(self,username):
+        for un in self._onlineVisitors.values():
+            if un.get_state() == username:
+                return True
+        return False
+
     def login(self, token, username, password):
         if self.isToken(token):
+            if self.is_logged_in_by_username(username):
+                raise Exception("The user %s is already logged in." % username)
             if not (is_valid_password(password)):
                 raise Exception("Password is not valid")
             if username in self._members:
@@ -176,7 +181,6 @@ class Market():
                 if member.isHashedCorrect(hashed):
                     user = self.getUser(token)
                     user.login(member)
-                    self._onlineVisitors
                     return True
                 else:
                     raise Exception("Wrong password")
@@ -228,8 +232,6 @@ class Market():
             user = self.getUser(token)
             return user.removeFromCart(item_name, shop_name, amount)
 
-    def get_cart_price(self, token):
-        pass
 
     def add_policy(self, token, percent, name, arg1=None, arg2=None):
         if self.isToken(token):
@@ -257,8 +259,7 @@ class Market():
                 return s.getPolicies()
 
     def add_discount_policy_to_shop(self, token, shopname, policyID):
-        if not self.isToken(token):
-            raise Exception('Bad token!')
+        self.isToken(token)
         user = self.getUser(token)
         policy = self.makePolicy(user, policyID)
         shop = self._shops[shopname]
@@ -275,16 +276,6 @@ class Market():
         if shop is None:
             raise Exception('No such shop as %s' % shopname)
         return shop.addPurchasePolicy(policy)
-
-    def add_discount_policy_to_shop(self, token, shopname, policyID):
-        if not self.isToken(token):
-            raise Exception('Bad token!')
-        user = self.getUser(token)
-        policy = self.makePolicy(user, policyID)
-        shop = self._shops[shopname]
-        if shop is None:
-            raise Exception('No such shop as %s' % shopname)
-        return shop.addDiscountPolicy(policy)
 
     def makePolicy(self, user, PID):
         pols = user.getPolicies()
@@ -355,6 +346,12 @@ class Market():
         s = self._shops[shopname]
         return s.remove_policy(policyID)
 
+    def calculate_item_price(self, token, shopname, itemname):
+        self.isToken(token)
+        user = self.getUser(token)
+        shop = self.get_shop_by_name(shopname)
+        return user.calculate_item_price(shop,itemname)
+
     def Shopping_cart_purchase(self, token):
         if self.isToken(token):
             user = self.getUser(token)
@@ -364,13 +361,11 @@ class Market():
             price = user.calculate_cart_price()
             # paymentServiceInterface.request_payment(price, None) or something similar, this interface is empty
             return user.purchase()
-        else:
-            raise Exception('Timed out token!')
 
     def get_inshop_purchases_history(self, token, shopname):
         if self.isToken(token):
             if shopname in self._shops:
-                self._onlineVisitors[token].get_inshop_purchases_history(shopname)
+                return self._onlineVisitors[token].get_inshop_purchases_history(shopname)
             else:
                 raise Exception('Shop not found with given name!')
         else:
@@ -410,13 +405,16 @@ class Market():
             raise Exception('Bad shop name!')
         raise Exception('Bad token!')
 
+    def get_shop_by_name(self,shopname):
+        if shopname in self._shops.keys():
+            return self._shops[shopname]
+        raise Exception('No such shop as %s' % shopname)
+
     def deleting_item_from_shop_stock(self, token, item_name, shop_name):
         if self.isToken(token):
-            if shop_name in self._shops.keys():
-                s = self._shops[shop_name]
-                r = s.remove_item(item_name)
-                return r
-            raise Exception('No such shop as %s' % shop_name)
+            s = self.get_shop_by_name(shop_name)
+            r = s.remove_item(item_name)
+            return r
 
     def validate_purchase_policy(self, token):
         if not self.isToken(token):

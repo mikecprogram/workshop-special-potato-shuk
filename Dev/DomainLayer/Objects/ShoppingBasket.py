@@ -15,6 +15,9 @@ class ShoppingBasket:
                 return False
         return True
 
+    def calculate_item_price(self, user, itemname):
+        return self.shop.calculate_price(user, itemname, self.stockItems[itemname])
+
     def calculate_price(self, user):
         sum = 0
         for itemname in self.stockItems.keys():
@@ -66,19 +69,20 @@ class ShoppingBasket:
         self.stockItems = None
 
     def purchase(self, user):
-        self.shop.aqcuirePurchaseLock()
+        self.shop.aqcuire_lock()
         try:
-            for name in self.stockItems:
-                amount = self.stockItems[name]
-                if not (self.shop.isAmount(name, amount)):
-                    raise Exception("Not enough left from item %d" % name)
-                self.shop.purchase(user, name, amount)
+            for itemname in self.stockItems:
+                amount = self.stockItems[itemname]
+                if not (self.shop.isAmount(itemname, amount)):
+                    raise Exception("Not enough left from item %d" % itemname)
+                self.shop.purchase(user, itemname, amount, self.calculate_item_price(user,itemname))
+                #TODO note to self: remove items from basket here by hand!
 
         except Exception as exception:
-            self.shop.release_release_lock()
+            self.shop.release_lock()
             raise exception
         self.stockItems.clear()
-        self.shop.release_release_lock()
+        self.shop.release_lock()
         return True
 
     def to_string(self, customer_token):
@@ -90,9 +94,6 @@ class ShoppingBasket:
             string += item.get_item_report()
 
         string += "Basket price: " + self.calculate_basket_price() + "\n"
-
-    def calculate_basket_price(self):
-        pass  # todo
 
     def archive(self, token):
 

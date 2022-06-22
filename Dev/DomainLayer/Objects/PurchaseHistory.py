@@ -8,7 +8,10 @@ class PurchaseHistory():
         pass
 
     def append(self, data):
-        self.purchaseString = self.purchaseString + data + "\n"
+        raise Exception("DEPRECATED")
+
+    def add(self,userstate,itemname,itemcount,bought_price):
+        self.purchaseString += "User '%s' bought %d of %s for %f.\n"%(userstate,itemcount,itemname,bought_price)
 
     def get_string(self):
         return self.purchaseString

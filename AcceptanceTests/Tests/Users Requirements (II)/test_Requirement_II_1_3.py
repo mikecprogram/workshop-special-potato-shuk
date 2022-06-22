@@ -13,7 +13,7 @@ class MyTestCase(unittest.TestCase):
         self.u = self.m.get_into_the_Trading_system_as_a_guest().res
 
     def testGood(self):
-        r = self.m.is_active(self.u)
+        r = self.m.is_token_valid(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.registration_for_the_trading_system(self.u, "username", "password")
@@ -24,7 +24,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.isexc), r.exc)
 
     def testDoubleUser(self):
-        r = self.m.is_active(self.u)
+        r = self.m.is_token_valid(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.registration_for_the_trading_system(self.u, "username", "password")
@@ -41,7 +41,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.isexc), r.exc)
 
     def testNoUser(self):
-        r = self.m.is_active(self.u)
+        r = self.m.is_token_valid(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.registration_for_the_trading_system(self.u, "", "password")
@@ -51,7 +51,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.isexc), r.exc)
 
     def testNoPass(self):
-        r = self.m.is_active(self.u)
+        r = self.m.is_token_valid(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.registration_for_the_trading_system(self.u, "username", "")

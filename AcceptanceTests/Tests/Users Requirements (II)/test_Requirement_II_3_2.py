@@ -15,31 +15,30 @@ class MyTestCase(unittest.TestCase):
         self.m.login_into_the_trading_system(self.u, "username", "password")
 
     def testGood(self):
-        r = self.m.is_active(self.u)
+        r = self.m.is_token_valid(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.is_member("username")
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
-        self.m.login_into_the_trading_system(self.u, "username", "badpassword")
+        r = self.m.login_into_the_trading_system(self.u, "username", "badpassword")
+        self.assertTrue(r.isexc, r.exc)
         r = self.m.is_login(self.u)
         self.assertTrue(r.res, r.exc)
-        self.assertTrue((not r.isexc), r.exc)
         # open a shop
         r = self.m.shop_open(self.u, "shopname")
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.info_about_shop_in_the_market_and_his_items_name(self.u, "shopname")
-        self.assertTrue(r.res, r.exc)
+        self.assertEqual(r.res,{'name': 'shopname','founder': 'username','items':[],'owners': [],'shopopen': True, 'managers': []})
         self.assertTrue((not r.isexc), r.exc)
         # logout
         self.m.logout(self.u)
         r = self.m.is_login(self.u)
-        self.assertTrue((not r.res), r.exc)
-        self.assertTrue((not r.isexc), r.exc)
+        self.assertTrue( r.isexc, r.exc)
 
     def testBad(self):
-        r = self.m.is_active(self.u)
+        r = self.m.is_token_valid(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.is_member("username")
@@ -55,11 +54,10 @@ class MyTestCase(unittest.TestCase):
         # logout
         self.m.logout(self.u)
         r = self.m.is_login(self.u)
-        self.assertTrue((not r.res), r.exc)
-        self.assertTrue((not r.isexc), r.exc)
+        self.assertTrue( r.isexc, r.exc)
 
     def testBadDoubleShopName(self):
-        r = self.m.is_active(self.u)
+        r = self.m.is_token_valid(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.is_member("username")
@@ -81,8 +79,7 @@ class MyTestCase(unittest.TestCase):
         # logout
         self.m.logout(self.u)
         r = self.m.is_login(self.u)
-        self.assertTrue((not r.res), r.exc)
-        self.assertTrue((not r.isexc), r.exc)
+        self.assertTrue(r.isexc, r.exc)
 
 
 if __name__ == '__main__':

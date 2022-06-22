@@ -90,3 +90,10 @@ class ShoppingCart:
     def archive_shopping_baskets(self, token):
         for basket in self.shoppingBaskets.values():
             basket.archive(token)
+
+    def calculate_item_price(self, shop, itemname):
+        b = self.getBasketByShop(shop)
+        if b is None:
+            return shop.calculate_price_for_general_item(self._user, itemname)
+        else:
+            return b.calculate_item_price(self._user,itemname)

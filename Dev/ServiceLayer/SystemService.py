@@ -77,14 +77,6 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def is_active(self, user_id) -> Response[bool]:
-        try:
-            if self.market is None:
-                return Response(exception="you have to initialize the system")
-            return Response(self.market.is_active(user_id))
-        except Exception as e:
-            return Response(exception=e.__str__())
-
     def is_login(self, user_id) -> Response[bool]:
         try:
             if self.market is None:
@@ -264,6 +256,14 @@ class SystemService(BridgeInterface):
             if self.market is None:
                 return Response(exception="you have to initialize the system")
             return Response(self.market.add_discount_policy_to_shop(token, shopname, policyID))
+        except Exception as e:
+            return Response(exception=e.__str__())
+
+    def calculate_item_price(self, token, shopname,itemname) -> Response[float]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.calculate_item_price(token, shopname,itemname))
         except Exception as e:
             return Response(exception=e.__str__())
 
