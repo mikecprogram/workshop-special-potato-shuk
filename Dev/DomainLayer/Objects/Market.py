@@ -551,12 +551,14 @@ class Market():
     def delete_shop_owner(self, token: int, shop_name: str, owner_name: str):
         if self.isToken(token) and self.is_logged_in(token):
             self._membersLock.acquire()
-            token_member = self._members[self.getUser(token).getUsername()]
+            member = self._members[self.getUser(token).getUsername()]
             if self.is_member(owner_name):
                 try:
-                    token_member.delete_shop_owner(shop_name, owner_name)
-                finally:
+                    member.delete_shop_owner(shop_name, owner_name)
                     self._membersLock.release()
+                except Exception as e:
+                    self._membersLock.release()
+                    raise e
             else:
                 self._membersLock.release()
                 raise Exception(owner_name + " is not Member")

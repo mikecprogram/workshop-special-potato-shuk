@@ -353,9 +353,9 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def change_items_details_in_shops_stock(self, user_id: int, item_name: str, shop_name: str, new_name,
-                                            item_desc: str,category: str,
-                                            item_price: float ,amount: int) -> Response[bool]:
+    def change_items_details_in_shops_stock(self, user_id: int, item_name: str, shop_name: str, new_name=None,
+                                            item_desc = None ,category = None,
+                                            item_price = None ,amount = None) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
@@ -365,7 +365,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shop_owner_assignment(self, user_id: int, shop_name: str, member_name_to_assign: int, ) -> Response[bool]:
+    def shop_owner_assignment(self, user_id: int, shop_name: str, member_name_to_assign: str, ) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")

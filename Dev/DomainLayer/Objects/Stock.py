@@ -48,41 +48,42 @@ class Stock:
             raise Exception('No such item as %s to delete.' % itemname)
 
     def editStockItem(self, itemname, new_name, item_desc, category, item_price, amount):
-        if new_name is None:
-            raise Exception("Name of item can't be null")
-        if item_desc is None:
-            raise Exception("Description of item can't be null")
-        if item_price is None:
-            raise Exception("Price of item can't be negative")
-        if amount is None:
-            raise Exception("Amount of item can't be negative")
-        if category is None:
-            raise Exception("Category of item can't be null")
         itemname = itemname.strip()
-        new_name = new_name.strip()
-        item_desc = item_desc.strip()
-        category = category.strip()
-        amount = int(amount)
-        item_price = float(item_price)
         if itemname in self._stockItems.keys():
             i = self._stockItems[itemname]
-            self._stockItems[itemname] = None
-            if new_name == "":
-                raise Exception("Name of item can't be null")
-            if item_desc == "":
-                raise Exception("Description of item can't be null")
-            if item_price < 0:
-                raise Exception("Price of item can't be negative")
-            if amount < 0:
-                raise Exception("Amount of item can't be negative")
-            if category == "":
-                raise Exception("Category of item can't be null")
-            i.setName(new_name)
-            self._stockItems[new_name] = i
-            i.setDesc(item_desc)
-            i.setPrice(item_price)
-            i.setAmount(amount)
-            i.setCategory(category)
+            if amount is not None:
+                amount = int(amount)
+                if amount < 0:
+                    raise Exception("Amount of item can't be negative")
+                if amount == 0:
+                    self.removeStockItem(itemname)
+                    return True
+                i.setAmount(amount)
+            if new_name is not None:
+                new_name = new_name.strip()
+                if new_name == "":
+                    raise Exception("Name of item can't be null")
+                if new_name != itemname:
+                    if new_name in self._stockItems.values():
+                        raise Exception("Cant change name to already existing item with the same name.")
+                    else:
+                        self._stockItems[new_name] = self._stockItems.pop(itemname)
+                        i.setName(new_name)
+            if item_desc is not None:
+                item_desc = item_desc.strip()
+                if item_desc == "":
+                    raise Exception("Description of item can't be null")
+                i.setDesc(item_desc)
+            if item_price is not None:
+                item_price = float(item_price)
+                if item_price < 0:
+                    raise Exception("Price of item can't be negative")
+                i.setPrice(item_price)
+            if category is not None:
+                category = category.strip()
+                if category == "":
+                    raise Exception("Category of item can't be null")
+                i.setCategory(category)
             return True
         else:
             raise Exception("No such item such as %s" % itemname)
@@ -120,7 +121,7 @@ class Stock:
             p = item.getPrice()
             d = item.getDesc()
             # print(n,p,item_maxPrice)
-            if query in c or query in n or query in d:  # at least one match
+            if (query in c or query in n or query in d) or query == "":  # at least one match
                 if item_minPrice != 0:
                     if p < item_minPrice:
                         continue

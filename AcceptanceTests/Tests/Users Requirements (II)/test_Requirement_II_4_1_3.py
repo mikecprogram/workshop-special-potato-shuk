@@ -24,22 +24,28 @@ class MyTestCase(unittest.TestCase):
         lst_old = self.m.general_items_searching(self.u, item_keyword="clocks")
         self.m.change_items_details_in_shops_stock(self.u, "itemname1", "shopname", item_desc="AAA")
         lst_new = self.m.general_items_searching(self.u, item_keyword="clocks")
-        self.assertEqual(len(lst_new.res), 0, r.res)
-        self.assertEqual(len(lst_old.res), 1, r.res)
+        diffcountofitems = sum([len(result) for result in lst_new.res.values()])
+        self.assertEqual(diffcountofitems, 0, lst_new.res)
+        diffcountofitems = sum([len(result) for result in lst_old.res.values()])
+        self.assertEqual(diffcountofitems, 1, lst_old.res)
 
     def testBadName(self):
         lst_old = self.m.general_items_searching(self.u, item_keyword="clocks")
         self.m.change_items_details_in_shops_stock(self.u, "itemname1", "shopname", new_name="")
         lst_new = self.m.general_items_searching(self.u, item_keyword="clocks")
-        self.assertEqual(len(lst_new.res), 1, r.res)
-        self.assertEqual(len(lst_old.res), 1, r.res)
+        diffcountofitems = sum([len(result) for result in lst_new.res.values()])
+        self.assertEqual(diffcountofitems, 1, lst_new.res)
+        diffcountofitems = sum([len(result) for result in lst_old.res.values()])
+        self.assertEqual(diffcountofitems, 1, lst_old.res)
 
     def testBadPrice(self):
         lst_old = self.m.general_items_searching(self.u, item_keyword="clocks")
         self.m.change_items_details_in_shops_stock(self.u, "itemname1", "shopname", item_price=-10)
         lst_new = self.m.general_items_searching(self.u, item_keyword="clocks")
-        self.assertEqual(len(lst_new.res), 1, r.res)
-        self.assertEqual(len(lst_old.res), 1, r.res)
+        diffcountofitems = sum([len(result) for result in lst_new.res.values()])
+        self.assertEqual(diffcountofitems, 1, lst_new.res)
+        diffcountofitems = sum([len(result) for result in lst_old.res.values()])
+        self.assertEqual(diffcountofitems, 1, lst_old.res)
 
 
 if __name__ == '__main__':

@@ -183,10 +183,12 @@ class Member:
         return output
 
     def delete_shop_owner(self, shop_name, owner_name):
+        if self.is_founded_shop(shop_name):
+            self.foundedShops[shop_name].delete_owner(self._username, owner_name)
         if self.is_owned_shop(shop_name):
             self.ownedShops[shop_name].delete_owner(self._username, owner_name)
         else:
-            raise Exception(self._username + " isn't owner of shop: " + shop_name)
+            raise Exception(self._username + " isn't owner or owner of shop: " + shop_name)
 
     def does_have_role(self):
         return (len(self.foundedShops) + len(self.ownedShops) + len(self.managedShops)) > 0 or self.admin is not None

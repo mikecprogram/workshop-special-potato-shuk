@@ -98,18 +98,26 @@ class Shop():
         except Exception as e:
             self._shop_lock.release()
             raise e
+    def have_rule_in_shop(self,member):
+        if member.get_username() == self._founder.get_username():
+            raise Exception("Assignee is already a founder of the shop!")
+        if member.get_username() in self._managers:
+            raise Exception("Assignee is already a manager of the shop!")
+        if member.get_username() in self._owners:
+            raise Exception("Assignee is already an owner of the shop!")
 
     def assign_owner(self, assigner_member_object, assignee_member_object):
-        if assignee_member_object.get_username() in self._owners:
-            raise Exception("Assignee is already an owner of the shop!")
-        # TODO if assigned owner was a manager need to think what to do remove from managers or...
+        self.have_rule_in_shop(assignee_member_object)
+        #if assigned owner was a manager need to think what to do remove from managers or... NO.. if you have a rule you cant be promoted.
         self._owners[assignee_member_object.get_username()] = assignee_member_object
         assignee_member_object.addOwnedShop(self)
         self.add_assignment(assigner_member_object, assignee_member_object, self._owners_assignments)
         return True
 
     def delete_owner(self, assigner_user_name, assignee_user_name):
-        if assignee_user_name not in self._owners:
+        if assignee_user_name == self._founder.get_username():
+            raise Exception("%s is Founder of the shop:%s and therefore cant be deleted from owners group" %(assignee_user_name,self._name))
+        if assignee_user_name not in self._owners or assignee_user_name not in self._founder.get_username():
             raise Exception(assignee_user_name + " is not an owner of the shop:" + self._name)
         self.delete_assignment_owner(assigner_user_name, assignee_user_name, self._owners_assignments)
 
@@ -144,10 +152,7 @@ class Shop():
             del self._owners[member_to_delete.get_username()]
 
     def assign_manager(self, assigner_member_object, assignee_member_object):
-        if assignee_member_object.get_username() in self._managers:
-            raise Exception("Assignee is already a manager of the shop!")
-        if assignee_member_object.get_username() in self._owners:
-            raise Exception("Assignee is already an owner of the shop!")
+        self.have_rule_in_shop(assignee_member_object)
 
         self._managers[assignee_member_object.get_username()] = assignee_member_object
         assignee_member_object.addManagedShop(self)
