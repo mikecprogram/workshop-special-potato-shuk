@@ -4,7 +4,6 @@ from Dev.DomainLayer.Objects.StockItem import *
 class Stock:
 
     def __init__(self):
-        self._categories = {}  # {CategoryName, Category}
         self._stockItems = {}  # {stockItemName, stockItem}
         pass
     def getNextId(self):
@@ -42,7 +41,6 @@ class Stock:
     def removeStockItem(self, itemname):#DOES WHAT IT SAYS- DELETES THE ENITRE ITEM FROM STOCK!!!
         itemname = itemname.strip()
         if itemname in self._stockItems.keys():
-            self._stockItems[itemname].removeCategory()
             del self._stockItems[itemname]
         else:
             raise Exception('No such item as %s to delete.' % itemname)
@@ -82,7 +80,7 @@ class Stock:
             i.setDesc(item_desc)
             i.setPrice(item_price)
             i.setAmount(amount)
-            self.addItemToCategory(category,i)
+            i.setCategory(category)
             return True
         else:
             raise Exception("No such item such as %s" % itemname)
@@ -115,7 +113,7 @@ class Stock:
         ret=[]
         
         for item in self._stockItems.values():
-            c=item.getCategory().get_catagoryName()
+            c=item.getCategory()
             n=item.getName()
             p=item.getPrice()
             d=item.getDesc()

@@ -23,60 +23,62 @@ class MyTestCase(unittest.TestCase):
     def testDisplayCart(self):
         self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 1)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], r.res)
+        self.assertEqual(r.res, {'shopname': [{'name':'itemname1','price': 5.0,'count': 1,'amount': 10,'category':'animal objects','description':'cats and clocks'}]}, r.res)
         self.assertTrue((not r.isexc), r.exc)
         self.m.shopping_carts_add_item(self.u, "itemname2", "shopname", 1)
         self.m.shopping_carts_add_item(self.u, "itemname3", "rockshop", 1)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertTrue(r.res == [["shopname", [["itemname1", 1], ["itemname2", 1]]], ["rockshop", [["itemname3", 1]]]],
+        self.assertTrue(r.res == {'shopname': [{'name':'itemname1','count': 1,'price': 5.0,'amount': 10,'category':'animal objects','description':'cats and clocks'},
+                                              {'name':'itemname2','count': 1,'price': 2.0,'amount': 50,'category':'animal objects','description':'dogs and locks'}],
+                                  'rockshop':[{'name':'itemname3','count': 1,'price': 1.0,'amount': 5,'category':'rocks','description':'rock collection'}]},
                         r.exc)
         self.assertTrue((not r.isexc), r.exc)
 
     def testEditCart(self):
         self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 1)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], r.res)
+        self.assertEqual(r.res, {'shopname': [{'name':'itemname1','price': 5.0,'count': 1,'amount': 10,'category':'animal objects','description':'cats and clocks'}]}, r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_delete_item(self.u, "itemname1", "shopname", 1)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [], r.res)
+        self.assertEqual(r.res, {}, r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testDeleteBadAmount(self):
         self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 1)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], r.res)
+        self.assertEqual(r.res, {'shopname': [{'name':'itemname1','price': 5.0,'count': 1,'amount': 10,'category':'animal objects','description':'cats and clocks'}]}, r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_delete_item(self.u, "itemname1", "shopname", 51)
         self.assertTrue(r.isexc, r.exc)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], r.res)
+        self.assertEqual(r.res, {'shopname': [{'name':'itemname1','price': 5.0,'count': 1,'amount': 10,'category':'animal objects','description':'cats and clocks'}]}, r.res)
         self.assertTrue((not r.isexc), r.exc)
         # if deletion failed no change should be made
 
     def testDeleteBadShop(self):
         self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 1)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], r.res)
+        self.assertEqual(r.res, {'shopname': [{'name':'itemname1','price': 5.0,'count': 1,'amount': 10,'category':'animal objects','description':'cats and clocks'}]}, r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_delete_item(self.u, "itemname1", "badshopname", 1)
         self.assertTrue(r.isexc, r.exc)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertTrue((not r.isexc) and r.res == [
-            ["shopname", [["itemname1", 1]]]])  # if deletion failed no change should be made
+        self.assertTrue((not r.isexc) and r.res ==
+            {'shopname': [{'name':'itemname1','price': 5.0,'count': 1,'amount': 10,'category':'animal objects','description':'cats and clocks'}]})  # if deletion failed no change should be made
 
     def testDeleteBadItem(self):
         self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 1)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname1", 1]]]], r.res)
+        self.assertEqual(r.res, {'shopname': [{'name':'itemname1','price': 5.0,'count': 1,'amount': 10,'category':'animal objects','description':'cats and clocks'}]}, r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_delete_item(self.u, "baditemname1", "shopname", 1)
         self.assertTrue(r.isexc, r.exc)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertTrue((not r.isexc) and r.res == [
-            ["shopname", [["itemname1", 1]]]])  # if deletion failed no change should be made
+        self.assertTrue((not r.isexc) and r.res ==
+            {'shopname': [{'name':'itemname1','price': 5.0,'count': 1,'amount': 10,'category':'animal objects','description':'cats and clocks'}]})  # if deletion failed no change should be made
 
 
 if __name__ == '__main__':

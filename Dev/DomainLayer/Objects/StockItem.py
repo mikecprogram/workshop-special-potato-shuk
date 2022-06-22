@@ -1,12 +1,12 @@
 from unicodedata import category
 
-from Dev.DomainLayer.Objects.Category import Category
+
 ##from .Logger import Logger
 
 
 class StockItem:
 
-    def __init__(self, ID ,category, name, description, count, purchasepolicy, discountpolicy,price,shopname):
+    def __init__(self, ID ,category:str, name, description, count, purchasepolicy, discountpolicy,price,shopname):
         self._id = ID
         self._category = category
         self._desc = description
@@ -91,11 +91,9 @@ class StockItem:
 
     def getCategory(self) -> str:
         return self._category
-    def setCategory(self,cat):
+    def setCategory(self,cat:str):
         self._category = cat
-    def removeCategory(self):
-        self._category.removeItem(self)
-        self._category = None
+
     def get_item_report(self):
         return 'Item: ' + self._name + '\n' + 'Price: ' + self._price + '\n' + 'Amount: ' + self._count + '\n' + 'id: ' + self._id +'\n'
     def get_item_report_dict(self):

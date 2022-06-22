@@ -168,13 +168,12 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def general_items_searching(self, user_id: int, query:str,category="",item_minPrice:float = 0, item_maxPrice:float = 0) -> Response[
-        Dict[str,Dict]]:  # [[shop_name, item_name1] , [shop_name,item_name2] ...]
+    def general_items_searching(self, user_id: int, item_keyword:str="",category:str ="",item_minPrice:float = 0, item_maxPrice:float = 0) -> Response[Dict[str,Dict]]:  # [[shop_name, item_name1] , [shop_name,item_name2] ...]
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
             return Response(
-                self.market.general_items_searching(user_id,query,category,item_minPrice, item_maxPrice))
+                self.market.general_items_searching(user_id,item_keyword,category,item_minPrice, item_maxPrice))
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -186,7 +185,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shopping_carts_check_content(self, user_id: int) ->Dict[str,Dict]:  # List[List[str]]: #[[shop_name, item_name1,item_name2..] , [shop_name, item_name1,item_name2..] ...]
+    def shopping_carts_check_content(self, user_id: int) -> Response[Dict[str, Dict]]:  # List[List[str]]: #[[shop_name, item_name1,item_name2..] , [shop_name, item_name1,item_name2..] ...]
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")

@@ -125,12 +125,12 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_check_content(self.u)
         self.assertTrue(not r.isexc, r.exc)
-        self.assertTrue(r.res == {"shopname": {"name": "itemname1",
-                                               "price": 5,
+        self.assertEqual(r.res , {"shopname": [{"name": "itemname1",
+                                               "price": 5.0,
                                                "amount": 30,
                                                "count": 4,
                                                "category": "animal objects",
-                                               "description": "cats and clocks"}})
+                                               "description": "cats and clocks"}]})
         r = self.m.validate_purchase_policy(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
@@ -164,12 +164,12 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertTrue((not r.isexc) and r.res == {"shopname": {"name": "itemname1",
+        self.assertTrue((not r.isexc) and r.res == {"shopname": [{"name": "itemname1",
                                                                  "price": 5,
                                                                  "amount": 30,
                                                                  "count": 4,
                                                                  "category": "animal objects",
-                                                                 "description": "cats and clocks"}})
+                                                                 "description": "cats and clocks"}]})
         r = self.m.validate_purchase_policy(self.u)
         self.assertTrue(not r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
@@ -177,7 +177,8 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname1", 4], ["itemname2", 4]]]], r.res)
+        self.assertEqual(r.res,  {'shopname': [{'name':'itemname1','price': 5.0,'count': 4,'amount': 30,'category':'animal objects','description':'cats and clocks'},
+                                              {'name':'itemname2','price': 2.0,'count': 4,'amount': 50,'category':'animal objects','description':'dogs and locks'}]}, r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.validate_purchase_policy(self.u)
         self.assertTrue(r.res, r.exc)
@@ -213,12 +214,12 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_check_content(self.u)
         self.assertTrue((not r.isexc) and r.res ==
-                        {"shopname": {"name": "itemname1",
+                        {"shopname": [{"name": "itemname1",
                                       "price": 5,
                                       "amount": 30,
                                       "count": 4,
                                       "category": "animal objects",
-                                      "description": "cats and clocks"}})
+                                      "description": "cats and clocks"}]})
         r = self.m.validate_purchase_policy(self.u)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
@@ -226,7 +227,8 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname1", 4], ["itemname2", 4]]]], r.res)
+        self.assertEqual(r.res, {'shopname': [{'name':'itemname1','price': 5.0,'count': 4,'amount': 30,'category':'animal objects','description':'cats and clocks'},
+                                              {'name':'itemname2','price': 2.0,'count': 4,'amount': 50,'category':'animal objects','description':'dogs and locks'}]}, r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.validate_purchase_policy(self.u)
         self.assertTrue(r.res, r.exc)
@@ -235,7 +237,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [["shopname", [["itemname2", 4]]]], r.res)
+        self.assertEqual(r.res,{'shopname': [{'name':'itemname2','price': 2.0,'count': 4,'amount': 50,'category':'animal objects','description':'dogs and locks'}]}, r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.validate_purchase_policy(self.u)
         self.assertTrue(r.res, r.exc)
@@ -268,12 +270,12 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertTrue((not r.isexc) and r.res == {"shopname": {"name": "itemname1",
+        self.assertTrue((not r.isexc) and r.res == {"shopname": [{"name": "itemname1",
                                                                  "price": 5,
                                                                  "amount": 30,
                                                                  "count": 4,
                                                                  "category": "animal objects",
-                                                                 "description": "cats and clocks"}})
+                                                                 "description": "cats and clocks"}]})
         r = self.m.validate_purchase_policy(self.u)
         self.assertTrue(not r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
@@ -281,7 +283,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, [], r.res)
+        self.assertEqual(r.res, {}, r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.validate_purchase_policy(self.u)
         self.assertTrue(r.res, r.exc)
@@ -304,12 +306,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertTrue((not r.isexc) and r.res == {"shopname": {"name": "itemname1",
-                                                                 "price": 5,
-                                                                 "amount": 30,
-                                                                 "count": 4,
-                                                                 "category": "animal objects",
-                                                                 "description": "cats and clocks"}})
+        self.assertTrue((not r.isexc) and r.res == {"shopname": [{"name": "itemname1", "price": 5, "amount": 30, "count": 4, "category": "animal objects", "description": "cats and clocks"}]})
         r = self.m.calculate_cart_price(self.u)
         self.assertTrue((not r.isexc) and r.res == 18)  # oridinal price is 4*5=20 with 10% discount is 18
 
@@ -341,6 +338,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.isexc), r.exc)
         self.m.shopping_carts_delete_item(self.u, "itemname1", "shopname", 15)
         r = self.m.calculate_cart_price(self.u)
+        print(r.res)
         self.assertEqual(r.res, 28.6, r.res)
         self.assertTrue((not r.isexc), r.exc)
 

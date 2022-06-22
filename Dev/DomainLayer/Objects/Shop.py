@@ -14,7 +14,7 @@ class Shop():
         self._stock = Stock()
         self._is_open = True  # need to confirm if we need shop's status such as closed/open. TODO
         self._founder = founder
-        self._owners = {founder.get_username(): founder}  # {ownerUsername, Member}
+        self._owners = {}  # {ownerUsername, Member} (ò_ó)!!!!!!!!!!!!!!!!!
         self._managers = {}  # {managerUsername, Member}
         self._purchasePolicy = []
         self._purchaseLock = threading.Lock()

@@ -367,7 +367,6 @@ class Market():
                 #TODO add better exceptions :)
                 raise Exception('Cart did not pass purchase policy!')
             price = user.calculate_cart_price()
-            print("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP")
             #paymentServiceInterface.request_payment(price, None) or something similar, this interface is empty
             return user.purchase()
         else:

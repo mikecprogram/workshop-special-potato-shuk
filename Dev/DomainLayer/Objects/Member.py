@@ -37,8 +37,7 @@ class Member:
         return not (shop_name in self.ownedShops or shop_name in self.managedShops or shop_name in self.foundedShops)
 
     def addFoundedShop(self, shop):
-        self.foundedShops[shop.getShopName()] = shop
-        self.ownedShops[shop.getShopName()] = shop
+        self.foundedShops[shop.getShopName()] = shop##WATCH OUT!!! founder is treated like owner, but is not an owner!!!
 
     def isHashedCorrect(self, hashed):
         return True if self._hashed == hashed else False
@@ -96,7 +95,6 @@ class Member:
             raise Exception("Member could not assign a manager to not owned or not managed with special permission shop!")
 
     def openShop(self, shop):
-
         self.addFoundedShop(shop)
 
     def getRolesInfoReport(self, shopName):

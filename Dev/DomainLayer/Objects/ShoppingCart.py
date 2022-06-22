@@ -12,15 +12,31 @@ class ShoppingCart:
         self.shoppingBaskets = {}   # {shopName, ShoppingBasket}
 
     def getBasketByShop(self, shop):
-        if shop.getShopName() not in self.shoppingBaskets.keys():
-            self.shoppingBaskets[shop.getShopName()] = ShoppingBasket(self,shop)
-        return self.shoppingBaskets[shop.getShopName()]
+        if type(shop) is str:
+            if shop not in self.shoppingBaskets.keys():
+                return None
+            return self.shoppingBaskets[shop]
+        else:
+            if shop.getShopName() not in self.shoppingBaskets.keys():
+                return None
+            return self.shoppingBaskets[shop.getShopName()]
 
     def addItem(self, shop, item_name, amount):
-       self.getBasketByShop(shop).addItem(item_name, amount)
+        s = self.getBasketByShop(shop)
+        if s is None:
+            s = ShoppingBasket(self, shop)
+            self.shoppingBaskets[shop.getShopName()] = s
+        s.addItem(item_name, amount)
 
     def removeItem(self, shopName, item_name,amount):
-        self.getBasketByShop(shopName).removeItem(item_name,amount)
+        b = self.getBasketByShop(shopName)
+        if b is None:
+            raise Exception("Cant remove item from a shop you dont have cart from (%s)" % shopName)
+        if b.removeItem(item_name,amount):
+            if b.is_empty():
+                del self.shoppingBaskets[shopName]
+            return True
+
 
     def validate_purchase(self):
         for name, basket in self.shoppingBaskets.items():

@@ -1,5 +1,5 @@
 from Dev.ServiceLayer.Response import Response
-from typing import List,Set
+from typing import List, Set, Dict
 import sys
 
 from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
@@ -41,7 +41,7 @@ class BridgeInterface:
         pass
 
     #keyword search from name and description
-    def general_items_searching(self, user_id:int,item_name: str =None, category:str =None ,item_keyword: str= None, item_maxPrice: int= None) -> Response[List[List[str]]]: #[[shop_name, item_name1] , [shop_name,item_name2] ...]
+    def general_items_searching (self, user_id: int, item_keyword: str, category: str = "", item_minPrice: float = 0, item_maxPrice: float = 0) -> Response[Dict[str, Dict]]: #[[shop_name, item_name1] , [shop_name,item_name2] ...]
         pass
 
     def shopping_carts_add_item(self, user_id: int, item_name: str, shop_name: str, amount : int) -> Response[bool]:
