@@ -30,7 +30,7 @@ def is_valid_permission(permission_id):
 class Permissions:
 
     def __init__(self):
-        self._assignedPermission = set() # {PermissionEnum}
+        self._assignedPermission = set()  # {PermissionEnum}
         self.add_permission(Permission.UsersQuestionsAnswering)
         self.add_permission(Permission.InshopPurchasesHistoryGetting)
 

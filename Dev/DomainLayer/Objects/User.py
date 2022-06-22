@@ -12,7 +12,7 @@ class User:
         self._market = market
         self._state = Guest(self)
         self._shoppingCart = ShoppingCart(self)
-        self._policies=[]
+        self._policies = []
 
     def isMember(self):
         return isinstance(self._state, Member)
@@ -82,11 +82,12 @@ class User:
     def search(self, name=None, category=None, keyword=None, maxPrice=None, minItemRating=None, minShopRating=None):
         return self._market.search(name, category, keyword, maxPrice, minItemRating, minShopRating)
 
-    def addToCart(self,shop, item_name,amount):
-        self._shoppingCart.addItem(shop, item_name,amount)
+    def addToCart(self, shop, item_name, amount):
+        self._shoppingCart.addItem(shop, item_name, amount)
 
-    def removeFromCart(self, item_name, shopName,amount):
-        return self._shoppingCart.removeItem(shopName, item_name,amount)
+    def removeFromCart(self, item_name, shopName, amount):
+        return self._shoppingCart.removeItem(shopName, item_name, amount)
+
     def checkBaskets(self):
         return self._shoppingCart.checkBaskets()
 
@@ -112,17 +113,19 @@ class User:
 
     def assign_manager(self, shopName, memberToAssign):
         self._state.assign_manager(shopName, memberToAssign)
-    
+
     def getRolesInfoReport(self, shopName):
         self._state.getRolesInfoReport(shopName)
+
     def purchase(self):
-        if not(self._shoppingCart.purchase()):
+        if not (self._shoppingCart.purchase()):
             Exception("Purchase failed for unknown reason")
         if self.isMember():
             self._state.dropSavedCart()
         self.clearShoppingCart()
         self._shoppingCart = ShoppingCart(self)
         return True
+
     def getUsername(self):
         if self.isMember():
             return self._state.get_username()
@@ -142,8 +145,8 @@ class User:
     def validate_cart_purchase(self):
         return self._shoppingCart.validate_purchase()
 
-    def addTempPolicy(self,ID, name, arg1, arg2, percent):
-        p=[]
+    def addTempPolicy(self, ID, name, arg1, arg2, percent):
+        p = []
         for i in [ID, name, arg1, arg2, percent]:
             if i is not None:
                 p.append(i)
@@ -155,6 +158,7 @@ class User:
 
     def is_admin(self):
         return self.getMember().is_admin()
+
     def get_state(self):
         if self.isMember():
             return self.getMember().get_username()

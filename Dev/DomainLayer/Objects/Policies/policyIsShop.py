@@ -1,5 +1,6 @@
 from Dev.DomainLayer.Objects.Policies.Composable import Composable
 
+
 class policyIsShop(Composable):
 
     def __init__(self, ID, percent):

@@ -1,4 +1,3 @@
-
 from Dev.DomainLayer.Objects import StockItem, User
 from Dev.DomainLayer.Objects.Policies.Composable import Composable
 

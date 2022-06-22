@@ -12,7 +12,5 @@ class Composer(Composable):  # any composed discount that takes 2 composables in
         return super.apply(user, item)
 
     def __str__(self):
-        r = super(Composer,self).__str__()
-        return r+"\nchild1: "+self.c1.__str__()+"\nchild2: "+self.c2.__str__()
-
-
+        r = super(Composer, self).__str__()
+        return r + "\nchild1: " + self.c1.__str__() + "\nchild2: " + self.c2.__str__()

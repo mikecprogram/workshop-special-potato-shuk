@@ -38,7 +38,7 @@ prem = [
 ]
 
 simplePolicies = [
-    "isItem", "isCategory", "isShop", "hasAmount", "hasPrice","hasAmount","hasPrice"
+    "isItem", "isCategory", "isShop", "hasAmount", "hasPrice", "hasAmount", "hasPrice"
 ]
 
 compositePolicies = [
@@ -58,7 +58,6 @@ maxtimeonline = 1  # 60 * 10  # 10 minutes
 
 
 class Market():
-
 
     def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password,
                  maxtimeonline=60 * 10):  # 10 minutes
@@ -96,16 +95,17 @@ class Market():
         self._enterLock.release()
         self._onlineVisitors[currentToken] = User(self)
         return currentToken
+
     def get_user_state(self, token):
         if self.isToken(token):
             return self._onlineVisitors[token].get_state()
+
     def exit(self, token):
         if self.isToken(token):
             self._onlineVisitors[token].exit()
             del self._onlineVisitors[token]
             return True
         return False
-
 
     def register(self, token, username, password):
         if self.isToken(token):
@@ -130,7 +130,6 @@ class Market():
 
     def is_active(self, token):
         return self._onlineVisitors.get(token) is not None
-
 
     def is_logged_in(self, token):
         u = self._onlineVisitors.get(token)
@@ -160,7 +159,7 @@ class Market():
 
     def shipping_request(self, token, items):
         if self.isToken(token):
-             pass
+            pass
 
     def logout(self, token):
         if self.isToken(token):
@@ -191,16 +190,16 @@ class Market():
             else:
                 raise Exception('Shop does not exist with the given shop name!')
 
-    def general_items_searching(self, token, query,category=None,item_minPrice = -1, item_maxPrice = -1):
+    def general_items_searching(self, token, query, category=None, item_minPrice=-1, item_maxPrice=-1):
         if query is None:
             query = ""
         query = query.strip()
-        if not(category is None):
+        if not (category is None):
             category = category.strip()
         ret = {}
         if self.isToken(token):
             for shop in self._shops.values():
-                answers = shop.search(query,category,item_minPrice, item_maxPrice)
+                answers = shop.search(query, category, item_minPrice, item_maxPrice)
                 if answers is not None:
                     ret[shop.getShopName()] = answers
             return ret
@@ -218,7 +217,6 @@ class Market():
                 user.addToCart(itemid, shop, amount);
                 pass
             raise Exception("No such shop %s" % shop_name)
-            
 
     def getCartContents(self, token):
         if self.isToken(token):
@@ -235,7 +233,7 @@ class Market():
 
     def add_policy(self, token, percent, name, arg1=None, arg2=None):
         if self.isToken(token):
-            if percent<0:
+            if percent < 0:
                 raise Exception('bad discount amount!')
             user = self.getUser(token)
             if name in simplePolicies:
@@ -254,10 +252,9 @@ class Market():
     def get_shop_policies(self, token, shopname):
         if not self.isToken(token):
             raise Exception('Bad token!')
-        for n,s in self._shops.items():
-            if n==shopname:
+        for n, s in self._shops.items():
+            if n == shopname:
                 return s.getPolicies()
-
 
     def add_discount_policy_to_shop(self, token, shopname, policyID):
         if not self.isToken(token):
@@ -289,14 +286,12 @@ class Market():
             raise Exception('No such shop as %s' % shopname)
         return shop.addDiscountPolicy(policy)
 
-
-
-    def makePolicy(self,user, PID):
+    def makePolicy(self, user, PID):
         pols = user.getPolicies()
         pol = None
         for p in pols:
-            if p[0]==PID:
-                pol=p
+            if p[0] == PID:
+                pol = p
                 break
         if pol is None:
             raise Exception("bad policy ID!")
@@ -304,13 +299,13 @@ class Market():
             if pol[1] == "isShop":
                 return policyIsShop(p[0], p[2])
             if pol[1] == "isCategory":
-                return policyIsCategory(p[0], p[3],p[2])
+                return policyIsCategory(p[0], p[3], p[2])
             if pol[1] == "isItem":
-                return policyIsItem(p[0], p[3],p[2])
+                return policyIsItem(p[0], p[3], p[2])
             if pol[1] == "hasAmount":
-                return policyHasAmount(p[0], p[4],p[2],p[3])
+                return policyHasAmount(p[0], p[4], p[2], p[3])
             if pol[1] == "hasPrice":
-                return policyHasPrice(p[0], p[4],p[2],p[3])
+                return policyHasPrice(p[0], p[4], p[2], p[3])
         else:
             if pol[1] == "not":
                 pt = self.makePolicy(user, p[2])
@@ -364,10 +359,10 @@ class Market():
         if self.isToken(token):
             user = self.getUser(token)
             if not user.validate_cart_purchase():
-                #TODO add better exceptions :)
+                # TODO add better exceptions :)
                 raise Exception('Cart did not pass purchase policy!')
             price = user.calculate_cart_price()
-            #paymentServiceInterface.request_payment(price, None) or something similar, this interface is empty
+            # paymentServiceInterface.request_payment(price, None) or something similar, this interface is empty
             return user.purchase()
         else:
             raise Exception('Timed out token!')
@@ -382,7 +377,7 @@ class Market():
             raise Exception('Timed out token!')
 
     def getUser(self, token):
-        #Todo, why is alex tf is online ?!?!
+        # Todo, why is alex tf is online ?!?!
         return self._onlineVisitors[token]
 
     """
@@ -410,7 +405,7 @@ class Market():
         if self.isToken(token) and self.is_logged_in(token):
             u = self.getUser(token)
             if shop_name in self._shops.keys():
-                s = self._shops[shop_name] 
+                s = self._shops[shop_name]
                 return s.add_item(u.getUsername(), item_name, category, item_desc, item_price, amount)
             raise Exception('Bad shop name!')
         raise Exception('Bad token!')
@@ -429,13 +424,13 @@ class Market():
         user = self.getUser(token)
         return user.validate_cart_purchase()
 
-    def change_items_details_in_shops_stock(self, token, itemname, shop_name, new_name, item_desc,category,
-                                                                item_price,amount):
+    def change_items_details_in_shops_stock(self, token, itemname, shop_name, new_name, item_desc, category,
+                                            item_price, amount):
         if self.isToken(token):
             if shop_name in self._shops.keys():
                 s = self._shops[shop_name]
-                return s.editItem(itemname, new_name, item_desc,category,
-                                                                item_price,amount)
+                return s.editItem(itemname, new_name, item_desc, category,
+                                  item_price, amount)
         raise Exception('No such shop as %s' % shop_name)
 
     def shopping_carts_add_item(self, token, item_name, shop_name, amount):
@@ -524,7 +519,7 @@ class Market():
             self._onlineVisitors[token].archive_purchase_cart(token)
         return True
 
-    def get_all_members_name(self, token):#WTF does this func do?? why does it do it that way??
+    def get_all_members_name(self, token):  # WTF does this func do?? why does it do it that way??
         if self.isToken(token) and self.is_logged_in(token):
             if self.getUser(token).is_admin():
                 self._enterLock.acquire()
@@ -551,7 +546,7 @@ class Market():
                     self._membersLock.release()
                     return output
                 else:
-                    raise Exception(member_name+" is not Member")
+                    raise Exception(member_name + " is not Member")
             else:
                 raise Exception('Not Admin!')
 
@@ -566,7 +561,7 @@ class Market():
                     self._membersLock.release()
             else:
                 self._membersLock.release()
-                raise Exception(owner_name+" is not Member")
+                raise Exception(owner_name + " is not Member")
 
     def delete_member(self, token: int, member_name: str):
         try:
@@ -580,7 +575,7 @@ class Market():
                             raise Exception(member_name + " have roles!")
                         else:
                             online_members = list(self._onlineVisitors.values())
-                            online_members =[u for u in online_members if u.isMember() and u.getUsername()==member_name]
+                            online_members = [u for u in online_members if u.isMember() and u.getUsername() == member_name]
                             if len(online_members) == 1:
                                 online_members[0].logout()
                             del self._members[member_name]
@@ -588,14 +583,13 @@ class Market():
                         raise Exception(member_name + " is not Member")
                 else:
                     raise Exception('You are not an Admin.')
-            
+
             self._membersLock.release()
             self._enterLock.release()
         except Exception as e:
             self._membersLock.release()
             self._enterLock.release()
             raise e
-            
 
     def get_founded_shops(self, token):
         if self.isToken(token):
@@ -607,8 +601,6 @@ class Market():
                     return output
                 except Exception as e:
                     self._enterLock.release()
-
-        
 
     def get_managed_shops(self, token):
         if self.isToken(token):
@@ -634,4 +626,3 @@ class Market():
             return output
         else:
             raise Exception('Timed out token!')
-

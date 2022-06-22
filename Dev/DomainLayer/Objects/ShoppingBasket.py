@@ -19,7 +19,7 @@ class ShoppingBasket:
         sum = 0
         for itemname in self.stockItems.keys():
             nu = self.shop.calculate_price(user, itemname, self.stockItems[itemname])
-            #print(name, nu)
+            # print(name, nu)
             sum += nu
         return sum
 
@@ -45,8 +45,6 @@ class ShoppingBasket:
             raise Exception("No such amount available in basket")
         if not (item_name in self.stockItems):
             raise Exception("Item is not even in the basket!")
-        if not (self.shop.isAmount(item_name, self.stockItems[item_name] + amount)):
-            raise Exception("No such amount available in shop")
         if amount == self.stockItems[item_name]:
             del self.stockItems[item_name]
         else:
@@ -99,5 +97,6 @@ class ShoppingBasket:
     def archive(self, token):
 
         self.shop.archive_shopping_basket(self.to_string(token))
+
     def is_empty(self):
         return self.stockItems == {}

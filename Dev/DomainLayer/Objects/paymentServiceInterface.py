@@ -1,6 +1,4 @@
-
 class paymentServiceInterface:
-    
-    def request_payment(self,amount,payment_details):
-        pass
 
+    def request_payment(self, amount, payment_details):
+        pass

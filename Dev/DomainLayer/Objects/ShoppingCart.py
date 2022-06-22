@@ -4,12 +4,13 @@ from tkinter import E
 from Dev.DomainLayer.Objects.ShoppingBasket import ShoppingBasket
 from Dev.DomainLayer.Objects.Shop import Shop
 
+
 class ShoppingCart:
 
     def __init__(self, user):
         self._user = user
         self._cartPrice = None
-        self.shoppingBaskets = {}   # {shopName, ShoppingBasket}
+        self.shoppingBaskets = {}  # {shopName, ShoppingBasket}
 
     def getBasketByShop(self, shop):
         if type(shop) is str:
@@ -28,15 +29,14 @@ class ShoppingCart:
             self.shoppingBaskets[shop.getShopName()] = s
         s.addItem(item_name, amount)
 
-    def removeItem(self, shopName, item_name,amount):
+    def removeItem(self, shopName, item_name, amount):
         b = self.getBasketByShop(shopName)
         if b is None:
             raise Exception("Cant remove item from a shop you dont have cart from (%s)" % shopName)
-        if b.removeItem(item_name,amount):
+        if b.removeItem(item_name, amount):
             if b.is_empty():
                 del self.shoppingBaskets[shopName]
             return True
-
 
     def validate_purchase(self):
         for name, basket in self.shoppingBaskets.items():
@@ -58,11 +58,11 @@ class ShoppingCart:
         return ans
 
     def checkBasket(self, shopname):
-        if shopname in  self.shoppingBaskets:
+        if shopname in self.shoppingBaskets:
             return self.shoppingBaskets[shopname].checkBasket()
 
     def getRawPrice(self, shopname):
-        if shopname in  self.shoppingBaskets:
+        if shopname in self.shoppingBaskets:
             return self.shoppingBaskets[shopname].raw_price()
 
     def clear(self):
@@ -73,9 +73,11 @@ class ShoppingCart:
 
     def store(self):
         self._user = None
-        pass         # TODO store the the shopping cart at DB
-    def setUser(self,user):
+        pass  # TODO store the the shopping cart at DB
+
+    def setUser(self, user):
         self._user = user
+
     def purchase(self):
         try:
             for name in self.shoppingBaskets:
@@ -84,7 +86,6 @@ class ShoppingCart:
             return True
         except Exception as e:
             raise e
-
 
     def archive_shopping_baskets(self, token):
         for basket in self.shoppingBaskets.values():

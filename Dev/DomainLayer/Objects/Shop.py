@@ -6,7 +6,6 @@ from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
 import threading
 
 
-
 class Shop():
 
     def __init__(self, shop_name: str, founder):
@@ -33,15 +32,15 @@ class Shop():
         return self._is_open
 
     def isAmount(self, itemname, amount):  # if the store has enough supply
-        return self._stock.isAmount(itemname,amount)
+        return self._stock.isAmount(itemname, amount)
 
     def itemExists(self, itemname):
         return self._stock.itemExists(itemname)
-        
+
     def getShopName(self):
         return self._name
 
-    def add_item(self, username:str, item_name:str, category:str, item_desc:str, item_price: float, amount: int):
+    def add_item(self, username: str, item_name: str, category: str, item_desc: str, item_price: float, amount: int):
         item_name = item_name.strip()
         item_desc = item_desc.strip()
         amount = int(amount)
@@ -55,7 +54,7 @@ class Shop():
             raise Exception('Item name must not be null')
         if (username != self._founder.get_username()) and not (username in self._owners.keys()) and not (username in self._managers.keys()):
             raise Exception('You do not have the sufficient permissions to add item')
-            
+
         nid = self._stock.getNextId()
         item = StockItem(nid, category, item_name, item_desc, amount, None, None, item_price, self._name)
         try:
@@ -77,11 +76,10 @@ class Shop():
             self._shop_lock.release()
             raise e
 
-
-    def editItem(self, itemname, new_name, item_desc,category, item_price,count):
+    def editItem(self, itemname, new_name, item_desc, category, item_price, count):
         try:
             self._shop_lock.acquire()
-            r = self._stock.editStockItem(itemname, new_name, item_desc,category, item_price,count)
+            r = self._stock.editStockItem(itemname, new_name, item_desc, category, item_price, count)
             self._shop_lock.release()
             return r
         except Exception as e:
@@ -178,8 +176,8 @@ class Shop():
         else:
             raise Exception('Closed shop could not be closed again!')
 
-    #Returns whether usernae is manager
-    def is_manager(self, manager_username:str) -> bool:
+    # Returns whether usernae is manager
+    def is_manager(self, manager_username: str) -> bool:
         return manager_username in self._managers
 
     def is_owner(self, owner_username: str) -> bool:
@@ -203,10 +201,10 @@ class Shop():
         return report
 
     def get_shop_report(self):
-        return {'name' : self._name ,'founder' : self._founder.get_username(),'managers': [m for m in self._managers],
-                    'owners': [m for m in self._owners],
-                    'shopopen':self.isOpen(),
-                'items':self._stock.get_items_report()}
+        return {'name': self._name, 'founder': self._founder.get_username(), 'managers': [m for m in self._managers],
+                'owners': [m for m in self._owners],
+                'shopopen': self.isOpen(),
+                'items': self._stock.get_items_report()}
 
     def aqcuirePurchaseLock(self):
         '''acquires the lock of the shop'''
@@ -216,16 +214,15 @@ class Shop():
         '''release the lock of the shop'''
         self._shop_lock.release()
 
-    
     def purchase(self, user, itemname: str, amount: int):
         '''Perform purchase'''
-        self._purchases_history.append("User %s bought %d of %s "%(user.get_state(),amount,itemname))
-        self._stock.purchase(itemname,amount)
+        self._purchases_history.append("User %s bought %d of %s " % (user.get_state(), amount, itemname))
+        self._stock.purchase(itemname, amount)
         return True
 
-    def search(self, query:str,category:str,item_min_price:float, item_max_price:float):
+    def search(self, query: str, category: str, item_min_price: float, item_max_price: float):
         '''Performs search (non exclusive) - an item is found by query in his name/desc/category'''
-        return self._stock.search(query,category,item_min_price, item_max_price)
+        return self._stock.search(query, category, item_min_price, item_max_price)
 
     def getItemInfo(self, name):
         return self._stock.getItemInfo(name)
@@ -303,7 +300,7 @@ class Shop():
         item = self._stock.getItem(name)
         disc = self.findDiscount(user, item)
         # print(name, disc,item.getPrice()*amount*disc)
-        return round(item.getPrice() * amount * disc,3)
+        return round(item.getPrice() * amount * disc, 3)
 
     def findDiscount(self, user, item):
         disc = 1
@@ -311,5 +308,5 @@ class Shop():
             # print(policy,policy.apply(user, item))
             if policy.apply(user, item):
                 d = policy.getDiscount()
-                disc *= (1 - d/100)
+                disc *= (1 - d / 100)
         return disc

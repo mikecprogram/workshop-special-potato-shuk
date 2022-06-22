@@ -33,11 +33,11 @@ class Member:
     def get_username(self):
         return self._username
 
-    def is_eligible_members(self,shop_name):
+    def is_eligible_members(self, shop_name):
         return not (shop_name in self.ownedShops or shop_name in self.managedShops or shop_name in self.foundedShops)
 
     def addFoundedShop(self, shop):
-        self.foundedShops[shop.getShopName()] = shop##WATCH OUT!!! founder is treated like owner, but is not an owner!!!
+        self.foundedShops[shop.getShopName()] = shop  ##WATCH OUT!!! founder is treated like owner, but is not an owner!!!
 
     def isHashedCorrect(self, hashed):
         return True if self._hashed == hashed else False
@@ -77,7 +77,7 @@ class Member:
         return shopName in self.managedShops
 
     def assign_owner(self, shopName, memberToAssign):
-        if self.is_owned_shop(shopName) :
+        if self.is_owned_shop(shopName):
             self.ownedShops[shopName].assign_owner(self, memberToAssign)
         elif shopName in self.foundedShops:
             self.foundedShops[shopName].assign_owner(self, memberToAssign)
@@ -108,10 +108,11 @@ class Member:
     def saveShoppingCart(self, cart):
         cart.store()
         self._savedCart = cart
+
     def dropSavedCart(self):
         self._savedCart = None
 
-    def loadShoppingCart(self,user):
+    def loadShoppingCart(self, user):
         if self._savedCart is None:
             return ShoppingCart(user)
         else:
@@ -143,7 +144,7 @@ class Member:
     def can_update_manager_permissions(self, shop_name):
         return self.permissions[shop_name].can_change_shop_manager_permissions()
 
-    def grant_permission(self ,permission_code, shop_name, target_manager):
+    def grant_permission(self, permission_code, shop_name, target_manager):
         if self.is_owned_shop(shop_name):
             self.ownedShops[shop_name].grant_permission(permission_code, self._username, target_manager)
         elif self.is_managed_shop(shop_name) and self.can_update_manager_permissions(shop_name):
@@ -152,7 +153,7 @@ class Member:
             raise Exception(
                 "Member could not grant manager permissions in non owned or non managed with special permission shop!")
 
-    def withdraw_permission(self,permission_code, shop_name, target_manager):
+    def withdraw_permission(self, permission_code, shop_name, target_manager):
         if self.is_owned_shop(shop_name):
             self.ownedShops[shop_name].withdraw_permission(permission_code, self._username, target_manager)
         elif self.is_managed_shop(shop_name) and self.can_update_manager_permissions(shop_name):
@@ -169,24 +170,24 @@ class Member:
 
     def get_member_info(self):
         output = "Member Name= " + self._username + "\n"
-        if len(self.foundedShops) >0:
+        if len(self.foundedShops) > 0:
             output += "founder for: " + str(list(self.foundedShops.keys())) + " shops\n"
         if len(self.ownedShops) > 0:
             output += "owner for: " + str(list(self.ownedShops.keys())) + " shops\n"
         if len(self.managedShops) > 0:
             output += "manager for: " + str(self.permissions.keys()) + "\n"
         if self.admin is not None:
-            output = output+"and he is Admin\n"
+            output = output + "and he is Admin\n"
         return output
-        
-    def delete_shop_owner(self,shop_name, owner_name):
+
+    def delete_shop_owner(self, shop_name, owner_name):
         if self.is_owned_shop(shop_name):
-            self.ownedShops[shop_name].delete_owner(self._username,owner_name)
+            self.ownedShops[shop_name].delete_owner(self._username, owner_name)
         else:
-            raise Exception(self._username+" isn't owner of shop: "+shop_name)
+            raise Exception(self._username + " isn't owner of shop: " + shop_name)
 
     def does_have_role(self):
-        return (len(self.foundedShops)+len(self.ownedShops)+len(self.managedShops)) > 0 or self.admin is not None
+        return (len(self.foundedShops) + len(self.ownedShops) + len(self.managedShops)) > 0 or self.admin is not None
 
     def get_founder_shops(self):
         return list(self.foundedShops.keys())
