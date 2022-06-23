@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h1>my policy List:</h1>
+<div class="stockitemlist">
+    {% for item in myPolicyList %}
+        <div class="stockitem">
+            
+            <div class="stockitemcontainer">
+            <h3>policy id: {{item.id}}</h3>
+            <p>policy: {{item.name}}
+                {% for a in item.args %}
+                {{a}}
+                {% endfor %}</p>
+            <p>Discount: {{item.discount}}%</p>
+            
+            </div>
+        </div>
+
+    {% endfor %}
+
+</div>
+<h1>add new basic policy:</h1>
+
+<div class="stockitemlist">
+    {% for item in simplePolicies %}
+    <form class="LoginScreen" action="" method="POST">
+    </form>
+        <div class="stockitem">
+
+            <div class="stockitemcontainer">
+            <h3>{{item.name}}</h3>
+                {% for a in item.args %}
+                <p>{{a}}</p>
+                <input/>
+                {% endfor %}
+                <button>add policy</button>
+            </div>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+</div>
+<h1>add new composite policy:</h1>
+
+<div class="stockitemlist">
+    {% for item in compositePolicies %}
+        <div class="stockitem">
+
+            <div class="stockitemcontainer">
+            <h3>{{item.name}}</h3>
+                {% for a in item.args %}
+                <p>{{a}}</p>
+                <input/>
+                {% endfor %}
+
+
+                <button>add policy</button>
+            </div>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
