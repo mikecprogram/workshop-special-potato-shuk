@@ -9,6 +9,9 @@ class Guest:
     def assign_owner(self, shopName, memberToAssign):
         raise Exception("Guest could not assign shop owners!")
 
+    def get_permissions_report(self, shopName, member):
+        raise Exception("Guest could not get %s permissions." % member)
+
     def assign_manager(self, shopNmae, member):
         raise Exception("Guest could not assign shop managers!")
 

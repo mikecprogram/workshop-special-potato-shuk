@@ -5,19 +5,19 @@ from enum import Enum
 
 
 class Permission(Enum):
-    StockManaging = 0
-    DiscountPolicyChanging = 1
-    PurchasePolicyChanging = 2
-    ShopOwnerAssigning = 3
-    ShopOwnerUnassigning = 4
-    ShopManagerAssigning = 5
-    ShopManagerUnassigning = 6
-    ShopManagerPermissionsChanging = 7
-    ShopClosing = 8
-    ClosedShopOpening = 9
-    UsersQuestionsAnswering = 10
-    ShopRolesInfoGetting = 11
-    InshopPurchasesHistoryGetting = 12
+    StockManaging = 1
+    DiscountPolicyChanging = 2
+    PurchasePolicyChanging = 3
+    ShopOwnerAssigning = 4
+    ShopOwnerUnassigning = 5
+    ShopManagerAssigning = 6
+    ShopManagerUnassigning = 7
+    ShopManagerPermissionsChanging = 8
+    ShopClosing = 9
+    ClosedShopOpening = 10
+    UsersQuestionsAnswering = 11
+    ShopRolesInfoGetting = 12
+    InshopPurchasesHistoryGetting = 13
 
 
 def is_valid_permission(permission_id):
@@ -31,8 +31,8 @@ class Permissions:
 
     def __init__(self):
         self._assignedPermission = set()  # {PermissionEnum}
-        self.add_permission(Permission.UsersQuestionsAnswering)
-        self.add_permission(Permission.InshopPurchasesHistoryGetting)
+        self.add_permission(Permission.UsersQuestionsAnswering.value)
+        self.add_permission(Permission.InshopPurchasesHistoryGetting.value)
 
     def has_permission(self, permission):
         return permission in self._assignedPermission
@@ -93,3 +93,33 @@ class Permissions:
 
     def can_answer_users_questions(self):
         return self.has_permission(Permission.UsersQuestionsAnswering)
+
+    def get_permission_report_json(self):
+        return {Permission.StockManaging.value: self.can_manage_stock(),
+                Permission.DiscountPolicyChanging.value: self.can_change_discount_policy(),
+                Permission.PurchasePolicyChanging.value: self.can_change_purchase_policy(),
+                Permission.ShopOwnerAssigning.value: self.can_assign_owner(),
+                Permission.ShopOwnerUnassigning.value: self.can_unassign_owner(),
+                Permission.ShopManagerAssigning.value: self.can_assign_manager(),
+                Permission.ShopManagerUnassigning.value: self.can_unassign_manager(),
+                Permission.ShopManagerPermissionsChanging.value: self.can_change_shop_manager_permissions(),
+                Permission.ShopClosing.value: self.can_close_shop(),
+                Permission.ClosedShopOpening.value: self.can_open_closed_shop(),
+                Permission.UsersQuestionsAnswering.value: self.can_get_shop_roles_info(),
+                Permission.ShopRolesInfoGetting.value: self.can_answer_users_questions(),
+                Permission.InshopPurchasesHistoryGetting.value: self.can_get_inshop_purchases_history()}
+
+    """def get_permission_report_json(self):
+        return {"Can manage stock":self.can_manage_stock(),
+                "Can manage discounts":self.can_change_discount_policy(),
+                "Can manage purchase policies":self.can_change_purchase_policy(),
+                "Can assign new owners":self.can_assign_owner(),
+                "Can remove existing owners":self.can_unassign_owner(),
+                "Can assign new managers":self.can_assign_manager(),
+                "Can remove existing managers":self.can_unassign_manager(),
+                "Can change managers' permissions": self.can_change_shop_manager_permissions(),
+                "Can close the shop": self.can_close_shop(),
+                "Can reopen the shop if closed": self.can_open_closed_shop(),
+                "Can request info about other's permissions":self.can_get_shop_roles_info(),
+                "Can reply to shop's users":self.can_answer_users_questions(),
+                "Can request shop's purchase history":self.can_get_inshop_purchases_history()}"""

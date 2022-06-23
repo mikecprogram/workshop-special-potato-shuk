@@ -472,13 +472,14 @@ class Market():
         if self.isToken(token):
             pass
 
-    def shops_roles_info_request(self, shopName, token):
+    def shops_roles_info_request(self, token,shopName):
         if self.isToken(token):
             return self._onlineVisitors[token].getRolesInfoReport(shopName)
 
-    def shop_manager_permissions_check(self, manager_name, shop_name, token):
+    def shop_manager_permissions_check(self, token:int,shop_name:str,manager_name:str):
         if self.isToken(token):
-            pass
+            return self._onlineVisitors[token].get_permissions_report(shop_name, manager_name)
+
 
     def is_shop(self, shopName):
         if shopName in self._shops:

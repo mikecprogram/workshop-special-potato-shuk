@@ -1,3 +1,4 @@
+import threading
 import unittest
 from Dev.ServiceLayer.SystemService import *
 
@@ -9,15 +10,15 @@ class MyTestCase(unittest.TestCase):
         self.u = self.m.get_into_the_Trading_system_as_a_guest().res
         self.u2 = self.m.get_into_the_Trading_system_as_a_guest().res
         self.u3 = self.m.get_into_the_Trading_system_as_a_guest().res
-        self.m.registration_for_the_trading_system(self.u, "username", "password")
-        self.m.registration_for_the_trading_system(self.u2, "username2", "password2")
-        self.m.registration_for_the_trading_system(self.u3, "username3", "password3")
+        self.m.registration_for_the_trading_system(self.u, "username", "password")#founder
+        self.m.registration_for_the_trading_system(self.u2, "username2", "password2")#owner
+        self.m.registration_for_the_trading_system(self.u3, "username3", "password3")#the humble manager
         # need to login, create shop and add items to it for test
         self.m.login_into_the_trading_system(self.u, "username", "password")
         self.m.login_into_the_trading_system(self.u2, "username2", "password2")
         self.m.login_into_the_trading_system(self.u3, "username3", "password3")
         self.m.shop_open(self.u, "shopname")
-        self.m.shop_owner_assignment(self.u, "shopname", "username3")
+        self.m.shop_owner_assignment(self.u, "shopname", "username2")
         self.passed = 0
 
     def tearDown(self):
@@ -25,28 +26,51 @@ class MyTestCase(unittest.TestCase):
         self.m.logout(self.u2)
 
     def testGood(self):
-        r = self.m.shop_manager_assignment(self.u, "shopname", "username2")
+        r = self.m.shop_manager_assignment(self.u, "shopname", "username3")
         if r.isexc:
             print(r.exc)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
-        # r = self.m.shop_manager_permissions_check(self.u,"username2","shopname")
-        # self.assertTrue(r.response, r.exc)
-        self.assertTrue((not r.is_exception), r.exc)
+        #test for the 13 permissions:
+        #first test for permissions 12 13 are allowed only!
+        ps = self.m.shop_manager_permissions_check(self.u,"shopname","username3")
+        self.assertTrue((not ps.isexc), ps.exc)
+        for i, bo in ps.res.items():
+            if i == 12 or i== 13:
+                self.assertTrue(bo,i)
+            else:
+                self.assertFalse(bo,i)
+        ps = self.m.shop_manager_permissions_check(self.u3, "shopname", "username3")
+        self.assertTrue((not ps.isexc), ps.exc)
+        for i, bo in ps.res.items():
+            if i == 12 or i == 13:
+                self.assertTrue(bo, i)
+            else:
+                self.assertFalse(bo, i)
+        ps = self.m.shop_manager_permissions_check(self.u2, "shopname", "username3")
+        self.assertTrue((not ps.isexc), ps.exc)
+        for i, bo in ps.res.items():
+            if i == 12 or i == 13:
+                self.assertTrue(bo, i)
+            else:
+                self.assertFalse(bo, i)
+
+
 
     def testDouble(self):
-        t1 = threading.Thread(target=self.assignusertoshop, args=[self.u, "username2", "shopname"])
-        t2 = threading.Thread(target=self.assignusertoshop, args=[self.u3, "username2", "shopname"])
+        t1 = threading.Thread(target=self.m.shop_manager_assignment, args=[self.u, "shopname", "username3"])
+        t2 = threading.Thread(target=self.m.shop_manager_assignment, args=[self.u2, "shopname", "username3"])
         t1.start()
         t2.start()
         t1.join()
         t2.join()
-        print(self.m.shop_manager_permissions_check(self.u, "username2", "shopname").res)
-
-    def assignusertoshop(self, tok, shopname, username):
-        r1 = self.m.shop_manager_assignment(tok, shopname, username)
-        self.assertTrue(r1.res, r.exc)
-        self.assertTrue((not r1.isexc), r.exc)
+        ps = self.m.shop_manager_permissions_check(self.u, "shopname", "username3")
+        self.assertTrue((not ps.isexc), ps.exc)
+        for i, bo in ps.res.items():
+            if i == 12 or i == 13:
+                self.assertTrue(bo, i)
+            else:
+                self.assertFalse(bo, i)
 
 
 if __name__ == '__main__':

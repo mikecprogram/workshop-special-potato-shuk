@@ -3,7 +3,7 @@ from Dev.ServiceLayer.SystemService import *
 
 
 class MyTestCase(unittest.TestCase):
-    def setUp(self):
+    def setUp(self):#remove member
         self.m = SystemService()
         self.m.initialization_of_the_system()
         self.u = self.m.get_into_the_Trading_system_as_a_guest().res
@@ -22,8 +22,6 @@ class MyTestCase(unittest.TestCase):
         self.m.login_into_the_trading_system(self.u4, "username4", "password4")
         self.m.login_into_the_trading_system(self.u, "Alex", "Alex_123456")
 
-        self.m.shop_open(self.u1, "shopname")
-
     def tearDown(self):
         self.m.logout(self.u)
         self.m.logout(self.u1)
@@ -32,13 +30,21 @@ class MyTestCase(unittest.TestCase):
         self.m.logout(self.u4)
 
     def testGood(self):
+        r= self.m.shop_open(self.u1, "shopname")
+        self.assertFalse(r.isexc, r.exc)
+        r= self.m.shop_owner_assignment(self.u1, "shopname", "username2")
+        self.assertFalse(r.isexc, r.exc)
+        r= self.m.shop_manager_assignment(self.u1, "shopname", "username3")
+        self.assertFalse(r.isexc, r.exc)
         # print(self.m.get_all_members_name(self.u).response)
-        online_members = ['username2', 'username3', 'username4']
-        r = False
-        for i in online_members:
-            r = r or self.m.delete_member(self.u, i).isexc
-        # print(self.m.get_all_members_name(self.u).response)
-        self.assertTrue(not r, r.exc)
+        r= self.m.delete_member(self.u, 'username1')
+        self.assertTrue( r.isexc,r.exc)
+        r= self.m.delete_member(self.u, 'username2')
+        self.assertTrue( r.isexc,r.exc)
+        r= self.m.delete_member(self.u, 'username3')
+        self.assertTrue( r.isexc,r.exc)
+        r= self.m.delete_member(self.u, 'username4')
+        self.assertFalse( r.isexc,r.exc)
 
     def testBad(self):
         # print(self.m.get_all_members_name(self.u).response)

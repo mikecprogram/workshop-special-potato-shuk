@@ -112,11 +112,14 @@ class User:
     def assign_owner(self, shopName, memberToAssign):
         self._state.assign_owner(shopName, memberToAssign)
 
+    def get_permissions_report(self, shopName, memberToAssign):
+        return self._state.get_permissions_report(shopName, memberToAssign)
+
     def assign_manager(self, shopName, memberToAssign):
         self._state.assign_manager(shopName, memberToAssign)
 
     def getRolesInfoReport(self, shopName):
-        self._state.getRolesInfoReport(shopName)
+        return self._state.getRolesInfoReport(shopName)
 
     def purchase(self):
         if not (self._shoppingCart.purchase()):

@@ -117,7 +117,7 @@ class Shop():
     def delete_owner(self, assigner_user_name, assignee_user_name):
         if assignee_user_name == self._founder.get_username():
             raise Exception("%s is Founder of the shop:%s and therefore cant be deleted from owners group" %(assignee_user_name,self._name))
-        if assignee_user_name not in self._owners or assignee_user_name not in self._founder.get_username():
+        if assignee_user_name not in self._owners:
             raise Exception(assignee_user_name + " is not an owner of the shop:" + self._name)
         self.delete_assignment_owner(assigner_user_name, assignee_user_name, self._owners_assignments)
 
@@ -195,15 +195,8 @@ class Shop():
         return totaldiscount
 
     def getRolesInfoReport(self):
-
-        report = 'Founder: ' + self._founder + '\n'
-        for ownerUsername in self._owners:
-            report = report + 'Username: ' + ownerUsername + ' role: owner\n'
-
-        for managerUsername in self._managers:
-            report = report + 'Username: ' + managerUsername + ' role: manager\n'
-
-        return report
+        return {'founder': self._founder.get_username(), 'managers': [m for m in self._managers],
+        'owners': [m for m in self._owners]}
 
     def get_shop_report(self):
         return {'name': self._name, 'founder': self._founder.get_username(), 'managers': [m for m in self._managers],
@@ -321,3 +314,8 @@ class Shop():
                 d = policy.getDiscount()
                 disc *= (1 - d / 100)
         return disc
+    def get_permission_report(self,member_name):
+        m = self._managers[member_name]
+        p = m.get_permissions(self._name)
+        ret= p.get_permission_report_json()
+        return ret

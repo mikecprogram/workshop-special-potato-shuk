@@ -411,7 +411,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shop_manager_permissions_check(self, user_id: int, manager_name: str, shop_name: str) -> Response[List[str]]:
+    def shop_manager_permissions_check(self, user_id: int, manager_name: str, shop_name: str) -> Response[Dict[int, bool]]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
@@ -419,12 +419,11 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shops_roles_info_request(self, username: int, shop_name: str, token) -> Response[
-        List[List[str]]]:  # [[member_name,"Manager"], [member_name,"Owner"]...]
+    def shops_roles_info_request(self, user_id: int, shop_name: str) -> Response[Dict[str,List[str]]]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.shops_roles_info_request(username, shop_name, token))
+            return Response(self.market.shops_roles_info_request(user_id, shop_name))
 
         except Exception as e:
             return Response(exception=e.__str__())
