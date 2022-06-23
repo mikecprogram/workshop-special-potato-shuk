@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shuk/potato/templates/policies.html" beforeDir="false" afterPath="$PROJECT_DIR$/shuk/potato/templates/policies.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shuk/potato/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/shuk/potato/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shuk/potato/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/shuk/potato/views.py" afterDir="false" />
     </list>
     <list id="b395499b-f66b-412d-bcb0-557ef139e125" name="Changes by salih_kadry" comment="" />
@@ -18,6 +20,7 @@
       <list>
         <option value="Python Unit Test" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -61,6 +64,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "WebServerToolWindowFactoryState": "false"
   }
 }]]></component>
@@ -204,7 +208,7 @@
       <workItem from="1655794880547" duration="41859000" />
       <workItem from="1655989327293" duration="2788000" />
       <workItem from="1655992648172" duration="2596000" />
-      <workItem from="1655995383830" duration="2226000" />
+      <workItem from="1655995383830" duration="8824000" />
     </task>
     <servers />
   </component>
@@ -237,7 +241,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py</url>
-          <line>312</line>
+          <line>315</line>
           <option name="timeStamp" value="53" />
         </line-breakpoint>
       </breakpoints>

@@ -265,6 +265,7 @@ class Market():
         shop = self._shops[shopname]
         if shop is None:
             raise Exception('No such shop as %s' % shopname)
+
         return shop.addDiscountPolicy(policy)
 
     def add_purchase_policy_to_shop(self, token, shopname, policyID):
