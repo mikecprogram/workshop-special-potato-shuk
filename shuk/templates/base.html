@@ -28,7 +28,6 @@
             <li>
                 <ul class="basemenubar">
                 {% if userStatus != "" %}
-                    <li><a href="{% url 'shops' %}">Shops</a></li>
                     <li><a href="{% url 'cart' %}">My Cart ({{cartamount}})</a></li>
                 {%endif%}
                 {% if userStatus == "" or userStatus == "Guest" %}

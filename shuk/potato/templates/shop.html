@@ -6,7 +6,7 @@
 <h2>Owned by :{{owners}}</h2>
 <h2>Managed by :{{managers}}</h2>
 {% if showAddItem %}
-<div class="center"><a href="additem"><button class="bluebutton">Add Item</button></a></div>
+<div class="center"><a href="additem"><button class="bluebutton">&emsp;Add Item&emsp;</button></a></div>
 {% endif %}
 <div class="stockitemlist">
 
@@ -15,15 +15,16 @@
         <div class="stockitem">
             <ul class="inlineme">
                 <li>
-            <form action="{% url 'shop'%}/{{shopname}}/edititem" method="GET">
-                <div class="center"><button class="yellowbutton" type="submit" name="edit" value="{{item.name}}">Edit</button></div>
-            </form></li>
-            <li>
-                <form action="" method="POST">
-                    <div class="center"><button class="redbutton" type="submit" name="deleteItem" value="{{item.name}}">Delete</button></div>
-                </form>
-            </li>
-                </ul>
+                    <form action="{% url 'shop'%}/{{shopname}}/edititem" method="GET">
+                        <div class="center"><button class="yellowbutton" type="submit" name="edit" value="{{item.name}}">&emsp;Edit&emsp;</button></div>
+                    </form>
+                </li>
+                <li>
+                    <form action="" method="POST">
+                        <div class="center"><button class="redbutton" type="submit" name="deleteItem" value="{{item.name}}">&emsp;Delete&emsp;</button></div>
+                    </form>
+                </li>
+            </ul>
 
             <h3>{{item.category}}</h3>
             <h2>{{item.name}}</h2>
@@ -34,7 +35,7 @@
             <form class="AddToCartform" action="" method="POST">
                 {% csrf_token %}
                 Amount: <input  type ="number" value=1 min="1" max="{{item.amount}}" step="1" name="quantity">
-                <div class="center"><button class="bluebutton" type="submit"name="addItemToCart" value="{{item.name}}">Add to cart</button></div>
+                <div class="center"><button class="bluebutton" type="submit"name="addItemToCart" value="{{item.name}}">&emsp;Add to cart&emsp;</button></div>
             </form>
         </div>
 

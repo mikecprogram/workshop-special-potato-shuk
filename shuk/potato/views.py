@@ -113,6 +113,7 @@ def art(request):
     if 'q' in request.GET:
         print("ok!")
         searchterm = request.GET['q']
+        searchterm = searchterm.lower()
         newsts = []
         for i in sts:
             print("%s %s" % (i.name, 'searchterm'))
@@ -356,6 +357,7 @@ def search(request):
     max_Price = request.GET['max_Price'] if 'max_Price' in request.GET else 0
     if request.method == 'GET':
         query = request.GET['q']
+        query = query.lower()
         res = m.general_items_searching(tokenuser,query,category, min_Price,max_Price)
         if res.isexc:
             print(res.exc)
@@ -419,7 +421,8 @@ def makerender(request, tokenuser, page, optparams=None,error =None):
     if optparams is None:
         optparams = {}
     optparams['token'] = tokenuser
-    cartamount = 7
+    r = m.shopping_carts_check_content(tokenuser)
+    cartamount = sum([len(result) for result in r.res.values()])
     optparams['cartamount'] = cartamount
     if error is None:
         optparams['jsmessage'] = ""
