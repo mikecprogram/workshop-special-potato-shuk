@@ -14,7 +14,9 @@
                 {% for a in item.args %}
                 {{a}}
                 {% endfor %}</p>
-            <p>Discount: {{item.discount}}%</p>
+                {% if item.name not in compositeNames %}
+                <p>Discount: {{item.discount}}%</p>
+                {% endif %}
                 <form action="" method="POST">
                     {% csrf_token %}
                     Apply this policy to shop:

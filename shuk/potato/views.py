@@ -335,6 +335,7 @@ class addPolicyForm(forms.Form):
 """
 
 def policies(request):
+    errormessage = ""
     tokenuser = getToken(request)
     simpleBank = [TemplatePolicy("hasAmount", ["item name","amount"]),
                   TemplatePolicy("hasPrice", ["item name", "price"]),
@@ -352,6 +353,7 @@ def policies(request):
                      TemplatePolicy("xor", ["policy1", "policy2"]),
                      TemplatePolicy("add", ["policy1", "policy2"]),
                      ]
+    compositeNames = [t.name for t in compositeBank]
     if request.method == 'POST':  # Add to cart or deleteItem
         if 'addpolicy' in request.POST:
             typeofpolicy = request.POST['addpolicy']
@@ -366,19 +368,63 @@ def policies(request):
                 first = first.strip()
             if second is not None:
                 second = second.strip()
+            if first == "":
+                first = None
+            if second == "":
+                second = None
+
+            if typeofpolicy in compositeNames:
+                print(str(typeofpolicy), first, second)
+                print(m.get_my_policies(tokenuser).res)
+                if second is None:
+                    if m.compose_policy(tokenuser, str(typeofpolicy), int(first), None).isexc:
+                        errormessage = res.exc
+                else:
+                    if m.compose_policy(tokenuser, str(typeofpolicy), int(first), int(second)).isexc:
+                        errormessage = res.exc
+            else:
+                print(str(typeofpolicy), first, second)
+                print(m.get_my_policies(tokenuser).res)
+                if m.add_policy(tokenuser,float(discount),str(typeofpolicy),first,second).isexc:
+                    errormessage = res.exc
+
+
+
         elif 'applydiscount' in request.POST:
             polid = request.POST['applydiscount']#from 0 to 100
+            if 'shopname' in request.POST:
+                shopname = request.POST['shopname']
+                if m.add_discount_policy_to_shop(tokenuser,shopname,int(polid)).isexc:
+                    errormessage = res.exc
         elif 'applypurchasepolicy' in request.POST:
             polid = request.POST['applypurchasepolicy']#from 0 to 100
+            if 'shopname' in request.POST:
+                shopname = request.POST['shopname']
+                if m.add_purchase_policy_to_shop(tokenuser,shopname,int(polid)).isexc:
+                    errormessage = res.exc
     request.POST = {}
 
-
-
-    myPolicies = [Policy(p[0], p[1], [p[2], p[3]], p[4]) for p in m.get_my_policies(tokenuser).res]
-    myPolicies.append(Policy(1, "hasAmount", ["milk", 5], 10))
-    myPolicies.append(Policy(2, "hasPrice", ["beer", 10], 5))
+    myPolicies = []
+    getpol = m.get_my_policies(tokenuser).res
+    for p in getpol:
+        if p[1] in compositeNames:
+            if len(p) == 4:
+                pol = Policy(p[0], p[1], [p[2], p[3]], None)
+            if len(p) == 3:
+                pol = Policy(p[0], p[1], [p[2]], None)
+            if len(p) == 2:
+                pol = Policy(p[0], p[1], [], None)
+        else:
+            if len(p) == 5:
+                pol = Policy(p[0], p[1], [p[2], p[3]], p[4])
+            if len(p) == 4:
+                pol = Policy(p[0], p[1], [p[2]], p[3])
+            if len(p) == 3:
+                pol = Policy(p[0], p[1], [], p[2])
+        myPolicies.append(pol)
     return makerender(request, tokenuser, 'policies.html',
-                      {'myPolicyList': myPolicies, 'simplePolicies': simpleBank, 'compositePolicies': compositeBank})
+                      {'myPolicyList': myPolicies, 'simplePolicies': simpleBank, 'compositePolicies': compositeBank, 'compositeNames': compositeNames}
+                      ,error=errormessage)
 
 
 def item(request, itemname):
