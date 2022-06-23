@@ -381,24 +381,24 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shop_manager_permissions_add(self, user_id: int, manager_name_to_update: str, permission_type: int,
+    def shop_manager_permissions_add(self, user_id: int, manager_name_to_update: str, permission_code: int,
                                      shop_name: str) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
             return Response(
-                self.market.shop_manager_permissions_updating(user_id, manager_name_to_update, permission_type,
+                self.market.shop_manager_permission_adding(user_id, manager_name_to_update, permission_code,
                                                               shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shop_manager_permissions_delete(self, user_id: int, manager_name_to_update: str, permission_type: int,
+    def shop_manager_permissions_delete(self, user_id: int, manager_name_to_update: str, permission_code: int,
                                         shop_name: str) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
             return Response(
-                self.market.shop_manager_permissions_updating(user_id, manager_name_to_update, permission_type,
+                self.market.shop_manager_permission_removing(user_id, manager_name_to_update, permission_code,
                                                               shop_name))
         except Exception as e:
             return Response(exception=e.__str__())

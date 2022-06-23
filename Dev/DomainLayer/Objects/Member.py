@@ -221,3 +221,9 @@ class Member:
 
     def get_manage_shops(self):
         return list(self.permissions.keys())
+
+    def grant_permission(permission_code, shop_name, target_manager):
+        self.ownedShops[shop_name].grant_permission(permission_code, self._username, target_manager)
+        
+    def withdraw_permission(permission_code, shop_name, target_manager):
+        self.ownedShops[shop_name].withdraw_permission(permission_code, self._username, target_manager)
