@@ -365,7 +365,11 @@ class Market():
     def get_inshop_purchases_history(self, token, shopname):
         if self.isToken(token):
             if shopname in self._shops:
-                return self._onlineVisitors[token].get_inshop_purchases_history(shopname)
+                if self.getUser(token).is_admin():
+                    sh = self.get_shop_by_name(shopname)
+                    return sh.get_inshop_purchases_history()
+                else:
+                    return self._onlineVisitors[token].get_inshop_purchases_history(shopname)
             else:
                 raise Exception('Shop not found with given name!')
         else:

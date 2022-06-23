@@ -45,15 +45,9 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue( r.isexc,r.exc)
         r= self.m.delete_member(self.u, 'username4')
         self.assertFalse( r.isexc,r.exc)
+        r= self.m.delete_member(self.u, 'Alex')
+        self.assertTrue( r.isexc,r.exc)
 
-    def testBad(self):
-        # print(self.m.get_all_members_name(self.u).response)
-        online_members = ['Alex', 'username1']
-        r = True
-        for i in online_members:
-            r = r and self.m.delete_member(self.u, i).isexc
-        # print(self.m.get_all_members_name(self.u).response)
-        self.assertTrue(r, r.exc)
 
 
 if __name__ == '__main__':
