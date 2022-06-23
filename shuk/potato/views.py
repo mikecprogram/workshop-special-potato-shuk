@@ -328,18 +328,15 @@ def shops(request):
     shops.append(Shop(5, "Ma", "Open", "Me", ['one'], ['Two'], 'None.'))
     return makerender(request, tokenuser, 'shops.html', {'itemslist': shops})
 
-
+"""
 class addPolicyForm(forms.Form):
     arg1 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     arg2 = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-
+"""
 
 def policies(request):
     tokenuser = getToken(request)
-    if request.method == 'POST':
-        print("in policy post")
-
-    simpleBank = [TemplatePolicy("hasAmount", ["item name", "amount"]),
+    simpleBank = [TemplatePolicy("hasAmount", ["item name","amount"]),
                   TemplatePolicy("hasPrice", ["item name", "price"]),
                   TemplatePolicy("isShop", []),
                   TemplatePolicy("isItem", ["item name"]),
@@ -355,8 +352,29 @@ def policies(request):
                      TemplatePolicy("xor", ["policy1", "policy2"]),
                      TemplatePolicy("add", ["policy1", "policy2"]),
                      ]
+    if request.method == 'POST':  # Add to cart or deleteItem
+        if 'addpolicy' in request.POST:
+            typeofpolicy = request.POST['addpolicy']
+            first = None
+            second = None
+            discount = request.POST['discount']#from 0 to 100
+            if 'bob0' in request.POST:
+                first = request.POST['bob0']
+            if 'bob1' in request.POST:
+                second = request.POST['bob1']
+            if first is not None:
+                first = first.strip()
+            if second is not None:
+                second = second.strip()
+        elif 'applydiscount' in request.POST:
+            polid = request.POST['applydiscount']#from 0 to 100
+        elif 'applypurchasepolicy' in request.POST:
+            polid = request.POST['applypurchasepolicy']#from 0 to 100
+    request.POST = {}
 
-    myPolicies = [[p[0], p[1], [p[2], p[3]], p[4]] for p in m.get_my_policies(tokenuser).res]
+
+
+    myPolicies = [Policy(p[0], p[1], [p[2], p[3]], p[4]) for p in m.get_my_policies(tokenuser).res]
     myPolicies.append(Policy(1, "hasAmount", ["milk", 5], 10))
     myPolicies.append(Policy(2, "hasPrice", ["beer", 10], 5))
     return makerender(request, tokenuser, 'policies.html',

@@ -56,3 +56,4 @@ class TemplatePolicy():
     def __init__(self, name, args):
         self.name = name
         self.args = args
+        self.demoargs = [(args[i],i) for i in range(len(args))]
