@@ -2,7 +2,9 @@
 
 {% block content %}
 <h1>Welcome.</h1>
-
-
-
+{%for noty in notifications%}
+<H2>Notification:</H2>
+<p>{{noty}}</p>
+<hr>
+{% endfor %}
 {% endblock %}

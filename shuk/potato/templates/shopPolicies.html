@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="center"><a href="{% url 'policies' %}"><button class="bluebutton">&emsp;Generate policy&emsp;</button></a></div>
+
+<h1>{{shopname}} policy List:</h1>
+<div class="stockitemlist">
+    {% for item in myPolicyList %}
+        <div class="stockitem">
+            <div class="stockitemcontainer">
+            <h3>policy id: {{item.id}}</h3>
+            <p>policy type: {{item.name}}
+                {% if item.discount is not None %}
+                <p>Discount: {{item.discount}}%</p>
+                {% endif %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="center"><button class="bluebutton" type="submit" name="removePolicy" value="{{item.id}}">&emsp;Remove policy&emsp;</button></div>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

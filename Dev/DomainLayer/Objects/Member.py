@@ -17,7 +17,18 @@ class Member:
         self._hashed = hashed
         self._savedCart = None
         self._age = None
+        self.delayedNoty = []
 
+    def getNotifications(self):
+        copy = self.delayedNoty.copy()
+        self.delayedNoty = []
+        print("Threw up notifications:")
+        print(copy)
+        return copy
+
+    def addDelayedNotification(self, message):
+        print("Added to %s \n %s" %(self.get_username(),message))
+        self.delayedNoty.append(message)
     def getAge(self):
         return self._age
 
@@ -123,12 +134,17 @@ class Member:
         else:
             self._savedCart.setUser(user)
             return self._savedCart
-
     def close_shop(self, shop_name):
         if self.is_founded_shop(shop_name):
             return self.founded_shops[shop_name].close_shop()
         else:
             raise Exception("Member could not close a not owned or not managed with special permission shop!")
+
+    def reopen_shop(self, shop_name):
+        if self.is_founded_shop(shop_name):
+            return self.founded_shops[shop_name].reopen_shop()
+        else:
+            raise Exception("Member could not reopen a not owned or not managed with special permission shop!")
 
     def can_close_shop(self, shop_name):
         return self.permissions[shop_name].can_close_shop()
@@ -222,8 +238,8 @@ class Member:
     def get_manage_shops(self):
         return list(self.permissions.keys())
 
-    def grant_permission(permission_code, shop_name, target_manager):
+    def grant_permission(self,permission_code, shop_name, target_manager):
         self.ownedShops[shop_name].grant_permission(permission_code, self._username, target_manager)
         
-    def withdraw_permission(permission_code, shop_name, target_manager):
+    def withdraw_permission(self,permission_code, shop_name, target_manager):
         self.ownedShops[shop_name].withdraw_permission(permission_code, self._username, target_manager)

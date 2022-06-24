@@ -38,7 +38,7 @@ prem = [
 ]
 
 simplePolicies = [
-    "isItem", "isCategory", "isShop", "hasAmount", "hasPrice", "hasAmount", "hasPrice"
+    "isItem", "isCategory", "isShop", "hasAmount", "hasPrice", "hasAmount", "hasPrice","isMember","isFounder","isAge","isAfterTime"
 ]
 
 compositePolicies = [
@@ -54,14 +54,21 @@ def is_valid_password(password):
 
 
 debug = True
-maxtimeonline = 1  # 60 * 10  # 10 minutes
 
 
+class dummyNotify():
+    def alertspecificrange(self, message, ran):
+        return ran
+    def alert(self, message):
+        pass
 class Market():
 
     def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password,
-                 maxtimeonline=60 * 10):  # 10 minutes
-        self._maxtimeonline = maxtimeonline
+                 notificationPlugin ):
+        if notificationPlugin is None:
+            self._notificationPlugin = dummyNotify()
+        else:
+            self._notificationPlugin = notificationPlugin
         self._members = {}
         self._membersLock = threading.Lock()
         self._onlineVisitors = {}  # {token, User}
@@ -180,8 +187,8 @@ class Market():
                 hashed = self._security.hash(password)
                 if member.isHashedCorrect(hashed):
                     user = self.getUser(token)
-                    user.login(member)
-                    return True
+                    self._onlineVisitors[token] = user
+                    return user.login(member)
                 else:
                     raise Exception("Wrong password")
             else:
@@ -236,7 +243,7 @@ class Market():
     def add_policy(self, token, percent, name, arg1=None, arg2=None):
         if self.isToken(token):
             if percent < 0:
-                raise Exception('bad discount amount!')
+                raise Exception('Discount can\'t be negative..')
             user = self.getUser(token)
             if name in simplePolicies:
                 self._policyLock.acquire()
@@ -245,7 +252,6 @@ class Market():
                 self._policyLock.release()
                 return user.addTempPolicy(ID, name, arg1, arg2, percent)
             raise Exception('Cannot add policy!')
-        raise Exception('Bad token!')
 
     def get_my_policies(self, token):
         user = self.getUser(token)
@@ -262,9 +268,7 @@ class Market():
         self.isToken(token)
         user = self.getUser(token)
         policy = self.makePolicy(user, policyID)
-        shop = self._shops[shopname]
-        if shop is None:
-            raise Exception('No such shop as %s' % shopname)
+        shop = self.get_shop_by_name(shopname)
         return shop.addDiscountPolicy(policy)
 
     def add_purchase_policy_to_shop(self, token, shopname, policyID):
@@ -272,9 +276,7 @@ class Market():
             raise Exception('Bad token!')
         user = self.getUser(token)
         policy = self.makePolicy(user, policyID)
-        shop = self._shops[shopname]
-        if shop is None:
-            raise Exception('No such shop as %s' % shopname)
+        shop = self.get_shop_by_name(shopname)
         return shop.addPurchasePolicy(policy)
 
     def makePolicy(self, user, PID):
@@ -376,9 +378,12 @@ class Market():
             raise Exception('Timed out token!')
 
     def getUser(self, token):
-        # Todo, why is alex tf is online ?!?!
         return self._onlineVisitors[token]
-
+    def isOnline(self,username):
+        for i in self._onlineVisitors.keys():
+            if self._onlineVisitors[i].get_state() == username:
+                return i
+        return None
     """
     In order to check if user is still connected we use  self.isToken(token)
     To get user we use self._onlineVisitors[token]
@@ -389,16 +394,29 @@ class Market():
 
     def shop_open(self, token, shop_name):
         if self.isToken(token):
+            shop_name = str(shop_name).strip()
+            if shop_name == "":
+                raise Exception("Shop name can't be null")
             if not shop_name in self._shops:
-                if shop_name == "":
-                    raise Exception("bad shop name")
                 user = self.getUser(token)
-                newShop = Shop(shop_name, user.getMember())
+                newShop = Shop(shop_name, user.getMember(), self._notificationPlugin)
                 self._shops[shop_name] = newShop
                 user.getMember().openShop(newShop)
                 return True
             else:
                 raise Exception("There is already a shop with given name in the market, try another name please!")
+
+    def shop_reopen(self, token, shop_name):
+        if self.isToken(token):
+            shop_name = str(shop_name).strip()
+            if shop_name == "":
+                raise Exception("Shop name can't be null")
+            if shop_name in self._shops:
+                user = self.getUser(token)
+                user.getMember().reopen_shop(shop_name)
+                return True
+            else:
+                raise Exception("There is no such shop in market")
 
     def adding_item_to_the_shops_stock(self, token, item_name, shop_name, category, item_desc, item_price, amount):
         if self.isToken(token) and self.is_logged_in(token):
@@ -468,7 +486,7 @@ class Market():
     def shop_closing(self, token, shop_name):
         if self.isToken(token):
             if self.is_shop(shop_name):
-                return self._onlineVisitors[token].close_shop()
+                return self._onlineVisitors[token].close_shop(shop_name)
             else:
                 raise Exception('Shop does not exist with the given shop name!')
 
@@ -476,17 +494,17 @@ class Market():
     
     def shop_manager_permission_adding(self, token, manager_name_to_update, permission_code, shop_name):
         if self.isToken(token):
-            if shop_name is not in self._shops:
+            if shop_name not in self._shops:
                 raise Exception('Shop does not exist with the given shop name!')
             self._onlineVisitors[token].grant_permission(permission_code, shop_name, manager_name_to_update)
-        return "Permission with code: " + permission_code " has been added to manager: "+manager_name_to_update +" of shop: "+ shop_name +" successfully!"
+        return "Permission with code: " + permission_code + " has been added to manager: "+manager_name_to_update +" of shop: "+ shop_name +" successfully!"
 
     def shop_manager_permission_removing(self, token, manager_name_to_update, permission_code, shop_name):
         if self.isToken(token):
-            if shop_name is not in self._shops:
+            if shop_name not in self._shops:
                 raise Exception('Shop does not exist with the given shop name!')
             self._onlineVisitors[token].withdraw_permission(permission_code, shop_name, manager_name_to_update)
-        return "Permission with code: " + permission_code " has been removed from manager: "+manager_name_to_update +" of shop: "+ shop_name +" successfully!"
+        return "Permission with code: " + permission_code + " has been removed from manager: "+manager_name_to_update +" of shop: "+ shop_name +" successfully!"
 
 
     def shops_roles_info_request(self, token,shopName):
@@ -644,3 +662,6 @@ class Market():
             return output
         else:
             raise Exception('Timed out token!')
+
+    def get_all_categories(self):
+        return {shop.getShopName(): shop.getCategories() for shop in self._shops.values()}

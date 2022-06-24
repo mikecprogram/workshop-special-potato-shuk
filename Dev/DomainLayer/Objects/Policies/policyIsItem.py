@@ -6,7 +6,7 @@ class policyIsItem(Composable):
 
     def __init__(self, ID, percent, itemname):
         self.ID = ID
-        self.percent = percent
+        self.percent = float(percent)
         self.itemname = itemname
 
     def apply(self, user: User, item: StockItem):

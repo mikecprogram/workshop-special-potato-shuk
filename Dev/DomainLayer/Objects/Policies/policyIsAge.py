@@ -6,8 +6,8 @@ class policyHasPrice(Composable):
 
     def __init__(self, ID, percent, age):
         self.ID = ID
-        self.percent = percent
-        self.age = age
+        self.percent = float(percent)
+        self.age = int(age)
 
     def apply(self, user: User, item: StockItem):
         return user.getAge() >= self.age

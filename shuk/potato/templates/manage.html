@@ -3,97 +3,25 @@
 
 {% block content %}
 
-{% block createshopbutton%}
-    {% include 'createshopbutton.html'%}
-{% endblock %}
+    {% block createshopbutton%}
+        {% include 'createshopbutton.html'%}
+    {% endblock %}
 
-<h1>Manage my shops</h1>
-<H2>Founded:</H2>
-<div class="stockitemlist">
-    {% for shop in found %}
-        <div class="stockitem">
-            <div class="stockitemcontainer">
-            <h3>Shop Name: {{shop.name}}</h3>
-            <h2>Founded by :{{shop.founder}}</h2>
-            <h2>Owned by :{{shop.owners}}</h2>
-            <h2>Managed by :{{shop.managers}}</h2>
-            </div>
-            <hr>
-            <form action="" method="POST">
-                <label>Choose manager to edit premissions:</label>
-                <input list="premissions{{shop.id}}" name="premissions" class="browser">
-                <datalist id="premissions{{shop.id}}">
-                {% for username in shop.eligible %}
-                  <option value="{{username}}">
-                {% endfor %}
-                </datalist>
-                <a href="{% url 'premissions'"><button class= "bluebutton" type="submit">Edit Premission</button></a>
-            </form>
-            <hr>
-            <form action="" method="POST">
-                <label>Choose your new manager from the list:</label>
-                <input list="browsers{{shop.id}}" name="browser" class="browser">
-                <datalist id="browsers{{shop.id}}">
-                {% for username in shop.eligible %}
-                  <option value="{{username}}">
-                {% endfor %}
-                </datalist>
-                <button class= "bluebutton" type="submit">Make manager</button>
-            </form>
-            <hr>
-            <form action="" method="POST">
-                <label>Remove your store manager from the list:</label>
-                <input list="owners{{shop.id}}" name="browser" class="browser">
-                <datalist id="removemanagers{{shop.id}}">
-                {% for username in shop.eligible %}
-                  <option value="{{username}}">
-                {% endfor %}
-                </datalist>
-                <button class= "bluebutton" type="submit">Make owner</button>
-            </form>
-            <hr>
-            <form action="" method="POST">
-                <label>Choose your store owner from the list:</label>
-                <input list="owners{{shop.id}}" name="browser" class="browser">
-                <datalist id="owners{{shop.id}}">
-                {% for username in userlist %}
-                  <option value="{{username}}">
-                {% endfor %}
-                </datalist>
-                <button class= "bluebutton" type="submit">Make owner</button>
-            </form>
-            <hr>
-            <form action="" method="POST">
-                <label>Remove your store owner from the list:</label>
-                <input list="owners{{shop.id}}" name="browser" class="browser">
-                <datalist id="removeowners{{shop.id}}">
-                {% for username in userlist %}
-                  <option value="{{username}}">
-                {% endfor %}
-                </datalist>
-                <button class= "bluebutton" type="submit">Make owner</button>
-            </form>
-            <hr>
-            {% if shop.shopopen == True %}
-            <form action="" method="POST">
-                <button class= "bluebutton" action="submit" name="reopenshop" value="True">reopen shop</button>
-            </form>
-            <hr>
-            {%else%}
-            <form action="" method="POST">
-                <button class= "bluebutton" action="submit" name="closeshop" value="True">close shop</button>
-            </form>
-            <hr>
-            {% endif %}
-            
-            <a href="{% url 'manageItemsShop'%}/{{shop.name}}"><button class= "bluebutton">manage items</button></a>
-            <hr>
-            <a href="{% url 'storeHistoryPurchases'"><button class= "bluebutton">show shop purchases history</button></a>
-            <hr>
-            <!-- todo: add functionality  -->
-            <a href="{% url 'shop'%}/{{shop.name}}"><button class= "bluebutton">Enter Shop</button></a>
-        </div>
-    {% endfor %}
-</div>
+    <h1>Shops under my control:</h1>
+
+        {%if found|length > 0 %}
+        <h1>Founded shops:</h1>
+                {% include 'manageSingleShop.html' with shops=found%}
+        {% endif %}
+
+        {%if own|length > 0 %}
+        <h1>Owned shops:</h1>
+                {% include 'manageSingleShop.html' with shops=own %}
+        {% endif %}
+
+        {%if manage|length > 0 %}
+        <h1>Managed shops:</h1>
+                {% include 'manageSingleShop.html' with shops=manage %}
+        {% endif %}
 
 {% endblock %}

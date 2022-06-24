@@ -104,4 +104,5 @@ class BridgeInterface:
 
     def delete_member(self, user_id: int, member_name: str) -> Response[None]:
         pass
-
+    def get_all_categories(self) -> Response[Dict[str,List]]:
+        pass
