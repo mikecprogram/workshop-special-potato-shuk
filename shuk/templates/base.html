@@ -70,7 +70,7 @@
             {% block content %}
             {% endblock %}
             
-        {% if userStatus == "8" %}
+        {% if userStatus != "" %}
             <script type="text/javascript">
                 console.log("js")
                 let url=`ws://${window.location.host}/ws/socket-server/`

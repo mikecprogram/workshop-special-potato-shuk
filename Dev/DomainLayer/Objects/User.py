@@ -44,7 +44,7 @@ class User:
             self._state = member
             self.clearShoppingCart()
             self._shoppingCart = self._state.loadShoppingCart(self)
-            return True
+            return self._state.getNotifications()
         else:
             raise Exception("Logged in member tried to login again.")
 

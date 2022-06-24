@@ -13,13 +13,21 @@ from .models import ItemInBasket, Shop, StockItem, Policy, TemplatePolicy
 
 from email import message
 import json
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
 
 from .notificationPlugin import notificationPl
+class newNoty():
+    def alertspecificrange(self, message, ran):
+        for i in ran:
+            print("person: %s" % i)
+            print(message)
+        return ran
+    def alert(self, message):
+        print(message)
 
-notifyPlugin = notificationPl()
 m = SystemService()
-res = m.initialization_of_the_system()
+new_noty = notificationPl(m)
+res = m.initialization_of_the_system(notificationPlugin = new_noty)
 if res.isexc:
     print("BUG:")
     print(response.exception)
@@ -37,27 +45,27 @@ def getToken(request):
     return res.res
 
 
-class ChatConsumer(WebsocketConsumer):
-    def disconnect(self, code):
+class ChatConsumer(AsyncWebsocketConsumer):
+    async def disconnect(self, code):
         print("TRYING DISCONNECT")
-        notifyPlugin.removeConnection(self)
+        await new_noty.removeConnection(self)
         print("Success DISCONNECT")
 
-    def connect(self):
+    async def connect(self):
         print("TRYING connect")
-        self.accept()
-        self.send(text_data=json.dumps({
+        await self.accept()
+        await self.send(text_data=json.dumps({
             'type': 'connection_established',
             'message': 'hello'
         }))
         print("Success connect")
 
-    def receive(self, text_data=None, bytes_data=None):
+    async def receive(self, text_data=None, bytes_data=None):
         print("TRYING receive")
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         print("Consumer connected via cookie %s" % message)
-        notifyPlugin.addConnection(self, message)
+        await new_noty.addConnection(self, message)
         print("Success receive")
 
 
@@ -193,11 +201,12 @@ def login(request):
             username = cd.get('username')
             password = cd.get('password')
             res = m.login_into_the_trading_system(tokenuser, username, password)
+            notifications = res.res
             if res.isexc:
                 errormessage = res.exc
             else:
                 return makerender(request, tokenuser, 'homepage.html',
-                                  {'tokenuser': tokenuser})
+                                  {'tokenuser': tokenuser,'notifications':notifications})
     return makerender(request, tokenuser, 'loginregister.html',
                       {"form": form, 'state': "Login", "screen": "login", "errormessage": errormessage,
                        'tokenuser': tokenuser})

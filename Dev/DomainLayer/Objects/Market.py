@@ -54,14 +54,21 @@ def is_valid_password(password):
 
 
 debug = True
-maxtimeonline = 1  # 60 * 10  # 10 minutes
 
 
+class dummyNotify():
+    def alertspecificrange(self, message, ran):
+        return ran
+    def alert(self, message):
+        pass
 class Market():
 
     def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password,
-                 maxtimeonline=60 * 10):  # 10 minutes
-        self._maxtimeonline = maxtimeonline
+                 notificationPlugin ):
+        if notificationPlugin is None:
+            self._notificationPlugin = dummyNotify()
+        else:
+            self._notificationPlugin = notificationPlugin
         self._members = {}
         self._membersLock = threading.Lock()
         self._onlineVisitors = {}  # {token, User}
@@ -180,8 +187,8 @@ class Market():
                 hashed = self._security.hash(password)
                 if member.isHashedCorrect(hashed):
                     user = self.getUser(token)
-                    user.login(member)
-                    return True
+                    self._onlineVisitors[token] = user
+                    return user.login(member)
                 else:
                     raise Exception("Wrong password")
             else:
@@ -376,9 +383,12 @@ class Market():
             raise Exception('Timed out token!')
 
     def getUser(self, token):
-        # Todo, why is alex tf is online ?!?!
         return self._onlineVisitors[token]
-
+    def isOnline(self,username):
+        for i in self._onlineVisitors.keys():
+            if self._onlineVisitors[i].get_state() == username:
+                return i
+        return None
     """
     In order to check if user is still connected we use  self.isToken(token)
     To get user we use self._onlineVisitors[token]
@@ -394,7 +404,7 @@ class Market():
                 raise Exception("Shop name can't be null")
             if not shop_name in self._shops:
                 user = self.getUser(token)
-                newShop = Shop(shop_name, user.getMember())
+                newShop = Shop(shop_name, user.getMember(), self._notificationPlugin)
                 self._shops[shop_name] = newShop
                 user.getMember().openShop(newShop)
                 return True

@@ -8,7 +8,7 @@ import threading
 
 class Shop():
 
-    def __init__(self, shop_name: str, founder):
+    def __init__(self, shop_name: str, founder, notificationPlugin):
         self._name = shop_name
         self._stock = Stock()
         self._is_open = True  # need to confirm if we need shop's status such as closed/open. TODO
@@ -24,6 +24,7 @@ class Shop():
         self._managers_assignments = {}
         self._purchases_history = PurchaseHistory()
         self._shop_lock = threading.Lock()
+        self.notificationPlugin = notificationPlugin
 
     def getId(self, itemname):
         return self._stock.getId(itemname)
@@ -173,17 +174,35 @@ class Shop():
             return assignee in self._owners_assignments[assigner]
         if assigner in self._managers_assignments:
             return assignee in self._managers_assignments[assigner]
-
+    def get_founder_and_owners(self):
+        all = []
+        all.append(self._founder)
+        for o in  self._owners.values():
+            all.append(o)
+        return all
     def close_shop(self):
         if self._is_open:
             self._is_open = False
-            # TODO add notifying and events system
+            all = self.get_founder_and_owners()
+            usernames = [u.get_username() for u in all]
+
+            missed = self.notificationPlugin.alertspecificrange("The Shop \"%s\" is closed." %(self.getShopName()),usernames)
+            for user in all:
+                if user.get_username() in missed:
+                    user.addDelayedNotification("The Shop \"%s\" is closed." %(self.getShopName()))
             return True
         else:
             raise Exception('Closed shop could not be closed again!')
     def reopen_shop(self):
         if not self._is_open:
             self._is_open = True
+            all = self.get_founder_and_owners()
+            usernames = [u.get_username() for u in all]
+
+            missed = self.notificationPlugin.alertspecificrange("The Shop \"%s\" is open again." % (self.getShopName()), usernames)
+            for user in all:
+                if user.get_username() in missed:
+                    user.addDelayedNotification("The Shop \"%s\" is open again." % (self.getShopName()))
             return True
         else:
             raise Exception('Open shop could not be opened again!')
@@ -222,6 +241,13 @@ class Shop():
         '''Perform purchase'''
         self._purchases_history.add(user.get_state(), itemname, amount, bought_price)
         self._stock.purchase(itemname, amount)
+        all = self.get_founder_and_owners()
+        usernames = [u.get_username() for u in all]
+        message = "%s purchased %d of %s from shop %s" %(user.get_state(),amount,itemname,self.getShopName())
+        missed = self.notificationPlugin.alertspecificrange(message, usernames)
+        for user in all:
+            if user.get_username() in missed:
+                user.addDelayedNotification(message)
         return True
 
     def search(self, query: str, category: str, item_min_price: float, item_max_price: float):

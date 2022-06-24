@@ -6,13 +6,14 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 #This works.
 #But because of page reloading, you cant send a message to yourself
 class notificationPl:
-    def __init__(self):
+    def __init__(self, m):
         self.connections = {}
+        self.m = m
 
     async def addConnection(self, conn: AsyncWebsocketConsumer, cookie):
         if cookie == "":
             print("Null Cookie Found")
-            conn.close()
+            await conn.close()
         else:
             self.connections[conn] = int(cookie)
         # for debugging:
@@ -27,7 +28,21 @@ class notificationPl:
         #for debugging:
         #print(len(self.connections))
    
-   
+    def alertspecificrange(self, message, ran):
+        offline = []
+        online = []
+        for username in ran:
+            token = self.m.isOnline(username)
+            if token is not None:
+                online.append(token.res)
+            else:
+                offline.append(username)
+        print(online)
+        asyncio.run(self._sendwithtimeout(online, message))
+
+        return offline
+    def alert(self, message):
+        print(message)
     def sendAll(self, message):
         missed = asyncio.run(self._notifyAll(message))
         return missed

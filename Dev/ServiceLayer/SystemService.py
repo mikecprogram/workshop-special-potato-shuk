@@ -15,6 +15,14 @@ class SystemService(BridgeInterface):
     def __init__(self):
         self.market: Market = None
 
+    def isOnline(self, username: str)-> Response[any]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.isOnline(username))
+        except Exception as e:
+            return Response(exception=e.__str__())
+
     def get_user_state(self, user_id: int)-> Response[bool]:
         try:
             if self.market is None:
@@ -42,12 +50,12 @@ class SystemService(BridgeInterface):
     def initialization_of_the_system(self, external_payment_service: paymentServiceInterface = PaymentService(),
                                      external_supplement_service: shippingServiceInterface = ShippingService(),
                                      system_admin_name: str = "Alex", password: str = "Alex_123456",
-                                     MaxTimeOnline: int = 10) -> Response[bool]:
+                                     notificationPlugin = None) -> Response[bool]:
         try:
             if self.market is not None:
                 return Response(exception="system have been initialized before")
             self.market: Market = Market(external_payment_service, external_supplement_service, system_admin_name,
-                                         password, MaxTimeOnline)
+                                         password, notificationPlugin)
             return Response(True)
         except Exception as e:
             return Response(exception=e.__str__())

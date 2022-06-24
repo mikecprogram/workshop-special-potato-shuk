@@ -17,7 +17,15 @@ class Member:
         self._hashed = hashed
         self._savedCart = None
         self._age = None
+        self.delayedNoty = []
 
+    def getNotifications(self):
+        copy = self.delayedNoty.copy()
+        self.delayedNoty = []
+        return copy
+
+    def addDelayedNotification(self, message):
+        self.delayedNoty.append(message)
     def getAge(self):
         return self._age
 
