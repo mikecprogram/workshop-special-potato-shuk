@@ -1,7 +1,7 @@
 from DB import *
-class StockItem(db.Entity):
+class StockItemDAL(db.Entity):
     id = PrimaryKey(int)
-    category = Required("Category")
+    category = Required("CategoryDAL")
     desc = Optional(str)
     # purchasePolicy = []
     # discountPolicy = []
@@ -9,5 +9,5 @@ class StockItem(db.Entity):
     count = Required(int)
     price = Required(int)
     shopname = Required(str)
-    shoppingBaskets = Set("ShoppingBasket")
-    stock = Required("Stock")
+    shoppingBaskets = Set("ShoppingBasketDAL")
+    stock = Required("StockDAL")

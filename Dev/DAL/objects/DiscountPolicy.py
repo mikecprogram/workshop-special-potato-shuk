@@ -1,5 +1,4 @@
 ##from .Logger import Logger
-import time
 
 #
 # class DiscountPolicy(db.Entity):

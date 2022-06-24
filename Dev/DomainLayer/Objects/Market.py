@@ -20,6 +20,7 @@ from Dev.DomainLayer.Objects.ExternalServices import ExternalServices
 
 from Dev.DomainLayer.Objects.Member import Member
 from Dev.DomainLayer.Objects.Security import Security
+from Dev.DAL.objects.imports import *
 
 prem = [
     "premission1",
@@ -69,14 +70,13 @@ class Market():
             self._notificationPlugin = dummyNotify()
         else:
             self._notificationPlugin = notificationPlugin
-        self._members = {}
+
         self._membersLock = threading.Lock()
         self._onlineVisitors = {}  # {token, User}
         self._nextToken = -1
         self._enterLock = threading.Lock()
         self._nextPolicy = 1
         self._policyLock = threading.Lock()
-        self._shops = {}  # {shopName, shop}
         self._security = Security()
         hashedPassword = self._security.hash(password)
         member = Member(system_admin_name, hashedPassword, self)
@@ -665,3 +665,4 @@ class Market():
 
     def get_all_categories(self):
         return {shop.getShopName(): shop.getCategories() for shop in self._shops.values()}
+
