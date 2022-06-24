@@ -6,94 +6,119 @@ from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
 import threading
 
 
-
 class Shop():
 
-    def __init__(self, shopName: str, founder):
-        self._name = shopName
+    def __init__(self, shop_name: str, founder, notificationPlugin):
+        self._name = shop_name
         self._stock = Stock()
-        self._isOpen = True  # need to confirm if we need shop's status such as closed/open. TODO
+        self._is_open = True  # need to confirm if we need shop's status such as closed/open. TODO
         self._founder = founder
-        self._owners = {founder.get_username(): founder}  # {ownerUsername, Member}
+        self._owners = {}  # {ownerUsername, Member} (ò_ó)!!!!!!!!!!!!!!!!!
         self._managers = {}  # {managerUsername, Member}
-        self._purchasePolicy = []
+        self._purchasePolicies = []
         self._purchaseLock = threading.Lock()
-        self._discountPolicy = []
+        self._discountPolicies = []
         self._discountLock = threading.Lock()
         # self._purchaseHistory = PurchaseHistory()
         self._owners_assignments = {}
         self._managers_assignments = {}
         self._purchases_history = PurchaseHistory()
         self._shop_lock = threading.Lock()
-        pass
+        self.notificationPlugin = notificationPlugin
 
     def getId(self, itemname):
         return self._stock.getId(itemname)
 
     def isOpen(self):
-        return self._isOpen
+        return self._is_open
 
-    def isAmount(self, itemid, amount):  # if the store has enough supply
-        return True
+    def isAmount(self, itemname, amount):  # if the store has enough supply
+        return self._stock.isAmount(itemname, amount)
 
-    def itemExists(self, itemid):
-        return True
+    def itemExists(self, itemname):
+        return self._stock.itemExists(itemname)
 
     def getShopName(self):
         return self._name
 
-    def add_item_lock(self, item: StockItem):
-        self._shop_lock.acquire()
-        r = self._stock.addStockItem(item)
-        self._shop_lock.release()
-        return r
+    def add_item(self, username: str, item_name: str, category: str, item_desc: str, item_price: float, amount: int):
+        item_name = item_name.strip()
+        item_desc = item_desc.strip()
+        amount = int(amount)
+        item_price = float(item_price)
 
-    def add_item(self, username, item_name, category, item_desc, item_price, amount):
-        if not (username in self._owners.keys()) and not (username in self._managers.keys()):
-            return False
-        if (amount < 0 or item_price < 0 or item_name == ""):
-            return False
+        if amount < 0:
+            raise Exception('Amount of item can not be negative')
+        if item_price < 0:
+            raise Exception('Price of item can not be negative')
+        if item_name == "" or item_name is None:
+            raise Exception('Item name must not be null')
+        if (username != self._founder.get_username()) and not (username in self._owners.keys()) and not (username in self._managers.keys()):
+            raise Exception('You do not have the sufficient permissions to add item')
+
         nid = self._stock.getNextId()
         item = StockItem(nid, category, item_name, item_desc, amount, None, None, item_price, self._name)
-        # print(item.toString())
-        r = self.add_item_lock(item)
-        # print (self._stock.search(None,None,None,None,self._name))
-        return r
+        try:
+            self._shop_lock.acquire()
+            r = self._stock.addStockItem(item)
+            self._shop_lock.release()
+            return r
+        except Exception as e:
+            self._shop_lock.release()
+            raise e
 
-    def remove_item(self, item_name, amount):
-        if (amount < 0):
-            raise Exception('Bad amount to delete')
-        self._shop_lock.acquire()
-        r = self._stock.removeStockItem(item_name, amount)
-        self._shop_lock.release()
-        return r
+    def remove_item(self, item_name):
+        try:
+            self._shop_lock.acquire()
+            r = self._stock.removeStockItem(item_name)
+            self._shop_lock.release()
+            return r
+        except Exception as e:
+            self._shop_lock.release()
+            raise e
 
-    def editItem(self, itemname, new_name, item_desc, item_price):
-        if (item_price is not None and item_price < 0) or (new_name is not None and new_name == ""):
-            raise Exception('Bad details')
-        self._shop_lock.acquire()
-        r = self._stock.editStockItem(itemname, new_name, item_desc, item_price)
-        self._shop_lock.release()
-        return r
-
+    def editItem(self, itemname, new_name, item_desc, category, item_price, count):
+        try:
+            self._shop_lock.acquire()
+            r = self._stock.editStockItem(itemname, new_name, item_desc, category, item_price, count)
+            self._shop_lock.release()
+            return r
+        except Exception as e:
+            self._shop_lock.release()
+            raise e
+    def getAmount(self,item_name):
+        return self._stock.getAmount(item_name)
     def checkAmount(self, item_name, amount):
+        amount = int(amount)
         if amount < 0:
-            raise Exception('Bad amount')
-        self._shop_lock.acquire()
-        r = self._stock.checkAmount(item_name, amount)
-        self._shop_lock.release()
-        return r
+            raise Exception("You can't remove negative amount of item")
+        try:
+            self._shop_lock.acquire()
+            r = self._stock.checkAmount(item_name, amount)
+            self._shop_lock.release()
+            return r
+        except Exception as e:
+            self._shop_lock.release()
+            raise e
+    def have_rule_in_shop(self,member):
+        if member.get_username() == self._founder.get_username():
+            raise Exception("Assignee is already a founder of the shop!")
+        if member.get_username() in self._managers:
+            raise Exception("Assignee is already a manager of the shop!")
+        if member.get_username() in self._owners:
+            raise Exception("Assignee is already an owner of the shop!")
 
     def assign_owner(self, assigner_member_object, assignee_member_object):
-        if assignee_member_object.get_username() in self._owners:
-            raise Exception("Assignee is already an owner of the shop!")
-        # TODO if assigned owner was a manager need to think what to do remove from managers or...
+        self.have_rule_in_shop(assignee_member_object)
+        #if assigned owner was a manager need to think what to do remove from managers or... NO.. if you have a rule you cant be promoted.
         self._owners[assignee_member_object.get_username()] = assignee_member_object
         assignee_member_object.addOwnedShop(self)
         self.add_assignment(assigner_member_object, assignee_member_object, self._owners_assignments)
         return True
 
     def delete_owner(self, assigner_user_name, assignee_user_name):
+        if assignee_user_name == self._founder.get_username():
+            raise Exception("%s is Founder of the shop:%s and therefore cant be deleted from owners group" %(assignee_user_name,self._name))
         if assignee_user_name not in self._owners:
             raise Exception(assignee_user_name + " is not an owner of the shop:" + self._name)
         self.delete_assignment_owner(assigner_user_name, assignee_user_name, self._owners_assignments)
@@ -129,10 +154,7 @@ class Shop():
             del self._owners[member_to_delete.get_username()]
 
     def assign_manager(self, assigner_member_object, assignee_member_object):
-        if assignee_member_object.get_username() in self._managers:
-            raise Exception("Assignee is already a manager of the shop!")
-        if assignee_member_object.get_username() in self._owners:
-            raise Exception("Assignee is already an owner of the shop!")
+        self.have_rule_in_shop(assignee_member_object)
 
         self._managers[assignee_member_object.get_username()] = assignee_member_object
         assignee_member_object.addManagedShop(self)
@@ -152,58 +174,86 @@ class Shop():
             return assignee in self._owners_assignments[assigner]
         if assigner in self._managers_assignments:
             return assignee in self._managers_assignments[assigner]
-
+    def get_founder_and_owners(self):
+        all = []
+        all.append(self._founder)
+        for o in  self._owners.values():
+            all.append(o)
+        return all
     def close_shop(self):
-        if self._isOpen:
-            self._isOpen = False
-            # TODO add notifying and events system
-            pass
+        if self._is_open:
+            self._is_open = False
+            all = self.get_founder_and_owners()
+            usernames = [u.get_username() for u in all]
+            print(usernames)
+            missed = self.notificationPlugin.alertspecificrange("The Shop \"%s\" is closed." %(self.getShopName()),usernames)
+            print(missed)
+            for user in all:
+                if user.get_username() in missed:
+                    user.addDelayedNotification("The Shop \"%s\" is closed." %(self.getShopName()))
             return True
         else:
             raise Exception('Closed shop could not be closed again!')
+    def reopen_shop(self):
+        if not self._is_open:
+            self._is_open = True
+            all = self.get_founder_and_owners()
+            usernames = [u.get_username() for u in all]
 
+            missed = self.notificationPlugin.alertspecificrange("The Shop \"%s\" is open again." % (self.getShopName()), usernames)
+            for user in all:
+                if user.get_username() in missed:
+                    user.addDelayedNotification("The Shop \"%s\" is open again." % (self.getShopName()))
+            return True
+        else:
+            raise Exception('Open shop could not be opened again!')
+    # Returns whether usernae is manager
+    def is_manager(self, manager_username: str) -> bool:
+        return manager_username in self._managers
 
-    def is_manager(self, managerUsername):
-        return managerUsername in self._managers
-
-    def is_owner(self, ownerUsername):
-        return self._owners[ownerUsername] is not None or self._founder.get_username() == ownerUsername
+    def is_owner(self, owner_username: str) -> bool:
+        return self._owners[owner_username] is not None or self._founder.get_username() == owner_username
 
     def getTotalDiscount(self, user):
         totaldiscount = 1
-        for discount in self._discountPolicy:
+        for discount in self._discountPolicies:
             totaldiscount = totaldiscount * discount.getDiscount(user)
         return totaldiscount
 
     def getRolesInfoReport(self):
-
-        report = 'Founder: ' + self._founder + '\n'
-        for ownerUsername in self._owners:
-            report = report + 'Username: ' + ownerUsername + ' role: owner\n'
-
-        for managerUsername in self._managers:
-            report = report + 'Username: ' + managerUsername + ' role: manager\n'
-
-        return report
+        return {'founder': self._founder.get_username(), 'managers': [m for m in self._managers],
+        'owners': [m for m in self._owners]}
 
     def get_shop_report(self):
-        return {'name' : self._name ,'founder' : self._founder.get_username(),'managers': [m for m in self._managers],
-                    'owners': [m for m in self._owners],
-                    'shopopen':self._isOpen}
+        return {'name': self._name, 'founder': self._founder.get_username(), 'managers': [m for m in self._managers],
+                'owners': [m for m in self._owners],
+                'shopopen': self.isOpen(),
+                'items': self._stock.get_items_report()}
 
-    def aqcuirePurchaseLock(self):
+    def aqcuire_lock(self):
+        '''acquires the lock of the shop'''
         self._shop_lock.acquire()
 
-    def releaseReleaseLock(self):
+    def release_lock(self):
+        '''release the lock of the shop'''
         self._shop_lock.release()
 
-    def purchase(self, user, id, amount):
+    def purchase(self, user, itemname: str, amount: int, bought_price: float):
+        '''Perform purchase'''
+        self._purchases_history.add(user.get_state(), itemname, amount, bought_price)
+        self._stock.purchase(itemname, amount)
+        all = self.get_founder_and_owners()
+        usernames = [u.get_username() for u in all]
+        message = "%s purchased %d of %s from shop %s" %(user.get_state(),amount,itemname,self.getShopName())
+        missed = self.notificationPlugin.alertspecificrange(message, usernames)
+        for user in all:
+            if user.get_username() in missed:
+                user.addDelayedNotification(message)
         return True
 
-    def search(self, item_name, category, item_keyword, item_maxPrice):
-        r = self._stock.search(item_name, category, item_keyword, item_maxPrice, self._name)
-        # print(r)
-        return r
+    def search(self, query: str, category: str, item_min_price: float, item_max_price: float):
+        '''Performs search (non exclusive) - an item is found by query in his name/desc/category'''
+        return self._stock.search(query, category, item_min_price, item_max_price)
 
     def getItemInfo(self, name):
         return self._stock.getItemInfo(name)
@@ -233,28 +283,31 @@ class Shop():
 
     def addPurchasePolicy(self, policy):
         self._purchaseLock.acquire()
-        self._purchasePolicy.append(policy)
+        self._purchasePolicies.append(policy)
         self._purchaseLock.release()
         return True
 
     def addDiscountPolicy(self, policy):
         self._discountLock.acquire()
-        self._discountPolicy.append(policy)
+        self._discountPolicies.append(policy)
         self._discountLock.release()
+
         return True
 
     def remove_policy(self, ID):
         done = False
         self._discountLock.acquire()
-        for d in self._discountPolicy:
+        for d in self._discountPolicies:
             if d.getID() == ID:
-                self._discountPolicy.remove(d)
+                self._discountPolicies.remove(d)
                 done = True
         self._discountLock.release()
+        if done:
+            return done
         self._purchaseLock.acquire()
-        for d in self._purchasePolicy:
+        for d in self._purchasePolicies:
             if d.getID() == ID:
-                self._purchasePolicy.remove(d)
+                self._purchasePolicies.remove(d)
                 done = True
         self._purchaseLock.release()
         return done
@@ -264,15 +317,15 @@ class Shop():
 
     def getPolicies(self):
         ret = []
-        for p in self._discountPolicy:
+        for p in self._discountPolicies:
             ret.append(["discount", p.getID(), p.getDiscount()])
-        for p in self._purchasePolicy:
+        for p in self._purchasePolicies:
             ret.append(["purchase", p.getID()])
         return ret
 
     def validate_purchase(self, user, name):
         item = self._stock.getItem(name)
-        for policy in self._purchasePolicy:
+        for policy in self._purchasePolicies:
             if not policy.apply(user, item):
                 return False
         return True
@@ -281,13 +334,27 @@ class Shop():
         item = self._stock.getItem(name)
         disc = self.findDiscount(user, item)
         # print(name, disc,item.getPrice()*amount*disc)
-        return round(item.getPrice() * amount * disc,3)
+        return round(item.getPrice() * amount * disc, 3)
+
+    def calculate_price_for_general_item(self, user, itemname):
+        item = self._stock.getItem(itemname)
+        disc = self.findDiscount(user, item)
+        # print(name, disc,item.getPrice()*amount*disc)
+        return round(item.getPrice() * disc, 3)
 
     def findDiscount(self, user, item):
         disc = 1
-        for policy in self._discountPolicy:
+        for policy in self._discountPolicies:
             # print(policy,policy.apply(user, item))
             if policy.apply(user, item):
                 d = policy.getDiscount()
-                disc *= (1 - d/100)
+                disc *= (1 - d / 100)
         return disc
+    def get_permission_report(self,member_name):
+        m = self._managers[member_name]
+        p = m.get_permissions(self._name)
+        ret = p.get_permission_report_json()
+        return ret
+
+    def getCategories(self):
+        return self._stock.getCategories()

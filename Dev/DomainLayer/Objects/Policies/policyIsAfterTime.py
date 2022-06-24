@@ -7,9 +7,9 @@ class policyHasPrice(Composable):
 
     def __init__(self, ID, percent, hour, minute):
         self.ID = ID
-        self.percent = percent
-        self.hour = hour
-        self.minute = minute
+        self.percent = float(percent)
+        self.hour = int(hour)
+        self.minute = int(minute)
 
     def apply(self, user: User, item: StockItem):
         now = datetime.datetime.now()

@@ -2,7 +2,7 @@ from pickle import NONE
 import sys
 from Dev.ServiceLayer.BridgeInterface import BridgeInterface
 from Dev.ServiceLayer.Response import Response
-from typing import List, Set
+from typing import Dict, List, Set
 
 from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
 from Dev.DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
@@ -15,10 +15,18 @@ class SystemService(BridgeInterface):
     def __init__(self):
         self.market: Market = None
 
+    def isOnline(self, username: str)-> Response[any]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.isOnline(username))
+        except Exception as e:
+            return Response(exception=e.__str__())
+
     def get_user_state(self, user_id: int)-> Response[bool]:
         try:
             if self.market is None:
-                Response(exception="you have to initialize the system")
+                return Response(exception="you have to initialize the system")
             return Response(self.market.get_user_state(user_id))
         except Exception as e:
             return Response(exception=e.__str__())
@@ -26,7 +34,7 @@ class SystemService(BridgeInterface):
     def is_token_valid(self, user_id: int)-> Response[bool]:
         try:
             if self.market is None:
-                Response(exception="you have to initialize the system")
+                return Response(exception="you have to initialize the system")
             return Response(self.market.isToken(user_id))
         except Exception as e:
             return Response(exception=e.__str__())
@@ -34,7 +42,7 @@ class SystemService(BridgeInterface):
     def get_into_the_Trading_system_as_a_guest(self) -> Response[int]:
         try:
             if self.market is None:
-                Response(exception="you have to initialize the system")
+                return Response(exception="you have to initialize the system")
             return Response(self.market.enter())
         except Exception as e:
             return Response(exception=e.__str__())
@@ -42,12 +50,12 @@ class SystemService(BridgeInterface):
     def initialization_of_the_system(self, external_payment_service: paymentServiceInterface = PaymentService(),
                                      external_supplement_service: shippingServiceInterface = ShippingService(),
                                      system_admin_name: str = "Alex", password: str = "Alex_123456",
-                                     MaxTimeOnline: int = 10) -> Response[bool]:
+                                     notificationPlugin = None) -> Response[bool]:
         try:
             if self.market is not None:
-                Response(exception="system have been initialized before")
+                return Response(exception="system have been initialized before")
             self.market: Market = Market(external_payment_service, external_supplement_service, system_admin_name,
-                                         password, MaxTimeOnline)
+                                         password, notificationPlugin)
             return Response(True)
         except Exception as e:
             return Response(exception=e.__str__())
@@ -74,14 +82,6 @@ class SystemService(BridgeInterface):
             if self.market is None:
                 return Response(exception="you have to initialize the system")
             return Response(self.market.get_age(user_id, age))  # get shipping details from user of  <username> and items from and items from the shopping basket
-        except Exception as e:
-            return Response(exception=e.__str__())
-
-    def is_active(self, user_id) -> Response[bool]:
-        try:
-            if self.market is None:
-                return Response(exception="you have to initialize the system")
-            return Response(self.market.is_active(user_id))
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -151,8 +151,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name: str) -> Response[
-        List[str]]:  # [shop description ,item_name1 , item_name2 ...]
+    def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name: str) -> Response[Dict]:  # [shop description ,item_name1 , item_name2 ...]
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
@@ -168,14 +167,12 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def general_items_searching(self, user_id: int, item_name: str = None, category: str = None,
-                                item_keyword: str = None, item_maxPrice: int = None) -> Response[
-        List[List[str]]]:  # [[shop_name, item_name1] , [shop_name,item_name2] ...]
+    def general_items_searching(self, user_id: int, item_keyword:str="",category:str ="",item_minPrice:float = 0, item_maxPrice:float = 0) -> Response[Dict[str,Dict]]:  # [[shop_name, item_name1] , [shop_name,item_name2] ...]
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
             return Response(
-                self.market.general_items_searching(user_id, item_name, category, item_keyword, item_maxPrice))
+                self.market.general_items_searching(user_id,item_keyword,category,item_minPrice, item_maxPrice))
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -187,8 +184,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shopping_carts_check_content(self, user_id: int) -> Response[List[List[
-        str]]]:  # List[List[str]]: #[[shop_name, item_name1,item_name2..] , [shop_name, item_name1,item_name2..] ...]
+    def shopping_carts_check_content(self, user_id: int) -> Response[Dict[str, Dict]]:  # List[List[str]]: #[[shop_name, item_name1,item_name2..] , [shop_name, item_name1,item_name2..] ...]
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
@@ -269,6 +265,14 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
+    def calculate_item_price(self, token, shopname,itemname) -> Response[float]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.calculate_item_price(token, shopname,itemname))
+        except Exception as e:
+            return Response(exception=e.__str__())
+
     def delete_policy(self, token, shopname, policyID)-> Response[bool]:
         try:
             if self.market is None:
@@ -317,7 +321,13 @@ class SystemService(BridgeInterface):
             return Response(self.market.shop_open(user_id, shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
-
+    def shop_reopen(self, user_id: int, shop_name: str) -> Response[bool]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.shop_reopen(user_id, shop_name))
+        except Exception as e:
+            return Response(exception=e.__str__())
     def adding_item_to_the_shops_stock(self, user_id: int, item_name: str, shop_name: str, category: str,
                                        item_desc: str, item_price: float, amount: int) -> Response[bool]:
         try:
@@ -346,28 +356,28 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def deleting_item_from_shop_stock(self, user_id: int, item_name: str, shop_name: str, amount: int) -> Response[
+    def deleting_item_from_shop_stock(self, user_id: int, item_name: str, shop_name: str) -> Response[
         bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.deleting_item_from_shop_stock(user_id, item_name, shop_name, amount))
+            return Response(self.market.deleting_item_from_shop_stock(user_id, item_name, shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
 
     def change_items_details_in_shops_stock(self, user_id: int, item_name: str, shop_name: str, new_name=None,
-                                            item_desc: str = None,
-                                            item_price: float = None) -> Response[bool]:
+                                            item_desc = None ,category = None,
+                                            item_price = None ,amount = None) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
             return Response(
-                self.market.change_items_details_in_shops_stock(user_id, item_name, shop_name, new_name, item_desc,
-                                                                item_price))
+                self.market.change_items_details_in_shops_stock(user_id, item_name, shop_name, new_name, item_desc,category,
+                                                                item_price,amount))
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shop_owner_assignment(self, user_id: int, shop_name: str, member_name_to_assign: int, ) -> Response[bool]:
+    def shop_owner_assignment(self, user_id: int, shop_name: str, member_name_to_assign: str, ) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
@@ -383,24 +393,24 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shop_manager_permissions_add(self, user_id: int, manager_name_to_update: str, permission_type: int,
+    def shop_manager_permissions_add(self, user_id: int, manager_name_to_update: str, permission_code: int,
                                      shop_name: str) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
             return Response(
-                self.market.shop_manager_permissions_updating(user_id, manager_name_to_update, permission_type,
+                self.market.shop_manager_permission_adding(user_id, manager_name_to_update, permission_code,
                                                               shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shop_manager_permissions_delete(self, user_id: int, manager_name_to_update: str, permission_type: int,
+    def shop_manager_permissions_delete(self, user_id: int, manager_name_to_update: str, permission_code: int,
                                         shop_name: str) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
             return Response(
-                self.market.shop_manager_permissions_updating(user_id, manager_name_to_update, permission_type,
+                self.market.shop_manager_permission_removing(user_id, manager_name_to_update, permission_code,
                                                               shop_name))
         except Exception as e:
             return Response(exception=e.__str__())
@@ -413,7 +423,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shop_manager_permissions_check(self, user_id: int, manager_name: str, shop_name: str) -> Response[List[str]]:
+    def shop_manager_permissions_check(self, user_id: int, manager_name: str, shop_name: str) -> Response[Dict[int, bool]]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
@@ -421,12 +431,11 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def shops_roles_info_request(self, username: int, shop_name: str, token) -> Response[
-        List[List[str]]]:  # [[member_name,"Manager"], [member_name,"Owner"]...]
+    def shops_roles_info_request(self, user_id: int, shop_name: str) -> Response[Dict[str,List[str]]]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.shops_roles_info_request(username, shop_name, token))
+            return Response(self.market.shops_roles_info_request(user_id, shop_name))
 
         except Exception as e:
             return Response(exception=e.__str__())
@@ -473,5 +482,12 @@ class SystemService(BridgeInterface):
             if self.market is None:
                 return Response(exception="you have to initialize the system")
             return Response(self.market.get_eligible_members_for_shop(user_id, shop_name))
+        except Exception as e:
+            return Response(exception=e.__str__())
+    def get_all_categories(self) ->  Response[Dict[str,List]]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.get_all_categories())
         except Exception as e:
             return Response(exception=e.__str__())

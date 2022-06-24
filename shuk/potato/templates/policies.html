@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h1>my policy List:</h1>
+<datalist id="myshops">
+    {% for shopname in myshops %}
+      <option value="{{shopname}}">
+    {% endfor %}
+</datalist>
+<div class="stockitemlist">
+    {% for item in myPolicyList %}
+        <div class="stockitem">
+            
+            <div class="stockitemcontainer">
+            <h3>policy id: {{item.id}}</h3>
+            <p>policy: {{item.name}}
+                {% for a in item.args %}
+                {{a}}
+                {% endfor %}</p>
+                {% if item.name not in compositeNames %}
+                <p>Discount: {{item.discount}}%</p>
+                {% endif %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    Apply this policy to shop:
+                    <input list="myshops" name="shopname" class="fullsize">
+                    <div class="center"><button class="bluebutton" type="submit" name="applydiscount" value="{{item.id}}">&emsp;Apply Discount Policy&emsp;</button></div>
+                    <div class="center"><button class="yellowbutton" type="submit" name="applypurchasepolicy" value="{{item.id}}">&emsp;Apply Purchase Policy&emsp;</button></div>
+                </form>
+            </div>
+        </div>
+
+    {% endfor %}
+
+</div>
+<h1>add new basic policy:</h1>
+
+<div class="stockitemlist">
+    {% for item in simplePolicies %}
+
+
+        <div class="stockitem">
+
+            <div class="stockitemcontainer">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <h3>{{item.name}}</h3>
+                    Discount(0 - 100) %:
+                    <input name="discount" type="number" min="0" max="100" value="0" step="0.1"/>
+                    {% for a in item.demoargs %}
+                        <p style="text-transform: capitalize; ">{{a.0}}:</p>
+                        <input name="bob{{a.1}}"/>
+                    {% endfor %}
+                    <div class="center"><button class="bluebutton" type="submit" name="addpolicy" value="{{item.name}}">&emsp;Add Policy&emsp;</button></div>
+                </form>
+            </div>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+</div>
+<h1>add new composite policy:</h1>
+
+<div class="stockitemlist">
+    {% for item in compositePolicies %}
+        <div class="stockitem">
+
+            <div class="stockitemcontainer">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <h3>{{item.name}}</h3>
+                    <input name="discount" type="number" min="0" max="100" value="0" step="0.1" hidden/>
+                    {% for a in item.demoargs %}
+                        <p style="text-transform: capitalize; ">{{a.0}}:</p>
+                        <input name="bob{{a.1}}"/>
+                    {% endfor %}
+                    <div class="center"><button class="bluebutton" type="submit" name="addpolicy" value="{{item.name}}">&emsp;Add Policy&emsp;</button></div>
+                </form>
+            </div>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

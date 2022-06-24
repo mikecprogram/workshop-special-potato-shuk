@@ -1,0 +1,125 @@
+
+{% block managesingleshop%}
+<hr>
+<div class="biggrid">
+        {% for shop in shops %}
+            <div class="stockitem">
+
+                <div class="stockitemcontainer">
+                    <h3>Shop Name: {{shop.name}}</h3>
+                    <h2>Founded by :{{shop.founder}}</h2>
+
+                    {% if shop.owners != "" %}
+                        <h2>Owned by :{{shop.owners}}</h2>
+                    {% endif %}
+                    {% if shop.managers != "" %}
+                        <h2>Managed by :{{shop.managers}}</h2>
+                    {% endif %}
+                </div>
+                <hr>
+                {% if shop.managers != "" %}
+                    {% if shop.founder == userStatus or userStatus in shop.owners %}
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <label>Choose manager to edit premissions:</label>
+                        <input list="managers{{shop.name}}" name="person" class="fullsize">
+                           <datalist id="managers{{shop.name}}">
+                                {% for username in shop.managerslist %}
+                                  <option value="{{username}}">
+                                {% endfor %}
+                            </datalist>
+                        <br/>
+                        <div class="center"><button class= "bluebutton" type="submit" name="editpermission" value="{{shop.name}}">Edit Premission</button></a></div>
+                    </form>
+                    <hr>
+                    {% endif %}
+                {% endif %}
+
+                {% if shop.founder == userStatus or userStatus in shop.owners %}
+                    <datalist id="eligible{{shop.name}}">
+                        {% for username in shop.eligible %}
+                          <option value="{{username}}">
+                        {% endfor %}
+                    </datalist>
+                    <!--Managers section:-->
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <label>Choose your new manager from the list:</label>
+                        <input list="eligible{{shop.name}}" name="person" class="fullsize">
+                        <br/>
+                        <div class="center"><button class= "bluebutton" type="submit" name="makeman" value="{{shop.name}}">Make manager</button></div>
+                    </form>
+                    <hr>
+
+                    {% if shop.managers != "" %}
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <label>Remove your store manager from the list:</label>
+                            <input list="managers{{shop.name}}" name="person" class="fullsize">
+                            <br/>
+                            <div class="center"><button class= "redbutton" type="submit" name="delman" value="{{shop.name}}">Remove manager</button></div>
+                        </form>
+                        <hr>
+                    {% endif %}
+                    <!--End Managers section-->
+                    <!--Owners section:-->
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <label>Choose your store owner from the list:</label>
+                        <input list="eligible{{shop.name}}" name="person" class="fullsize">
+                        <br/>
+                        <div class="center"><button class= "bluebutton" type="submit" name="makeown" value="{{shop.name}}">Make owner</button></div>
+                    </form>
+                    <hr>
+
+                    {% if shop.owners != "" %}
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <label>Remove your store owner from the list:</label>
+                        <input list="ownerslist{{shop.name}}" name="person" class="fullsize">
+                        <datalist id="ownerslist{{shop.name}}">
+                            {% for username in shop.ownerslist %}
+                                  <option value="{{username}}">
+                            {% endfor %}
+                        </datalist>
+                        <div class="center"><button class= "redbutton" type="submit" name="delown" value="{{shop.name}}">Remove owner</button></div>
+                    </form>
+                    <hr>
+                    {% endif %}
+                    <!--End Owner section-->
+                {% endif %}
+                {% if shop.founder == userStatus or userStatus in shop.owners %}
+                    <div class="center">
+                        <a href="{% url 'shop'%}/{{shop.name}}/shopPolicies"><button class= "bluebutton">&emsp;Add Policies&emsp;</button></a>
+                    </div>
+                    <hr>
+                {% endif %}
+                {% if shop.shopopen == True and shop.founder == userStatus%}
+                     <div class="center">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <button class= "redbutton" action="submit" name="closeshop" value="{{shop.name}}">&emsp;Close shop&emsp;</button>
+                        </form>
+                    </div>
+                    <hr>
+                {%elif shop.founder == userStatus %}
+                   <div class="center">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <button class= "bluebutton" action="submit" name="reopenshop" value="{{shop.name}}">&emsp;Reopen shop&emsp;</button>
+                        </form>
+                    </div>
+                    <hr>
+                {% endif %}
+
+                <div class="center">
+                    <a href="{% url 'shop'%}/{{shop.name}}/history"><button class= "bluebutton">&emsp;Show Shop Purchases History&emsp;</button></a>
+                </div>
+                <hr>
+                <div class="center">
+                    <a href="{% url 'shop'%}/{{shop.name}}"><button class= "bluebutton">&emsp;Enter Shop&emsp;</button></a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock%}

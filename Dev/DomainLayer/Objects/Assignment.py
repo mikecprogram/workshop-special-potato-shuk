@@ -1,4 +1,4 @@
-#from .Logger import Logger
+# from .Logger import Logger
 
 
 class Assignment:
@@ -7,5 +7,3 @@ class Assignment:
         self.assigner = assigner_member
         self.assignee = assignee_member
         self.assignmentType = None
-
-

@@ -4,17 +4,20 @@
 class Guest:
 
     def __init__(self, user):
-        self._user = user   # is it necessary here ? answer: ?
+        self._user = user  # is it necessary here ? answer: ?
 
     def assign_owner(self, shopName, memberToAssign):
         raise Exception("Guest could not assign shop owners!")
+
+    def get_permissions_report(self, shopName, member):
+        raise Exception("Guest could not get %s permissions." % member)
 
     def assign_manager(self, shopNmae, member):
         raise Exception("Guest could not assign shop managers!")
 
     def openShop(self, shop):
         raise Exception("Guest could not open a shop!")
-        
+
     def getRolesInfoReport(self, shopName):
         raise Exception("Guest could not do this operation")
 

@@ -1,11 +1,11 @@
-#from .Logger import Logger
+# from .Logger import Logger
 from Dev.DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
 from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
 
 
 class ExternalServices:
 
-    def __init__(self,PaymentService : paymentServiceInterface, ShippingService : shippingServiceInterface):
+    def __init__(self, PaymentService: paymentServiceInterface, ShippingService: shippingServiceInterface):
         self._paymentService = PaymentService
         self._shippingService = ShippingService
 

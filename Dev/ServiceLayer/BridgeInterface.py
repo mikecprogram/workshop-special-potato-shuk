@@ -1,5 +1,5 @@
 from Dev.ServiceLayer.Response import Response
-from typing import List,Set
+from typing import List, Set, Dict
 import sys
 
 from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
@@ -12,13 +12,10 @@ class BridgeInterface:
                                      system_admin_name: str, password: str , MaxTimeOnline : int) -> Response[bool]:
         pass
 
-    def is_active(self,user_id) -> Response[bool]:
-        pass
-
     def is_login(self,user_id) -> Response[bool]:
         pass
 
-    def is_member(self,user_id, name) -> Response[bool]:
+    def is_member(self, name) -> Response[bool]:
         pass
 
     def shipping_request(self, user_id: int, items : List[str]) -> Response[bool]:
@@ -41,7 +38,7 @@ class BridgeInterface:
         pass
 
     #keyword search from name and description
-    def general_items_searching(self, user_id:int,item_name: str =None, category:str =None ,item_keyword: str= None, item_maxPrice: int= None) -> Response[List[List[str]]]: #[[shop_name, item_name1] , [shop_name,item_name2] ...]
+    def general_items_searching (self, user_id: int, item_keyword: str, category: str = "", item_minPrice: float = 0, item_maxPrice: float = 0) -> Response[Dict[str, Dict]]: #[[shop_name, item_name1] , [shop_name,item_name2] ...]
         pass
 
     def shopping_carts_add_item(self, user_id: int, item_name: str, shop_name: str, amount : int) -> Response[bool]:
@@ -90,10 +87,10 @@ class BridgeInterface:
     def shop_closing(self, user_id: int, shop_name: str):
         pass
 
-    def shop_manager_permissions_check(self, user_id: int, manager_name: str, shop_name: str) -> Response[Set[int]]:
+    def shop_manager_permissions_check(self, user_id: int,shop_name:str,manager_name:str) -> Response[Set[int]]:
         pass
 
-    def shops_roles_info_request(self, user_id: int, shop_name: str) -> Response[List[List[str]]]:#[[member_name,"Manager"], [member_name,"Owner"]...]
+    def shops_roles_info_request(self, user_id: int, shop_name: str) -> Response[Dict[str,List[str]]]:#{"Founder":"Michael","owners":["Alex"],"managers":["Luee","Saleh","Tomer"]}
         pass
 
     def get_all_members_name(self, user_id: int) -> Response[List[List[str]]]:#[[online_member_name1,online_member_name2..][offline_member_name1,online_member_name2..]]
@@ -107,4 +104,5 @@ class BridgeInterface:
 
     def delete_member(self, user_id: int, member_name: str) -> Response[None]:
         pass
-
+    def get_all_categories(self) -> Response[Dict[str,List]]:
+        pass

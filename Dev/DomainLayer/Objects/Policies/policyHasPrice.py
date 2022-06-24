@@ -6,18 +6,19 @@ class policyHasPrice(Composable):
 
     def __init__(self, ID, percent, itemname, price):
         self.ID = ID
-        self.percent = percent
+        self.percent = float(percent)
         self.itemname = itemname
-        self.price = price
+        self.price = float(price)
 
     def apply(self, user: User, item: StockItem):
-
         if self.itemname == "":
             raw = user.getRawPrice(item.getShopName())
             return raw > self.price
         else:
-            basket = user.checkBasket(item.getShopName())
-            for name, amount in basket.items():
-                if name == self.itemname:
-                    return amount * item.getPrice() > self.price
-        return False
+            basket = user.getBasketByShop(item.getShopName()).checkBasket()
+            print(basket)
+            print(self.itemname)
+            for listing in basket:
+                if listing['name'] == self.itemname:
+                    return listing['count'] * item.getPrice() >= self.price
+            return False
