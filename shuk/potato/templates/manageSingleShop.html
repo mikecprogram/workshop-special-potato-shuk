@@ -29,7 +29,7 @@
                                 {% endfor %}
                             </datalist>
                         <br/>
-                        <button class= "bluebutton" type="submit" name="editpermission" value="{{shop.name}}">Edit Premission</button></a>
+                        <div class="center"><button class= "bluebutton" type="submit" name="editpermission" value="{{shop.name}}">Edit Premission</button></a></div>
                     </form>
                     <hr>
                     {% endif %}
@@ -47,7 +47,7 @@
                         <label>Choose your new manager from the list:</label>
                         <input list="eligible{{shop.name}}" name="person" class="fullsize">
                         <br/>
-                        <button class= "bluebutton" type="submit" name="makeman" value="{{shop.name}}">Make manager</button>
+                        <div class="center"><button class= "bluebutton" type="submit" name="makeman" value="{{shop.name}}">Make manager</button></div>
                     </form>
                     <hr>
 
@@ -57,7 +57,7 @@
                             <label>Remove your store manager from the list:</label>
                             <input list="managers{{shop.name}}" name="person" class="fullsize">
                             <br/>
-                            <button class= "redbutton" type="submit" name="delman" value="{{shop.name}}">Remove manager</button>
+                            <div class="center"><button class= "redbutton" type="submit" name="delman" value="{{shop.name}}">Remove manager</button></div>
                         </form>
                         <hr>
                     {% endif %}
@@ -66,9 +66,9 @@
                     <form action="" method="POST">
                         {% csrf_token %}
                         <label>Choose your store owner from the list:</label>
-                        <input list="eligible{{shop.name}}" name="person">
+                        <input list="eligible{{shop.name}}" name="person" class="fullsize">
                         <br/>
-                        <button class= "bluebutton" type="submit" name="makeown" value="{{shop.name}}">Make owner</button>
+                        <div class="center"><button class= "bluebutton" type="submit" name="makeown" value="{{shop.name}}">Make owner</button></div>
                     </form>
                     <hr>
 
@@ -82,7 +82,7 @@
                                   <option value="{{username}}">
                             {% endfor %}
                         </datalist>
-                        <button class= "redbutton" type="submit" name="delown" value="{{shop.name}}">Remove owner</button>
+                        <div class="center"><button class= "redbutton" type="submit" name="delown" value="{{shop.name}}">Remove owner</button></div>
                     </form>
                     <hr>
                     {% endif %}
