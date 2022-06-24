@@ -33,11 +33,11 @@ class notificationPl:
         online = []
         for username in ran:
             token = self.m.isOnline(username)
-            if token is not None:
+            if token.res is not None:
                 online.append(token.res)
             else:
                 offline.append(username)
-        print(online)
+
         asyncio.run(self._sendwithtimeout(online, message))
 
         return offline

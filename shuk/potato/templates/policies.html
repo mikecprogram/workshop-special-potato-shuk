@@ -4,6 +4,11 @@
 
 
 <h1>my policy List:</h1>
+<datalist id="myshops">
+    {% for shopname in myshops %}
+      <option value="{{shopname}}">
+    {% endfor %}
+</datalist>
 <div class="stockitemlist">
     {% for item in myPolicyList %}
         <div class="stockitem">
@@ -20,7 +25,7 @@
                 <form action="" method="POST">
                     {% csrf_token %}
                     Apply this policy to shop:
-                    <input name="shopname"/>
+                    <input list="myshops" name="shopname" class="fullsize">
                     <div class="center"><button class="bluebutton" type="submit" name="applydiscount" value="{{item.id}}">&emsp;Apply Discount Policy&emsp;</button></div>
                     <div class="center"><button class="yellowbutton" type="submit" name="applypurchasepolicy" value="{{item.id}}">&emsp;Apply Purchase Policy&emsp;</button></div>
                 </form>

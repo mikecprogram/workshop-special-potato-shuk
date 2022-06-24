@@ -185,8 +185,9 @@ class Shop():
             self._is_open = False
             all = self.get_founder_and_owners()
             usernames = [u.get_username() for u in all]
-
+            print(usernames)
             missed = self.notificationPlugin.alertspecificrange("The Shop \"%s\" is closed." %(self.getShopName()),usernames)
+            print(missed)
             for user in all:
                 if user.get_username() in missed:
                     user.addDelayedNotification("The Shop \"%s\" is closed." %(self.getShopName()))
@@ -352,7 +353,7 @@ class Shop():
     def get_permission_report(self,member_name):
         m = self._managers[member_name]
         p = m.get_permissions(self._name)
-        ret= p.get_permission_report_json()
+        ret = p.get_permission_report_json()
         return ret
 
     def getCategories(self):

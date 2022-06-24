@@ -500,17 +500,17 @@ class Market():
     
     def shop_manager_permission_adding(self, token, manager_name_to_update, permission_code, shop_name):
         if self.isToken(token):
-            if shop_name is not in self._shops:
+            if shop_name not in self._shops:
                 raise Exception('Shop does not exist with the given shop name!')
             self._onlineVisitors[token].grant_permission(permission_code, shop_name, manager_name_to_update)
-        return "Permission with code: " + permission_code " has been added to manager: "+manager_name_to_update +" of shop: "+ shop_name +" successfully!"
+        return "Permission with code: " + permission_code + " has been added to manager: "+manager_name_to_update +" of shop: "+ shop_name +" successfully!"
 
     def shop_manager_permission_removing(self, token, manager_name_to_update, permission_code, shop_name):
         if self.isToken(token):
-            if shop_name is not in self._shops:
+            if shop_name not in self._shops:
                 raise Exception('Shop does not exist with the given shop name!')
             self._onlineVisitors[token].withdraw_permission(permission_code, shop_name, manager_name_to_update)
-        return "Permission with code: " + permission_code " has been removed from manager: "+manager_name_to_update +" of shop: "+ shop_name +" successfully!"
+        return "Permission with code: " + permission_code + " has been removed from manager: "+manager_name_to_update +" of shop: "+ shop_name +" successfully!"
 
 
     def shops_roles_info_request(self, token,shopName):

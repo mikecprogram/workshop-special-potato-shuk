@@ -113,7 +113,9 @@ def cart(request):
         return renderError(request, tokenuser, res.exc)
     else:
         answer = res.res
-        for _, items in answer:
+        print("DUIOJGTDYCGVHBIOJFYCGHJBHUGYDTCFGVHJBGDTFCGHVYGDTXCFVUFYTDRCYVCTXYG")
+        print(answer)
+        for _, items in answer.items():
             len_results += len(items)
     res = m.calculate_cart_price(tokenuser)
     if res.isexc:
@@ -354,9 +356,9 @@ class addPolicyForm(forms.Form):
 """
 
 def shopPolicies(request, shopname):
-    errormessage = ""
     tokenuser = getToken(request)
-    if request.method == "GET":
+    errormessage = ""
+    """if request.method == "GET":
         m.registration_for_the_trading_system(tokenuser,"aleks", "12345678")
         m.login_into_the_trading_system(tokenuser,"aleks", "12345678")
         m.shop_open(tokenuser,"shopname1")
@@ -364,18 +366,24 @@ def shopPolicies(request, shopname):
             m.add_policy(tokenuser,10,"isShop")
             m.add_policy(tokenuser, 10, "isShop")
             m.add_purchase_policy_to_shop(tokenuser, "shopname1",1)
-            m.add_purchase_policy_to_shop(tokenuser, "shopname1", 2)
+            m.add_purchase_policy_to_shop(tokenuser, "shopname1", 2)"""
     if request.method == "POST":
         if "removePolicy" in request.POST:
             id = request.POST['removePolicy']
             r = m.delete_policy(tokenuser,shopname, int(id))
             if r.isexc:
                 errormessage = r.exc
-    policies = m.get_shop_policies(tokenuser,"shopname1").res
+
+    policies = m.get_shop_policies(tokenuser,shopname)
+    if policies.isexc:
+        return renderError(request,tokenuser,policies.exc)
+    policies = policies.res
+    if policies is None:
+        policies = []
     pols = []
     for p in policies:
         if len(p) == 3:
-            pols.append(Policy(p[1],p[0],[],p[3]))
+            pols.append(Policy(p[1],p[0],[],p[2]))
         if len(p) == 2:
             pols.append(Policy(p[1],p[0],[],None))
 
@@ -425,20 +433,20 @@ def policies(request):
                 second = None
 
             if typeofpolicy in compositeNames:
-                print(str(typeofpolicy), first, second)
-                print(m.get_my_policies(tokenuser).res)
+                #print(str(typeofpolicy), first, second)
+                #print(m.get_my_policies(tokenuser).res)
                 if second is None:
                     r = m.compose_policy(tokenuser, str(typeofpolicy), int(first), None)
                     if r.isexc:
                         errormessage = r.exc
                 else:
-                    r = m.compose_policy(tokenuser, str(typeofpolicy), int(first), int(second)).isexc
+                    r = m.compose_policy(tokenuser, str(typeofpolicy), int(first), int(second))
                     if r.isexc:
                         errormessage = r.exc
             else:
                 print(str(typeofpolicy), first, second)
                 print(m.get_my_policies(tokenuser).res)
-                r = m.add_policy(tokenuser,float(discount),str(typeofpolicy),first,second).isexc
+                r = m.add_policy(tokenuser,float(discount),str(typeofpolicy),first,second)
                 if r.isexc:
                     errormessage = r.exc
 
@@ -451,22 +459,24 @@ def policies(request):
                 if shopname is not None:
                     shopname = shopname.strip()
                 print(shopname,int(polid))
-
-                if m.add_discount_policy_to_shop(tokenuser,shopname,int(polid)).isexc:
-                    errormessage = res.exc
+                r = m.add_discount_policy_to_shop(tokenuser,shopname,int(polid))
+                if r.isexc:
+                    errormessage = r.exc
                 print(m.get_shop_policies(tokenuser, shopname).res)
         elif 'applypurchasepolicy' in request.POST:
             polid = request.POST['applypurchasepolicy']#from 0 to 100
             if 'shopname' in request.POST:
                 shopname = request.POST['shopname']
                 print(shopname, int(polid))
-                if m.add_purchase_policy_to_shop(tokenuser,shopname,int(polid)).isexc:
-                    errormessage = res.exc
+                r = m.add_purchase_policy_to_shop(tokenuser,shopname,int(polid))
+                if r.isexc:
+                    errormessage = r.exc
                 print(m.get_shop_policies(tokenuser, shopname).res)
     request.POST = {}
 
     myPolicies = []
     getpol = m.get_my_policies(tokenuser).res
+    pol = None
     for p in getpol:
         if p[1] in compositeNames:
             if len(p) == 4:
@@ -482,9 +492,29 @@ def policies(request):
                 pol = Policy(p[0], p[1], [p[2]], p[3])
             if len(p) == 3:
                 pol = Policy(p[0], p[1], [], p[2])
-        myPolicies.append(pol)
+        if pol is not None:
+            myPolicies.append(pol)
+
+    r = m.get_founded_shops(tokenuser)
+    if r.isexc:
+        return renderError(request, tokenuser, r.exc)
+    found = r.res
+
+    r = m.get_owned_shops(tokenuser)
+    if r.isexc:
+        return renderError(request, tokenuser, r.exc)
+    own = r.res
+
+    r = m.get_managed_shops(tokenuser)
+    if r.isexc:
+        return renderError(request, tokenuser, r.exc)
+    manage = r.res
+    myshops = []
+    myshops.extend(found)
+    myshops.extend(own)
+    myshops.extend(manage)
     return makerender(request, tokenuser, 'policies.html',
-                      {'myPolicyList': myPolicies, 'simplePolicies': simpleBank, 'compositePolicies': compositeBank, 'compositeNames': compositeNames}
+                      {'myshops':myshops,'myPolicyList': myPolicies, 'simplePolicies': simpleBank, 'compositePolicies': compositeBank, 'compositeNames': compositeNames}
                       ,error=errormessage)
 
 
@@ -585,6 +615,7 @@ def temp(request):
     u2 = getToken(request)
     m.login_into_the_trading_system(u2, "mike", "password")
     return redirect("/manage")
+
 def unpack_managed_shop(tokenuser,res):
     shops = []
     for shopname in res:
