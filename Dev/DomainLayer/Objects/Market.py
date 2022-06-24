@@ -389,9 +389,10 @@ class Market():
 
     def shop_open(self, token, shop_name):
         if self.isToken(token):
+            shop_name = str(shop_name).strip()
+            if shop_name == "":
+                raise Exception("Shop name can't be null")
             if not shop_name in self._shops:
-                if shop_name == "":
-                    raise Exception("bad shop name")
                 user = self.getUser(token)
                 newShop = Shop(shop_name, user.getMember())
                 self._shops[shop_name] = newShop
@@ -399,6 +400,18 @@ class Market():
                 return True
             else:
                 raise Exception("There is already a shop with given name in the market, try another name please!")
+
+    def shop_reopen(self, token, shop_name):
+        if self.isToken(token):
+            shop_name = str(shop_name).strip()
+            if shop_name == "":
+                raise Exception("Shop name can't be null")
+            if shop_name in self._shops:
+                user = self.getUser(token)
+                user.getMember().reopen_shop(shop_name)
+                return True
+            else:
+                raise Exception("There is no such shop in market")
 
     def adding_item_to_the_shops_stock(self, token, item_name, shop_name, category, item_desc, item_price, amount):
         if self.isToken(token) and self.is_logged_in(token):
@@ -468,7 +481,7 @@ class Market():
     def shop_closing(self, token, shop_name):
         if self.isToken(token):
             if self.is_shop(shop_name):
-                return self._onlineVisitors[token].close_shop()
+                return self._onlineVisitors[token].close_shop(shop_name)
             else:
                 raise Exception('Shop does not exist with the given shop name!')
 
@@ -631,3 +644,6 @@ class Market():
             return output
         else:
             raise Exception('Timed out token!')
+
+    def get_all_categories(self):
+        return {shop.getShopName(): shop.getCategories() for shop in self._shops.values()}

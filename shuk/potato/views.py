@@ -13,8 +13,7 @@ from .models import ItemInBasket, Shop, StockItem, Policy, TemplatePolicy
 
 from email import message
 import json
-from channels.generic.websocket import AsyncWebsocketConsumer
-from asgiref.sync import async_to_sync
+from channels.generic.websocket import WebsocketConsumer
 
 from .notificationPlugin import notificationPl
 
@@ -38,27 +37,27 @@ def getToken(request):
     return res.res
 
 
-class ChatConsumer(AsyncWebsocketConsumer):
-    async def disconnect(self, code):
+class ChatConsumer(WebsocketConsumer):
+    def disconnect(self, code):
         print("TRYING DISCONNECT")
-        await notifyPlugin.removeConnection(self)
+        notifyPlugin.removeConnection(self)
         print("Success DISCONNECT")
 
-    async def connect(self):
+    def connect(self):
         print("TRYING connect")
-        await self.accept()
-        await self.send(text_data=json.dumps({
+        self.accept()
+        self.send(text_data=json.dumps({
             'type': 'connection_established',
             'message': 'hello'
         }))
         print("Success connect")
 
-    async def receive(self, text_data=None, bytes_data=None):
+    def receive(self, text_data=None, bytes_data=None):
         print("TRYING receive")
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         print("Consumer connected via cookie %s" % message)
-        await notifyPlugin.addConnection(self, message)
+        notifyPlugin.addConnection(self, message)
         print("Success receive")
 
 
@@ -76,43 +75,43 @@ def cart(request):
     jsmessage = ""
     if request.method == 'POST':
         if 'purchase' in request.POST:
+            print("TRY TO PURCHASE")
             jsmessage = 'Purchase successfully!'
             res = m.Shopping_cart_purchase(tokenuser)
             if res.isexc:
                 jsmessage = res.exc
-                print(res.exc)
         elif 'quantity' in request.POST:
-            quantity = request.POST['quantity']
+            wanted = int(request.POST['quantity'])
             (itemname,shopname) = request.POST['changeamount'].split('|')
             r = m.shopping_carts_check_content(tokenuser)
             if r.isexc:
                 return renderError(request, tokenuser, r.exc)
             items = r.res[shopname]
-            amount = -1
+            actual = 0
             for i in items:
                 if i['name'] == itemname:
-                    amount = i['count']
-            diff = amount - quantity
+                    actual = int(i['count'])
+            diff = wanted - actual
             if diff < 0:
-                r = m.shopping_carts_delete_item(tokenuser,itemname,shopname,diff)
+                r = m.shopping_carts_delete_item(tokenuser,itemname,shopname,-diff)
             elif diff > 0:
-                
+                r = m.shopping_carts_add_item(tokenuser,itemname,shopname,diff)
             if r.isexc:
                 return renderError(request, tokenuser, r.exc)
     res = m.shopping_carts_check_content(tokenuser)
-    print("---------------")
-    print(res.res)
     len_results = 0
     answer = None
     if res.isexc:
-        renderError(request, tokenuser, res.exc)
+        return renderError(request, tokenuser, res.exc)
     else:
         answer = res.res
-        print(answer)
         for _, items in answer:
             len_results += len(items)
-
-    return makerender(request, tokenuser, 'cart.html', {'answer': answer, 'amountOfItems': len_results},
+    res = m.calculate_cart_price(tokenuser)
+    if res.isexc:
+        return renderError(request, tokenuser, res.exc)
+    cartprice = res.res
+    return makerender(request, tokenuser, 'cart.html', {'cartprice': cartprice,'answer': answer, 'amountOfItems': len_results},
                       error=jsmessage)
 
 
@@ -133,15 +132,12 @@ def art(request):
     sts = sts + sts
 
     if 'q' in request.GET:
-        print("ok!")
         searchterm = request.GET['q']
         searchterm = searchterm.lower()
         newsts = []
         for i in sts:
-            print("%s %s" % (i.name, 'searchterm'))
             if (searchterm in i.name) | (searchterm in i.category) | (searchterm in i.desc):
                 newsts.append(i)
-                print("ok")
         sts = newsts
     (request, 'art.html', {'itemslist': sts, 'tokenuser': tokenuser})
     response.set_cookie('tokenuser', tokenuser)
@@ -218,7 +214,6 @@ def register(request):
             # now in the object cd, you have the form as a dictionary.
             username = cd.get('username')
             password = cd.get('password')
-            print("Register %s %s" % (cd.get('username'), cd.get('password')))
             res = m.registration_for_the_trading_system(tokenuser, username, password)
             if res.isexc:
                 errormessage = res.exc
@@ -277,7 +272,6 @@ def edititem(request, shopname):
             description = cd.get('description')
             amount = cd.get('amount')
             price = cd.get('price')
-            print("Price : %f" % price)
             res = m.change_items_details_in_shops_stock(tokenuser, olditemname, shopname, name, description, category,
                                                         price, amount)
             if res.isexc:
@@ -303,7 +297,6 @@ def shop(request, shopname):
     if request.method == 'POST':  # Add to cart or deleteItem
         if 'deleteItem' in request.POST:
             itemname = request.POST['deleteItem']
-            print("delelting %s" % itemname)
             res = m.deleting_item_from_shop_stock(tokenuser, itemname, shopname)
             if res.isexc:
                 errormessage = res.exc
@@ -311,8 +304,6 @@ def shop(request, shopname):
         if 'addItemToCart' in request.POST:
             itemname = request.POST['addItemToCart']
             quantity = int(request.POST['quantity'])
-            print(itemname)
-            print(quantity)
             res = m.shopping_carts_add_item(tokenuser, itemname, shopname, quantity)
             if res.isexc:
                 errormessage = res.exc
@@ -435,67 +426,142 @@ class SearchForm(forms.Form):  # Note that it is not inheriting from forms.Model
                                  widget=forms.NumberInput(
                                      attrs={'class': 'form-control', 'placeholder': 'Price', 'min': 0}))
 
-
+def unpackcategories(cats):
+    categories = set()
+    for catinshop in cats.values():
+        for cat in catinshop:
+            categories.add(cat)
+    return categories
 def search(request):
     tokenuser = getToken(request)
+    r = m.get_all_categories()
+    if r.isexc:
+        return renderError(request, tokenuser, r.exc)
+    categories = unpackcategories(r.res)
     answer = None
     len_results = 0
     query = ""
-    category = request.GET['category'] if 'category' in request.GET else ""
-    min_Price = request.GET['min_Price'] if 'min_Price' in request.GET else 0
-    max_Price = request.GET['max_Price'] if 'max_Price' in request.GET else 0
-    if request.method == 'GET':
+    errormessage = ""
+    category = str(request.GET['category'] if 'category' in request.GET else "")
+    min_Price = float(request.GET['min_Price'] if 'min_Price' in request.GET else 0)
+    max_Price = float(request.GET['max_Price'] if 'max_Price' in request.GET else 0)
+    if 'q' in request.GET:
         query = request.GET['q']
         query = query.lower()
         res = m.general_items_searching(tokenuser, query, category, min_Price, max_Price)
         if res.isexc:
-            print(res.exc)
-            renderError(request, tokenuser, res.exc)
+            return renderError(request, tokenuser, res.exc)
         else:
             answer = res.res
             for _, items in answer:
                 len_results += len(items)
+    if request.method == 'POST':
+        (itemname, shopname) = request.POST['addItemToCart'].split('|')
+        quantity = int(request.POST['quantity'])
+        res = m.shopping_carts_add_item(tokenuser, itemname, shopname, quantity)
+        if res.isexc:
+            errormessage = res.exc
+
     return makerender(request, tokenuser, 'searchItems.html',
-                      {'len_results': len_results, 'answer': answer, 'searchterm': query, 'category': category,
-                       'min_Price': min_Price, 'max_Price': max_Price})
+                      {'categories':categories,'len_results': len_results, 'answer': answer, 'searchterm': query, 'category': category,
+                       'min_Price': min_Price, 'max_Price': max_Price},error=errormessage)
 
 def mike_join(lst):
     if len(lst) == 0:
-        return "No one."
+        return ""
     else:
         return ', '.join([m for m in lst])
-def manage(request):
-    tokenuser = getToken(request)
-    counter = 0
-    found = []
-    own = []
-    manage = []
-    res = m.get_founded_shops(tokenuser)
-    if res.isexc:
-        return renderError(request, tokenuser, res.exc)
-    for shopname in res.res:
+def temp(request):
+    u = getToken(request)
+    m.registration_for_the_trading_system(u, "username", "password")
+    m.login_into_the_trading_system(u, "username", "password")
+    u2 = m.get_into_the_Trading_system_as_a_guest().res
+    m.registration_for_the_trading_system(u2, "mike", "password")
+    m.login_into_the_trading_system(u2, "mike", "password")
+    m.shop_open(u, "Mega")
+    m.shop_open(u, "Shufersal")
+    m.shop_manager_assignment(u,"Mega","mike")
+    m.shop_owner_assignment(u,"Shufersal","mike")
+    m.shop_open(u2, "MOMMMMM")
+    m.logout(u2)
+    m.logout(u)
+    u2 = getToken(request)
+    m.login_into_the_trading_system(u2, "mike", "password")
+    return redirect("/manage")
+def unpack_managed_shop(tokenuser,res):
+    shops = []
+    for shopname in res:
         res = m.info_about_shop_in_the_market_and_his_items_name(tokenuser, shopname)
         if res.isexc:
-            return renderError(request, tokenuser, res.exc)
+            raise res.exc
         s = res.res
         res = m.get_eligible_members_for_shop(tokenuser, shopname)
         if res.isexc:
-            return renderError(request, tokenuser, res.exc)
+            raise res.exc
         eligible = res.res
-        found.append(
+        shops.append(
             {'name': s['name'], 'founder': s['founder'],
-             'managers': mike_join(s['managers']),
-             'owners': mike_join(s['owners']),
+             'managers': mike_join(s['managers']), 'managerslist': s['managers'],
+             'owners': mike_join(s['owners']), 'ownerslist': s['owners'],
              'shopopen': s['shopopen'],
              'eligible': eligible}
         )
-        counter = counter + 1
-    userlist = ["What?", "When?"]
-    m.get_founded_shops(tokenuser)
+    return shops
+def manage(request):
+    tokenuser = getToken(request)
+    errormessage = ""
+
+    if request.method == "POST":
+        if 'closeshop' in request.POST:
+            r = m.shop_closing(tokenuser,str(request.POST['closeshop']))
+            if r.isexc:
+                return renderError(request, tokenuser, r.exc)
+        elif 'reopenshop' in request.POST:
+            r = m.shop_reopen(tokenuser,str(request.POST['reopenshop']))
+            if r.isexc:
+                return renderError(request, tokenuser, r.exc)
+        else:
+            person = request.POST['person']
+            print(person)
+            if 'editpermission' in request.POST:
+                return redirect("/shop/%s/%s"%(request.POST['editpermission'],person))
+            elif 'makeman' in request.POST:
+                r = m.shop_manager_assignment(tokenuser, str(request.POST['makeman']),person)
+                if r.isexc:
+                    errormessage = r.exc
+            elif 'delman' in request.POST:
+                r = m.delete_shop_owner(tokenuser, str(request.POST['delman']),person)
+                if r.isexc:
+                    errormessage = r.exc
+            elif 'makeown' in request.POST:
+                r = m.shop_owner_assignment(tokenuser, str(request.POST['makeown']),person)
+                if r.isexc:
+                    errormessage = r.exc
+            elif 'delown' in request.POST:
+                r = m.delete_shop_owner(tokenuser, str(request.POST['delown']),person)
+                if r.isexc:
+                    errormessage = r.exc
+    request.POST = {}
+
+    res = m.get_founded_shops(tokenuser)
+    if res.isexc:
+        return renderError(request, tokenuser, res.exc)
+    found = unpack_managed_shop(tokenuser,res.res)
+
+    res = m.get_owned_shops(tokenuser)
+    if res.isexc:
+        return renderError(request, tokenuser, res.exc)
+    own = unpack_managed_shop(tokenuser, res.res)
+
+    res = m.get_managed_shops(tokenuser)
+    if res.isexc:
+        return renderError(request, tokenuser, res.exc)
+    manage = unpack_managed_shop(tokenuser, res.res)
+
     return makerender(request, tokenuser, 'manage.html',
                       {'found': found,
                        'own': own,
-                       'manage': manage, "userlist": userlist})
+                       'manage': manage}, errormessage)
 
 
 def makemanager(request):

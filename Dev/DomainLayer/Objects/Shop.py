@@ -85,7 +85,8 @@ class Shop():
         except Exception as e:
             self._shop_lock.release()
             raise e
-
+    def getAmount(self,item_name):
+        return self._stock.getAmount(item_name)
     def checkAmount(self, item_name, amount):
         amount = int(amount)
         if amount < 0:
@@ -174,13 +175,18 @@ class Shop():
             return assignee in self._managers_assignments[assigner]
 
     def close_shop(self):
-        if self._isOpen:
-            self._isOpen = False
+        if self._is_open:
+            self._is_open = False
             # TODO add notifying and events system
             return True
         else:
             raise Exception('Closed shop could not be closed again!')
-
+    def reopen_shop(self):
+        if not self._is_open:
+            self._is_open = True
+            return True
+        else:
+            raise Exception('Open shop could not be opened again!')
     # Returns whether usernae is manager
     def is_manager(self, manager_username: str) -> bool:
         return manager_username in self._managers
@@ -319,3 +325,6 @@ class Shop():
         p = m.get_permissions(self._name)
         ret= p.get_permission_report_json()
         return ret
+
+    def getCategories(self):
+        return self._stock.getCategories()

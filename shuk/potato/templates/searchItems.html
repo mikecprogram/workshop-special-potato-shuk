@@ -10,7 +10,12 @@
     </p>
     <p>
     <label for="id_category">Category:</label>
-    <input type="text" name="category" class="form-control" placeholder="Category" min="0" id="id_category" value="{{category}}">
+  <datalist id="categories">
+      {% for category in categories%}
+            <option value="{{category}}">
+      {% endfor %}
+  </datalist>
+    <input type="text" name="category" class="form-control" placeholder="Category" min="0" id="id_category" list="categories" value="{{category}}">
     </p>
     <p>
     <label for="id_min_Price">Min. price:</label>
@@ -24,14 +29,18 @@
         {% if errormessage != '' %}
             <span class="errormessage">{{errormessage}}</span>
         {% endif %}
-        <div class="center"><button type="submit" class="bluebutton">Filter</button></div>
-    </div>
+        <div class="center"><button type="submit" class="bluebutton">&emsp;Filter&emsp;</button></div>
+
 </form></div>
 {% if len_results == 0%}
     <div class="center"><h1>No results for {{searchterm}}.</h1></div>
     <div class="center"><h3>Try another term or different parameters..</h3></div>
 {% else %}
-<h1>Showing {{len_results}} results for {{searchterm}}:</h1>
+    {%if searchterm == "" %}
+        <h1>Showing {{len_results}} items from all shops:</h1>
+    {%else%}
+        <h1>Showing {{len_results}} results for {{searchterm}}:</h1>
+    {% endif %}
 {% for shopname, items in answer.items %}
 <hr>
 <h2>From shop {{shopname}}:</h2>
@@ -45,11 +54,10 @@
             <p>{{item.description|linebreaks}}</p>
             <p class="price">{{item.price}}₪</p>
             <p class="left">{{item.amount}} left.</p>
-            <!-- todo: add functionality  -->
             <form class="AddToCartform" action="" method="POST">
                 {% csrf_token %}
                 Amount: <input  type ="number" value=1 min="1" max="{{item.amount}}" step="1" name="quantity">
-                <div class="center"><button class="bluebutton" type="submit"name="addItemToCart" value="{{item.name}}">Add to cart</button></div>
+                <div class="center"><button class="bluebutton" type="submit"name="addItemToCart" value="{{item.name}}|{{shopname}}">Add to cart</button></div>
             </form>
         </div>
         {% endfor %}

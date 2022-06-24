@@ -52,9 +52,9 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(r.res, {'shopname': [{'name':'itemname1','price': 5.0,'count': 1,'amount': 10,'category':'animal objects','description':'cats and clocks'}]}, r.res)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_delete_item(self.u, "itemname1", "shopname", 51)
-        self.assertTrue(r.isexc, r.exc)
+        self.assertTrue((not r.isexc), r.exc)
         r = self.m.shopping_carts_check_content(self.u)
-        self.assertEqual(r.res, {'shopname': [{'name':'itemname1','price': 5.0,'count': 1,'amount': 10,'category':'animal objects','description':'cats and clocks'}]}, r.res)
+        self.assertEqual(r.res, {}, r.res)
         self.assertTrue((not r.isexc), r.exc)
         # if deletion failed no change should be made
 

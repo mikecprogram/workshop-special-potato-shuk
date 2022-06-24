@@ -5,6 +5,7 @@ from django.conf import settings
 from . import views
 cream = "crop"
 urlpatterns = [
+    re_path(r'^temp$',views.temp),
     re_path(r'^$',views.homepage, name='home'),
 
     re_path(r'^createshop$',views.createShop, name='createshop'),

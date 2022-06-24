@@ -6,14 +6,16 @@
 {% if amountOfItems == 0 %}
         <div class = "center"><h1>Your cart is empty.</h1></div>
 {% else %}
-<form action="" method="post" id="purchaseForm">
+<h3>Total of {{cartprice}}.</h3>
+<form action="" method="POST" id="purchaseForm">
     {% csrf_token %}
-    <div class="center"><button class="bluebutton" type="submit" name="purhcase" value="True">Purchase Cart</button></div>
+    <div class="center"><button class="bluebutton" type="submit" name="purchase" value="True">&emsp;Purchase Cart&emsp;</button></div>
 </form>
 
 {% for shopname, items in answer.items %}
 <hr>
 <h2>From shop {{shopname}}:</h2>
+<h3>Total of {{cartprice}}.</h3>
     <br>
 <div class="stockitemlist">
     
@@ -28,7 +30,7 @@
             <form class="AddToCartform" action="" method="POST">
                 {% csrf_token %}
                 Amount: <input  type ="number" value={{item.count}} min="0" max="{{item.amount}}" step="1" name="quantity">
-                <div class="center"><button class="bluebutton" type="submit" name="changeamount" value="{{item.name}}|{{shopname}}">Change amount</button></div>
+                <div class="center"><button class="bluebutton" type="submit" name="changeamount" value="{{item.name}}|{{shopname}}">&emsp;Change amount&emsp;</button></div>
             </form>
         </div>
         {% endfor %}

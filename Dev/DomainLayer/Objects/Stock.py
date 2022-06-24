@@ -88,13 +88,19 @@ class Stock:
         else:
             raise Exception("No such item such as %s" % itemname)
 
+    def getAmount(self,item_name):
+        for item in self._stockItems.values():
+            if item.getName() == item_name:
+                return item.getCount()
+        raise Exception('No such item in stock %s' % item_name)
+
     def checkAmount(self, item_name, amount):
         for item in self._stockItems.values():
             if item.getName() == item_name:
                 if item.getCount() < amount:
                     raise Exception('Not enough items in stock!')
                 return True
-        raise Exception('No such items in stock! %s' % item_name)
+        raise Exception('No such item in stock %s' % item_name)
 
     def get_items_report(self):
         return [stockItem.get_item_report_dict() for stockItem in self._stockItems.values()]
@@ -114,12 +120,12 @@ class Stock:
     def search(self, query, category, item_minPrice, item_maxPrice):
 
         ret = []
-
+        category = category.lower()
         for item in self._stockItems.values():
-            c = item.getCategory()
-            n = item.getName()
+            c = item.getCategory().lower()
+            n = item.getName().lower()
             p = item.getPrice()
-            d = item.getDesc()
+            d = item.getDesc().lower()
             # print(n,p,item_maxPrice)
             if (query in c or query in n or query in d) or query == "":  # at least one match
                 if item_minPrice != 0:
@@ -130,9 +136,16 @@ class Stock:
                         continue
                 if category != "":
                     if category != c:
+                        print("SKIP CATEGORY")
                         continue
                 ret.append(item.get_item_report_dict())
         if len(ret) == 0:
             return None
-        # print(ret)
+        print(ret)
         return ret
+
+    def getCategories(self):
+        cateories = set()
+        for i in self._stockItems.values():
+            cateories.add(i.getCategory())
+        return cateories

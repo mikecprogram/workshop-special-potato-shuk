@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Shop {{shopname}}</h1>
-<h2>Founded by: {{founder}}</h2>
-<h2>Owned by: {{owners}}</h2>
-<h2>Managed by: {{managers}}</h2>
+<h3>Shop Name: {{shop.name}}</h3>
+<h2>Founded by :{{shop.founder}}</h2>
+{% if shop.owners != "" %}
+<h2>Owned by :{{shop.owners}}</h2>
+{% endif %}
+{% if shop.managers != "" %}
+<h2>Managed by :{{shop.managers}}</h2>
+{% endif %}
+
 {% if showAddItem %}
 <div class="center"><a href="additem"><button class="bluebutton">&emsp;Add Item&emsp;</button></a></div>
 {% endif %}
