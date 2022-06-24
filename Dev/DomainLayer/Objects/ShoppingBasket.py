@@ -7,13 +7,7 @@ class ShoppingBasket:
     def __init__(self, shoppingCart, shop):
         self.shoppingCart = shoppingCart
         self.shop = shop
-        self.stockItems = {}  # load
-
-    def getItemByName(self, itemName):
-        for i in self.stockItems:
-            if i[0] == itemName:
-                return i
-        return None
+        self.stockItems = {}  # {itemname, count}
 
     def validate_purchase(self, user):
         for name in self.stockItems.keys():
@@ -21,11 +15,14 @@ class ShoppingBasket:
                 return False
         return True
 
+    def calculate_item_price(self, user, itemname):
+        return self.shop.calculate_price(user, itemname, self.stockItems[itemname])
+
     def calculate_price(self, user):
         sum = 0
-        for name in self.stockItems.keys():
-            nu = self.shop.calculate_price(user, name, self.stockItems[name])
-            #print(name, nu)
+        for itemname in self.stockItems.keys():
+            nu = self.shop.calculate_price(user, itemname, self.stockItems[itemname])
+            # print(name, nu)
             sum += nu
         return sum
 
@@ -38,7 +35,7 @@ class ShoppingBasket:
     def addItem(self, item_name, amount):
         if not (self.shop.itemExists(item_name)):
             raise Exception("No such item found in shop")
-        if not (item_name in self.stockItems):
+        if not (item_name in self.stockItems.keys()):
             self.stockItems[item_name] = 0
         if not (self.shop.isAmount(item_name, self.stockItems[item_name] + amount)):
             raise Exception("No such amount available in shop")
@@ -50,9 +47,7 @@ class ShoppingBasket:
         if self.stockItems[item_name] < amount:
             raise Exception("No such amount available in basket")
         if not (item_name in self.stockItems):
-            self.stockItems[item_name] = 0
-        if not (self.shop.isAmount(item_name, self.stockItems[item_name] + amount)):
-            raise Exception("No such amount available in shop")
+            raise Exception("Item is not even in the basket!")
         if amount == self.stockItems[item_name]:
             del self.stockItems[item_name]
         else:
@@ -63,7 +58,9 @@ class ShoppingBasket:
         # return self.stockItems
         ret = []
         for name, amount in self.stockItems.items():
-            ret.append([name, amount])
+            item = self.shop.getItemInfo(name)
+            item['count'] = amount
+            ret.append(item)
         return ret
 
     def clear(self):
@@ -72,19 +69,20 @@ class ShoppingBasket:
         self.stockItems = None
 
     def purchase(self, user):
-        self.shop.aqcuirePurchaseLock()
+        self.shop.aqcuire_lock()
         try:
-            for id in self.stockItems:
-                amount = self.stockItems[id]
-                if not (self.shop.isAmount(id, amount)):
-                    raise Exception("Not enough left from item %d" % id)
-                self.shop.purchase(user, id, amount)
+            for itemname in self.stockItems:
+                amount = self.stockItems[itemname]
+                if not (self.shop.isAmount(itemname, amount)):
+                    raise Exception("Not enough left from item %d" % itemname)
+                self.shop.purchase(user, itemname, amount, self.calculate_item_price(user,itemname))
+                #TODO note to self: remove items from basket here by hand!
 
-        except Exception as e:
-            self.shop.releaseReleaseLock()
-            raise e
+        except Exception as exception:
+            self.shop.release_lock()
+            raise exception
         self.stockItems.clear()
-        self.shop.releaseReleaseLock()
+        self.shop.release_lock()
         return True
 
     def to_string(self, customer_token):
@@ -97,9 +95,9 @@ class ShoppingBasket:
 
         string += "Basket price: " + self.calculate_basket_price() + "\n"
 
-    def calculate_basket_price(self):
-        pass  # todo
-
     def archive(self, token):
 
         self.shop.archive_shopping_basket(self.to_string(token))
+
+    def is_empty(self):
+        return self.stockItems == {}

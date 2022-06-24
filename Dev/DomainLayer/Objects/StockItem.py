@@ -1,12 +1,12 @@
 from unicodedata import category
 
-from Dev.DomainLayer.Objects.Category import Category
+
 ##from .Logger import Logger
 
 
 class StockItem:
 
-    def __init__(self, ID ,category, name, description, count, purchasepolicy, discountpolicy,price,shopname):
+    def __init__(self, ID, category: str, name, description, count, purchasepolicy, discountpolicy, price, shopname):
         self._id = ID
         self._category = category
         self._desc = description
@@ -16,9 +16,9 @@ class StockItem:
         self._count = count
         self._price = price
         self._shopname = shopname
-        
+
     def toString(self):
-        return "id: "+str(self._id)+"\ncategory: "+self._category+"\nname: "+self._name+"\namount: "+str(self._count)+"\nprice: "+str(self._price)+"\ndescription: "+self._desc
+        return "id: " + str(self._id) + "\ncategory: " + self._category + "\nname: " + self._name + "\namount: " + str(self._count) + "\nprice: " + str(self._price) + "\ndescription: " + self._desc
 
     def getID(self):
         return self._id
@@ -40,6 +40,7 @@ class StockItem:
 
     def getDiscountPolicies(self):
         return self._discountPolicy
+
     def getPurchasePolicies(self):
         return self._purchasePolicy
 
@@ -67,8 +68,13 @@ class StockItem:
     def canPurchase(self, user):
         return True
 
+    def setAmount(self, amount):
+        self._count = amount
+
     def remove(self, amount):
-        self._count-=amount
+        if self._count - amount < 0:
+            raise "Item cant have negative amount!!!"
+        self._count -= amount
 
     def getTotalDiscount(self, user):
         totaldiscount = 1
@@ -81,11 +87,20 @@ class StockItem:
         totaldiscount = self.getTotalDiscount(user)
         finalPrice = self._price
         if totaldiscount < 1:
-            finalPrice = finalPrice * (1-totaldiscount)
+            finalPrice = finalPrice * (1 - totaldiscount)
         return finalPrice
 
-    def getCategory(self) -> Category:
+    def getCategory(self) -> str:
         return self._category
 
+    def setCategory(self, cat: str):
+        self._category = cat
+
     def get_item_report(self):
-        return 'Item: ' + self._name + '\n' + 'Price: ' + self._price + '\n' + 'Amount: ' + self._count + '\n' + 'id: ' + self._id +'\n'
+        return 'Item: ' + self._name + '\n' + 'Price: ' + self._price + '\n' + 'Amount: ' + self._count + '\n' + 'id: ' + self._id + '\n'
+
+    def get_item_report_dict(self):
+        return {'name': self._name, 'price': self._price,
+                'amount': self._count,
+                'category': self.getCategory(),
+                'description': self._desc}
