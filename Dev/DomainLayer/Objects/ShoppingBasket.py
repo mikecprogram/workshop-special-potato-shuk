@@ -35,23 +35,28 @@ class ShoppingBasket:
     def addItem(self, item_name, amount):
         if not (self.shop.itemExists(item_name)):
             raise Exception("No such item found in shop")
+        if self.shop.getAmount(item_name) == 0:
+            del self.stockItems[item_name]
+            raise Exception("There are no more of %s. removing it from your basket." % item_name)
         if not (item_name in self.stockItems.keys()):
             self.stockItems[item_name] = 0
         if not (self.shop.isAmount(item_name, self.stockItems[item_name] + amount)):
-            raise Exception("No such amount available in shop")
+            self.stockItems[item_name] = self.shop.getAmount(item_name)
+            raise Exception("No such amount available in shop, setting to whats left in stock.")
         self.stockItems[item_name] = self.stockItems[item_name] + amount
 
     def removeItem(self, item_name, amount):
         if not (self.shop.itemExists(item_name)):
             raise Exception("No such item found in shop")
-        if self.stockItems[item_name] < amount:
-            raise Exception("No such amount available in basket")
         if not (item_name in self.stockItems):
             raise Exception("Item is not even in the basket!")
-        if amount == self.stockItems[item_name]:
+        if self.stockItems[item_name] - amount <= 0 or amount == self.stockItems[item_name]:
             del self.stockItems[item_name]
         else:
             self.stockItems[item_name] = self.stockItems[item_name] - amount
+            if not (self.shop.isAmount(item_name, self.stockItems[item_name])):
+                self.stockItems[item_name] = self.shop.getAmount(item_name)
+                raise Exception("No such amount available in shop, setting to whats left in stock.")
         return True
 
     def checkBasket(self):
@@ -74,7 +79,7 @@ class ShoppingBasket:
             for itemname in self.stockItems:
                 amount = self.stockItems[itemname]
                 if not (self.shop.isAmount(itemname, amount)):
-                    raise Exception("Not enough left from item %d" % itemname)
+                    raise Exception("Not enough left from item %s,\nRemove some from your cart and try again.." % itemname)
                 self.shop.purchase(user, itemname, amount, self.calculate_item_price(user,itemname))
                 #TODO note to self: remove items from basket here by hand!
 
