@@ -143,8 +143,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name: str) -> Response[
-        List[str]]:  # [shop description ,item_name1 , item_name2 ...]
+    def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name: str) -> Response[Dict]:  # [shop description ,item_name1 , item_name2 ...]
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")

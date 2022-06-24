@@ -75,11 +75,30 @@ def cart(request):
     tokenuser = getToken(request)
     jsmessage = ""
     if request.method == 'POST':
-        jsmessage = 'Purchase successfully!'
-        res = m.Shopping_cart_purchase(tokenuser)
-        if res.isexc:
-            jsmessage = res.exc
-            print(res.exc)
+        if 'purchase' in request.POST:
+            jsmessage = 'Purchase successfully!'
+            res = m.Shopping_cart_purchase(tokenuser)
+            if res.isexc:
+                jsmessage = res.exc
+                print(res.exc)
+        elif 'quantity' in request.POST:
+            quantity = request.POST['quantity']
+            (itemname,shopname) = request.POST['changeamount'].split('|')
+            r = m.shopping_carts_check_content(tokenuser)
+            if r.isexc:
+                return renderError(request, tokenuser, r.exc)
+            items = r.res[shopname]
+            amount = -1
+            for i in items:
+                if i['name'] == itemname:
+                    amount = i['count']
+            diff = amount - quantity
+            if diff < 0:
+                r = m.shopping_carts_delete_item(tokenuser,itemname,shopname,diff)
+            elif diff > 0:
+                
+            if r.isexc:
+                return renderError(request, tokenuser, r.exc)
     res = m.shopping_carts_check_content(tokenuser)
     print("---------------")
     print(res.res)
@@ -310,8 +329,8 @@ def shop(request, shopname):
                       {'shopname': shopinfo['name'], \
                        'items': shopinfo['items'], \
                        'founder': shopinfo['founder'], \
-                       'owners': shopinfo['owners'], \
-                       'managers': shopinfo['managers'], \
+                       'owners': mike_join(shopinfo['owners']), \
+                       'managers': mike_join(shopinfo['managers']), \
                        'showAddItem': showAddItem}, \
                       error=errormessage)
 
@@ -440,7 +459,11 @@ def search(request):
                       {'len_results': len_results, 'answer': answer, 'searchterm': query, 'category': category,
                        'min_Price': min_Price, 'max_Price': max_Price})
 
-
+def mike_join(lst):
+    if len(lst) == 0:
+        return "No one."
+    else:
+        return ', '.join([m for m in lst])
 def manage(request):
     tokenuser = getToken(request)
     counter = 0
@@ -459,19 +482,19 @@ def manage(request):
         if res.isexc:
             return renderError(request, tokenuser, res.exc)
         eligible = res.res
-        found.append( \
-            {'name': s['name'], 'founder': s['founder'], \
-             'managers': ', '.join([m for m in s['managers']]), \
-             'owners': ', '.join([m for m in s['owners']]), \
-             'shopopen': s['shopopen'], \
-             'eligible': eligible} \
-            )
+        found.append(
+            {'name': s['name'], 'founder': s['founder'],
+             'managers': mike_join(s['managers']),
+             'owners': mike_join(s['owners']),
+             'shopopen': s['shopopen'],
+             'eligible': eligible}
+        )
         counter = counter + 1
     userlist = ["What?", "When?"]
     m.get_founded_shops(tokenuser)
-    return makerender(request, tokenuser, 'manage.html', \
-                      {'found': found, \
-                       'own': own, \
+    return makerender(request, tokenuser, 'manage.html',
+                      {'found': found,
+                       'own': own,
                        'manage': manage, "userlist": userlist})
 
 
@@ -480,9 +503,15 @@ def makemanager(request):
     return makerender(request, tokenuser, 'makemanager.html')
 
 
-def storeHistoryPurchases(request):
+def storeHistoryPurchases(request,shopname):
     tokenuser = getToken(request)
-    return makerender(request, tokenuser, 'storeHistoryPurchases.html')
+    shopinfo = m.in_shop_purchases_history_request(tokenuser, shopname)
+    if shopinfo.isexc:
+        return renderError(request, tokenuser, shopinfo.exc)
+    history = shopinfo.res
+    if history == "" or history is None:
+        history = "There is no history"
+    return makerender(request, tokenuser, 'storehistory.html',{"shopname":shopname,"history":history})
 
 
 def premissions(request):

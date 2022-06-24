@@ -3,15 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shuk/potato/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/shuk/potato/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shuk/potato/templates/policies.html" beforeDir="false" afterPath="$PROJECT_DIR$/shuk/potato/templates/policies.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/ServiceLayer/SystemService.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/ServiceLayer/SystemService.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shuk/potato/templates/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/shuk/potato/templates/cart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shuk/potato/templates/manage.html" beforeDir="false" afterPath="$PROJECT_DIR$/shuk/potato/templates/manage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shuk/potato/templates/shop.html" beforeDir="false" afterPath="$PROJECT_DIR$/shuk/potato/templates/shop.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shuk/potato/templates/storeHistoryPurchases.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shuk/potato/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/shuk/potato/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shuk/potato/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/shuk/potato/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shuk/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/shuk/templates/base.html" afterDir="false" />
     </list>
     <list id="b395499b-f66b-412d-bcb0-557ef139e125" name="Changes by salih_kadry" comment="" />
-    <list id="270a8280-9b7b-407c-99fc-7175ce8c2493" name="Changes by user" comment="">
-      <change beforePath="$PROJECT_DIR$/shuk/potato/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/shuk/potato/views.py" afterDir="false" />
-    </list>
+    <list id="270a8280-9b7b-407c-99fc-7175ce8c2493" name="Changes by user" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,17 +53,6 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/shuk/potato/views.py">
-      <ranges>
-        <range start1="330" end1="331" start2="330" end2="331" changelist="407604b8-33b4-4d1b-8aed-1690b57ae6a2" />
-        <range start1="334" end1="335" start2="334" end2="335" changelist="407604b8-33b4-4d1b-8aed-1690b57ae6a2" />
-        <range start1="338" end1="342" start2="338" end2="339" changelist="407604b8-33b4-4d1b-8aed-1690b57ae6a2" />
-        <range start1="357" end1="357" start2="354" end2="375" changelist="407604b8-33b4-4d1b-8aed-1690b57ae6a2" />
-        <range start1="358" end1="359" start2="376" end2="377" changelist="270a8280-9b7b-407c-99fc-7175ce8c2493" />
-      </ranges>
-    </file>
-  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -79,11 +69,12 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="codeWithMe.voiceChat.enabledByDefault" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/shuk/potato/templates" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\USER\Documents\GitHub\workshop-special-potato-shuk\shuk\potato\templates" />
       <recent name="C:\Users\USER\Documents\GitHub\workshop-special-potato-shuk\Dev\ServiceLayer" />
       <recent name="C:\Users\salih_kadry\Documents\GitHub\workshop-special-potato-shuk\AcceptanceTests\Tests\Users Requirements (II)" />
     </key>
@@ -216,7 +207,7 @@
       <workItem from="1655378498013" duration="3641000" />
       <workItem from="1655794880547" duration="41859000" />
       <workItem from="1655989327293" duration="2788000" />
-      <workItem from="1655992648172" duration="2596000" />
+      <workItem from="1655992648172" duration="5889000" />
     </task>
     <servers />
   </component>

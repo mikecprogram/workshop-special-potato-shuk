@@ -44,12 +44,12 @@
             <form action="" method="POST">
                 <label>Remove your store manager from the list:</label>
                 <input list="owners{{shop.id}}" name="browser" class="browser">
-                <datalist id="removemanagers{{shop.id}}">
+                <datalist id="removemmanager{{shop.id}}">
                 {% for username in shop.eligible %}
                   <option value="{{username}}">
                 {% endfor %}
                 </datalist>
-                <button class= "bluebutton" type="submit">Make owner</button>
+                <button class= "redbutton" type="submit">Remove manager</button>
             </form>
             <hr>
             <form action="" method="POST">
@@ -71,7 +71,7 @@
                   <option value="{{username}}">
                 {% endfor %}
                 </datalist>
-                <button class= "bluebutton" type="submit">Make owner</button>
+                <button class= "redbutton" type="submit">Remove owner</button>
             </form>
             <hr>
             {% if shop.shopopen == True %}
@@ -81,14 +81,14 @@
             <hr>
             {%else%}
             <form action="" method="POST">
-                <button class= "bluebutton" action="submit" name="closeshop" value="True">close shop</button>
+                <button class= "redbutton" action="submit" name="closeshop" value="True">close shop</button>
             </form>
             <hr>
             {% endif %}
             
             <a href="{% url 'manageItemsShop'%}/{{shop.name}}"><button class= "bluebutton">manage items</button></a>
             <hr>
-            <a href="{% url 'storeHistoryPurchases'"><button class= "bluebutton">show shop purchases history</button></a>
+            <a href="{% url 'shop'%}/{{shop.name}}/history"><button class= "bluebutton">show shop purchases history</button></a>
             <hr>
             <!-- todo: add functionality  -->
             <a href="{% url 'shop'%}/{{shop.name}}"><button class= "bluebutton">Enter Shop</button></a>

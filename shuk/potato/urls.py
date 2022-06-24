@@ -23,12 +23,12 @@ urlpatterns = [
     re_path(r'^shops$',views.shops, name = "shops"),
     re_path(r'^policies$',views.policies, name = "policies"),
     re_path(r'^shop/(?P<shopname>[\w ]+)/additem$',views.additem),
+    re_path(r'^shop/(?P<shopname>[\w ]+)/history$',views.storeHistoryPurchases),
     re_path(r'^shop/(?P<shopname>[\w ]+)/edititem$',views.edititem),
     re_path(r'^shop/(?P<shopname>[\w ]+)/$',views.shop),
     re_path(r'^exit$',views.exit, name='exit'),
     re_path(r'^manageItemsShop',views.manage, name='manageItemsShop'),
     re_path(r'^manageItemsShop/(?P<shopname>[\w ]+)/$',views.shop),
-    re_path(r'^storeHistoryPurchases',views.storeHistoryPurchases, name='storeHistoryPurchases'),
 
     
     re_path(r'ws/socket-server/',views.ChatConsumer.as_asgi()),

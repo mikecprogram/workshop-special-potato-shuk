@@ -28,7 +28,7 @@
             <form class="AddToCartform" action="" method="POST">
                 {% csrf_token %}
                 Amount: <input  type ="number" value={{item.count}} min="0" max="{{item.amount}}" step="1" name="quantity">
-                <div class="center"><button class="bluebutton" type="submit"name="addItemToCart" value="{{item.name}}">Change amount</button></div>
+                <div class="center"><button class="bluebutton" type="submit" name="changeamount" value="{{item.name}}|{{shopname}}">Change amount</button></div>
             </form>
         </div>
         {% endfor %}
