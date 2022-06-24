@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="" />
+    <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/Assignment.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/Category.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/DB.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/DiscountPolicy.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/Market.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/Member.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/Permissions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/PurchaseHistory.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/Shop.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/ShoppingBasket.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/ShoppingCart.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/Stock.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/StockItem.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workshop-special-potato-shuk.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workshop-special-potato-shuk.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <list id="b395499b-f66b-412d-bcb0-557ef139e125" name="Changes by salih_kadry" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
