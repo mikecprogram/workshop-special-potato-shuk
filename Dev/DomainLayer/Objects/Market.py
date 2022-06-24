@@ -38,7 +38,7 @@ prem = [
 ]
 
 simplePolicies = [
-    "isItem", "isCategory", "isShop", "hasAmount", "hasPrice", "hasAmount", "hasPrice"
+    "isItem", "isCategory", "isShop", "hasAmount", "hasPrice", "hasAmount", "hasPrice","isMember","isFounder","isAge","isAfterTime"
 ]
 
 compositePolicies = [
@@ -243,7 +243,7 @@ class Market():
     def add_policy(self, token, percent, name, arg1=None, arg2=None):
         if self.isToken(token):
             if percent < 0:
-                raise Exception('bad discount amount!')
+                raise Exception('Discount can\'t be negative..')
             user = self.getUser(token)
             if name in simplePolicies:
                 self._policyLock.acquire()
@@ -252,7 +252,6 @@ class Market():
                 self._policyLock.release()
                 return user.addTempPolicy(ID, name, arg1, arg2, percent)
             raise Exception('Cannot add policy!')
-        raise Exception('Bad token!')
 
     def get_my_policies(self, token):
         user = self.getUser(token)
@@ -269,10 +268,7 @@ class Market():
         self.isToken(token)
         user = self.getUser(token)
         policy = self.makePolicy(user, policyID)
-        shop = self._shops[shopname]
-        if shop is None:
-            raise Exception('No such shop as %s' % shopname)
-
+        shop = self.get_shop_by_name(shopname)
         return shop.addDiscountPolicy(policy)
 
     def add_purchase_policy_to_shop(self, token, shopname, policyID):
@@ -280,9 +276,7 @@ class Market():
             raise Exception('Bad token!')
         user = self.getUser(token)
         policy = self.makePolicy(user, policyID)
-        shop = self._shops[shopname]
-        if shop is None:
-            raise Exception('No such shop as %s' % shopname)
+        shop = self.get_shop_by_name(shopname)
         return shop.addPurchasePolicy(policy)
 
     def makePolicy(self, user, PID):

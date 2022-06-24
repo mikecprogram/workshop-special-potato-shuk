@@ -87,6 +87,7 @@ def cart(request):
             jsmessage = 'Purchase successfully!'
             res = m.Shopping_cart_purchase(tokenuser)
             if res.isexc:
+                print(res.exc)
                 jsmessage = res.exc
         elif 'quantity' in request.POST:
             wanted = int(request.POST['quantity'])
@@ -113,12 +114,17 @@ def cart(request):
         return renderError(request, tokenuser, res.exc)
     else:
         answer = res.res
-        print("DUIOJGTDYCGVHBIOJFYCGHJBHUGYDTCFGVHJBGDTFCGHVYGDTXCFVUFYTDRCYVCTXYG")
-        print(answer)
-        for _, items in answer.items():
+        for shopname, items in answer.items():
             len_results += len(items)
+            for listing in items:
+                r = m.calculate_item_price(tokenuser,shopname, listing['name'])
+                if r.isexc:
+                    return renderError(request, tokenuser, r.exc)
+                listing['after'] = r.res
     res = m.calculate_cart_price(tokenuser)
     if res.isexc:
+        print("BOB")
+        print(res.exc)
         return renderError(request, tokenuser, res.exc)
     cartprice = res.res
     return makerender(request, tokenuser, 'cart.html', {'cartprice': cartprice,'answer': answer, 'amountOfItems': len_results},
@@ -580,7 +586,7 @@ def search(request):
             return renderError(request, tokenuser, res.exc)
         else:
             answer = res.res
-            for _, items in answer:
+            for _, items in answer.items():
                 len_results += len(items)
     if request.method == 'POST':
         (itemname, shopname) = request.POST['addItemToCart'].split('|')

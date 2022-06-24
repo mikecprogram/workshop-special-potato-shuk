@@ -32,6 +32,7 @@
                 Amount: <input  type ="number" value={{item.count}} min="0" max="{{item.amount}}" step="1" name="quantity">
                 <div class="center"><button class="bluebutton" type="submit" name="changeamount" value="{{item.name}}|{{shopname}}">&emsp;Change amount&emsp;</button></div>
             </form>
+            <p class="totalprice">Total price after discounts: {{item.after}}₪</p>
         </div>
         {% endfor %}
 </div>

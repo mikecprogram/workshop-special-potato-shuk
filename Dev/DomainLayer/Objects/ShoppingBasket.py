@@ -33,6 +33,7 @@ class ShoppingBasket:
         return sum
 
     def addItem(self, item_name, amount):
+        amount = int(amount)
         if not (self.shop.itemExists(item_name)):
             raise Exception("No such item found in shop")
         if self.shop.getAmount(item_name) == 0:
@@ -46,6 +47,7 @@ class ShoppingBasket:
         self.stockItems[item_name] = self.stockItems[item_name] + amount
 
     def removeItem(self, item_name, amount):
+        amount = int(amount)
         if not (self.shop.itemExists(item_name)):
             raise Exception("No such item found in shop")
         if not (item_name in self.stockItems):
