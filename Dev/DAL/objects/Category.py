@@ -1,9 +1,9 @@
 from DB import *
 class Category(db.Entity):
-    shop = Required("Shop")
+    shop = Required("Stock",reverse="categories")
     catagoryName = Required(str)
     catagoryId = Required(int)
-    purchasePolicy = []
-    discountPolicy = []
-    stockItems = set("StockItem")
+    # purchasePolicy = []
+    # discountPolicy = []
+    stockItems = Set("StockItem")
 

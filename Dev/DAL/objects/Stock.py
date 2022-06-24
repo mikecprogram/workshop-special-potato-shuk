@@ -1,5 +1,7 @@
 from DB import *
 
 class Stock(db.Entity):
-    categories = set("Category")
-    stockItems = set("StockItem")
+    categories = Set("Category")
+    stockItems = Set("StockItem")
+    shop = Optional("Shop")
+

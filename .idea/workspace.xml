@@ -2,22 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/Assignment.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/Category.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/DB.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/DiscountPolicy.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/Market.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/Member.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/Permissions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/PurchaseHistory.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/Shop.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/ShoppingBasket.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/ShoppingCart.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/Stock.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dev/DomainLayer/DAL/objects/StockItem.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workshop-special-potato-shuk.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workshop-special-potato-shuk.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/Assignment.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/Assignment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/Category.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/Category.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/DB.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/DB.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/DiscountPolicy.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/DiscountPolicy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/Market.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/Member.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/Member.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/Permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/Permissions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/PurchaseHistory.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/PurchaseHistory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/Shop.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/Shop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingBasket.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingBasket.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingCart.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingCart.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/Stock.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/Stock.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/StockItem.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/StockItem.py" afterDir="false" />
     </list>
     <list id="b395499b-f66b-412d-bcb0-557ef139e125" name="Changes by salih_kadry" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -74,18 +72,62 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="codeWithMe.voiceChat.enabledByDefault" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Dev/ServiceLayer" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Dev/DAL/objects" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\salih_kadry\Documents\GitHub\workshop-special-potato-shuk\Dev\DAL\objects" />
       <recent name="C:\Users\USER\Documents\GitHub\workshop-special-potato-shuk\Dev\ServiceLayer" />
       <recent name="C:\Users\salih_kadry\Documents\GitHub\workshop-special-potato-shuk\AcceptanceTests\Tests\Users Requirements (II)" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\salih_kadry\Documents\GitHub\workshop-special-potato-shuk\Dev" />
       <recent name="C:\Users\user\Desktop\workshop-special-potato-shuk\Dev\DomainLayer\Objects\Policies" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.Requirement II.4.5">
+  <component name="RunManager" selected="Python.DBInit">
+    <configuration name="DB" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="workshop-special-potato-shuk" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Dev/DAL/objects" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dev/DAL/objects/DB.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="DBInit" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="workshop-special-potato-shuk" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Dev/DAL/objects" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dev/DAL/objects/DBInit.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Requirement II.2.5.2.1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="workshop-special-potato-shuk" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -100,50 +142,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/Requirement II.2.5.2.1.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Requirement II.4.2.1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="workshop-special-potato-shuk" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="C:\Users\user\Desktop\workshop-special-potato-shuk\venv\Scripts\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/Requirement II.4.2.1.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Requirement II.4.2.2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="workshop-special-potato-shuk" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="C:\Users\user\Desktop\workshop-special-potato-shuk\venv\Scripts\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/Requirement II.4.2.2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -198,11 +196,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.DBInit" />
+        <item itemvalue="Python.DB" />
         <item itemvalue="Python.Requirement II.4.5" />
         <item itemvalue="Python.Requirement II.4.6" />
         <item itemvalue="Python.Requirement II.2.5.2.1" />
-        <item itemvalue="Python.Requirement II.4.2.1" />
-        <item itemvalue="Python.Requirement II.4.2.2" />
       </list>
     </recent_temporary>
   </component>
@@ -249,6 +247,15 @@
     </option>
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/PycharmProjects/pythonProject/venv/Lib/site-packages/pony/orm/core.py</url>
+          <line>995</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="self.m.market" language="Python" />

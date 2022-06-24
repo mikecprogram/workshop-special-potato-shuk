@@ -4,10 +4,12 @@ class Shop(db.Entity):
     stock = Required("Stock")
     isOpen = Required(bool) #TODO check and if isn't working change to int
     founder = Required("Member")
-    owners = set("Member")
-    managers = set("Member")
-    purchasePolicy = []
-    discountPolicy = []
-    owners_assignments = set("Assignment")
-    managers_assignments = set("Assignment")
-    purchases_history = Required("PurchaseHistory")
+    owners = Set("Member")
+    permissions = Set("Permissions",reverse="shop")
+    # purchasePolicy = []
+    # discountPolicy = []
+    owners_assignments = Set("Assignment",reverse="shopOwner")
+    managers_assignments = Set("Assignment",reverse="shopManager")
+    purchases_history = Optional("PurchaseHistory")
+    ShoppingBaskets = Set("ShoppingBasket")
+
