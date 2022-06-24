@@ -290,6 +290,7 @@ class Shop():
         self._discountLock.acquire()
         self._discountPolicies.append(policy)
         self._discountLock.release()
+
         return True
 
     def remove_policy(self, ID):
@@ -300,6 +301,8 @@ class Shop():
                 self._discountPolicies.remove(d)
                 done = True
         self._discountLock.release()
+        if done:
+            return done
         self._purchaseLock.acquire()
         for d in self._purchasePolicies:
             if d.getID() == ID:
