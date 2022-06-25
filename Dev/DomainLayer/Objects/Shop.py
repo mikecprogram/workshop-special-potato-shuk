@@ -280,6 +280,17 @@ class Shop():
 
     def archive_shopping_basket(self, shooping_basket_report):
         self._purchases_history.append(shooping_basket_report)
+    def can_add_purchase_policies(self,user):
+        if user.getMember() == self._founder or user.getMember() in self._owners :
+            return True
+        if user.getMember() in self._managers:
+            return user.getMember().can_add_purchase_policies(self.name)
+
+    def can_add_discount_policies(self,user):
+        if user.getMember() == self._founder or user.getMember() in self._owners:
+            return True
+        if user.getMember() in self._managers:
+            return user.getMember().can_add_discount_policies(self.name)
 
     def addPurchasePolicy(self, policy):
         self._purchaseLock.acquire()

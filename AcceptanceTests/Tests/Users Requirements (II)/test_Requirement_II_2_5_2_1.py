@@ -10,8 +10,9 @@ class MyTestCase(unittest.TestCase):
         self.m = SystemService()
         self.m.initialization_of_the_system()
         self.u = self.m.get_into_the_Trading_system_as_a_guest().res
+        self.u2 = self.m.get_into_the_Trading_system_as_a_guest().res
         self.m.registration_for_the_trading_system(self.u, "username", "password")
-        self.m.registration_for_the_trading_system(self.u, "ownername", "password")
+        self.m.registration_for_the_trading_system(self.u2, "ownername", "password")
         # need to login, create shop and add items to it for test
 
         self.m.login_into_the_trading_system(self.u, "username", "password")
@@ -315,12 +316,13 @@ class MyTestCase(unittest.TestCase):
     def testComplicated(self):
         self.m.add_policy(self.u, 10, "isItem", "itemname1")
         self.m.add_policy(self.u, 20, "isShop")
-        self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
+        r = self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
+        self.assertTrue((not r.isexc), r.exc)
         self.m.add_discount_policy_to_shop(self.u, "shopname", 2)
         self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 20)
         r = self.m.calculate_cart_price(self.u)
-        self.assertEqual(r.res, 72, r.res)
         self.assertTrue((not r.isexc), r.exc)
+        self.assertEqual(r.res, 72, r.res)
         self.m.compose_policy(self.u, "add", 1, 2)
         self.m.add_discount_policy_to_shop(self.u, "shopname", 3)
         r = self.m.calculate_cart_price(self.u)
@@ -378,10 +380,12 @@ class MyTestCase(unittest.TestCase):
         r = self.m.calculate_cart_price(self.u)
         self.assertTrue((not r.isexc) and r.res == 20)
         self.m.logout(self.u)
-        r = self.m.login_into_the_trading_system(self.u, "ownername", "password")
-        self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 4)
-        r = self.m.calculate_cart_price(self.u)
-        self.assertTrue((not r.isexc) and r.res == 18)
+        r = self.m.login_into_the_trading_system(self.u2, "ownername", "password")
+        r=self.m.shopping_carts_add_item(self.u2, "itemname1", "shopname", 4)
+        self.assertTrue((not r.isexc))
+        r = self.m.calculate_cart_price(self.u2)
+        self.assertTrue((not r.isexc))
+        self.assertEqual(r.res, 18,r.exc)
 
     def testMax(self):
         self.m.add_policy(self.u, 10, "isFounder")

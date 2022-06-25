@@ -271,17 +271,22 @@ class Market():
     def add_discount_policy_to_shop(self, token, shopname, policyID):
         self.isToken(token)
         user = self.getUser(token)
-        policy = self.makePolicy(user, policyID)
         shop = self.get_shop_by_name(shopname)
-        return shop.addDiscountPolicy(policy)
+        if shop.can_add_discount_policies(user):
+            policy = self.makePolicy(user, policyID)
+            return shop.addDiscountPolicy(policy)
+        raise Exception("You do not have permission to add discount policy")
 
     def add_purchase_policy_to_shop(self, token, shopname, policyID):
         if not self.isToken(token):
             raise Exception('Bad token!')
         user = self.getUser(token)
-        policy = self.makePolicy(user, policyID)
         shop = self.get_shop_by_name(shopname)
-        return shop.addPurchasePolicy(policy)
+        if shop.can_add_purchase_policies(user):
+            policy = self.makePolicy(user, policyID)
+            return shop.addPurchasePolicy(policy)
+        else:
+            raise Exception("You do not have permission to add purchase policy")
 
     def makePolicy(self, user, PID):
         pols = user.getPolicies()

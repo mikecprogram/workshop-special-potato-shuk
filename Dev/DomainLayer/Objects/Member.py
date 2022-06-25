@@ -143,6 +143,9 @@ class Member:
         else:
             raise Exception("Member could not reopen a not owned or not managed with special permission shop!")
 
+    def can_add_discount_policies(self, shop_name):
+        return self.permissions[shop_name].can_change_discount_policy()
+
     def can_close_shop(self, shop_name):
         return self.permissions[shop_name].can_close_shop()
 
