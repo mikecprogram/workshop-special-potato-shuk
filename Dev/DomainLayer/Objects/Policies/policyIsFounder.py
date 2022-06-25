@@ -9,4 +9,6 @@ class policyIsFounder(Composable):
         self.percent = float(percent)
 
     def apply(self, user: User, item: StockItem):
-        return user.isMember() and user.getMember().is_founded_shop(item.getShopName())
+        if user.isMember():
+            return user.getMember().is_founded_shop(item.getShopName())
+        return False

@@ -22,12 +22,9 @@ class Member:
     def getNotifications(self):
         copy = self.delayedNoty.copy()
         self.delayedNoty = []
-        print("Threw up notifications:")
-        print(copy)
         return copy
 
     def addDelayedNotification(self, message):
-        print("Added to %s \n %s" %(self.get_username(),message))
         self.delayedNoty.append(message)
     def getAge(self):
         return self._age

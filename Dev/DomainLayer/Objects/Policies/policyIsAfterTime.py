@@ -3,7 +3,7 @@ from Dev.DomainLayer.Objects.Policies.Composable import Composable
 import datetime
 
 
-class policyHasPrice(Composable):
+class policyIsAfterTime(Composable):
 
     def __init__(self, ID, percent, hour, minute):
         self.ID = ID

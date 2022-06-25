@@ -11,10 +11,13 @@ class MyTestCase(unittest.TestCase):
         self.m.initialization_of_the_system()
         self.u = self.m.get_into_the_Trading_system_as_a_guest().res
         self.m.registration_for_the_trading_system(self.u, "username", "password")
+        self.m.registration_for_the_trading_system(self.u, "ownername", "password")
         # need to login, create shop and add items to it for test
 
         self.m.login_into_the_trading_system(self.u, "username", "password")
         self.m.shop_open(self.u, "shopname")
+        r = self.m.shop_owner_assignment(self.u,"shopname", "ownername")
+        self.m.shop_open(self.u, "rockshop")
         self.m.adding_item_to_the_shops_stock(self.u, "itemname1", "shopname", "animal objects", "cats and clocks", 5,
                                               30)
         self.m.adding_item_to_the_shops_stock(self.u, "itemname2", "shopname", "animal objects", "dogs and locks", 2,
@@ -59,7 +62,6 @@ class MyTestCase(unittest.TestCase):
         self.m.add_policy(self.u, 0, "hasPrice", "", 25)  # empty item so it checks total price of basket
         self.m.compose_policy(self.u, "and", 1, 2)
         r = self.m.get_my_policies(self.u)
-        # print(r.exception, r.response)
         self.assertTrue((not r.isexc) and r.res == [[1, "hasAmount", "itemname1", 3, 0],
                                                     [2, "hasPrice", "", 25, 0],
                                                     [3, "and", 1, 2],
@@ -308,7 +310,7 @@ class MyTestCase(unittest.TestCase):
         r = self.m.shopping_carts_check_content(self.u)
         self.assertTrue((not r.isexc) and r.res == {"shopname": [{"name": "itemname1", "price": 5, "amount": 30, "count": 4, "category": "animal objects", "description": "cats and clocks"}]})
         r = self.m.calculate_cart_price(self.u)
-        self.assertTrue((not r.isexc) and r.res == 18)  # oridinal price is 4*5=20 with 10% discount is 18
+        self.assertTrue((not r.isexc) and r.res == 18)  # original price is 4*5=20 with 10% discount is 18
 
     def testComplicated(self):
         self.m.add_policy(self.u, 10, "isItem", "itemname1")
@@ -338,9 +340,57 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.isexc), r.exc)
         self.m.shopping_carts_delete_item(self.u, "itemname1", "shopname", 15)
         r = self.m.calculate_cart_price(self.u)
-        print(r.res)
         self.assertEqual(r.res, 28.6, r.res)
         self.assertTrue((not r.isexc), r.exc)
+
+    def testIsCategory(self):
+        self.m.add_policy(self.u, 10, "isCategory", "animal objects")
+        self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
+        self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 4)
+        r = self.m.calculate_cart_price(self.u)
+        self.assertTrue((not r.isexc) and r.res == 18)
+
+    def testIsAfterTime(self): # run this test between 10AM and 8PM
+        self.m.add_policy(self.u, 10, "isAfterTime", 10, 0)
+        self.m.add_policy(self.u, 10, "isAfterTime", 20, 0)
+        self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
+        self.m.add_discount_policy_to_shop(self.u, "shopname", 2)
+        self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 4)
+        r = self.m.calculate_cart_price(self.u)
+
+        self.assertTrue((not r.isexc) and r.res == 18)
+
+    def testIsFounder(self):
+        self.m.add_policy(self.u, 10, "isFounder")
+        self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
+        self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 4)
+        r = self.m.calculate_cart_price(self.u)
+        self.assertTrue((not r.isexc) and r.res == 18)
+        self.m.logout(self.u)
+        self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 4)
+        r = self.m.calculate_cart_price(self.u)
+        self.assertTrue((not r.isexc) and r.res == 20)
+
+    def testIsOwner(self):
+        self.m.add_policy(self.u, 10, "isOwner")
+        self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
+        r = self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 4)
+        r = self.m.calculate_cart_price(self.u)
+        self.assertTrue((not r.isexc) and r.res == 20)
+        self.m.logout(self.u)
+        r = self.m.login_into_the_trading_system(self.u, "ownername", "password")
+        self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 4)
+        r = self.m.calculate_cart_price(self.u)
+        self.assertTrue((not r.isexc) and r.res == 18)
+
+    def testMax(self):
+        self.m.add_policy(self.u, 10, "isFounder")
+        self.m.add_policy(self.u, 20, "isShop")
+        r = self.m.compose_policy(self.u, "max",  1,2)
+        self.m.add_discount_policy_to_shop(self.u, "shopname", 3)
+        self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 4)
+        r = self.m.calculate_cart_price(self.u)
+        self.assertTrue((not r.isexc) and r.res == 16)
 
 
 if __name__ == '__main__':

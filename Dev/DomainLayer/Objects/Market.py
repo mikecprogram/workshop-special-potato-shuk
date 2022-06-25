@@ -4,8 +4,12 @@ import sys
 
 # from Logger import Logger
 from Dev.DomainLayer.Objects.Policies.policyAnd import policyAnd
+from Dev.DomainLayer.Objects.Policies.policyMax import policyMax
 from Dev.DomainLayer.Objects.Policies.policyAdd import policyAdd
 from Dev.DomainLayer.Objects.Policies.policyIf import policyIf
+from Dev.DomainLayer.Objects.Policies.policyIsAfterTime import policyIsAfterTime
+from Dev.DomainLayer.Objects.Policies.policyIsFounder import policyIsFounder
+from Dev.DomainLayer.Objects.Policies.policyIsOwner import policyIsOwner
 from Dev.DomainLayer.Objects.Policies.policyXor import policyXor
 from Dev.DomainLayer.Objects.Policies.policyIsCategory import policyIsCategory
 from Dev.DomainLayer.Objects.Policies.policyIsItem import policyIsItem
@@ -38,7 +42,7 @@ prem = [
 ]
 
 simplePolicies = [
-    "isItem", "isCategory", "isShop", "hasAmount", "hasPrice", "hasAmount", "hasPrice","isMember","isFounder","isAge","isAfterTime"
+    "isItem", "isCategory", "isShop", "hasAmount", "hasPrice", "hasAmount", "hasPrice","isMember","isFounder","isAge","isAfterTime", "isOwner"
 ]
 
 compositePolicies = [
@@ -291,6 +295,10 @@ class Market():
         if pol[1] in simplePolicies:
             if pol[1] == "isShop":
                 return policyIsShop(p[0], p[2])
+            if pol[1] == "isFounder":
+                return policyIsFounder(p[0], p[2])
+            if pol[1] == "isOwner":
+                return policyIsOwner(p[0], p[2])
             if pol[1] == "isCategory":
                 return policyIsCategory(p[0], p[3], p[2])
             if pol[1] == "isItem":
@@ -299,6 +307,8 @@ class Market():
                 return policyHasAmount(p[0], p[4], p[2], p[3])
             if pol[1] == "hasPrice":
                 return policyHasPrice(p[0], p[4], p[2], p[3])
+            if pol[1] == "isAfterTime":
+                return policyIsAfterTime(p[0], p[4], p[2], p[3])
         else:
             if pol[1] == "not":
                 pt = self.makePolicy(user, p[2])
@@ -323,6 +333,10 @@ class Market():
                 pt1 = self.makePolicy(user, p[2])
                 pt2 = self.makePolicy(user, p[3])
                 return policyAdd(p[0], pt1, pt2)
+            if pol[1] == "max":
+                pt1 = self.makePolicy(user, p[2])
+                pt2 = self.makePolicy(user, p[3])
+                return policyMax(p[0], pt1, pt2)
 
     def compose_policy(self, token, name, arg1, arg2):
         if not self.isToken(token):
