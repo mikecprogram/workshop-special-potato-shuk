@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workshop-special-potato-shuk.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workshop-special-potato-shuk.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/test_Requirement_II_2_5_2_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/test_Requirement_II_2_5_2_1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Member.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Member.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Policies/policyIsAfterTime.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Policies/policyIsAfterTime.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Policies/policyIsFounder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Policies/policyIsFounder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Policies/policyIsOwner.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Policies/policyIsOwner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shuk/potato/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/shuk/potato/views.py" afterDir="false" />
     </list>
     <list id="b395499b-f66b-412d-bcb0-557ef139e125" name="Changes by salih_kadry" comment="" />
     <list id="270a8280-9b7b-407c-99fc-7175ce8c2493" name="Changes by user" comment="" />
@@ -220,7 +213,7 @@
       <workItem from="1656162902397" duration="449000" />
       <workItem from="1656163426813" duration="716000" />
       <workItem from="1656164155845" duration="1192000" />
-      <workItem from="1656165586957" duration="1829000" />
+      <workItem from="1656165586957" duration="3462000" />
     </task>
     <servers />
   </component>

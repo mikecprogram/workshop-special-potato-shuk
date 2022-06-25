@@ -417,6 +417,7 @@ def policies(request):
                      TemplatePolicy("or", ["policy1", "policy2"]),
                      TemplatePolicy("xor", ["policy1", "policy2"]),
                      TemplatePolicy("add", ["policy1", "policy2"]),
+                     TemplatePolicy("max", ["policy1", "policy2"]),
                      ]
     compositeNames = [t.name for t in compositeBank]
     if request.method == 'POST':  # Add to cart or deleteItem
