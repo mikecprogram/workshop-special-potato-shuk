@@ -2,7 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/MarketDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/MarketDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/DALAssmbler.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/DALAssmbler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/Transactions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/Transactions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/AssignmentDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/AssignmentDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/DBInit.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/DBInit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/DelayedNotyDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/DelayedNotyDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/MemberDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/MemberDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/PermissionsDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/PermissionsDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/PurchaseHistoryDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/PurchaseHistoryDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShopDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShopDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingBasketDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingBasketDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingBasketDAL_StockItemDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingBasketDAL_StockItemDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingCartDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingCartDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/StockDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/StockDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/StockItemDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/StockItemDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/database.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/imports.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/imports.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Assignment.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Assignment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/DatabaseAdapter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/DatabaseAdapter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/PurchaseHistory.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/PurchaseHistory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Stock.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Stock.py" afterDir="false" />
     </list>
     <list id="b395499b-f66b-412d-bcb0-557ef139e125" name="Changes by salih_kadry" comment="" />
     <list id="270a8280-9b7b-407c-99fc-7175ce8c2493" name="Changes by user" comment="" />
@@ -76,7 +96,7 @@
       <recent name="C:\Users\user\Desktop\workshop-special-potato-shuk\Dev\DomainLayer\Objects\Policies" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.DBInit">
+  <component name="RunManager" selected="Python.db_dict">
     <configuration name="DBInit" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="workshop-special-potato-shuk" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -90,6 +110,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dev/DAL/objects/DBInit.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="db_dict" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="workshop-special-potato-shuk" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Dev/DomainLayer/Objects" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dev/DomainLayer/Objects/db_dict.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -130,23 +171,6 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest in Users Requirements (II)" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="workshop-special-potato-shuk" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
     <configuration name="pytest in test_Requirement_II_4_2_1.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="workshop-special-potato-shuk" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -165,11 +189,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.db_dict" />
         <item itemvalue="Python.DBInit" />
         <item itemvalue="Python tests.pytest in test_Requirement_II_4_2_1.py" />
         <item itemvalue="Python tests.pytest for test_Requirement_II_4_2_1.MyTestCase.testIsShopPurchase" />
         <item itemvalue="Python tests.pytest for test_Requirement_II_4_2_1.MyTestCase.testHasRawPricePurchase" />
-        <item itemvalue="Python tests.pytest in Users Requirements (II)" />
       </list>
     </recent_temporary>
   </component>

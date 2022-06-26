@@ -1,9 +1,16 @@
 # from .Logger import Logger
 
 import threading
+PurchaseHistoryID=1
+PurchaseHistoryIDLock=threading.Lock()
 class PurchaseHistory():
 
     def __init__(self):
+        global PurchaseHistoryID, PurchaseHistoryIDLock
+        PurchaseHistoryIDLock.acquire()
+        self.id = PurchaseHistoryID
+        PurchaseHistoryID = PurchaseHistoryID + 1
+        PurchaseHistoryIDLock.release()
         self.purchaseString = ""  # load
         self._cache_lock = threading.Lock()
 

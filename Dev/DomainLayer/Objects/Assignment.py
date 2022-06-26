@@ -7,6 +7,7 @@ class Assignment:
     def __init__(self, assigner_member=None, assignee_member=None):
         self.assigner = assigner_member
         self.assignee = assignee_member
+        .add_assignment()
         self._cache_lock = threading.Lock()
         self.assignmentType = None
 

@@ -1,4 +1,4 @@
-from DB import *
+from  Dev.DAL.objects.DB import *
 class MemberDAL(db.Entity):
     foundedShops = Set("ShopDAL",reverse="founder")
     ownedShops = Set("ShopDAL",reverse="owners")

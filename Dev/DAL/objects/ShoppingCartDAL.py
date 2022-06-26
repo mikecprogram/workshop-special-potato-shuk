@@ -1,4 +1,4 @@
-from DB import *
+from  Dev.DAL.objects.DB import *
 
 class ShoppingCartDAL(db.Entity):
     Member = Required("MemberDAL")

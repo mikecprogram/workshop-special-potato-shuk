@@ -1,5 +1,6 @@
-from DB import *
+from  Dev.DAL.objects.DB import *
 
 class PurchaseHistoryDAL(db.Entity):
+    id = PrimaryKey(int)
     purchaseString = Required(str)
-    shop = Required("ShopDAL",reverse="purchases_history")
+    shop = Optional("ShopDAL",reverse="purchases_history")

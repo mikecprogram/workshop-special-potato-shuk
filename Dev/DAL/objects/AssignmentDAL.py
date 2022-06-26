@@ -1,5 +1,5 @@
 #from .Logger import Logger
-from DB import *
+from Dev.DAL.objects.DB import *
 
 class AssignmentDAL(db.Entity):
     assigner = Required("MemberDAL",reverse="assignee")

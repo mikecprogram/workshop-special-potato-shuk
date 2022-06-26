@@ -36,23 +36,29 @@ class DatabaseAdapter:
         self._ShoppingBasketCache = {}  # {shopName, ShoppingCartDTO}
         self._ShoppingBasketCacheLock = threading.Lock()
 
+    def add_member(self,username, hashed):
+        db.add_member(username,hashed)
+
+    def add_shop(self,name, founder_name, stock_id, purchase_history_id):
+        db.add_shop(name,founder_name,stock_id,purchase_history_id)
+
     def get_member(self, name):
         member_DTO = self.db.get_member(name)
-        self._increase_sequence_number()
-        return self.MemberAssmpler(member_DTO)
+        return self.MemberAssmpler(member_DTO,self._increase_sequence_number())
 
     def _increase_sequence_number(self):
         self.sequence_number_lock.acquire()
+        output = self.sequence_number
         self.sequence_number = self.sequence_number+1
         self.sequence_number_lock.release()
+        return output
 
     def is_member(self, name):
         return self.db.is_member(name)
 
     def get_shop(self, name):
         shop_DTO = self.db.get_shop(name)
-        self._increase_sequence_number()
-        return self.ShopAssmpler(shop_DTO)
+        return self.ShopAssmpler(shop_DTO,self._increase_sequence_number())
 
     def is_shop(self, name):
         return self.is_shop(name)
@@ -94,7 +100,6 @@ class DatabaseAdapter:
         output.release__cache_lock()
         return output
 
-    @db_session
     def MemberAssmpler(self, memberDTO, seq_num):
         self._membersCacheLock.acquire()
         if memberDTO.username in self._membersCache:
@@ -109,7 +114,7 @@ class DatabaseAdapter:
                 return output[0]
 
         output = Member()
-        self._membersCache[memberDTO.name] = [output, seq_num]
+        self._membersCache[memberDTO.username] = [output, seq_num]
         output.aqcuire_cache_lock()
         self._membersCacheLock.release()
 
@@ -133,16 +138,13 @@ class DatabaseAdapter:
         output.release__cache_lock()
         return output
 
-    @db_session
     def AssignmentAssmpler(self, assignmentDTO, seq_num):
         return AssignmentDTO(self.MemberAssmpler(assignmentDTO.assigner,seq_num),\
                              self.MemberAssmpler(assignmentDTO.assignee, seq_num))
 
-    @db_session
     def PurchaseHistoryAssmpler(self, purchaseHistoryDTO, seq_num):
         return PurchaseHistoryDTO(purchaseHistoryDTO.purchaseString)
 
-    @db_session
     def StockItemAssmpler(self, stockItemDTO, seq_num):
         self._stockItemsCacheLock.acquire()
         if stockItemDTO.id in self._stockItemsCache:
@@ -177,8 +179,9 @@ class DatabaseAdapter:
         output.release__cache_lock()
         return output
 
-    @db_session
     def ShoppingCartAssmpler(self, shoppingCartDTO, seq_num):
+        if shoppingCartDTO is None:
+            return None
         self._ShoppingCartCacheLock.acquire()
         if shoppingCartDTO.member.username in self._ShoppingCartCache:
             output = self._ShoppingCartCache[shoppingCartDTO.member.username]
@@ -206,7 +209,6 @@ class DatabaseAdapter:
         output.release__cache_lock()
         return output
 
-    @db_session
     def ShoppingBasketAssmpler(self, shoppingBasketDTO, seq_num):
         self._ShoppingBasketCacheLock.acquire()
         if shoppingBasketDTO.shop.name in self._ShoppingBasketCache:
@@ -235,9 +237,9 @@ class DatabaseAdapter:
         output.release__cache_lock()
         return output
 
-    @db_session
     def StockAssmpler(self, stockDTO, seq_num):
         return StockDTO({key: self.StockItemAssmpler(value, seq_num) for key, value in stockDTO.stockItems.items()})
 
 
+database_adapter = DatabaseAdapter()
 

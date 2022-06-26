@@ -124,6 +124,8 @@ class DALAssmbler:
 
     @db_session
     def ShoppingCartAssmpler(self, shoppingCartDAL):
+        if shoppingCartDAL is None:
+            return None
         if shoppingCartDAL.Member.username in self._ShoppingCartCache:
             return self._ShoppingCartCache[shoppingCartDAL.Member.username]
         output = ShoppingCartDTO()

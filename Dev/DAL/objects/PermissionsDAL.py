@@ -1,4 +1,4 @@
-from DB import *
+from  Dev.DAL.objects.DB import *
 
 class PermissionsDAL(db.Entity):
     member = Required("MemberDAL")
