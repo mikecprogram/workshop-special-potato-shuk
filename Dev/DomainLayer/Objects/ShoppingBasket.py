@@ -14,7 +14,7 @@ class ShoppingBasket(Persistent):
 
     def toDAL(self):
         return DalBasket(self.shoppingCart._user, self.shop.getShopName(),
-                         [DalBasketItem(self.shoppingCart._user, self.shop.getShopName(),i,c) for i, c in self.stockItems])
+                         [DalBasketItem(self.shoppingCart._user, self.shop.getShopName(),i,c) for i, c in self.stockItems.items()])
 
     def fromDAL(self, dal):
         pass

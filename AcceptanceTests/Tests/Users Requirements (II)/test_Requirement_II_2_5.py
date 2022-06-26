@@ -33,6 +33,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.isexc), r.exc)
         self.m.logout(self.u)
         r = self.m.Shopping_cart_purchase(self.u)
+        print(r.res, r.exc)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
 

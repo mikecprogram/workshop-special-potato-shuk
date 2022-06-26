@@ -42,11 +42,12 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.in_shop_purchases_history_request(self.u, "shopname")
+        print(r.res, r.exc)
         self.assertEqual(r.res, "User '%s' bought %d of %s for %f.\n"%("username",1,"itemname1",price), r.res)
         self.assertTrue((not r.isexc), r.exc)
 
     def testAddedAsGuest(self):
-        self.m.logout(self.u)
+        r = self.m.logout(self.u)
         r = self.m.in_shop_purchases_history_request(self.u,"shopname")
         self.assertTrue(r.isexc, r.exc)
         self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 1)

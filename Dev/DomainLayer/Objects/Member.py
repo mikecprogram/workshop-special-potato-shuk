@@ -148,7 +148,6 @@ class Member(Persistent):
     def saveShoppingCart(self, cart):
         cart.store()
         self._savedCart = cart
-        self._savedCart.save()
 
     def dropSavedCart(self):
         self._savedCart = None

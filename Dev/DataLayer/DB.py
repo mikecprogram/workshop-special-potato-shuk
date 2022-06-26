@@ -14,7 +14,7 @@ class DB():  # singleton
     def __init__(self, addr):
         self.addr = addr
 
-    def LoadSystem(self):
+    def loadSystem(self):
         self.initSystem()
         self.loadFromDB()
 
