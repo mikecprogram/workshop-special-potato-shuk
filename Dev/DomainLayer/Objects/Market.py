@@ -61,10 +61,14 @@ debug = True
 
 
 class dummyNotify():
+
     def alertspecificrange(self, message, ran):
         return ran
+
     def alert(self, message):
         pass
+
+
 class Market():
 
     def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password,
