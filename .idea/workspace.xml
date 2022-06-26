@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/test_Requirement_II_1_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/test_Requirement_II_1_1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DataLayer/DB.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DataLayer/DB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" afterDir="false" />
     </list>
@@ -75,7 +76,7 @@
     </key>
   </component>
   <component name="RunManager" selected="Python tests.pytest in Users Requirements (II)">
-    <configuration name="pytest for test_Requirement_II_2_5_2_1.MyTestCase.testIsAfterTime" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_Requirement_II_1_1.MyTestCase" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="workshop-special-potato-shuk" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -88,7 +89,41 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_Requirement_II_2_5_2_1.MyTestCase.testIsAfterTime&quot;" />
+      <option name="_new_target" value="&quot;test_Requirement_II_1_1.MyTestCase&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_Requirement_II_1_1.MyTestCase.testDouble" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="workshop-special-potato-shuk" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_Requirement_II_1_1.MyTestCase.testDouble&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_Requirement_II_1_1.MyTestCase.testGood" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="workshop-special-potato-shuk" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_Requirement_II_1_1.MyTestCase.testGood&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -126,54 +161,20 @@
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest in test_Requirement_II_2_5_2_1.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="workshop-special-potato-shuk" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/test_Requirement_II_2_5_2_1.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest in test_Requirement_II_4_2_2.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="workshop-special-potato-shuk" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/test_Requirement_II_4_2_2.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method v="2" />
-    </configuration>
     <list>
-      <item itemvalue="Python tests.pytest for test_Requirement_II_2_5_2_1.MyTestCase.testIsAfterTime" />
+      <item itemvalue="Python tests.pytest for test_Requirement_II_1_1.MyTestCase" />
+      <item itemvalue="Python tests.pytest for test_Requirement_II_1_1.MyTestCase.testDouble" />
+      <item itemvalue="Python tests.pytest for test_Requirement_II_1_1.MyTestCase.testGood" />
       <item itemvalue="Python tests.pytest for test_Requirement_II_4_4.MyTestCase" />
-      <item itemvalue="Python tests.pytest in test_Requirement_II_2_5_2_1.py" />
-      <item itemvalue="Python tests.pytest in test_Requirement_II_4_2_2.py" />
       <item itemvalue="Python tests.pytest in Users Requirements (II)" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python tests.pytest in Users Requirements (II)" />
+        <item itemvalue="Python tests.pytest for test_Requirement_II_1_1.MyTestCase" />
+        <item itemvalue="Python tests.pytest for test_Requirement_II_1_1.MyTestCase.testDouble" />
+        <item itemvalue="Python tests.pytest for test_Requirement_II_1_1.MyTestCase.testGood" />
         <item itemvalue="Python tests.pytest for test_Requirement_II_4_4.MyTestCase" />
-        <item itemvalue="Python tests.pytest in test_Requirement_II_2_5_2_1.py" />
-        <item itemvalue="Python tests.pytest in test_Requirement_II_4_2_2.py" />
-        <item itemvalue="Python tests.pytest for test_Requirement_II_2_5_2_1.MyTestCase.testIsAfterTime" />
       </list>
     </recent_temporary>
   </component>
@@ -214,7 +215,7 @@
       <workItem from="1656164155845" duration="1192000" />
       <workItem from="1656165586957" duration="3462000" />
       <workItem from="1656176167173" duration="460000" />
-      <workItem from="1656197507070" duration="23125000" />
+      <workItem from="1656197507070" duration="24722000" />
     </task>
     <servers />
   </component>
@@ -281,7 +282,7 @@
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_in_Requirement_II_2_5_2_1_py.coverage" NAME="pytest in Requirement II.2.5.2.1.py Coverage Results" MODIFIED="1655479168412" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$Requirement_II_1_4.coverage" NAME="Requirement II.1.4 Coverage Results" MODIFIED="1655796454761" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_in_Tests.coverage" NAME="pytest in Tests Coverage Results" MODIFIED="1655876617984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests" />
-    <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_1_1_MyTestCase.coverage" NAME="pytest for test_Requirement_II_1_1.MyTestCase Coverage Results" MODIFIED="1656079930917" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
+    <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_1_1_MyTestCase.coverage" NAME="pytest for test_Requirement_II_1_1.MyTestCase Coverage Results" MODIFIED="1656274411611" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_5_2_1_MyTestCase_testComplicated.coverage" NAME="pytest for test_Requirement_II_2_5_2_1.MyTestCase.testComplicated Coverage Results" MODIFIED="1656203194946" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_5_2_1_MyTestCase_testHasAmount.coverage" NAME="pytest for test_Requirement_II_2_5_2_1.MyTestCase.testHasAmount Coverage Results" MODIFIED="1656203341191" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_5_3_MyTestCase_testAddedAsGuest.coverage" NAME="pytest for test_Requirement_II_2_5_3.MyTestCase.testAddedAsGuest Coverage Results" MODIFIED="1655816005873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
@@ -295,6 +296,7 @@
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_2_MyTestCase_testSearchAll.coverage" NAME="pytest for test_Requirement_II_2_2.MyTestCase.testSearchAll Coverage Results" MODIFIED="1655810445452" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_5_2_1_MyTestCase_testHasPriceAndHasAmountPurchase.coverage" NAME="pytest for test_Requirement_II_2_5_2_1.MyTestCase.testHasPriceAndHasAmountPurchase Coverage Results" MODIFIED="1656203369343" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_1_MyTestCase.coverage" NAME="pytest for test_Requirement_II_2_1.MyTestCase Coverage Results" MODIFIED="1655808663200" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
+    <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_1_1_MyTestCase_testDouble.coverage" NAME="pytest for test_Requirement_II_1_1.MyTestCase.testDouble Coverage Results" MODIFIED="1656274408581" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$test_Requirement_II_3_1.coverage" NAME="test_Requirement_II_3_1 Coverage Results" MODIFIED="1655882196468" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_5_3_MyTestCase_testAfterRelog.coverage" NAME="pytest for test_Requirement_II_2_5_3.MyTestCase.testAfterRelog Coverage Results" MODIFIED="1655880947456" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_4_1_2_MyTestCase_testGood.coverage" NAME="pytest for test_Requirement_II_4_1_2.MyTestCase.testGood Coverage Results" MODIFIED="1655883892560" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
@@ -314,7 +316,7 @@
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_in_test_Requirement_II_2_5_2_1_py.coverage" NAME="pytest in test_Requirement_II_2_5_2_1.py Coverage Results" MODIFIED="1656220544161" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1655797864189" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_5_2_1_MyTestCase_testNot.coverage" NAME="pytest for test_Requirement_II_2_5_2_1.MyTestCase.testNot Coverage Results" MODIFIED="1656203264785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
-    <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_in_Users_Requirements__II_.coverage" NAME="pytest in Users Requirements (II) Coverage Results" MODIFIED="1656271322537" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
+    <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_in_Users_Requirements__II_.coverage" NAME="pytest in Users Requirements (II) Coverage Results" MODIFIED="1656274389851" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$Requirement_II_4_2_1.coverage" NAME="Requirement II.4.2.1 Coverage Results" MODIFIED="1655222914930" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_4_13_MyTestCase.coverage" NAME="pytest for test_Requirement_II_4_13.MyTestCase Coverage Results" MODIFIED="1655982768843" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_2_MyTestCase.coverage" NAME="pytest for test_Requirement_II_2_2.MyTestCase Coverage Results" MODIFIED="1655810951579" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
@@ -323,6 +325,7 @@
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_4_MyTestCase.coverage" NAME="pytest for test_Requirement_II_2_4.MyTestCase Coverage Results" MODIFIED="1655811181082" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_4_1_1_MyTestCase.coverage" NAME="pytest for test_Requirement_II_4_1_1.MyTestCase Coverage Results" MODIFIED="1655885746923" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_in_Requirement_II_1_2_STAR_py.coverage" NAME="pytest in Requirement II.1.2STAR.py Coverage Results" MODIFIED="1655796181273" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
+    <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_1_1_MyTestCase_testGood.coverage" NAME="pytest for test_Requirement_II_1_1.MyTestCase.testGood Coverage Results" MODIFIED="1656274405485" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_1_MyTestCase_testbadItemGuest.coverage" NAME="pytest for test_Requirement_II_2_1.MyTestCase.testbadItemGuest Coverage Results" MODIFIED="1655808654898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_4_7_MyTestCase_testGood.coverage" NAME="pytest for test_Requirement_II_4_7.MyTestCase.testGood Coverage Results" MODIFIED="1655981979612" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_5_2_1_MyTestCase_testIsFounder.coverage" NAME="pytest for test_Requirement_II_2_5_2_1.MyTestCase.testIsFounder Coverage Results" MODIFIED="1656203079865" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />

@@ -1,18 +1,18 @@
 
+import sqlite3
 
 class DB(): #singleton
-    addr = ""
+    addr = "ShukDb.db"
     inst = None #static
 
     def __init__(self, addr):
-        pass
+        self.addr = addr
+
+    def connect(self):
+        return sqlite3.connect(self.addr)
 
     @staticmethod
     def getDB():
-        return DB.inst
-
-    @staticmethod
-    def getDB(addr):
         if DB.inst is None:
-            DB.inst = DB(addr)
+            DB.inst = DB(DB.addr)
         return DB.inst

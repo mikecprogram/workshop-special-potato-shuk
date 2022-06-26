@@ -17,7 +17,8 @@ class MyTestCase(unittest.TestCase):
 
     def setUp(self):
         self.m = SystemService()
-        self.m.initialization_of_the_system()
+        r = self.m.initialization_of_the_system()
+        print(r.exc, r.res)
 
     def testGood(self):
         u = self.m.get_into_the_Trading_system_as_a_guest()
