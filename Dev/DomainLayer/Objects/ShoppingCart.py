@@ -12,6 +12,10 @@ class ShoppingCart:
         self._cartPrice = None
         self.shoppingBaskets = {}  # {shopName, ShoppingBasket}
 
+    def save(self):
+        for b in self.shoppingBaskets.values():
+            b.save()
+
     def getBasketByShop(self, shop):
         if type(shop) is str:
             if shop not in self.shoppingBaskets.keys():

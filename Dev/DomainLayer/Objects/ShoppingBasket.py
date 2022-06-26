@@ -1,13 +1,23 @@
 # from .Logger import Logger
+from Dev.DataLayer.DalBasket import DalBasket
+from Dev.DataLayer.DalBasketItem import DalBasketItem
+from Dev.DomainLayer.Objects.Persistent import Persistent
 from Dev.DomainLayer.Objects.Shop import Shop
 
 
-class ShoppingBasket:
+class ShoppingBasket(Persistent):
 
     def __init__(self, shoppingCart, shop):
         self.shoppingCart = shoppingCart
         self.shop = shop
         self.stockItems = {}  # {itemname, count}
+
+    def toDAL(self):
+        return DalBasket(self.shoppingCart._user, self.shop.getShopName(),
+                         [DalBasketItem(self.shoppingCart._user, self.shop.getShopName(),i,c) for i, c in self.stockItems])
+
+    def fromDAL(self, dal):
+        pass
 
     def validate_purchase(self, user):
         for name in self.stockItems.keys():

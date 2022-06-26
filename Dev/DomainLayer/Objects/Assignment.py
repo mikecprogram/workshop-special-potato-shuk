@@ -15,4 +15,7 @@ class Assignment(Persistent):
         return DalAssignment(self.role, self.shopname, self.assigner.getUsername(), self.assignee.getUsername())
 
     def fromDAL(self, dal: DalAssignment):
-        pass
+        self.shopname = dal.shopname
+        self.assigner = dal.assigner
+        self.assignee = dal.assignee
+        self.role = dal.role

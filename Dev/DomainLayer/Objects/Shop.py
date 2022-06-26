@@ -8,15 +8,12 @@ import threading
 
 class Shop(Persistent):
 
-    def __init__(self, notificationPlugin):
-        self.notificationPlugin = notificationPlugin
-
     def __init__(self, shop_name: str, founder, notificationPlugin):
         self._name = shop_name
         self._stock = Stock()
         self._is_open = True  # need to confirm if we need shop's status such as closed/open. TODO
         self._founder = founder
-        self._policies = [] #temp
+        self._policies = []  # temp
         self._owners = {}  # {ownerUsername, Member} (ò_ó)!!!!!!!!!!!!!!!!!
         self._managers = {}  # {managerUsername, Member}
         self._purchasePolicies = []
@@ -30,8 +27,6 @@ class Shop(Persistent):
         self._shop_lock = threading.Lock()
         self.notificationPlugin = notificationPlugin
 
-
-
     def toDAL(self):
         pols = [p.toDal() for p in self._discountPolicies]
         pols.extend([p.toDal() for p in self._purchasePolicies])
@@ -39,12 +34,14 @@ class Shop(Persistent):
         assi = []
         for i in self._managers_assignments.values():
             for j in i:
-                assi.append(j)
+                assi.append(j.toDal())
+        for i in self._owners_assignments.values():
+            for j in i:
+                assi.append(j.toDAl())
         return DalShop(self._name, self._is_open, self._founder, pols, items, assi)
 
     def fromDAL(self, dal: DalShop):
-        self.__init__(dal.name, dal.founder, self.notificationPlugin)
-        self._is_open = dal.is_open
+        pass
 
     def getId(self, itemname):
         return self._stock.getId(itemname)
@@ -73,7 +70,8 @@ class Shop(Persistent):
             raise Exception('Price of item can not be negative')
         if item_name == "" or item_name is None:
             raise Exception('Item name must not be null')
-        if (username != self._founder.get_username()) and not (username in self._owners.keys()) and not (username in self._managers.keys()):
+        if (username != self._founder.get_username()) and not (username in self._owners.keys()) and not (
+                username in self._managers.keys()):
             raise Exception('You do not have the sufficient permissions to add item')
 
         nid = self._stock.getNextId()
@@ -106,8 +104,10 @@ class Shop(Persistent):
         except Exception as e:
             self._shop_lock.release()
             raise e
-    def getAmount(self,item_name):
+
+    def getAmount(self, item_name):
         return self._stock.getAmount(item_name)
+
     def checkAmount(self, item_name, amount):
         amount = int(amount)
         if amount < 0:
@@ -120,7 +120,8 @@ class Shop(Persistent):
         except Exception as e:
             self._shop_lock.release()
             raise e
-    def have_rule_in_shop(self,member):
+
+    def have_rule_in_shop(self, member):
         if member.get_username() == self._founder.get_username():
             raise Exception("Assignee is already a founder of the shop!")
         if member.get_username() in self._managers:
@@ -130,7 +131,7 @@ class Shop(Persistent):
 
     def assign_owner(self, assigner_member_object, assignee_member_object):
         self.have_rule_in_shop(assignee_member_object)
-        #if assigned owner was a manager need to think what to do remove from managers or... NO.. if you have a rule you cant be promoted.
+        # if assigned owner was a manager need to think what to do remove from managers or... NO.. if you have a rule you cant be promoted.
         self._owners[assignee_member_object.get_username()] = assignee_member_object
         assignee_member_object.addOwnedShop(self)
         self.add_assignment("owner", assigner_member_object, assignee_member_object, self._owners_assignments)
@@ -138,7 +139,8 @@ class Shop(Persistent):
 
     def delete_owner(self, assigner_user_name, assignee_user_name):
         if assignee_user_name == self._founder.get_username():
-            raise Exception("%s is Founder of the shop:%s and therefore cant be deleted from owners group" %(assignee_user_name,self._name))
+            raise Exception("%s is Founder of the shop:%s and therefore cant be deleted from owners group" % (
+            assignee_user_name, self._name))
         if assignee_user_name not in self._owners:
             raise Exception(assignee_user_name + " is not an owner of the shop:" + self._name)
         self.delete_assignment_owner(assigner_user_name, assignee_user_name, self._owners_assignments)
@@ -156,8 +158,6 @@ class Shop(Persistent):
         if not b:
             raise Exception(assigner_user_name + " did not assignee " + assignee_user_name)
         self.recursive_delete(assignee_member_object)
-
-
 
     def recursive_delete(self, member_to_delete):
         if member_to_delete.get_username() in self._owners_assignments:
@@ -211,36 +211,41 @@ class Shop(Persistent):
     def get_founder_and_owners(self):
         all = []
         all.append(self._founder)
-        for o in  self._owners.values():
+        for o in self._owners.values():
             all.append(o)
         return all
+
     def close_shop(self):
         if self._is_open:
             self._is_open = False
             all = self.get_founder_and_owners()
             usernames = [u.get_username() for u in all]
             print(usernames)
-            missed = self.notificationPlugin.alertspecificrange("The Shop \"%s\" is closed." %(self.getShopName()),usernames)
+            missed = self.notificationPlugin.alertspecificrange("The Shop \"%s\" is closed." % (self.getShopName()),
+                                                                usernames)
             print(missed)
             for user in all:
                 if user.get_username() in missed:
-                    user.addDelayedNotification("The Shop \"%s\" is closed." %(self.getShopName()))
+                    user.addDelayedNotification("The Shop \"%s\" is closed." % (self.getShopName()))
             return True
         else:
             raise Exception('Closed shop could not be closed again!')
+
     def reopen_shop(self):
         if not self._is_open:
             self._is_open = True
             all = self.get_founder_and_owners()
             usernames = [u.get_username() for u in all]
 
-            missed = self.notificationPlugin.alertspecificrange("The Shop \"%s\" is open again." % (self.getShopName()), usernames)
+            missed = self.notificationPlugin.alertspecificrange("The Shop \"%s\" is open again." % (self.getShopName()),
+                                                                usernames)
             for user in all:
                 if user.get_username() in missed:
                     user.addDelayedNotification("The Shop \"%s\" is open again." % (self.getShopName()))
             return True
         else:
             raise Exception('Open shop could not be opened again!')
+
     # Returns whether usernae is manager
     def is_manager(self, manager_username: str) -> bool:
         return manager_username in self._managers
@@ -256,7 +261,7 @@ class Shop(Persistent):
 
     def getRolesInfoReport(self):
         return {'founder': self._founder.get_username(), 'managers': [m for m in self._managers],
-        'owners': [m for m in self._owners]}
+                'owners': [m for m in self._owners]}
 
     def get_shop_report(self):
         return {'name': self._name, 'founder': self._founder.get_username(), 'managers': [m for m in self._managers],
@@ -278,7 +283,7 @@ class Shop(Persistent):
         self._stock.purchase(itemname, amount)
         all = self.get_founder_and_owners()
         usernames = [u.get_username() for u in all]
-        message = "%s purchased %d of %s from shop %s" %(user.get_state(),amount,itemname,self.getShopName())
+        message = "%s purchased %d of %s from shop %s" % (user.get_state(), amount, itemname, self.getShopName())
         missed = self.notificationPlugin.alertspecificrange(message, usernames)
         for user in all:
             if user.get_username() in missed:
@@ -314,13 +319,14 @@ class Shop(Persistent):
 
     def archive_shopping_basket(self, shooping_basket_report):
         self._purchases_history.append(shooping_basket_report)
-    def can_add_purchase_policies(self,user):
-        if user.getMember() == self._founder or user.getMember() in self._owners :
+
+    def can_add_purchase_policies(self, user):
+        if user.getMember() == self._founder or user.getMember() in self._owners:
             return True
         if user.getMember() in self._managers:
             return user.getMember().can_add_purchase_policies(self.name)
 
-    def can_add_discount_policies(self,user):
+    def can_add_discount_policies(self, user):
         if user.getMember() == self._founder or user.getMember() in self._owners:
             return True
         if user.getMember() in self._managers:
@@ -395,7 +401,8 @@ class Shop(Persistent):
                 d = policy.getDiscount()
                 disc *= (1 - d / 100)
         return disc
-    def get_permission_report(self,member_name):
+
+    def get_permission_report(self, member_name):
         m = self._managers[member_name]
         p = m.get_permissions(self._name)
         ret = p.get_permission_report_json()

@@ -1,11 +1,17 @@
 # from .Logger import Logger
 import threading
 
+from Dev.DataLayer.DalMember import DalMember
+from Dev.DataLayer.DalNoty import DalNoty
+from Dev.DataLayer.DalPermission import DalPermission
+from Dev.DomainLayer.Objects.Persistent import Persistent
 from Dev.DomainLayer.Objects.ShoppingCart import ShoppingCart
 from Dev.DomainLayer.Objects.Permissions import Permissions
 
 
-class Member:
+
+
+class Member(Persistent):
 
     def __init__(self, username, hashed, market=None):
         self.founded_shops = {}  # {shopName, Shop}
@@ -18,6 +24,19 @@ class Member:
         self._savedCart = None
         self._age = None
         self.delayedNoty = []
+
+    def save(self):
+        self._savedCart.save()
+        dal = self.toDal()
+        dal.store()
+
+    def toDal(self):
+        return DalMember(self._username, self._hashed, self._age,
+                         [DalPermission(self._username, s, list(p._assignedPermission)) for s, p in self.permissions.items()],
+                         DalNoty(self._username, self.delayedNoty))
+
+    def fromDAL(self, dal):
+        pass
 
     def getNotifications(self):
         copy = self.delayedNoty.copy()
