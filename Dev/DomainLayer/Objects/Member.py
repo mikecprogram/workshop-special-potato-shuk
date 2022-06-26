@@ -26,7 +26,8 @@ class Member(Persistent):
         self.delayedNoty = []
 
     def save(self):
-        self._savedCart.save()
+        if self._savedCart is not None:
+            self._savedCart.save()
         dal = self.toDal()
         dal.store()
 
@@ -51,6 +52,7 @@ class Member(Persistent):
     def setAge(self, age):
         if age > 0:
             self._age = age
+            self.save()
             return True
         return False
 
@@ -65,25 +67,31 @@ class Member(Persistent):
 
     def addFoundedShop(self, shop):
         self.founded_shops[shop.getShopName()] = shop  ##WATCH OUT!!! founder is treated like owner, but is not an owner!!!
+        self.save()
 
     def isHashedCorrect(self, hashed):
         return True if self._hashed == hashed else False
 
+
     def addOwnedShop(self, shop):
         self.ownedShops[shop.getShopName()] = shop
+        self.save()
 
     def deleteOwnedShop(self, shop):
         if shop.getShopName() in self.ownedShops:
             del self.ownedShops[shop.getShopName()]
+            self.save()
 
     def deleteManagedShop(self, shop):
         if shop.getShopName() in self.managedShops:
             del self.managedShops[shop.getShopName()]
             del self.permissions[shop.getShopName()]
+            self.save()
 
     def addManagedShop(self, shop):
         self.managedShops[shop.getShopName()] = shop
         self.permissions[shop.getShopName()] = Permissions()
+        self.save()
 
     def can_assign_manager(self, shopname):
         return self.permissions[shopname].can_assign_manager()
@@ -140,6 +148,7 @@ class Member(Persistent):
     def saveShoppingCart(self, cart):
         cart.store()
         self._savedCart = cart
+        self._savedCart.save()
 
     def dropSavedCart(self):
         self._savedCart = None
@@ -150,6 +159,7 @@ class Member(Persistent):
         else:
             self._savedCart.setUser(user)
             return self._savedCart
+
     def close_shop(self, shop_name):
         if self.is_founded_shop(shop_name):
             return self.founded_shops[shop_name].close_shop()
