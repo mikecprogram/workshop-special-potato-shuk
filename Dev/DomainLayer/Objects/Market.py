@@ -295,6 +295,7 @@ class Market():
 
     def makePolicy(self, shop, PID):
         pols = shop.getTempPolicies()
+        shopname = shop.getShopName()
         pol = None
         for p in pols:
             if p[0] == PID:
@@ -304,49 +305,49 @@ class Market():
             raise Exception("bad policy ID!")
         if pol[1] in simplePolicies:
             if pol[1] == "isShop":
-                return policyIsShop(p[0], p[2])
+                return policyIsShop(shopname, p[0], p[2])
             if pol[1] == "isFounder":
-                return policyIsFounder(p[0], p[2])
+                return policyIsFounder(shopname, p[0], p[2])
             if pol[1] == "isOwner":
-                return policyIsOwner(p[0], p[2])
+                return policyIsOwner(shopname, p[0], p[2])
             if pol[1] == "isCategory":
-                return policyIsCategory(p[0], p[3], p[2])
+                return policyIsCategory(shopname, p[0], p[3], p[2])
             if pol[1] == "isItem":
-                return policyIsItem(p[0], p[3], p[2])
+                return policyIsItem(shopname, p[0], p[3], p[2])
             if pol[1] == "hasAmount":
-                return policyHasAmount(p[0], p[4], p[2], p[3])
+                return policyHasAmount(shopname, p[0], p[4], p[2], p[3])
             if pol[1] == "hasPrice":
-                return policyHasPrice(p[0], p[4], p[2], p[3])
+                return policyHasPrice(shopname, p[0], p[4], p[2], p[3])
             if pol[1] == "isAfterTime":
-                return policyIsAfterTime(p[0], p[4], p[2], p[3])
+                return policyIsAfterTime(shopname, p[0], p[4], p[2], p[3])
         else:
             if pol[1] == "not":
                 pt = self.makePolicy(shop, p[2])
-                return policyNot(p[0], pt)
+                return policyNot(shopname, p[0], pt)
             if pol[1] == "and":
                 pt1 = self.makePolicy(shop, p[2])
                 pt2 = self.makePolicy(shop, p[3])
-                return policyAnd(p[0], pt1, pt2)
+                return policyAnd(shopname, p[0], pt1, pt2)
             if pol[1] == "or":
                 pt1 = self.makePolicy(shop, p[2])
                 pt2 = self.makePolicy(shop, p[3])
-                return policyOr(p[0], pt1, pt2)
+                return policyOr(shopname, p[0], pt1, pt2)
             if pol[1] == "xor":
                 pt1 = self.makePolicy(shop, p[2])
                 pt2 = self.makePolicy(shop, p[3])
-                return policyXor(p[0], pt1, pt2)
+                return policyXor(shopname, p[0], pt1, pt2)
             if pol[1] == "if":
                 pt1 = self.makePolicy(shop, p[2])
                 pt2 = self.makePolicy(shop, p[3])
-                return policyIf(p[0], pt1, pt2)
+                return policyIf(shopname, p[0], pt1, pt2)
             if pol[1] == "add":
                 pt1 = self.makePolicy(shop, p[2])
                 pt2 = self.makePolicy(shop, p[3])
-                return policyAdd(p[0], pt1, pt2)
+                return policyAdd(shopname, p[0], pt1, pt2)
             if pol[1] == "max":
                 pt1 = self.makePolicy(shop, p[2])
                 pt2 = self.makePolicy(shop, p[3])
-                return policyMax(p[0], pt1, pt2)
+                return policyMax(shopname, p[0], pt1, pt2)
 
     def compose_policy(self, token, shopname, name, arg1, arg2):
         if not self.isToken(token):

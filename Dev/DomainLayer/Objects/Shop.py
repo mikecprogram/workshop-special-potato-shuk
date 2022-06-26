@@ -1,4 +1,4 @@
-from Dev.DomainLayer.Objects.Policies.policyIsShop import policyIsShop
+from Dev.DataLayer.DalShop import DalShop
 from Dev.DomainLayer.Objects.StockItem import *
 from Dev.DomainLayer.Objects.Assignment import Assignment
 from Dev.DomainLayer.Objects.Stock import Stock
@@ -6,7 +6,10 @@ from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
 import threading
 
 
-class Shop():
+class Shop(Persistent):
+
+    def __init__(self, notificationPlugin):
+        self.notificationPlugin = notificationPlugin
 
     def __init__(self, shop_name: str, founder, notificationPlugin):
         self._name = shop_name
@@ -26,6 +29,15 @@ class Shop():
         self._purchases_history = PurchaseHistory()
         self._shop_lock = threading.Lock()
         self.notificationPlugin = notificationPlugin
+
+
+
+    def toDAL(self):
+        return DalShop(self._name, self._is_open, self._founder)
+
+    def fromDAL(self, dal: DalShop):
+        self.__init__(dal.name, dal.founder, self.notificationPlugin)
+        self._is_open = dal.is_open
 
     def getId(self, itemname):
         return self._stock.getId(itemname)

@@ -3,7 +3,8 @@ from Dev.DomainLayer.Objects.Policies.Composer import *
 
 class policyIf(Composer):
 
-    def __init__(self, ID, c1, c2):
+    def __init__(self, shopname, ID, c1, c2):
+        self.shopname = shopname
         self.ID = ID
         self.percent = c2.percent
         self.c1 = c1

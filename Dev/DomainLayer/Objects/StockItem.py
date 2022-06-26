@@ -2,9 +2,11 @@ from unicodedata import category
 
 
 ##from .Logger import Logger
+from Dev.DataLayer.DalStockItem import DalStockItem
+from Dev.DomainLayer.Objects.Persistent import Persistent
 
 
-class StockItem:
+class StockItem(Persistent):
 
     def __init__(self, ID, category: str, name, description, count, price, shopname):
         self._id = ID
@@ -15,6 +17,12 @@ class StockItem:
         self._price = price
         self._shopname = shopname
 
+    def fromDAL(self, dal: DalStockItem):
+        self.__init__(dal.id, dal.category, dal.name, dal.desc, dal.count, dal.price, dal.shopname)
+
+    def toDAL(self):
+        return DalStockItem( self._id, self._category, self._name, self._desc, self._count,self._price, self._shopname)
+
     def toString(self):
         return "id: " + str(self._id) + "\ncategory: " + self._category + "\nname: " + self._name + "\namount: " + str(self._count) + "\nprice: " + str(self._price) + "\ndescription: " + self._desc
 
@@ -23,18 +31,6 @@ class StockItem:
 
     def getShopName(self):
         return self._shopname
-
-    def addDiscountPolicy(self, discount):
-        self._discountPolicy.append(discount)
-
-    def removeDiscountPolicy(self, discount):
-        self._discountPolicy.remove(discount)
-
-    def addPurchasePolicy(self, purchase):
-        self._purchasePolicy.append(purchase)
-
-    def removePurchasePolicy(self, purchase):
-        self._purchasePolicy.remove(purchase)
 
     def getDiscountPolicies(self):
         return self._discountPolicy
@@ -56,37 +52,28 @@ class StockItem:
 
     def setName(self, new):
         self._name = new
+        self.save()
 
     def setDesc(self, new):
         self._desc = new
+        self.save()
 
     def setPrice(self, new):
         self._price = new
+        self.save()
 
     def canPurchase(self, user):
         return True
 
     def setAmount(self, amount):
         self._count = amount
+        self.save()
 
     def remove(self, amount):
         if self._count - amount < 0:
             raise "Item cant have negative amount!!!"
         self._count -= amount
-
-    def getTotalDiscount(self, user):
-        totaldiscount = 1
-        for discount in self._discountPolicy:
-            totaldiscount = totaldiscount * discount.getDiscount(user)
-        totaldiscount = totaldiscount * self._categroy.getTotalDiscount(user)
-        return totaldiscount
-
-    def getDiscountedPrice(self, user):
-        totaldiscount = self.getTotalDiscount(user)
-        finalPrice = self._price
-        if totaldiscount < 1:
-            finalPrice = finalPrice * (1 - totaldiscount)
-        return finalPrice
+        self.save()
 
     def getCategory(self) -> str:
         return self._category

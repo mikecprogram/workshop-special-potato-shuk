@@ -1,10 +1,11 @@
+from Dev.DataLayer.DalPolicy import DalPolicy
 from Dev.DomainLayer.Objects.Policies.Composable import Composable
 
 
 class Composer(Composable):  # any composed discount that takes 2 composables inherits from Composer (XOR, AND, OR...)
 
-    def __init__(self, ID: int, c1: Composable, c2: Composable):
-        super.__init__(ID, 0)
+    def __init__(self, shopname, ID: int, c1: Composable, c2: Composable):
+        super.__init__(shopname, ID, 0)
         self.c1 = c1
         self.c2 = c2
 
@@ -14,3 +15,9 @@ class Composer(Composable):  # any composed discount that takes 2 composables in
     def __str__(self):
         r = super(Composer, self).__str__()
         return r + "\nchild1: " + self.c1.__str__() + "\nchild2: " + self.c2.__str__()
+
+    def toDAL(self):
+        return DalPolicy(self.shopname, "complex", self.ID, self.__class__.__name__, self.c1, self.c2)
+
+    def fromDAL(self, dal: DalPolicy):
+        self.__init__(dal.shopname, dal.ID, dal.arg1, dal.arg2)
