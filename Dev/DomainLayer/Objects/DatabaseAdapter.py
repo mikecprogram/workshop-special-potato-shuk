@@ -2,7 +2,7 @@ from Dev.DAL.Transactions import Transactions
 from Dev.DAL.objects.DB import *
 from Dev.DTO.ShopDTO import ShopDTO
 from Dev.DTO.MemberDTO import MemberDTO
-from Dev.DTO.CategoryDTO import CategoryDTO
+#from Dev.DTO.CategoryDTO import CategoryDTO
 from Dev.DTO.AssignmentDTO import AssignmentDTO
 from Dev.DTO.PurchaseHistoryDTO import PurchaseHistoryDTO
 from Dev.DTO.StockItemDTO import StockItemDTO
@@ -37,10 +37,10 @@ class DatabaseAdapter:
         self._ShoppingBasketCacheLock = threading.Lock()
 
     def add_member(self,username, hashed):
-        db.add_member(username,hashed)
+        self.db.add_new_member(username,hashed)
 
     def add_shop(self,name, founder_name, stock_id, purchase_history_id):
-        db.add_shop(name,founder_name,stock_id,purchase_history_id)
+        self.db.add_new_shop(name,founder_name,stock_id,purchase_history_id)
 
     def get_member(self, name):
         member_DTO = self.db.get_member(name)

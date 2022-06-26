@@ -2,7 +2,7 @@ from Dev.DAL.objects.imports import *
 from Dev.DAL.objects.DB import *
 from Dev.DTO.ShopDTO import ShopDTO
 from Dev.DTO.MemberDTO import MemberDTO
-from Dev.DTO.CategoryDTO import CategoryDTO
+#from Dev.DTO.CategoryDTO import CategoryDTO
 from Dev.DTO.AssignmentDTO import AssignmentDTO
 #from Dev.DTO.PermissionsDTO import PermissionsDTO
 from Dev.DTO.PurchaseHistoryDTO import PurchaseHistoryDTO
@@ -45,7 +45,7 @@ class Transactions:
 
     @db_session
     def add_new_member(self,username, hashed):
-        MemberDAL(username=username,hashed=hashed)
+        MemberDAL(username=username,hashed=hashed, admin = 0)
 
     @db_session
     def add_new_shop(self,name, founder_name, stock_id, purchase_history_id):
