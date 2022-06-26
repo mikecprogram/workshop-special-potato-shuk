@@ -6,7 +6,7 @@ import threading
 
 class StockItem:
 
-    def __init__(self, ID=None, category: str=None, name=None, description=None, count=None, purchasepolicy=None, discountpolicy=None, price=None, shopname=None):
+    def __init__(self, ID=None, category: str=None, name=None, description=None, count=None, price=None, shopname=None):
         self._id = ID
         self._category = category
         self._desc = description

@@ -1,6 +1,5 @@
 from  Dev.DAL.objects.DB import *
 class StockItemDAL(db.Entity):
-    id = PrimaryKey(int)
     category = Required(str)
     desc = Optional(str)
     # purchasePolicy = []

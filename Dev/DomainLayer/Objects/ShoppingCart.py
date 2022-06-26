@@ -8,6 +8,7 @@ import threading
 class ShoppingCart:
 
     def __init__(self, user=None):
+        self.id = -1
         self._user = user
         self._cartPrice = None
         self.shoppingBaskets = {}  # {shopName, ShoppingBasket}

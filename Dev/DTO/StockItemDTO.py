@@ -6,8 +6,8 @@ from unicodedata import category
 
 class StockItemDTO:
 
-    def __init__(self, ID = None, category= None, name= None, description= None, count= None, price= None, shopname= None):
-        self.id = ID
+    def __init__(self, id = None, category= None, name= None, description= None, count= None, price= None, shopname= None):
+        self.id = id
         self.category = category
         self.desc = description
         self.name = name

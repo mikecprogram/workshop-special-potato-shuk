@@ -44,36 +44,68 @@ class Transactions:
         return exists(o for o in ShopDAL if o.name == name)
 
     @db_session
-    def add_member(self,username, hashed):
+    def add_new_member(self,username, hashed):
         MemberDAL(username=username,hashed=hashed)
 
     @db_session
-    def add_shop(self,name, founder_name, stock_id, purchase_history_id):
+    def add_new_shop(self,name, founder_name, stock_id, purchase_history_id):
         ShopDAL(name = name,stock = StockDAL[stock_id],founder=MemberDAL.get(username=founder_name),\
         purchases_history = PurchaseHistoryDAL[purchase_history_id])
 
     @db_session
-    def add_Stock(self,stock_id):
-        StockDAL(id=stock_id)
+    def add_new_Stock_rid(self,stock_id):
+        s = StockDAL()
+        s.flush()
+        return s.id
 
     @db_session
-    def add_purchase_history(self, id):
-        PurchaseHistoryDAL(id = id)
+    def add_new_purchase_history_rid(self):
+        s = PurchaseHistoryDAL(purchaseString="")
+        s.flush()
+        return s.id
 
     @db_session
-    def add_assignment(self, assigner_name,assignee_name):
-        PurchaseHistoryDAL(id=id,)
+    def add_new_assignment_rid(self, assigner_name,assignee_name):
+        s =PurchaseHistoryDAL(assigner=MemberDAL.get(username=assigner_name),\
+                           assignee =MemberDAL.get(username=assignee_name) )
+        s.flush()
+        return s.id
 
     @db_session
-    def add_delayedNoty(self, delayedNoty_id):
-        StockDAL(id=stock_id)
+    def add_new_delayedNoty_rid(self, member_name,notification_str):
+        s = DelayedNotyDAL(notification=notification_str, member = MemberDAL.get(username=member_name))
+        s.flush()
+        return s.id
 
     @db_session
-    def add_permission(self, id):
-        PurchaseHistoryDAL(id=id)
+    def add_new_permission_rid(self, shop_name, member_name, permission_int):
+        s = PermissionsDAL(member = MemberDAL.get(username=member_name) ,\
+                           shop = ShopDAL.get(name=shop_name),permission =permission_int)
+        s.flush()
+        return s.id
 
     @db_session
-    def add_purchase_history(self, id):
-        PurchaseHistoryDAL(id=id)
+    def add_new_shop_basket_rid(self, shoppingCart_id ,shop_name):
+        s = ShoppingBasketDAL(shoppingCart = ShoppingCartDAL[shoppingCart_id],shop = ShopDAL.get(name=shop_name))
+        s.flush()
+        return s.id
+
+    ShoppingBasket = Required("ShoppingBasketDAL")
+    StockItem = Required("StockItemDAL")
+    count = Required(int)
+    @db_session
+    def add_new_shopping_basket_item(self, ShoppingBasket_id,StockItem_id,count):
+        ShoppingBasketDAL_StockItemDAL(ShoppingBasket = ShoppingBasket_id, StockItem=StockItem_id, count=count)
+
+    @db_session
+    def add_new_shopping_cart_rid(self, member_name):
+        s =ShoppingCartDAL(Member = MemberDAL.get(username = member_name))
+        s.flush()
+        return s.id
 
 
+    @db_session
+    def add_new_stock_item(self, category, desc , name , count,price,shopname,stock_id):
+        s =StockItemDAL(category=category, desc=desc , name=name , count=count,price=price,shopname=shopname,stock_id=StockDAL[stock_id])
+        s.flush()
+        return s.id

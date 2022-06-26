@@ -5,6 +5,7 @@ import threading
 class ShoppingBasket:
 
     def __init__(self, shoppingCart=None, shop=None):
+        self.id = -1
         self.shoppingCart = shoppingCart
         self.shop = shop
         self.stockItems = {}  # {itemname, count}

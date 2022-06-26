@@ -139,11 +139,15 @@ class DatabaseAdapter:
         return output
 
     def AssignmentAssmpler(self, assignmentDTO, seq_num):
-        return AssignmentDTO(self.MemberAssmpler(assignmentDTO.assigner,seq_num),\
+        output = Assignment(self.MemberAssmpler(assignmentDTO.assigner,seq_num),\
                              self.MemberAssmpler(assignmentDTO.assignee, seq_num))
+        output.id = assignmentDTO.id
+        return output
 
     def PurchaseHistoryAssmpler(self, purchaseHistoryDTO, seq_num):
-        return PurchaseHistoryDTO(purchaseHistoryDTO.purchaseString)
+        output =  PurchaseHistory()
+        output.purchaseString = purchaseHistoryDTO.purchaseString
+        output.id = purchaseHistoryDTO.id
 
     def StockItemAssmpler(self, stockItemDTO, seq_num):
         self._stockItemsCacheLock.acquire()
@@ -172,7 +176,7 @@ class DatabaseAdapter:
         output._count = stockItemDTO.count
         output._price = stockItemDTO.price
         output._shopname = stockItemDTO.shopname
-
+        output._id = stockItemDTO.id
         self._stockItemsCacheLock.acquire()
         self._stockItemsCache[stockItemDTO.id][1] = -1
         self._stockItemsCacheLock.release()
@@ -202,6 +206,7 @@ class DatabaseAdapter:
         output.member = self.MemberAssmpler(shoppingCartDTO.member, seq_num)
         output.cartPrice = shoppingCartDTO.cartPrice
         output.shoppingBaskets = {key:self.ShoppingBasketAssmpler(value, seq_num) for key, value in shoppingCartDTO.shoppingBaskets.items()}
+        output.id = shoppingCartDTO.id
 
         self._ShoppingCartCacheLock.acquire()
         self._ShoppingCartCache[shoppingCartDTO.member.username][1] = -1
@@ -230,7 +235,7 @@ class DatabaseAdapter:
         output.shoppingCart = self.ShoppingCartAssmpler(shoppingBasketDTO.shoppingCart,seq_num)
         output.shop = self.ShopAssmpler(shoppingBasketDTO.shop,seq_num)
         output.stockItems = shoppingBasketDTO.stockItems
-
+        output.id = shoppingBasketDTO.id
         self._ShoppingBasketCacheLock.acquire()
         self._ShoppingBasketCache[shoppingBasketDTO.shop.name][1] = -1
         self._ShoppingBasketCacheLock.release()
@@ -238,7 +243,9 @@ class DatabaseAdapter:
         return output
 
     def StockAssmpler(self, stockDTO, seq_num):
-        return StockDTO({key: self.StockItemAssmpler(value, seq_num) for key, value in stockDTO.stockItems.items()})
+        output = Stock()
+        output._stockItems = {key: self.StockItemAssmpler(value, seq_num) for key, value in stockDTO.stockItems.items()}
+        output.id = stockDTO.id
 
 
 database_adapter = DatabaseAdapter()

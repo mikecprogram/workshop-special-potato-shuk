@@ -1,17 +1,10 @@
 # from Dev.DomainLayer.Objects.StockItem import StockItem
 from Dev.DomainLayer.Objects.StockItem import *
 import threading
-StockID=1
-StockIDLock=threading.Lock()
 class Stock:
 
     def __init__(self):
-        global StockID,StockIDLock
-        StockIDLock.acquire()
-        self.id = StockID
-        StockID = StockID + 1
-        StockIDLock.release()
-
+        self.id = -1
         self._stockItems = {}  # {stockItemName, stockItem}
         self._cache_lock = threading.Lock()
 

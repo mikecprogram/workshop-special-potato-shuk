@@ -97,12 +97,12 @@ class DALAssmbler:
 
     @db_session
     def AssignmentAssmpler(self, assignmentDAL):
-        return AssignmentDTO(self.MemberAssmpler(assignmentDAL.assigner), self.MemberAssmpler(assignmentDAL.assignee))
+        return AssignmentDTO(self.MemberAssmpler(assignmentDAL.assigner), self.MemberAssmpler(assignmentDAL.assignee),assignmentDAL.id)
 
 
     @db_session
     def PurchaseHistoryAssmpler(self, purchaseHistoryDAL):
-        return PurchaseHistoryDTO(purchaseHistoryDAL.purchaseString)
+        return PurchaseHistoryDTO(purchaseHistoryDAL.purchaseString, purchaseHistoryDAL.id)
 
     @db_session
     def StockItemAssmpler(self, stockItemDAL):
@@ -134,6 +134,7 @@ class DALAssmbler:
         output.member = self.MemberAssmpler(shoppingCartDAL.Member)
         output.cartPrice = shoppingCartDAL.cartPrice
         output.shoppingBaskets ={sb.shop.name:self.ShoppingBasketAssmpler(sb) for sb in shoppingCartDAL.shoppingBaskets}
+        output.id = shoppingCartDAL.id
         return output
 
     @db_session
@@ -145,10 +146,10 @@ class DALAssmbler:
         output.shop = self.ShopAssmpler(shoppingBasketDAL.shop)
         output.stockItems = {sb.StockItem.name:sb.count for sb in shoppingBasketDAL.ShoppingBasketDAL_StockItemDAL}
         output.shoppingCart = self.ShoppingCartAssmpler(shoppingBasketDAL.shoppingCart)
-
+        output.id = shoppingBasketDAL.id
     @db_session
     def StockAssmpler(self, stockDAL):
-        return StockDTO({si.name:self.StockItemAssmpler(si) for si in stockDAL.stockItems})
+        return StockDTO({si.name:self.StockItemAssmpler(si) for si in stockDAL.stockItems},stockDAL.id)
 
     # @db_session
     # def CategoryAssmpler(self, categoryDAL):

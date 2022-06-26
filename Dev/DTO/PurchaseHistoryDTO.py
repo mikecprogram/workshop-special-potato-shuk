@@ -3,6 +3,7 @@
 
 class PurchaseHistoryDTO:
 
-    def __init__(self,purchaseString= None):
+    def __init__(self,purchaseString= None, id = None):
+        self.id = id
         self.purchaseString = purchaseString
 
