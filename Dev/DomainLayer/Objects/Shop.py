@@ -8,7 +8,7 @@ import threading
 
 class Shop():
 
-    def __init__(self, shop_name: str, founder, notificationPlugin):
+    def __init__(self, shop_name: str=None, founder=None, notificationPlugin=None):
         self._name = shop_name
         self._stock = Stock()
         self._is_open = True  # need to confirm if we need shop's status such as closed/open. TODO
@@ -25,7 +25,15 @@ class Shop():
         self._purchases_history = PurchaseHistory()
         self._shop_lock = threading.Lock()
         self.notificationPlugin = notificationPlugin
+        self._cache_lock = threading.Lock()
 
+    def aqcuire_cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.acquire()
+
+    def release__cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.release()
     def getId(self, itemname):
         return self._stock.getId(itemname)
 

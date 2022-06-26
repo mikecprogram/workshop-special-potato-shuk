@@ -7,7 +7,7 @@ from Dev.DomainLayer.Objects.Permissions import Permissions
 
 class Member:
 
-    def __init__(self, username, hashed, market=None):
+    def __init__(self, username=None, hashed=None, market=None):
         self.founded_shops = {}  # {shopName, Shop}
         self.ownedShops = {}  # {shopname, Shop}
         self.managedShops = {}  # load
@@ -18,6 +18,15 @@ class Member:
         self._savedCart = None
         self._age = None
         self.delayedNoty = []
+        self._cache_lock = threading.Lock()
+
+    def aqcuire_cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.acquire()
+
+    def release__cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.release()
 
     def getNotifications(self):
         copy = self.delayedNoty.copy()

@@ -4,13 +4,22 @@ from tkinter import E
 from Dev.DomainLayer.Objects.ShoppingBasket import ShoppingBasket
 from Dev.DomainLayer.Objects.Shop import Shop
 
-
+import threading
 class ShoppingCart:
 
-    def __init__(self, user):
+    def __init__(self, user=None):
         self._user = user
         self._cartPrice = None
         self.shoppingBaskets = {}  # {shopName, ShoppingBasket}
+        self._cache_lock = threading.Lock()
+
+    def aqcuire_cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.acquire()
+
+    def release__cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.release()
 
     def getBasketByShop(self, shop):
         if type(shop) is str:

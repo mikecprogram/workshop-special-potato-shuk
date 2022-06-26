@@ -1,6 +1,6 @@
 from DB import *
 class ShopDAL(db.Entity):
-    name = Required(str)
+    name = PrimaryKey(str)
     stock = Required("StockDAL")
     isOpen = Required(int) #0 false other true
     founder = Required("MemberDAL")

@@ -1,7 +1,7 @@
 from DB import *
 class StockItemDAL(db.Entity):
     id = PrimaryKey(int)
-    category = Required("CategoryDAL")
+    category = Required(str)
     desc = Optional(str)
     # purchasePolicy = []
     # discountPolicy = []

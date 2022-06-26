@@ -1,13 +1,22 @@
 # from .Logger import Logger
 from Dev.DomainLayer.Objects.Shop import Shop
-
+import threading
 
 class ShoppingBasket:
 
-    def __init__(self, shoppingCart, shop):
+    def __init__(self, shoppingCart=None, shop=None):
         self.shoppingCart = shoppingCart
         self.shop = shop
         self.stockItems = {}  # {itemname, count}
+        self._cache_lock = threading.Lock()
+
+    def aqcuire_cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.acquire()
+
+    def release__cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.release()
 
     def validate_purchase(self, user):
         for name in self.stockItems.keys():

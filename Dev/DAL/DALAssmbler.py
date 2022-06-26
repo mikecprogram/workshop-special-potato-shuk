@@ -4,7 +4,6 @@ from Dev.DTO.ShopDTO import ShopDTO
 from Dev.DTO.MemberDTO import MemberDTO
 from Dev.DTO.CategoryDTO import CategoryDTO
 from Dev.DTO.AssignmentDTO import AssignmentDTO
-from Dev.DTO.PermissionsDTO import PermissionsDTO
 from Dev.DTO.PurchaseHistoryDTO import PurchaseHistoryDTO
 from Dev.DTO.StockItemDTO import StockItemDTO
 from Dev.DTO.ShoppingCartDTO import ShoppingCartDTO
@@ -40,12 +39,12 @@ class DALAssmbler:
         managers = { p.member.username : self.MemberAssmpler(p.member) for p in shopDAL.permissions}
 
         owners_assignments = [self.AssignmentAssmpler(oa) for oa in shopDAL.owners_assignments]
-        owners_assignments_dict = {oa.assigner.username :[] for oa in owners_assignments}
+        owners_assignments_dict = {oa.assigner.username:[] for oa in owners_assignments}
         for oa in owners_assignments:
             owners_assignments_dict[oa.assigner.username].append(oa)
 
         manager_assignments = [self.AssignmentAssmpler(ma) for ma in shopDAL.managers_assignments]
-        manager_assignments_dict = {ma.assigner.username: [] for ma in manager_assignments}
+        manager_assignments_dict = {ma.assigner.username:[] for ma in manager_assignments}
         for ma in manager_assignments:
             manager_assignments_dict[ma.assigner.username].append(ma)
 
@@ -53,7 +52,7 @@ class DALAssmbler:
 
         output.name = name
         output.stock = stock
-        output.is_open = is_open  # need to confirm if we need shop's status such as closed/open. TODO
+        output.is_open = is_open
         output.founder = founder
         output.owners = owners  # {ownerUsername, Member} (ò_ó)!!!!!!!!!!!!!!!!!
         output.managers = managers  # {managerUsername, Member}
@@ -113,12 +112,13 @@ class DALAssmbler:
         self._stockItemsCache[stockItemDAL.id] = output
 
         output.id = stockItemDAL.id
-        output.category = self.CategoryAssmpler(stockItemDAL.category)
+        output.category = stockItemDAL.category
         output.desc = stockItemDAL.desc
         output.name = stockItemDAL.name
         output.count = stockItemDAL.count
-        output.price = stockItemDAL.count
+        output.price = stockItemDAL.price
         output.shopname = stockItemDAL.shopname
+
         return output
 
 
@@ -148,7 +148,11 @@ class DALAssmbler:
     def StockAssmpler(self, stockDAL):
         return StockDTO({si.name:self.StockItemAssmpler(si) for si in stockDAL.stockItems})
 
-    @db_session
-    def CategoryAssmpler(self, categoryDAL):
-        return CategoryDTO(self.ShopAssmpler(categoryDAL.shop),categoryDAL.catagoryName,\
-               categoryDAL.catagoryId,[self.StockItemAssmpler(si) for si in categoryDAL.stockItems])
+    # @db_session
+    # def CategoryAssmpler(self, categoryDAL):
+    #     return CategoryDTO(self.ShopAssmpler(categoryDAL.shop),categoryDAL.catagoryName,\
+    #            categoryDAL.catagoryId,[self.StockItemAssmpler(si) for si in categoryDAL.stockItems])
+
+
+assembler = DALAssmbler()
+

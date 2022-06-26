@@ -29,10 +29,14 @@ def is_valid_permission(permission_id):
 
 class Permissions:
 
-    def __init__(self):
-        self._assignedPermission = set()  # {PermissionEnum}
-        self.add_permission(Permission.UsersQuestionsAnswering.value)
-        self.add_permission(Permission.InshopPurchasesHistoryGetting.value)
+    def __init__(self,assignedPermission=None):
+        if assignedPermission is None:
+            self._assignedPermission = set()  # {PermissionEnum}
+            self.add_permission(Permission.UsersQuestionsAnswering.value)
+            self.add_permission(Permission.InshopPurchasesHistoryGetting.value)
+        else:
+            self._assignedPermission=assignedPermission
+
 
     def has_permission(self, permission):
         return permission in self._assignedPermission

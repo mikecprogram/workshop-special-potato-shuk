@@ -1,12 +1,20 @@
 # from Dev.DomainLayer.Objects.StockItem import StockItem
 from Dev.DomainLayer.Objects.StockItem import *
-
+import threading
 
 class Stock:
 
     def __init__(self):
         self._stockItems = {}  # {stockItemName, stockItem}
+        self._cache_lock = threading.Lock()
 
+    def aqcuire_cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.acquire()
+
+    def release__cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.release()
 
     def getNextId(self):
         i = 1
