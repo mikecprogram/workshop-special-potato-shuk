@@ -6,12 +6,10 @@ from unicodedata import category
 
 class StockItem:
 
-    def __init__(self, ID, category: str, name, description, count, purchasepolicy, discountpolicy, price, shopname):
+    def __init__(self, ID, category: str, name, description, count, price, shopname):
         self._id = ID
         self._category = category
         self._desc = description
-        self._purchasePolicy = []
-        self._discountPolicy = []
         self._name = name
         self._count = count
         self._price = price
