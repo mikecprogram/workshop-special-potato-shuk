@@ -244,22 +244,27 @@ class Market():
             return user.removeFromCart(item_name, shop_name, amount)
 
 
-    def add_policy(self, token, percent, name, arg1=None, arg2=None):
+    def add_policy(self, token, shopname, percent, name, arg1=None, arg2=None):
         if self.isToken(token):
             if percent < 0:
                 raise Exception('Discount can\'t be negative..')
-            user = self.getUser(token)
+            shop = self.get_shop_by_name(shopname)
+            if shop is None:
+                raise Exception('No shop named '+shopname)
             if name in simplePolicies:
                 self._policyLock.acquire()
                 ID = self._nextPolicy
                 self._nextPolicy += 1
                 self._policyLock.release()
-                return user.addTempPolicy(ID, name, arg1, arg2, percent)
+                return shop.addTempPolicy(ID, name, arg1, arg2, percent)
             raise Exception('Cannot add policy!')
 
-    def get_my_policies(self, token):
-        user = self.getUser(token)
-        return user.getPolicies()
+    def get_my_policies(self, token, shopname):
+        self.isToken(token)
+        shop = self.get_shop_by_name(shopname)
+        if shop is None:
+            raise Exception('No shop named ' + shopname)
+        return shop.getTempPolicies()
 
     def get_shop_policies(self, token, shopname):
         if not self.isToken(token):
@@ -273,7 +278,7 @@ class Market():
         user = self.getUser(token)
         shop = self.get_shop_by_name(shopname)
         if shop.can_add_discount_policies(user):
-            policy = self.makePolicy(user, policyID)
+            policy = self.makePolicy(shop, policyID)
             return shop.addDiscountPolicy(policy)
         raise Exception("You do not have permission to add discount policy")
 
@@ -283,13 +288,13 @@ class Market():
         user = self.getUser(token)
         shop = self.get_shop_by_name(shopname)
         if shop.can_add_purchase_policies(user):
-            policy = self.makePolicy(user, policyID)
+            policy = self.makePolicy(shop, policyID)
             return shop.addPurchasePolicy(policy)
         else:
             raise Exception("You do not have permission to add purchase policy")
 
-    def makePolicy(self, user, PID):
-        pols = user.getPolicies()
+    def makePolicy(self, shop, PID):
+        pols = shop.getTempPolicies()
         pol = None
         for p in pols:
             if p[0] == PID:
@@ -316,41 +321,43 @@ class Market():
                 return policyIsAfterTime(p[0], p[4], p[2], p[3])
         else:
             if pol[1] == "not":
-                pt = self.makePolicy(user, p[2])
+                pt = self.makePolicy(shop, p[2])
                 return policyNot(p[0], pt)
             if pol[1] == "and":
-                pt1 = self.makePolicy(user, p[2])
-                pt2 = self.makePolicy(user, p[3])
+                pt1 = self.makePolicy(shop, p[2])
+                pt2 = self.makePolicy(shop, p[3])
                 return policyAnd(p[0], pt1, pt2)
             if pol[1] == "or":
-                pt1 = self.makePolicy(user, p[2])
-                pt2 = self.makePolicy(user, p[3])
+                pt1 = self.makePolicy(shop, p[2])
+                pt2 = self.makePolicy(shop, p[3])
                 return policyOr(p[0], pt1, pt2)
             if pol[1] == "xor":
-                pt1 = self.makePolicy(user, p[2])
-                pt2 = self.makePolicy(user, p[3])
+                pt1 = self.makePolicy(shop, p[2])
+                pt2 = self.makePolicy(shop, p[3])
                 return policyXor(p[0], pt1, pt2)
             if pol[1] == "if":
-                pt1 = self.makePolicy(user, p[2])
-                pt2 = self.makePolicy(user, p[3])
+                pt1 = self.makePolicy(shop, p[2])
+                pt2 = self.makePolicy(shop, p[3])
                 return policyIf(p[0], pt1, pt2)
             if pol[1] == "add":
-                pt1 = self.makePolicy(user, p[2])
-                pt2 = self.makePolicy(user, p[3])
+                pt1 = self.makePolicy(shop, p[2])
+                pt2 = self.makePolicy(shop, p[3])
                 return policyAdd(p[0], pt1, pt2)
             if pol[1] == "max":
-                pt1 = self.makePolicy(user, p[2])
-                pt2 = self.makePolicy(user, p[3])
+                pt1 = self.makePolicy(shop, p[2])
+                pt2 = self.makePolicy(shop, p[3])
                 return policyMax(p[0], pt1, pt2)
 
-    def compose_policy(self, token, name, arg1, arg2):
+    def compose_policy(self, token, shopname, name, arg1, arg2):
         if not self.isToken(token):
             raise Exception('Bad token!')
         ok = False
-        user = self.getUser(token)
+        shop = self.get_shop_by_name(shopname)
+        if shop is None:
+            raise Exception('No shop named ' + shopname)
         if name in compositePolicies:
 
-            PIDS = [p[0] for p in user.getPolicies()]
+            PIDS = [p[0] for p in shop.getTempPolicies()]
             if arg1 in PIDS and (arg2 is None or arg2 in PIDS):
                 ok = True
         if ok:
@@ -358,7 +365,7 @@ class Market():
             ID = self._nextPolicy
             self._nextPolicy += 1
             self._policyLock.release()
-            return user.addTempPolicy(ID, name, arg1, arg2, None)
+            return shop.addTempPolicy(ID, name, arg1, arg2, None)
         raise Exception('Cannot add policy!')
 
     def remove_policy_from_shop(self, token, shopname, policyID):

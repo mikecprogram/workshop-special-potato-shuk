@@ -225,11 +225,12 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def add_policy(self, token, percent, name, arg1=None, arg2=None) -> Response[bool]:
+    def add_policy(self, token, shopname, percent, name, arg1=None, arg2=None) -> Response[bool]:
+
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.add_policy(token, percent, name, arg1, arg2))
+            return Response(self.market.add_policy(token, shopname, percent, name, arg1, arg2))
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -249,11 +250,11 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def compose_policy(self, token, name, policy1, policy2=None) -> Response[bool]:
+    def compose_policy(self, token, shopname, name, policy1, policy2=None) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.compose_policy(token, name, policy1, policy2))
+            return Response(self.market.compose_policy(token, shopname, name, policy1, policy2))
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -281,11 +282,11 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def get_my_policies(self, token) -> Response[List[List[object]]]:
+    def get_my_policies(self, token, shopname) -> Response[List[List[object]]]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.get_my_policies(token))
+            return Response(self.market.get_my_policies(token, shopname))
         except Exception as e:
             return Response(exception=e.__str__())
 
