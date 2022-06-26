@@ -9,3 +9,5 @@ from ShoppingCartDAL import ShoppingCartDAL
 from ShoppingBasketDAL import ShoppingBasketDAL
 from StockDAL import StockDAL
 from StockItemDAL import StockItemDAL
+from DelayedNotyDAL import DelayedNotyDAL
+from ShoppingBasketDAL_StockItemDAL import ShoppingBasketDAL_StockItemDAL

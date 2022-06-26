@@ -6,7 +6,7 @@ class Stock:
 
     def __init__(self):
         self._stockItems = {}  # {stockItemName, stockItem}
-        pass
+
 
     def getNextId(self):
         i = 1

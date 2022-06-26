@@ -2,7 +2,7 @@ from DB import *
 class ShopDAL(db.Entity):
     name = Required(str)
     stock = Required("StockDAL")
-    isOpen = Required(bool) #TODO check and if isn't working change to int
+    isOpen = Required(int) #0 false other true
     founder = Required("MemberDAL")
     owners = Set("MemberDAL")
     permissions = Set("PermissionsDAL",reverse="shop")
@@ -12,4 +12,3 @@ class ShopDAL(db.Entity):
     managers_assignments = Set("AssignmentDAL",reverse="shopManager")
     purchases_history = Optional("PurchaseHistoryDAL")
     ShoppingBaskets = Set("ShoppingBasketDAL")
-

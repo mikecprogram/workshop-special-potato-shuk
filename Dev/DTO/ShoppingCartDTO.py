@@ -7,7 +7,7 @@ from Dev.DomainLayer.Objects.Shop import Shop
 
 class ShoppingCartDTO:
 
-    def __init__(self, user, cartPrice, shoppingBaskets):
-        self.user = user
+    def __init__(self, member= None, cartPrice= None, shoppingBaskets= None):
+        self.member = member
         self.cartPrice = cartPrice
         self.shoppingBaskets = shoppingBaskets

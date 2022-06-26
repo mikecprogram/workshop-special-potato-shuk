@@ -7,7 +7,7 @@ class Category:
         self._purchasePolicy = [] 
         self._discountPolicy = [] 
         self._stockItems = []
-        pass 
+
 
     def add_stockItem(self, newStockItem): # fix stockItem getters and call them in the appropriate way TODO
         if not any(stockItem.get_itemId() == newStockItem.get_itemId for stockItem in self._stockItems):

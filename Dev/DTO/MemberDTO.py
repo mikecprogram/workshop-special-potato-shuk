@@ -7,8 +7,8 @@ from Dev.DomainLayer.Objects.Permissions import Permissions
 
 class MemberDTO:
 
-    def __init__(self, founded_shops,ownedShops,managedShops,savedCart,age,\
-        delayedNoty,permissions,username, hashed, market=None):
+    def __init__(self, founded_shops= None,ownedShops= None,managedShops= None,savedCart= None,age= None,\
+        delayedNoty= None,permissions= None,username= None, hashed= None, market=None):
         self.founded_shops = founded_shops  # {shopName, Shop}
         self.ownedShops = ownedShops  # {shopname, Shop}
         self.managedShops = managedShops  # load

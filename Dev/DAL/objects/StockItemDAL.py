@@ -9,5 +9,5 @@ class StockItemDAL(db.Entity):
     count = Required(int)
     price = Required(int)
     shopname = Required(str)
-    shoppingBaskets = Set("ShoppingBasketDAL")
+    ShoppingBasketDAL_StockItemDAL = Set("ShoppingBasketDAL_StockItemDAL")
     stock = Required("StockDAL")

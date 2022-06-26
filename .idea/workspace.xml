@@ -3,21 +3,29 @@
   <component name="ChangeListManager">
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/Assignment.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/AssignmentDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/Category.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/CategoryDAL.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/DBInit.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/DBInit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/DiscountPolicy.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/DiscountPolicy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/Market.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/MarketDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/Member.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/MemberDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/Permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/PermissionsDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/PurchaseHistory.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/PurchaseHistoryDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/Shop.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShopDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingBasket.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingBasketDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingCart.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingCartDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/Stock.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/StockDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/StockItem.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/StockItemDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/MarketDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/MarketDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/MemberDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/MemberDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/PermissionsDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/PermissionsDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShopDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShopDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingBasketDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingBasketDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/StockItemDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/StockItemDAL.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/database.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/imports.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/imports.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/transaction.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/transaction.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/AssignmentDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/AssignmentDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/CategoryDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/CategoryDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/MemberDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/MemberDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/PermissionsDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/PermissionsDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/PurchaseHistoryDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/PurchaseHistoryDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/ShopDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/ShopDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/ShoppingBasketDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/ShoppingBasketDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/ShoppingCartDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/ShoppingCartDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/StockDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/StockDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/StockItemDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/StockItemDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Category.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Category.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/DTOassembler.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Stock.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Stock.py" afterDir="false" />
     </list>
     <list id="b395499b-f66b-412d-bcb0-557ef139e125" name="Changes by salih_kadry" comment="" />
     <list id="270a8280-9b7b-407c-99fc-7175ce8c2493" name="Changes by user" comment="" />
@@ -113,7 +121,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_Requirement_II_1_1.MyTestCase" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_Requirement_II_4_2_1.MyTestCase.testHasRawPricePurchase" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="workshop-special-potato-shuk" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -122,15 +130,14 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_Requirement_II_1_1.MyTestCase&quot;" />
+      <option name="_new_target" value="&quot;test_Requirement_II_4_2_1.MyTestCase.testHasRawPricePurchase&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_Requirement_II_1_4.MyTestCase.testDoubleLogin" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_Requirement_II_4_2_1.MyTestCase.testIsShopPurchase" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="workshop-special-potato-shuk" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -139,28 +146,10 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_Requirement_II_1_4.MyTestCase.testDoubleLogin&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest for test_Requirement_II_6_6.MyTestCase" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
-      <module name="workshop-special-potato-shuk" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="_new_keywords" value="&quot;&quot;" />
-      <option name="_new_parameters" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_Requirement_II_6_6.MyTestCase&quot;" />
+      <option name="_new_target" value="&quot;test_Requirement_II_4_2_1.MyTestCase.testIsShopPurchase&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -181,13 +170,29 @@
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
+    <configuration name="pytest in test_Requirement_II_4_2_1.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="workshop-special-potato-shuk" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/test_Requirement_II_4_2_1.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.DBInit" />
+        <item itemvalue="Python tests.pytest in test_Requirement_II_4_2_1.py" />
+        <item itemvalue="Python tests.pytest for test_Requirement_II_4_2_1.MyTestCase.testIsShopPurchase" />
+        <item itemvalue="Python tests.pytest for test_Requirement_II_4_2_1.MyTestCase.testHasRawPricePurchase" />
         <item itemvalue="Python tests.pytest in Users Requirements (II)" />
-        <item itemvalue="Python tests.pytest for test_Requirement_II_1_1.MyTestCase" />
-        <item itemvalue="Python tests.pytest for test_Requirement_II_1_4.MyTestCase.testDoubleLogin" />
-        <item itemvalue="Python tests.pytest for test_Requirement_II_6_6.MyTestCase" />
       </list>
     </recent_temporary>
   </component>
