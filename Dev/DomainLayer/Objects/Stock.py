@@ -8,6 +8,9 @@ class Stock:
         self._stockItems = {}  # {stockItemName, stockItem}
         pass
 
+    def toDal(self):
+        return [i.toDal() for i in self._stockItems.values()]
+
     def getNextId(self):
         i = 1
         while i in self._stockItems.keys():

@@ -36,6 +36,7 @@ class MyTestCase(unittest.TestCase):
         r = self.m.get_owned_shops(self.u2)
         self.assertFalse("shopname" in r.res, r.exc)
         r = self.m.shop_owner_assignment(self.u, "shopname", "username2")
+        print(r.res, r.exc)
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.get_owned_shops(self.u2)

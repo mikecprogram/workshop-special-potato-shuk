@@ -33,7 +33,14 @@ class Shop(Persistent):
 
 
     def toDAL(self):
-        return DalShop(self._name, self._is_open, self._founder)
+        pols = [p.toDal() for p in self._discountPolicies]
+        pols.extend([p.toDal() for p in self._purchasePolicies])
+        items = self._stock.toDal()
+        assi = []
+        for i in self._managers_assignments.values():
+            for j in i:
+                assi.append(j)
+        return DalShop(self._name, self._is_open, self._founder, pols, items, assi)
 
     def fromDAL(self, dal: DalShop):
         self.__init__(dal.name, dal.founder, self.notificationPlugin)
@@ -126,7 +133,7 @@ class Shop(Persistent):
         #if assigned owner was a manager need to think what to do remove from managers or... NO.. if you have a rule you cant be promoted.
         self._owners[assignee_member_object.get_username()] = assignee_member_object
         assignee_member_object.addOwnedShop(self)
-        self.add_assignment(assigner_member_object, assignee_member_object, self._owners_assignments)
+        self.add_assignment("owner", assigner_member_object, assignee_member_object, self._owners_assignments)
         return True
 
     def delete_owner(self, assigner_user_name, assignee_user_name):
@@ -150,16 +157,7 @@ class Shop(Persistent):
             raise Exception(assigner_user_name + " did not assignee " + assignee_user_name)
         self.recursive_delete(assignee_member_object)
 
-    def addTempPolicy(self, ID, name, arg1, arg2, percent):
-        p = []
-        for i in [ID, name, arg1, arg2, percent]:
-            if i is not None:
-                p.append(i)
-        self._policies.append(p)
-        return True
 
-    def getTempPolicies(self):
-        return self._policies
 
     def recursive_delete(self, member_to_delete):
         if member_to_delete.get_username() in self._owners_assignments:
@@ -182,22 +180,34 @@ class Shop(Persistent):
 
         self._managers[assignee_member_object.get_username()] = assignee_member_object
         assignee_member_object.addManagedShop(self)
-        self.add_assignment(assigner_member_object, assignee_member_object, self._managers_assignments)
+        self.add_assignment("manager", assigner_member_object, assignee_member_object, self._managers_assignments)
         return True
 
-    def add_assignment(self, assigner_member_object, assignee_member_object, assignment):
+    def add_assignment(self, role, assigner_member_object, assignee_member_object, assignment):
         if assigner_member_object.get_username() in assignment:
             assignment[assigner_member_object.get_username()].append(
-                Assignment(assigner_member_object, assignee_member_object))
+                Assignment(role, self._name, assigner_member_object, assignee_member_object))
         else:
             assignment[assigner_member_object.get_username()] = [
-                Assignment(assigner_member_object, assignee_member_object)]
+                Assignment(role, self._name, assigner_member_object, assignee_member_object)]
 
     def is_assignment(self, assigner, assignee):
         if assigner in self._owners_assignments:
             return assignee in self._owners_assignments[assigner]
         if assigner in self._managers_assignments:
             return assignee in self._managers_assignments[assigner]
+
+    def addTempPolicy(self, ID, name, arg1, arg2, percent):
+        p = []
+        for i in [ID, name, arg1, arg2, percent]:
+            if i is not None:
+                p.append(i)
+        self._policies.append(p)
+        return True
+
+    def getTempPolicies(self):
+        return self._policies
+
     def get_founder_and_owners(self):
         all = []
         all.append(self._founder)

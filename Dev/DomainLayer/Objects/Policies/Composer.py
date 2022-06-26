@@ -1,5 +1,6 @@
 from Dev.DataLayer.DalPolicy import DalPolicy
 from Dev.DomainLayer.Objects.Policies.Composable import Composable
+from Dev.DomainLayer.Objects.Policies.policyRecover import policyRecover
 
 
 class Composer(Composable):  # any composed discount that takes 2 composables inherits from Composer (XOR, AND, OR...)
@@ -20,4 +21,6 @@ class Composer(Composable):  # any composed discount that takes 2 composables in
         return DalPolicy(self.shopname, "complex", self.ID, self.__class__.__name__, self.c1, self.c2)
 
     def fromDAL(self, dal: DalPolicy):
-        self.__init__(dal.shopname, dal.ID, dal.arg1, dal.arg2)
+        self.__init__(dal.shopname, dal.ID, policyRecover.Recover(dal.arg1), policyRecover.Recover(dal.arg1))
+
+

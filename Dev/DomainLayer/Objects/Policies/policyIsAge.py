@@ -3,7 +3,7 @@ from Dev.DomainLayer.Objects import StockItem, User
 from Dev.DomainLayer.Objects.Policies.Composable import Composable
 
 
-class policyHasPrice(Composable):
+class policyIsAge(Composable):
 
     def __init__(self, shopname, ID, percent, age):
         self.shopname = shopname

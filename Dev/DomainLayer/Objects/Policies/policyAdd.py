@@ -1,4 +1,4 @@
-from Dev.DomainLayer.Objects.Policies.Composer import *
+from Dev.DomainLayer.Objects.Policies.Composer import Composer
 
 
 class policyAdd(Composer):
