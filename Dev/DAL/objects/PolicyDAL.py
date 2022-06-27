@@ -9,3 +9,4 @@ class PolicyDAL(db.Entity):
     arg1 = Optional(str)
     arg2 = Optional(str)
     percent = Required(int)
+    PrimaryKey(type, shop,ID)
