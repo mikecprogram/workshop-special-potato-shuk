@@ -1,4 +1,4 @@
-from Dev.DomainLayer.Objects import StockItem, User
+from Dev.DomainLayer.Objects import StockItem
 from Dev.DomainLayer.Objects.Policies.Composable import Composable
 
 
@@ -10,7 +10,7 @@ class policyHasPrice(Composable):
         self.itemname = itemname
         self.price = float(price)
 
-    def apply(self, user: User, item: StockItem):
+    def apply(self, user, item: StockItem):
         if self.itemname == "":
             raw = user.getRawPrice(item.getShopName())
             return raw > self.price

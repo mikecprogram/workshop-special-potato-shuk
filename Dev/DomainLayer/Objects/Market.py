@@ -20,9 +20,8 @@ from Dev.DomainLayer.Objects.ExternalServices import ExternalServices
 
 from Dev.DomainLayer.Objects.Member import Member
 from Dev.DomainLayer.Objects.Security import Security
-from Dev.DAL.objects.imports import *
 from Dev.DAL.objects.DBInit import initializeDatabase
-from db_dict import membersDict,shopsDict
+#from db_dict import membersDict,shopsDict
 Mock = False
 try:
     initializeDatabase()

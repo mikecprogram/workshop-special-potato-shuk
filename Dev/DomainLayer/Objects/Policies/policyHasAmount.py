@@ -1,4 +1,4 @@
-from Dev.DomainLayer.Objects import StockItem, User
+from Dev.DomainLayer.Objects import StockItem
 from Dev.DomainLayer.Objects.Policies.Composable import Composable
 
 
@@ -10,7 +10,7 @@ class policyHasAmount(Composable):
         self.itemname = str(itemname)
         self.amount = int(amount)
 
-    def apply(self, user: User, item: StockItem):
+    def apply(self, user, item: StockItem):
         basket = user.getBasketByShop(item.getShopName()).checkBasket()
         for listing in basket:
             if listing['name'] == self.itemname:

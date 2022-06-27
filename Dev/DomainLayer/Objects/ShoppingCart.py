@@ -2,7 +2,6 @@
 from hashlib import sha1
 from tkinter import E
 from Dev.DomainLayer.Objects.ShoppingBasket import ShoppingBasket
-from Dev.DomainLayer.Objects.Shop import Shop
 from Dev.DAL.Transactions import t
 import threading
 class ShoppingCart:

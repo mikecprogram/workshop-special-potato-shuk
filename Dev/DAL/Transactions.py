@@ -1,15 +1,7 @@
 from Dev.DAL.objects.imports import *
 from pony.orm import *
-from Dev.DTO.ShopDTO import ShopDTO
-from Dev.DTO.MemberDTO import MemberDTO
-from Dev.DTO.AssignmentDTO import AssignmentDTO
-from Dev.DTO.PurchaseHistoryDTO import PurchaseHistoryDTO
-from Dev.DTO.StockItemDTO import StockItemDTO
-from Dev.DTO.ShoppingCartDTO import ShoppingCartDTO
-from Dev.DTO.ShoppingBasketDTO import ShoppingBasketDTO
-from Dev.DTO.StockDTO import StockDTO
-from Dev.DomainLayer.Objects.Market import Mock
-from  Dev.DAL.DALAssmbler import assembler
+#from Dev.DomainLayer.Objects.Market import Mock
+from Dev.DAL.DALAssmbler import assembler
 import threading
 #set_sql_debug(True)
 transaction_lock = threading.Lock()
@@ -214,6 +206,13 @@ class Transactions:
     def item_set_category(self, item_id, category):
         StockItemDAL[item_id].category = category
 
+    @db_session
+    def get_all_member_names(self):
+        return list(select(m.username for m in MemberDAL))
+
+    @db_session
+    def get_all_shop_names(self):
+        return list(select(m.name for m in ShopDAL))
 
 class TransactionsMock:
     def addOwnedShop(self, member_name, shop_name):
@@ -313,11 +312,16 @@ class TransactionsMock:
     def item_set_price(self, item_id, price):
         pass
 
+    def get_all_member_names(self):
+        pass
+
+    def get_all_shop_names(self):
+        pass
 
     def item_set_category(self, item_id, category):
         pass
 
-    
-t = TransactionsMock()
-if not Mock:
-    t = Transactions()
+
+# t = TransactionsMock()
+# if not Mock:
+t = Transactions()

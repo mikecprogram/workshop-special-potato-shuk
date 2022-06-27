@@ -1,10 +1,10 @@
 from Dev.DomainLayer.Objects.Policies.policyIsShop import policyIsShop
-from Dev.DomainLayer.Objects.StockItem import *
-from Dev.DomainLayer.Objects.Assignment import Assignment
+from Dev.DomainLayer.Objects.StockItem import StockItem
+from Dev.DomainLayer.Objects.Assignment import Assignment,t
 from Dev.DomainLayer.Objects.Stock import Stock
 from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
 import threading
-from Dev.DAL.Transactions import t
+
 
 class Shop():
 

@@ -1,4 +1,3 @@
-from Dev.DAL.Transactions import Transactions
 from Dev.DAL.objects.DB import *
 from Dev.DTO.ShopDTO import ShopDTO
 from Dev.DTO.MemberDTO import MemberDTO
@@ -10,8 +9,8 @@ from Dev.DTO.ShoppingCartDTO import ShoppingCartDTO
 from Dev.DTO.ShoppingBasketDTO import ShoppingBasketDTO
 from Dev.DTO.StockDTO import StockDTO
 from Dev.DomainLayer.Objects.Permissions import Permissions
-from Dev.DomainLayer.Objects.ShoppingCart import ShoppingCart
-from Dev.DomainLayer.Objects.Member import Member
+
+from Dev.DomainLayer.Objects.Member import Member,ShoppingCart,t
 from Dev.DomainLayer.Objects.Shop import Shop
 from Dev.DomainLayer.Objects.Stock import Stock
 from Dev.DomainLayer.Objects.StockItem import StockItem
@@ -19,13 +18,13 @@ from Dev.DomainLayer.Objects.Category import Category
 from Dev.DomainLayer.Objects.Assignment import Assignment
 from Dev.DomainLayer.Objects.ShoppingBasket import ShoppingBasket
 from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
-from Market import Mock
+#from Market import Mock
 import threading
 class DatabaseAdapter:
     def __init__(self):
         self.sequence_number = 1
         self.sequence_number_lock = threading.Lock()
-        self.db = Transactions()
+        self.db = t
         self._membersCache = {}
         self._membersCacheLock = threading.Lock()
         self._shopsCache = {}  # {shopName, shop}
@@ -42,6 +41,12 @@ class DatabaseAdapter:
 
     def add_shop(self,name, founder_name, stock_id, purchase_history_id):
         self.db.add_new_shop(name,founder_name,stock_id,purchase_history_id)
+
+    def get_all_member_names(self):
+        return self.db.get_all_member_names()
+
+    def get_all_shop_names(self):
+        return self.db.get_all_shop_names()
 
     def get_member(self, name):
         member_DTO = self.db.get_member(name)
@@ -272,7 +277,7 @@ class DatabaseAdapterMock:
         pass
 
 
-database_adapter = DatabaseAdapterMock()
-if not Mock:
-    database_adapter = DatabaseAdapter()
+# database_adapter = DatabaseAdapterMock()
+# if not Mock:
+database_adapter = DatabaseAdapter()
 

@@ -1,5 +1,4 @@
 # from .Logger import Logger
-from Dev.DomainLayer.Objects.Shop import Shop
 import threading
 
 class ShoppingBasket:
