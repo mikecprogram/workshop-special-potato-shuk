@@ -1,5 +1,5 @@
-from  Dev.DAL.objects.AssignmentDAL import db
-from  Dev.DAL.objects.imports import *
+from Dev.DAL.objects.AssignmentDAL import db
+from Dev.DAL.objects.imports import *
 from os.path import exists
 
 def initializeDatabase(provider='sqlite', filename='database.db'):

@@ -1,7 +1,8 @@
 from operator import is_
 import threading
 import sys
-
+from Dev.DAL.objects.DBInit import initializeDatabase
+initializeDatabase()
 # from Logger import Logger
 from Dev.DomainLayer.Objects.Policies.policyAnd import policyAnd
 from Dev.DomainLayer.Objects.Policies.policyAdd import policyAdd
@@ -20,14 +21,10 @@ from Dev.DomainLayer.Objects.ExternalServices import ExternalServices
 
 from Dev.DomainLayer.Objects.Member import Member
 from Dev.DomainLayer.Objects.Security import Security
-from Dev.DAL.objects.DBInit import initializeDatabase
-#from db_dict import membersDict,shopsDict
-Mock = False
-try:
-    initializeDatabase()
-except Exception as e:
-    print(e.__str__())
-    Mock = True
+
+from Dev.DomainLayer.Objects.db_dict import membersDict,shopsDict
+
+
 
 prem = [
     "premission1",

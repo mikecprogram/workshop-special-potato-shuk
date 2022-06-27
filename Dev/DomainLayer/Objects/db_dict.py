@@ -1,6 +1,6 @@
 from collections.abc import MutableMapping
-from DatabaseAdapter import database_adapter
-from Market import Mock,Shop,Member
+from Dev.DomainLayer.Objects.DatabaseAdapter import database_adapter
+from Dev.DomainLayer.Objects.Market import Shop,Member
 import threading
 class ReadWriteLock:
     """ A lock object that allows many simultaneous "read locks", but
@@ -61,7 +61,7 @@ class TransformedDictMember(MutableMapping):
 
     def __setitem__(self, key, value):
         self.rw.acquire_write()
-        database_adapter.add_member(value._username,value._hashed)
+        database_adapter.add_member(value._username,value._hashed,value.admin is not None)
         self.store[key] = lambda: database_adapter.get_member(key)
         self.rw.release_write()
 
@@ -178,9 +178,7 @@ class TransformedDictShop(MutableMapping):
         self.rw.release_read()
         return output
 
-membersDict = {}
-shopsDict = {}
-if not Mock:
-    membersDict = TransformedDictMember()
-    shopsDict =TransformedDictShop()
+
+membersDict = TransformedDictMember()
+shopsDict = TransformedDictShop()
 

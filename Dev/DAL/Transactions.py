@@ -35,8 +35,11 @@ class Transactions:
         return exists(o for o in ShopDAL if o.name == name)
 
     @db_session
-    def add_new_member(self,username, hashed):
-        MemberDAL(username=username,hashed=hashed, admin = 0)
+    def add_new_member(self,username, hashed,admin):
+        if not admin:
+            MemberDAL(username=username,hashed=hashed, admin = 0)
+        else:
+            MemberDAL(username=username, hashed=hashed, admin=1)
 
     @db_session
     def add_new_shop(self,name, founder_name, stock_id, purchase_history_id):

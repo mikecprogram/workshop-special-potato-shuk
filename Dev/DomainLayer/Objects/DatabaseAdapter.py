@@ -36,8 +36,8 @@ class DatabaseAdapter:
         self._ShoppingBasketCache = {}  # {shopName, ShoppingCartDTO}
         self._ShoppingBasketCacheLock = threading.Lock()
 
-    def add_member(self,username, hashed):
-        self.db.add_new_member(username,hashed)
+    def add_member(self,username, hashed,admin):
+        self.db.add_new_member(username,hashed, admin)
 
     def add_shop(self,name, founder_name, stock_id, purchase_history_id):
         self.db.add_new_shop(name,founder_name,stock_id,purchase_history_id)
