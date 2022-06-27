@@ -1,12 +1,31 @@
 # from Dev.DomainLayer.Objects.StockItem import StockItem
 from Dev.DomainLayer.Objects.StockItem import *
-
-
+import threading
+from Dev.DAL.Transactions import t
 class Stock:
 
-    def __init__(self):
+    def __init__(self,shop_name,save = True):
+        self.id=-1
+        if save:
+            self.id = t.add_new_Stock_rid(shop_name)
+
+        self.shop_name = shop_name
         self._stockItems = {}  # {stockItemName, stockItem}
-        pass
+        self._cache_lock = threading.Lock()
+
+    def aqcuire_cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.acquire()
+
+    def get_item_id_from_name(self,item_name):#DB use please don't use
+        if item_name in self._stockItems:
+            return self._stockItems[item_name]._id
+        else:
+            raise Exception("No such item %s in this shop. please delete delete this item from you're cart before logut" % (item_name))
+
+    def release__cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.release()
 
     def getNextId(self):
         i = 1
@@ -36,6 +55,8 @@ class Stock:
     def addStockItem(self, stockItem: StockItem):
         if not (stockItem._name in self._stockItems.keys()):
             self._stockItems[stockItem._name] = stockItem
+            t.add_new_stock_item(stockItem.getCategory(),stockItem.getDesc(),stockItem.getName()\
+                                 ,stockItem.getCount(),stockItem.getPrice(),self.shop_name,self.id)
             return True
         else:
             raise Exception('An item with the same name (%s) already exists in this shop' % stockItem._name)
@@ -43,7 +64,9 @@ class Stock:
     def removeStockItem(self, itemname):  # DOES WHAT IT SAYS- DELETES THE ENITRE ITEM FROM STOCK!!!
         itemname = itemname.strip()
         if itemname in self._stockItems.keys():
+            t.delete_stock_item(self._stockItems[itemname]._id)
             del self._stockItems[itemname]
+
         else:
             raise Exception('No such item as %s to delete.' % itemname)
 
@@ -59,6 +82,7 @@ class Stock:
                     self.removeStockItem(itemname)
                     return True
                 i.setAmount(amount)
+                t.item_set_amount(i._id,amount)
             if new_name is not None:
                 new_name = new_name.strip()
                 if new_name == "":
@@ -69,21 +93,25 @@ class Stock:
                     else:
                         self._stockItems[new_name] = self._stockItems.pop(itemname)
                         i.setName(new_name)
+                        t.item_set_name(i._id, new_name)
             if item_desc is not None:
                 item_desc = item_desc.strip()
                 if item_desc == "":
                     raise Exception("Description of item can't be null")
                 i.setDesc(item_desc)
+                t.item_set_desc(i._id, item_desc)
             if item_price is not None:
                 item_price = float(item_price)
                 if item_price < 0:
                     raise Exception("Price of item can't be negative")
                 i.setPrice(item_price)
+                t.item_set_price(i._id, item_price)
             if category is not None:
                 category = category.strip()
                 if category == "":
                     raise Exception("Category of item can't be null")
                 i.setCategory(category)
+                t.item_set_category(i._id, category)
             return True
         else:
             raise Exception("No such item such as %s" % itemname)

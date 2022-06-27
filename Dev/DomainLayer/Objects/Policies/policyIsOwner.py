@@ -12,3 +12,9 @@ class policyIsOwner(Composable):
         if user.isMember():
             return user.getMember().is_owned_shop(item.getShopName())
         return False
+
+
+
+    def get_args(self):
+        return [None,None]
+ 

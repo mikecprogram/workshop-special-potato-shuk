@@ -10,3 +10,6 @@ class policyIsMember(Composable):
 
     def apply(self, user: User, item: StockItem):
         return user.isMember()
+
+    def get_args(self):
+        return [None,None]

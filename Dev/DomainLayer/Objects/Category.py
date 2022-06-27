@@ -1,13 +1,22 @@
+import threading
 class Category:
 
-    def __init__(self,shop, catagoryName, catagoryId):
+    def __init__(self,shop=None, catagoryName=None, catagoryId=None):
         self._shop = shop
         self._catagoryName = catagoryName
         self._catagoryId = catagoryId
         self._purchasePolicy = [] 
         self._discountPolicy = [] 
         self._stockItems = []
-        pass 
+        self._cache_lock = threading.Lock()
+
+    def aqcuire_cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.acquire()
+
+    def release__cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.release()
 
     def add_stockItem(self, newStockItem): # fix stockItem getters and call them in the appropriate way TODO
         if not any(stockItem.get_itemId() == newStockItem.get_itemId for stockItem in self._stockItems):

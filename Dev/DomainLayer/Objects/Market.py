@@ -1,7 +1,10 @@
-from operator import is_
+
 import threading
 import sys
-
+from Dev.Mock_init import Mock
+from Dev.DAL.objects.DBInit import initializeDatabase
+if not Mock:
+    initializeDatabase()
 # from Logger import Logger
 from Dev.DomainLayer.Objects.Policies.policyAnd import policyAnd
 from Dev.DomainLayer.Objects.Policies.policyMax import policyMax
@@ -24,6 +27,10 @@ from Dev.DomainLayer.Objects.ExternalServices import ExternalServices
 
 from Dev.DomainLayer.Objects.Member import Member
 from Dev.DomainLayer.Objects.Security import Security
+
+from Dev.DomainLayer.Objects.db_dict import TransformedDictMember,TransformedDictShop
+
+
 
 prem = [
     "premission1",
@@ -59,7 +66,7 @@ def is_valid_password(password):
 
 debug = True
 
-
+notyplugin = None
 class dummyNotify():
     def alertspecificrange(self, message, ran):
         return ran
@@ -73,14 +80,19 @@ class Market():
             self._notificationPlugin = dummyNotify()
         else:
             self._notificationPlugin = notificationPlugin
-        self._members = {}
+        if not Mock:
+            self._members = TransformedDictMember()
+            self._shops = TransformedDictShop()
+            self._shops.set_notiplugin(self._notificationPlugin)
+        else:
+            self._members = {}
+            self._shops = {}
         self._membersLock = threading.Lock()
         self._onlineVisitors = {}  # {token, User}
         self._nextToken = -1
         self._enterLock = threading.Lock()
         self._nextPolicy = 1
         self._policyLock = threading.Lock()
-        self._shops = {}  # {shopName, shop}
         self._security = Security()
         hashedPassword = self._security.hash(password)
         member = Member(system_admin_name, hashedPassword, self)
@@ -691,3 +703,4 @@ class Market():
 
     def get_all_categories(self):
         return {shop.getShopName(): shop.getCategories() for shop in self._shops.values()}
+

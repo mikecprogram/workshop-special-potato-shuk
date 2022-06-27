@@ -36,7 +36,7 @@ class MyTestCase(unittest.TestCase):
         self.assertFalse(r.isexc, r.exc)
         r= self.m.shop_manager_assignment(self.u1, "shopname", "username3")
         self.assertFalse(r.isexc, r.exc)
-        # print(self.m.get_all_members_name(self.u).response)
+
         r= self.m.delete_member(self.u, 'username1')
         self.assertTrue( r.isexc,r.exc)
         r= self.m.delete_member(self.u, 'username2')

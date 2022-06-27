@@ -11,3 +11,6 @@ class policyHasPrice(Composable):
 
     def apply(self, user: User, item: StockItem):
         return user.getAge() >= self.age
+
+    def get_args(self):
+        return [str(self.age),None]

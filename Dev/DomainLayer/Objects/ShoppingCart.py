@@ -2,15 +2,24 @@
 from hashlib import sha1
 from tkinter import E
 from Dev.DomainLayer.Objects.ShoppingBasket import ShoppingBasket
-from Dev.DomainLayer.Objects.Shop import Shop
-
-
+from Dev.DAL.Transactions import t
+import threading
 class ShoppingCart:
 
-    def __init__(self, user):
+    def __init__(self, user=None):
+        self.id = -1
         self._user = user
         self._cartPrice = None
         self.shoppingBaskets = {}  # {shopName, ShoppingBasket}
+        self._cache_lock = threading.Lock()
+
+    def aqcuire_cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.acquire()
+
+    def release__cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.release()
 
     def getBasketByShop(self, shop):
         if type(shop) is str:
@@ -72,8 +81,18 @@ class ShoppingCart:
             self.shoppingBaskets[shop].clear()
 
     def store(self):
+        try:
+            self.id = t.add_new_shopping_cart_rid(self._user.getMember().get_username())
+            for sb in self.shoppingBaskets:
+                sb.id = t.add_new_shop_basket_rid(self.id,sb.shop.getShopName())
+                stock_items = sb.get_stockItems()
+                for name,count in stock_items.items():
+                    t.add_new_shopping_basket_item(sb.id,name,count)
+        except Exception as e:
+            t.delete_shopping_cart(self.id)
+            raise e
         self._user = None
-        pass  # TODO store the the shopping cart at DB
+
 
     def setUser(self, user):
         self._user = user
