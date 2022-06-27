@@ -22,12 +22,9 @@ class Member:
     def getNotifications(self):
         copy = self.delayedNoty.copy()
         self.delayedNoty = []
-        print("Threw up notifications:")
-        print(copy)
         return copy
 
     def addDelayedNotification(self, message):
-        print("Added to %s \n %s" %(self.get_username(),message))
         self.delayedNoty.append(message)
     def getAge(self):
         return self._age
@@ -145,6 +142,9 @@ class Member:
             return self.founded_shops[shop_name].reopen_shop()
         else:
             raise Exception("Member could not reopen a not owned or not managed with special permission shop!")
+
+    def can_add_discount_policies(self, shop_name):
+        return self.permissions[shop_name].can_change_discount_policy()
 
     def can_close_shop(self, shop_name):
         return self.permissions[shop_name].can_close_shop()

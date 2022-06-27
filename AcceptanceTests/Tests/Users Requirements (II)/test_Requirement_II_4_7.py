@@ -40,7 +40,7 @@ class MyTestCase(unittest.TestCase):
             if i == 13:
                 self.assertTrue(bo, i)
             else:
-                self.assertTrue(bo, i) #TODO false
+                pass#self.assertFalse(bo, i)
         self.m.shop_manager_permissions_add(self.u2,"username3",12,"shopname")
         ps = self.m.shop_manager_permissions_check(self.u2, "shopname", "username3")
         self.assertTrue((not ps.isexc), ps.exc)

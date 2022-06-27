@@ -149,16 +149,7 @@ class User:
     def validate_cart_purchase(self):
         return self._shoppingCart.validate_purchase()
 
-    def addTempPolicy(self, ID, name, arg1, arg2, percent):
-        p = []
-        for i in [ID, name, arg1, arg2, percent]:
-            if i is not None:
-                p.append(i)
-        self._policies.append(p)
-        return True
 
-    def getPolicies(self):
-        return self._policies
 
     def is_admin(self):
         return self.getMember().is_admin()

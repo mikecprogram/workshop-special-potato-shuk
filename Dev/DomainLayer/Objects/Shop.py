@@ -13,6 +13,7 @@ class Shop():
         self._stock = Stock()
         self._is_open = True  # need to confirm if we need shop's status such as closed/open. TODO
         self._founder = founder
+        self._policies = [] #temp
         self._owners = {}  # {ownerUsername, Member} (ò_ó)!!!!!!!!!!!!!!!!!
         self._managers = {}  # {managerUsername, Member}
         self._purchasePolicies = []
@@ -136,6 +137,17 @@ class Shop():
         if not b:
             raise Exception(assigner_user_name + " did not assignee " + assignee_user_name)
         self.recursive_delete(assignee_member_object)
+
+    def addTempPolicy(self, ID, name, arg1, arg2, percent):
+        p = []
+        for i in [ID, name, arg1, arg2, percent]:
+            if i is not None:
+                p.append(i)
+        self._policies.append(p)
+        return True
+
+    def getTempPolicies(self):
+        return self._policies
 
     def recursive_delete(self, member_to_delete):
         if member_to_delete.get_username() in self._owners_assignments:
@@ -280,6 +292,17 @@ class Shop():
 
     def archive_shopping_basket(self, shooping_basket_report):
         self._purchases_history.append(shooping_basket_report)
+    def can_add_purchase_policies(self,user):
+        if user.getMember() == self._founder or user.getMember() in self._owners :
+            return True
+        if user.getMember() in self._managers:
+            return user.getMember().can_add_purchase_policies(self.name)
+
+    def can_add_discount_policies(self,user):
+        if user.getMember() == self._founder or user.getMember() in self._owners:
+            return True
+        if user.getMember() in self._managers:
+            return user.getMember().can_add_discount_policies(self.name)
 
     def addPurchasePolicy(self, policy):
         self._purchaseLock.acquire()
