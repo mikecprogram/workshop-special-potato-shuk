@@ -9,7 +9,11 @@ from Dev.DTO.StockItemDTO import StockItemDTO
 from Dev.DTO.ShoppingCartDTO import ShoppingCartDTO
 from Dev.DTO.ShoppingBasketDTO import ShoppingBasketDTO
 from Dev.DTO.StockDTO import StockDTO
+from Dev.DTO.PolicyDTO import PolicyDTO
 import threading
+compositePoliciesClass = [
+        "policyNot", "policyAnd", "policyOr", "policyXor", "policyMax", "policyAdd", "policyIf"
+    ]
 class DALAssmbler:
     def __init__(self):
         self._membersCache = {}
@@ -56,8 +60,8 @@ class DALAssmbler:
         output.founder = founder
         output.owners = owners  # {ownerUsername, Member} (ò_ó)!!!!!!!!!!!!!!!!!
         output.managers = managers  # {managerUsername, Member}
-        # self.purchasePolicies = purchasePolicies
-        # self.discountPolicies = discountPolicies
+        output.purchasePolicies = [self.PolicyAssmpler(sh) for sh in shopDAL.policy if shopDAL.policy.type == "purchase" and shopDAL.policy.isRoot==1]
+        output.discountPolicies = [self.PolicyAssmpler(sh) for sh in shopDAL.policy if shopDAL.policy.type == "discount" and shopDAL.policy.isRoot==1]
         output.owners_assignments = owners_assignments_dict
         output.managers_assignments = manager_assignments_dict
         output.purchases_history = purchases_history
@@ -150,6 +154,27 @@ class DALAssmbler:
     @db_session
     def StockAssmpler(self, stockDAL):
         return StockDTO({si.name:self.StockItemAssmpler(si) for si in stockDAL.stockItems},stockDAL.id,stockDAL.shop_name)
+
+
+
+    @db_session
+    def PolicyAssmpler(self, policyDAL):
+        if policyDAL.name not in compositePoliciesClass:
+            return PolicyDTO(policyDAL.percent,policyDAL.shop.name,policyDAL.type,policyDAL.ID,policyDAL.name,\
+                            policyDAL.arg1,policyDAL.arg2)
+        else:
+            if policyDAL.name == "policyNot":
+                arg1 = PolicyDAL.get(ID = int(policyDAL.arg1),shop = policyDAL.shop.name,type = policyDAL.type)
+                arg1 = self.PolicyAssmpler(arg1)
+                return PolicyDTO(policyDAL.percent, policyDAL.shop.name, policyDAL.type, policyDAL.ID, policyDAL.name, \
+                                 arg1, None)
+            else:
+                arg1 = PolicyDAL.get(ID=int(policyDAL.arg1), shop=policyDAL.shop.name, type=policyDAL.type)
+                arg2 = PolicyDAL.get(ID=int(policyDAL.arg2), shop=policyDAL.shop.name, type=policyDAL.type)
+                arg1 = self.PolicyAssmpler(arg1)
+                arg2 = self.PolicyAssmpler(arg2)
+                return PolicyDTO(policyDAL.percent, policyDAL.shop.name, policyDAL.type, policyDAL.ID, policyDAL.name, \
+                                 arg1, arg2)
 
     # @db_session
     # def CategoryAssmpler(self, categoryDAL):

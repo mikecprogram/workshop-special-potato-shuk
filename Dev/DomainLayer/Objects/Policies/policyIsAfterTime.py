@@ -3,7 +3,7 @@ from Dev.DomainLayer.Objects.Policies.Composable import Composable
 import datetime
 
 
-class policyHasPrice(Composable):
+class policyIsAfterTime(Composable):
 
     def __init__(self, ID, percent, hour, minute):
         self.ID = ID
@@ -14,3 +14,6 @@ class policyHasPrice(Composable):
     def apply(self, user: User, item: StockItem):
         now = datetime.datetime.now()
         return now.hour > self.hour and now.minute > self.minute
+
+    def get_args(self):
+        return [str(self.hour),str(self.minute)]

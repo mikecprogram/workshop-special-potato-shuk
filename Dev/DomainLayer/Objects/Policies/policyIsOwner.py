@@ -10,3 +10,6 @@ class policyIsOwner(Composable):
 
     def apply(self, user: User, item: StockItem):
         return user.isMember() and user.getMember().is_owned_shop(item.getShopName())
+
+    def get_args(self):
+        return [None,None]

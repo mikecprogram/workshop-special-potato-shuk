@@ -16,3 +16,6 @@ class policyHasAmount(Composable):
             if listing['name'] == self.itemname:
                 return listing['count'] >= self.amount
         return False
+
+    def get_args(self):
+        return [self.itemname,str(self.amount)]

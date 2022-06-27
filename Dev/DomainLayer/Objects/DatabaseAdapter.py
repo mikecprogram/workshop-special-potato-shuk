@@ -9,7 +9,7 @@ from Dev.DTO.ShoppingCartDTO import ShoppingCartDTO
 from Dev.DTO.ShoppingBasketDTO import ShoppingBasketDTO
 from Dev.DTO.StockDTO import StockDTO
 from Dev.DomainLayer.Objects.Permissions import Permissions
-
+from Dev.DomainLayer.Objects.policyRecover import policyRecover
 from Dev.DomainLayer.Objects.Member import Member,ShoppingCart,t
 from Dev.DomainLayer.Objects.Shop import Shop
 from Dev.DomainLayer.Objects.Stock import Stock
@@ -18,6 +18,7 @@ from Dev.DomainLayer.Objects.Category import Category
 from Dev.DomainLayer.Objects.Assignment import Assignment
 from Dev.DomainLayer.Objects.ShoppingBasket import ShoppingBasket
 from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
+from Dev.Mock_init import Mock
 #from Market import Mock
 import threading
 class DatabaseAdapter:
@@ -109,12 +110,11 @@ class DatabaseAdapter:
         output._founder = self.MemberAssmpler(shopDTO.founder,seq_num)
         output._owners = {key:self.MemberAssmpler(value, seq_num) for key,value in shopDTO.owners.items()}  # {ownerUsername, Member} (ò_ó)!!!!!!!!!!!!!!!!!
         output._managers = {key:self.MemberAssmpler(value, seq_num) for key,value in shopDTO.managers.items()}   # {managerUsername, Member}
-        output._purchasePolicies = [] #TODO
-        output._discountPolicies = [] #TODO
+        output._purchasePolicies = [policyRecover.Recover(i) for i in shopDTO.purchasePolicies]
+        output._discountPolicies = [policyRecover.Recover(i) for i in shopDTO.discountPolicies]
         output._owners_assignments = {key:[self.AssignmentAssmpler(a) for a in value] for key,value in shopDTO.owners_assignments.items()}
         output._managers_assignments = {key:[self.AssignmentAssmpler(a) for a in value] for key,value in shopDTO.managers_assignments.items()}
         output._purchases_history = self.PurchaseHistoryAssmpler(shopDTO.purchases_history, seq_num)
-        #output.notificationPlugin = notificationPlugin #TODO
 
         self._shopsCacheLock.acquire()
         self._shopsCache[shopDTO.name][1] = -1
@@ -336,5 +336,8 @@ class DatabaseAdapterMock:
 
 # database_adapter = DatabaseAdapterMock()
 # if not Mock:
-database_adapter = DatabaseAdapter()
+if not Mock:
+    database_adapter = DatabaseAdapter()
+else:
+    database_adapter = DatabaseAdapterMock()
 

@@ -1,3 +1,4 @@
+import abc
 class Composable:  # any basic discount inherits from Composable (isCategory, isMember, hasAmount...)
 
     def __init__(self, ID, percent):
@@ -18,3 +19,6 @@ class Composable:  # any basic discount inherits from Composable (isCategory, is
                "\npolicy type: " + type(self).__name__ + \
                "\npolicy discount: " + str(self.percent) + \
                "\n"
+    @abc.abstractmethod
+    def get_args(self):
+        pass

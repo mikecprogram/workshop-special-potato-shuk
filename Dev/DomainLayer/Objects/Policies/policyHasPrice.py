@@ -22,3 +22,6 @@ class policyHasPrice(Composable):
                 if listing['name'] == self.itemname:
                     return listing['count'] * item.getPrice() >= self.price
             return False
+
+    def get_args(self):
+        return [self.itemname,str(self.price)]

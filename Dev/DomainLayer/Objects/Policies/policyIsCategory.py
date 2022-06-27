@@ -11,3 +11,6 @@ class policyIsCategory(Composable):
 
     def apply(self, user, item: StockItem):
         return item.getCategory() == self.category
+
+    def get_args(self):
+        return [str(self.category),None]

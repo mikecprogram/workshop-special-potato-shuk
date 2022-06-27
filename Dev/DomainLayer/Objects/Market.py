@@ -1,8 +1,10 @@
 
 import threading
 import sys
+from Dev.Mock_init import Mock
 from Dev.DAL.objects.DBInit import initializeDatabase
-initializeDatabase()
+if not Mock:
+    initializeDatabase()
 # from Logger import Logger
 from Dev.DomainLayer.Objects.Policies.policyAnd import policyAnd
 from Dev.DomainLayer.Objects.Policies.policyAdd import policyAdd
@@ -74,11 +76,13 @@ class Market():
             self._notificationPlugin = dummyNotify()
         else:
             self._notificationPlugin = notificationPlugin
-
-
-        self._members = TransformedDictMember()
-        self._shops = TransformedDictShop()
-        self._shops.set_notiplugin(self._notificationPlugin)
+        if not Mock:
+            self._members = TransformedDictMember()
+            self._shops = TransformedDictShop()
+            self._shops.set_notiplugin(self._notificationPlugin)
+        else:
+            self._members = {}
+            self._shops = {}
         self._membersLock = threading.Lock()
         self._onlineVisitors = {}  # {token, User}
         self._nextToken = -1

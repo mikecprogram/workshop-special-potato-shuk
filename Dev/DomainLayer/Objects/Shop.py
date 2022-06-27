@@ -308,14 +308,15 @@ class Shop():
     def addPurchasePolicy(self, policy):
         self._purchaseLock.acquire()
         self._purchasePolicies.append(policy)
+        t.add_shop_policy(policy,self._name,"purchase",1)
         self._purchaseLock.release()
         return True
 
     def addDiscountPolicy(self, policy):
         self._discountLock.acquire()
         self._discountPolicies.append(policy)
+        t.add_shop_policy(policy, self._name, "discount", 1)
         self._discountLock.release()
-
         return True
 
     def remove_policy(self, ID):

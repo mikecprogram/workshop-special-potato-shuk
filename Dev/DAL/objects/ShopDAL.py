@@ -12,3 +12,4 @@ class ShopDAL(db.Entity):
     managers_assignments = Set("AssignmentDAL",reverse="shopManager")
     purchases_history = Required("PurchaseHistoryDAL")
     ShoppingBaskets = Set("ShoppingBasketDAL")
+    policy = Set("PolicyDAL")

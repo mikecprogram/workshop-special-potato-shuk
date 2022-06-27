@@ -2,9 +2,13 @@ from Dev.DAL.objects.imports import *
 from pony.orm import *
 #from Dev.DomainLayer.Objects.Market import Mock
 from Dev.DAL.DALAssmbler import assembler
+from Dev.Mock_init import Mock
 import threading
 #set_sql_debug(True)
 transaction_lock = threading.Lock()
+compositePoliciesClass = [
+        "policyNot", "policyAnd", "policyOr", "policyXor", "policyMax", "policyAdd", "policyIf"
+    ]
 class Transactions:
 
     @db_session
@@ -84,9 +88,7 @@ class Transactions:
         s.flush()
         return s.id
 
-    ShoppingBasket = Required("ShoppingBasketDAL")
-    StockItem = Required("StockItemDAL")
-    count = Required(int)
+
     @db_session
     def add_new_shopping_basket_item(self, ShoppingBasket_id,StockItem_name,count):
         if not exists(o for o in StockItemNameDAL if o.name == StockItem_name):
@@ -118,6 +120,31 @@ class Transactions:
         ShopDAL.get(name=shop_name).owners_assignments.add(AssignmentDAL[assignment_id])
 
 
+    @db_session
+    def add_shop_policy(self,policy,shop_name, type,is_root):
+        if type(policy).__name__ not in compositePoliciesClass:
+             PolicyDAL(type=type,shop=ShopDAL.get(name=shop_name),ID=policy.id,name=policy.name,\
+                             arg1=policy.get_args()[0],arg2=policy.get_args()[1] , percent= policy.discount,\
+             isRoot= is_root)
+        else:
+            if type(policy).__name__ == "policyNot":
+                arg1=policy.get_args()[0]
+                arg1 = self.add_shop_policy(arg1,shop_name,type,0)
+                PolicyDAL(type=type, shop=ShopDAL.get(name=shop_name), ID=policy.id, name=policy.name, \
+                                 arg1=arg1, arg2=None, percent=policy.discount,\
+                                 isRoot = is_root )
+            else:
+                arg1 = policy.get_args()[0]
+                arg1 = self.add_shop_policy(arg1, shop_name, type, 0)
+                arg2 = policy.get_args()[1]
+                arg2 = self.add_shop_policy(arg2, shop_name, type, 0)
+                PolicyDAL(type=type, shop=ShopDAL.get(name=shop_name), ID=policy.id, name=policy.name, \
+                                 arg1=arg1, arg2=arg2, percent=policy.discount, \
+                                 isRoot=is_root)
+
+    @db_session
+    def Delete_shop_policy(self, policy, shop_name, type, is_root):
+        pass
     #--------------------------------------------------------------------
 
     @db_session
@@ -222,8 +249,106 @@ class Transactions:
         PurchaseHistoryDAL[id].purchaseString = new_string
 
 class TransactionsMock:
-    def change_purchase_string(self,id,new_string):
+    def add_shop_policy(self, policy, shop_name, type, is_root):
         pass
+    
+    def Delete_shop_policy(self, policy, shop_name, type, is_root):
+        pass
+
+    def get_member(self, name):
+        pass
+
+    def is_member(self, name):
+        pass
+
+    def get_shop(self, name):
+        pass
+
+    def is_shop(self, name):
+        pass
+
+    def add_new_member(self, username, hashed, admin):
+        pass
+
+    def add_new_shop(self, name, founder_name, stock_id, purchase_history_id):
+        pass
+
+    def add_new_Stock_rid(self, shop_name):
+        pass
+
+    def add_new_purchase_history_rid(self):
+        pass
+
+    def add_new_assignment_rid(self, assigner_name, assignee_name):
+        pass
+
+    def add_new_delayedNoty_rid(self, member_name, notification_str):
+        pass
+
+    def add_new_permission_rid(self, shop_name, member_name, permission_int):
+        pass
+
+    def add_new_shop_basket_rid(self, shoppingCart_id, shop_name):
+        pass
+
+    def add_new_shopping_basket_item(self, ShoppingBasket_id, StockItem_name, count):
+        pass
+    def add_new_shopping_cart_rid(self, member_name):
+        pass
+
+    def add_new_stock_item(self, category, desc, name, count, price, shopname, stock_id):
+        pass
+
+    def add_shop_manager_assignment(self, shop_name, assignment_id):
+        pass
+
+    def add_shop_owner_assignment(self, shop_name, assignment_id):
+        pass
+
+    # --------------------------------------------------------------------
+
+    def delete_member(self, username):
+        pass
+
+    def delete_shop(self, name):
+        pass
+
+    def delete_Stock(self, id):
+        pass
+
+    def delete_purchase_history(self, id):
+        pass
+
+    def delete_assignment(self, id):
+        pass
+
+    def delete_delayedNoty(self, member_name, notification_str):
+        pass
+
+    def delete_permission(self, shop_name, member_name, permission_int):
+        pass
+
+    def delete_shop_basket(self, id):
+        pass
+
+    def delete_shopping_basket_item(self, ShoppingBasket_id, StockItem_id):
+        pass
+
+    def delete_shopping_cart(self, id):
+        pass
+
+    def delete_stock_item(self, id):
+        pass
+
+    def change_age(self, member_name, age):
+        pass
+
+    def close_shop(self, shop_name):
+        pass
+
+    def reopen_shop(self, shop_name):
+        pass
+
     def addOwnedShop(self, member_name, shop_name):
         pass
 
@@ -233,85 +358,9 @@ class TransactionsMock:
     def deleteManagedShop(self, member_name, shop_name):
         pass
 
-    def change_age(self, member_name,age):
-        pass
-
-    def get_member(self,name):
-        pass
-
-    def is_member(self, name):
-        pass
-
-    def get_shop(self, name):
-        pass
-
-    def close_shop(self, shop_name):
-        pass
-
-    def reopen_shop(self, shop_name):
-        pass
-
-    def is_shop(self, name):
-        pass
-
-    def add_new_member(self,username, hashed):
-        pass
-
-    def add_new_shop(self,name, founder_name, stock_id, purchase_history_id):
-        pass
-
-    def add_new_Stock_rid(self):
-        pass
-    def add_new_purchase_history_rid(self):
-        pass
-    def add_new_assignment_rid(self, assigner_name,assignee_name):
-        pass
-    def add_new_delayedNoty_rid(self, member_name,notification_str):
-        pass
-    def add_new_permission_rid(self, shop_name, member_name, permission_int):
-        pass
-    def add_new_shop_basket_rid(self, shoppingCart_id ,shop_name):
-        pass
-    def add_new_shopping_basket_item(self, ShoppingBasket_id,StockItem_id,count):
-        pass
-    def add_new_shopping_cart_rid(self, member_name):
-        pass
-    def add_new_stock_item(self, category, desc , name , count,price,shopname,stock_id):
-        pass
-
-    def add_shop_manager_assignment(self, shop_name, assignment_id):
-        pass
-
-    def add_shop_owner_assignment(self, shop_name, assignment_id):
-        pass
-    #--------------------------------------------------------------------
-
-
-    def delete_member(self, username):
-        pass
-    def delete_shop(self, name):
-        pass
-    def delete_Stock(self,id):
-        pass
-    def delete_purchase_history(self,id):
-        pass
-    def delete_assignment(self, id):
-        pass
-    def delete_delayedNoty(self, member_name, notification_str):
-        pass
-    def delete_permission(self, shop_name, member_name, permission_int):
-        pass
-    def delete_shop_basket(self, id):
-        pass
-    def delete_shopping_basket_item(self, ShoppingBasket_id, StockItem_id):
-        pass
-    def delete_shopping_cart(self, id):
-        pass
-    def delete_stock_item(self, id):
-        pass
-
     def item_set_amount(self, item_id, count):
         pass
+
     def item_set_name(self, item_id, name):
         pass
 
@@ -321,16 +370,20 @@ class TransactionsMock:
     def item_set_price(self, item_id, price):
         pass
 
+    def item_set_category(self, item_id, category):
+        pass
+
     def get_all_member_names(self):
         pass
 
     def get_all_shop_names(self):
         pass
 
-    def item_set_category(self, item_id, category):
+    def change_purchase_string(self, id, new_string):
         pass
-
-
 # t = TransactionsMock()
 # if not Mock:
-t = Transactions()
+if not Mock:
+    t = Transactions()
+else:
+    t = TransactionsMock()
