@@ -3,12 +3,15 @@ from Dev.DomainLayer.Objects.StockItem import StockItem
 from Dev.DomainLayer.Objects.Assignment import Assignment,t
 from Dev.DomainLayer.Objects.Stock import Stock
 from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
+notplugin = None
 import threading
 
 
 class Shop():
 
-    def __init__(self, shop_name: str=None, founder=None, notificationPlugin=None):
+    def __init__(self, shop_name, founder=None, notificationPlugin=None):
+        if notificationPlugin is not None:
+            notplugin = notificationPlugin
         self._name = shop_name
         self._stock = Stock(shop_name)
         self._is_open = True  # need to confirm if we need shop's status such as closed/open. TODO

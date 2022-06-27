@@ -148,9 +148,9 @@ class Member:
         self._savedCart = cart
 
     def dropSavedCart(self):
-        self._savedCart = None
-        if self._savedCart.id != -1:
+        if self._savedCart is not None and self._savedCart.id != -1:
             t.delete_shopping_cart(self._savedCart.id)
+        self._savedCart = None
 
     def loadShoppingCart(self, user):
         if self._savedCart is None:

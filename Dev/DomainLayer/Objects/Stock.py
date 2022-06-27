@@ -4,8 +4,11 @@ import threading
 from Dev.DAL.Transactions import t
 class Stock:
 
-    def __init__(self,shop_name):
-        self.id = t.add_new_Stock_rid(shop_name)
+    def __init__(self,shop_name,save = True):
+        self.id=-1
+        if save:
+            self.id = t.add_new_Stock_rid(shop_name)
+
         self.shop_name = shop_name
         self._stockItems = {}  # {stockItemName, stockItem}
         self._cache_lock = threading.Lock()

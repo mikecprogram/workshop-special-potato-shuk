@@ -35,12 +35,28 @@ class DatabaseAdapter:
         self._ShoppingCartCacheLock = threading.Lock()
         self._ShoppingBasketCache = {}  # {shopName, ShoppingCartDTO}
         self._ShoppingBasketCacheLock = threading.Lock()
+        self._AssignmentCache = {}  # {id, ShoppingCartDTO}
+        self._AssignmentCacheLock = threading.Lock()
+        self._PurchaseCache = {}  # {id, ShoppingCartDTO}
+        self._PurchaseCacheLock = threading.Lock()
 
-    def add_member(self,username, hashed,admin):
+    def add_member(self,username, hashed,admin,member):
         self.db.add_new_member(username,hashed, admin)
+        self._save_member_in_cache(member)
 
-    def add_shop(self,name, founder_name, stock_id, purchase_history_id):
+    def _save_member_in_cache(self,member):
+        self._membersCacheLock.acquire()
+        self._membersCache[member.get_username()] = [member,-1]
+        self._membersCacheLock.release()
+
+    def add_shop(self,name, founder_name, stock_id, purchase_history_id,shop):
         self.db.add_new_shop(name,founder_name,stock_id,purchase_history_id)
+        self._save_shop_in_cache(shop)
+
+    def _save_shop_in_cache(self,shop):
+        self._shopsCacheLock.acquire()
+        self._shopsCache[shop.getShopName()] = [shop,-1]
+        self._shopsCacheLock.release()
 
     def get_all_member_names(self):
         return self.db.get_all_member_names()
@@ -82,7 +98,7 @@ class DatabaseAdapter:
                 self._shopsCacheLock.release()
                 return output[0]
 
-        output = Shop()
+        output = Shop(shopDTO.name)
         self._shopsCache[shopDTO.name] = [output, seq_num]
         output.aqcuire_cache_lock()
         self._shopsCacheLock.release()
@@ -145,15 +161,56 @@ class DatabaseAdapter:
         return output
 
     def AssignmentAssmpler(self, assignmentDTO, seq_num):
-        output = Assignment(self.MemberAssmpler(assignmentDTO.assigner,seq_num),\
-                             self.MemberAssmpler(assignmentDTO.assignee, seq_num))
+        self._AssignmentCacheLock.acquire()
+        if assignmentDTO.id in self._AssignmentCache:
+            output = self._AssignmentCache[assignmentDTO.id]
+            if output[1] > 0 and output[1] != seq_num:
+                self._AssignmentCacheLock.release()
+                output[0].aqcuire_cache_lock()
+                output[0].release__cache_lock()
+                return output[0]
+            else:
+                self._AssignmentCacheLock.release()
+                return output[0]
+
+        output = Assignment(self.MemberAssmpler(assignmentDTO.assigner, seq_num), \
+                            self.MemberAssmpler(assignmentDTO.assignee, seq_num),False)
+        self._AssignmentCache[assignmentDTO.id] = [output, seq_num]
+        output.aqcuire_cache_lock()
+        self._AssignmentCacheLock.release()
+
         output.id = assignmentDTO.id
+
+        self._AssignmentCacheLock.acquire()
+        self._AssignmentCache[assignmentDTO.id][1] = -1
+        self._AssignmentCacheLock.release()
+        output.release__cache_lock()
         return output
 
     def PurchaseHistoryAssmpler(self, purchaseHistoryDTO, seq_num):
-        output =  PurchaseHistory()
+        self._PurchaseCacheLock.acquire()
+        if purchaseHistoryDTO.id in self._PurchaseCache:
+            output = self._PurchaseCache[purchaseHistoryDTO.id]
+            if output[1] > 0 and output[1] != seq_num:
+                self._PurchaseCacheLock.release()
+                output[0].aqcuire_cache_lock()
+                output[0].release__cache_lock()
+                return output[0]
+            else:
+                self._PurchaseCacheLock.release()
+                return output[0]
+
+        output = PurchaseHistory(save=False)
+        self._PurchaseCache[purchaseHistoryDTO.id] = [output, seq_num]
+        output.aqcuire_cache_lock()
+        self._PurchaseCacheLock.release()
+
         output.purchaseString = purchaseHistoryDTO.purchaseString
         output.id = purchaseHistoryDTO.id
+        self._PurchaseCacheLock.acquire()
+        self._PurchaseCache[purchaseHistoryDTO.id][1] = -1
+        self._PurchaseCacheLock.release()
+        output.release__cache_lock()
         return output
 
     def StockItemAssmpler(self, stockItemDTO, seq_num):
@@ -250,10 +307,10 @@ class DatabaseAdapter:
         return output
 
     def StockAssmpler(self, stockDTO, seq_num):
-        output = Stock()
+        output = Stock(stockDTO.shop_name,save=False)
         output._stockItems = {key: self.StockItemAssmpler(value, seq_num) for key, value in stockDTO.stockItems.items()}
         output.id = stockDTO.id
-        output.shop_name = stockDTO.id
+        output.shop_name = stockDTO.shop_name
         return output
 
 class DatabaseAdapterMock:

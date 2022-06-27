@@ -217,7 +217,13 @@ class Transactions:
     def get_all_shop_names(self):
         return list(select(m.name for m in ShopDAL))
 
+    @db_session
+    def change_purchase_string(self,id,new_string):
+        PurchaseHistoryDAL[id].purchaseString = new_string
+
 class TransactionsMock:
+    def change_purchase_string(self,id,new_string):
+        pass
     def addOwnedShop(self, member_name, shop_name):
         pass
 

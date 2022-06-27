@@ -4,14 +4,15 @@
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/test_Requirement_II_6_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/test_Requirement_II_6_2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/DALAssmbler.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/DALAssmbler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DAL/Transactions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/Transactions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/DBInit.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/DBInit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/MemberDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/MemberDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingCartDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingCartDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/database.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/imports.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/imports.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Assignment.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Assignment.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/DatabaseAdapter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/DatabaseAdapter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Member.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Member.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/PurchaseHistory.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/PurchaseHistory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Stock.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Stock.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/db_dict.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/db_dict.py" afterDir="false" />
     </list>
     <list id="b395499b-f66b-412d-bcb0-557ef139e125" name="Changes by salih_kadry" comment="" />
@@ -86,50 +87,8 @@
       <recent name="C:\Users\user\Desktop\workshop-special-potato-shuk\Dev\DomainLayer\Objects\Policies" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_Requirement_II_6_2.MyTestCase.testGood">
-    <configuration name="DBInit" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="workshop-special-potato-shuk" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Dev/DAL/objects" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dev/DAL/objects/DBInit.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="db_dict" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="workshop-special-potato-shuk" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Dev/DomainLayer/Objects" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dev/DomainLayer/Objects/db_dict.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest for test_Requirement_II_4_2_1.MyTestCase.testIsShopPurchase" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python tests.pytest for test_Requirement_II_4_2_1.MyTestCase.testBadShop">
+    <configuration name="pytest for test_Requirement_II_4_2_1.MyTestCase.testBadShop" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="workshop-special-potato-shuk" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -141,11 +100,11 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_Requirement_II_4_2_1.MyTestCase.testIsShopPurchase&quot;" />
+      <option name="_new_target" value="&quot;test_Requirement_II_4_2_1.MyTestCase.testBadShop&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_Requirement_II_6_2.MyTestCase.testGood" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_Requirement_II_4_2_1.MyTestCase.testHasRawPricePurchase" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="workshop-special-potato-shuk" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -157,11 +116,11 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_Requirement_II_6_2.MyTestCase.testGood&quot;" />
+      <option name="_new_target" value="&quot;test_Requirement_II_4_2_1.MyTestCase.testHasRawPricePurchase&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest in test_Requirement_II_4_2_1.py" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_Requirement_II_4_2_2.MyTestCase.testHasAmountDiscount" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="workshop-special-potato-shuk" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -173,17 +132,49 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/test_Requirement_II_4_2_1.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <option name="_new_target" value="&quot;test_Requirement_II_4_2_2.MyTestCase.testHasAmountDiscount&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_Requirement_II_4_2_2.MyTestCase.testMulti" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="workshop-special-potato-shuk" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_Requirement_II_4_2_2.MyTestCase.testMulti&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="pytest for test_Requirement_II_4_2_2.MyTestCase.testXor" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="workshop-special-potato-shuk" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;test_Requirement_II_4_2_2.MyTestCase.testXor&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.pytest for test_Requirement_II_6_2.MyTestCase.testGood" />
-        <item itemvalue="Python.db_dict" />
-        <item itemvalue="Python.DBInit" />
-        <item itemvalue="Python tests.pytest in test_Requirement_II_4_2_1.py" />
-        <item itemvalue="Python tests.pytest for test_Requirement_II_4_2_1.MyTestCase.testIsShopPurchase" />
+        <item itemvalue="Python tests.pytest for test_Requirement_II_4_2_1.MyTestCase.testBadShop" />
+        <item itemvalue="Python tests.pytest for test_Requirement_II_4_2_1.MyTestCase.testHasRawPricePurchase" />
+        <item itemvalue="Python tests.pytest for test_Requirement_II_4_2_2.MyTestCase.testXor" />
+        <item itemvalue="Python tests.pytest for test_Requirement_II_4_2_2.MyTestCase.testMulti" />
+        <item itemvalue="Python tests.pytest for test_Requirement_II_4_2_2.MyTestCase.testHasAmountDiscount" />
       </list>
     </recent_temporary>
   </component>
@@ -240,18 +231,18 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py</url>
-          <line>376</line>
+          <line>379</line>
           <option name="timeStamp" value="53" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Dev/DomainLayer/Objects/db_dict.py</url>
-          <line>137</line>
-          <option name="timeStamp" value="59" />
+          <url>file://$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py</url>
+          <line>432</line>
+          <option name="timeStamp" value="100" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Dev/DomainLayer/Objects/db_dict.py</url>
-          <line>70</line>
-          <option name="timeStamp" value="61" />
+          <url>file://$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py</url>
+          <line>193</line>
+          <option name="timeStamp" value="110" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -1,6 +1,5 @@
 from collections.abc import MutableMapping
 from Dev.DomainLayer.Objects.DatabaseAdapter import database_adapter
-from Dev.DomainLayer.Objects.Market import Shop,Member
 import threading
 class ReadWriteLock:
     """ A lock object that allows many simultaneous "read locks", but
@@ -61,7 +60,7 @@ class TransformedDictMember(MutableMapping):
 
     def __setitem__(self, key, value):
         self.rw.acquire_write()
-        database_adapter.add_member(value._username,value._hashed,value.admin is not None)
+        database_adapter.add_member(value._username,value._hashed,value.admin is not None,value)
         self.store[key] = lambda: database_adapter.get_member(key)
         self.rw.release_write()
 
@@ -116,12 +115,17 @@ class TransformedDictShop(MutableMapping):
     def __init__(self, *args, **kwargs):
         self.rw = ReadWriteLock()
         self.store = {n:lambda:database_adapter.get_shop(n) for n in database_adapter.get_all_shop_names()}
+        self.notyplugin = None
         self.update(dict(*args, **kwargs))  # use the free update to set keys
+
+    def set_notiplugin(self, n):
+        self.notyplugin = n
 
     def __getitem__(self, key):
         self.rw.acquire_read()
         if key in self.store:
             output = self.store[key]()
+            output.notificationPlugin = self.notyplugin
             self.rw.release_read()
             return output
         self.rw.release_read()
@@ -129,7 +133,7 @@ class TransformedDictShop(MutableMapping):
 
     def __setitem__(self, key, value):
         self.rw.acquire_write()
-        database_adapter.add_shop(value._name,value._founder._username,value._stock.id,value._purchases_history.id)
+        database_adapter.add_shop(value._name,value._founder._username,value._stock.id,value._purchases_history.id,value)
         self.store[key] = lambda: database_adapter.get_shop(key)
         self.rw.release_write()
 
@@ -179,6 +183,5 @@ class TransformedDictShop(MutableMapping):
         return output
 
 
-membersDict = TransformedDictMember()
-shopsDict = TransformedDictShop()
+
 

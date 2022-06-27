@@ -3,8 +3,12 @@ import threading
 from Dev.DAL.Transactions import t
 class PurchaseHistory():
 
-    def __init__(self):
-        self.id = t.add_new_purchase_history_rid()
+    def __init__(self,save = True ):
+        self.id =-1
+        if save:
+            self.id = t.add_new_purchase_history_rid()
+            if self.id == 2:
+                print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         self.purchaseString = ""
         self._cache_lock = threading.Lock()
 
@@ -21,6 +25,7 @@ class PurchaseHistory():
 
     def add(self,userstate,itemname,itemcount,bought_price):
         self.purchaseString += "User '%s' bought %d of %s for %f.\n"%(userstate,itemcount,itemname,bought_price)
+        t.change_purchase_string(self.id,self.purchaseString)
 
     def get_string(self):
         return self.purchaseString

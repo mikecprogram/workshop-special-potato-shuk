@@ -48,7 +48,7 @@ class DALAssmbler:
         for ma in manager_assignments:
             manager_assignments_dict[ma.assigner.username].append(ma)
 
-        purchases_history = shopDAL.purchases_history
+        purchases_history = self.PurchaseHistoryAssmpler(shopDAL.purchases_history)
 
         output.name = name
         output.stock = stock

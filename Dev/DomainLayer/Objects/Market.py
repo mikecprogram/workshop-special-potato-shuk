@@ -1,4 +1,4 @@
-from operator import is_
+
 import threading
 import sys
 from Dev.DAL.objects.DBInit import initializeDatabase
@@ -22,7 +22,7 @@ from Dev.DomainLayer.Objects.ExternalServices import ExternalServices
 from Dev.DomainLayer.Objects.Member import Member
 from Dev.DomainLayer.Objects.Security import Security
 
-from Dev.DomainLayer.Objects.db_dict import membersDict,shopsDict
+from Dev.DomainLayer.Objects.db_dict import TransformedDictMember,TransformedDictShop
 
 
 
@@ -60,7 +60,7 @@ def is_valid_password(password):
 
 debug = True
 
-
+notyplugin = None
 class dummyNotify():
     def alertspecificrange(self, message, ran):
         return ran
@@ -74,8 +74,11 @@ class Market():
             self._notificationPlugin = dummyNotify()
         else:
             self._notificationPlugin = notificationPlugin
-        self._members = membersDict
-        self._shops = shopsDict
+
+
+        self._members = TransformedDictMember()
+        self._shops = TransformedDictShop()
+        self._shops.set_notiplugin(self._notificationPlugin)
         self._membersLock = threading.Lock()
         self._onlineVisitors = {}  # {token, User}
         self._nextToken = -1
