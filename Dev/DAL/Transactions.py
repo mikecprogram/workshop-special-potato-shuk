@@ -251,7 +251,7 @@ class Transactions:
 class TransactionsMock:
     def add_shop_policy(self, policy, shop_name, type, is_root):
         pass
-    
+
     def Delete_shop_policy(self, policy, shop_name, type, is_root):
         pass
 
