@@ -4,13 +4,13 @@ from Dev.DomainLayer.Objects.Assignment import Assignment
 from Dev.DomainLayer.Objects.Stock import Stock
 from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
 import threading
-
+from Dev.DAL.Transactions import t
 
 class Shop():
 
     def __init__(self, shop_name: str=None, founder=None, notificationPlugin=None):
         self._name = shop_name
-        self._stock = Stock()
+        self._stock = Stock(shop_name)
         self._is_open = True  # need to confirm if we need shop's status such as closed/open. TODO
         self._founder = founder
         self._owners = {}  # {ownerUsername, Member} (ò_ó)!!!!!!!!!!!!!!!!!
@@ -65,7 +65,7 @@ class Shop():
             raise Exception('You do not have the sufficient permissions to add item')
 
         nid = self._stock.getNextId()
-        item = StockItem(nid, category, item_name, item_desc, amount, None, None, item_price, self._name)
+        item = StockItem(nid, category, item_name, item_desc, amount, item_price, self._name)
         try:
             self._shop_lock.acquire()
             r = self._stock.addStockItem(item)
@@ -169,25 +169,35 @@ class Shop():
         self.add_assignment(assigner_member_object, assignee_member_object, self._managers_assignments)
         return True
 
+    def get_item_id_from_name(self,item_name):
+        return self._stock.get_item_id_from_name(item_name)
+
     def add_assignment(self, assigner_member_object, assignee_member_object, assignment):
+        a= Assignment(assigner_member_object, assignee_member_object)
         if assigner_member_object.get_username() in assignment:
             assignment[assigner_member_object.get_username()].append(
-                Assignment(assigner_member_object, assignee_member_object))
+                a)
         else:
             assignment[assigner_member_object.get_username()] = [
-                Assignment(assigner_member_object, assignee_member_object)]
+                a]
+            if assignment == self._owners_assignments:
+                t.add_shop_owner_assignment(self._name, a.id)
+            else:
+                t.add_shop_manager_assignment(self._name, a.id)
 
     def is_assignment(self, assigner, assignee):
         if assigner in self._owners_assignments:
             return assignee in self._owners_assignments[assigner]
         if assigner in self._managers_assignments:
             return assignee in self._managers_assignments[assigner]
+
     def get_founder_and_owners(self):
         all = []
         all.append(self._founder)
         for o in  self._owners.values():
             all.append(o)
         return all
+
     def close_shop(self):
         if self._is_open:
             self._is_open = False
@@ -199,6 +209,7 @@ class Shop():
             for user in all:
                 if user.get_username() in missed:
                     user.addDelayedNotification("The Shop \"%s\" is closed." %(self.getShopName()))
+            t.close_shop(self.getShopName())
             return True
         else:
             raise Exception('Closed shop could not be closed again!')
@@ -212,6 +223,7 @@ class Shop():
             for user in all:
                 if user.get_username() in missed:
                     user.addDelayedNotification("The Shop \"%s\" is open again." % (self.getShopName()))
+            t.reopen_shop(self.getShopName())
             return True
         else:
             raise Exception('Open shop could not be opened again!')
@@ -277,6 +289,7 @@ class Shop():
                                                                        grantee_manager.get_username())):
             raise Exception('Owner can only update his assignees permissions!')
         grantee_manager.get_permissions(self._name).add_permission(permission_code)
+
 
     def withdraw_permission(self, permission_code, grantor_username, grantee_manager):
         if not self.is_manager(grantee_manager.get_username()):

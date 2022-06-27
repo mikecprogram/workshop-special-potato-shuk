@@ -1,10 +1,11 @@
 # from .Logger import Logger
 import threading
+from Dev.DAL.Transactions import t
 class PurchaseHistory():
 
     def __init__(self):
-        self.id = -1
-        self.purchaseString = ""  # load
+        self.id = t.add_new_purchase_history_rid()
+        self.purchaseString = ""
         self._cache_lock = threading.Lock()
 
     def aqcuire_cache_lock(self):

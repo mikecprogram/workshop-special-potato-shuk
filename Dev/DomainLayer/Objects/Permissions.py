@@ -5,6 +5,7 @@ from enum import Enum
 
 
 class Permission(Enum):
+    manager = -1
     StockManaging = 1
     DiscountPolicyChanging = 2
     PurchasePolicyChanging = 3
@@ -35,7 +36,7 @@ class Permissions:
             self.add_permission(Permission.UsersQuestionsAnswering.value)
             self.add_permission(Permission.InshopPurchasesHistoryGetting.value)
         else:
-            self._assignedPermission=assignedPermission
+            self._assignedPermission=set([Permission(p) for p in assignedPermission])
 
 
     def has_permission(self, permission):

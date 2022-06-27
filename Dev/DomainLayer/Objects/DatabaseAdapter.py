@@ -148,6 +148,7 @@ class DatabaseAdapter:
         output =  PurchaseHistory()
         output.purchaseString = purchaseHistoryDTO.purchaseString
         output.id = purchaseHistoryDTO.id
+        return output
 
     def StockItemAssmpler(self, stockItemDTO, seq_num):
         self._stockItemsCacheLock.acquire()
@@ -246,7 +247,28 @@ class DatabaseAdapter:
         output = Stock()
         output._stockItems = {key: self.StockItemAssmpler(value, seq_num) for key, value in stockDTO.stockItems.items()}
         output.id = stockDTO.id
+        output.shop_name = stockDTO.id
+        return output
 
+class DatabaseAdapterMock:
+
+    def add_member(self,username, hashed):
+        pass
+
+    def add_shop(self,name, founder_name, stock_id, purchase_history_id):
+        pass
+
+    def get_member(self, name):
+        pass
+
+    def is_member(self, name):
+        pass
+
+    def get_shop(self, name):
+        pass
+
+    def is_shop(self, name):
+        pass
 
 database_adapter = DatabaseAdapter()
 
