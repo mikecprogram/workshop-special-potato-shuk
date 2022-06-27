@@ -1,8 +1,3 @@
-from unicodedata import category
-
-
-##from .Logger import Logger
-
 
 class StockItemDTO:
 

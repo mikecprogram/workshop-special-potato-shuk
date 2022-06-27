@@ -1,15 +1,14 @@
 from Dev.DAL.objects.imports import *
-from Dev.DAL.objects.DB import *
+from pony.orm import *
 from Dev.DTO.ShopDTO import ShopDTO
 from Dev.DTO.MemberDTO import MemberDTO
-#from Dev.DTO.CategoryDTO import CategoryDTO
 from Dev.DTO.AssignmentDTO import AssignmentDTO
-#from Dev.DTO.PermissionsDTO import PermissionsDTO
 from Dev.DTO.PurchaseHistoryDTO import PurchaseHistoryDTO
 from Dev.DTO.StockItemDTO import StockItemDTO
 from Dev.DTO.ShoppingCartDTO import ShoppingCartDTO
 from Dev.DTO.ShoppingBasketDTO import ShoppingBasketDTO
 from Dev.DTO.StockDTO import StockDTO
+from Dev.DomainLayer.Objects.Market import Mock
 from  Dev.DAL.DALAssmbler import assembler
 import threading
 #set_sql_debug(True)
@@ -60,7 +59,7 @@ class Transactions:
 
     @db_session
     def add_new_purchase_history_rid(self):
-        s = PurchaseHistoryDAL(purchaseString="")
+        s = PurchaseHistoryDAL(purchaseString='')
         s.flush()
         return s.id
 
@@ -318,4 +317,7 @@ class TransactionsMock:
     def item_set_category(self, item_id, category):
         pass
 
-t = Transactions()
+    
+t = TransactionsMock()
+if not Mock:
+    t = Transactions()

@@ -1,6 +1,5 @@
-#from CategoryDAL import CategoryDAL
+
 from Dev.DAL.objects.AssignmentDAL import AssignmentDAL
-#from MarketDAL import MarketDAL
 from  Dev.DAL.objects.MemberDAL import MemberDAL
 from  Dev.DAL.objects.PermissionsDAL import PermissionsDAL
 from  Dev.DAL.objects.PurchaseHistoryDAL import PurchaseHistoryDAL

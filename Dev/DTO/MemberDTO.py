@@ -1,8 +1,3 @@
-# from .Logger import Logger
-import threading
-
-from Dev.DomainLayer.Objects.ShoppingCart import ShoppingCart
-from Dev.DomainLayer.Objects.Permissions import Permissions
 
 
 class MemberDTO:

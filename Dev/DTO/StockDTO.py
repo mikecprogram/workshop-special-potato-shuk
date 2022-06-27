@@ -1,6 +1,3 @@
-# from Dev.DomainLayer.Objects.StockItem import StockItem
-from Dev.DomainLayer.Objects.StockItem import *
-
 
 class StockDTO:
 

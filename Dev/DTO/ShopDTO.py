@@ -1,10 +1,3 @@
-from Dev.DomainLayer.Objects.Policies.policyIsShop import policyIsShop
-from Dev.DomainLayer.Objects.StockItem import *
-from Dev.DomainLayer.Objects.Assignment import Assignment
-from Dev.DomainLayer.Objects.Stock import Stock
-from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
-import threading
-
 
 class ShopDTO:
 

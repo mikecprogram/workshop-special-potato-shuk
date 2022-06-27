@@ -1,8 +1,6 @@
 from collections.abc import MutableMapping
 from DatabaseAdapter import database_adapter
-from Dev.DAL.objects.DBInit import initializeDatabase
-from Shop import Shop
-from Member import Member
+from Market import Mock
 class TransformedDictMember(MutableMapping):
     """A dictionary that applies an arbitrary key-altering
        function before accessing the keys"""
@@ -79,12 +77,8 @@ class TransformedDictShop(MutableMapping):
         else:
             return True
 
-
-if __name__ == '__main__':
-    initializeDatabase()
-    a = TransformedDictMember()
-    b = TransformedDictShop()
-    m = Member("salih","abc")
-    s = Shop("salih_shop",m)
-    #a["salih"] = m
-    b["salih_shop"] =s
+membersDict = {}
+shopsDict = {}
+if not Mock:
+    membersDict = TransformedDictMember()
+    shopsDict =TransformedDictShop()

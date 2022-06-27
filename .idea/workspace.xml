@@ -3,23 +3,19 @@
   <component name="ChangeListManager">
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/DALAssmbler.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/DALAssmbler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DAL/Transactions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/Transactions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingBasketDAL_StockItemDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShoppingBasketDAL_StockItemDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/StockDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/StockDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/StockItemDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/StockItemDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/PurchaseHistoryDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/PurchaseHistoryDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShopDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShopDAL.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/imports.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/imports.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/MemberDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/MemberDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/ShopDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/ShopDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/ShoppingBasketDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/ShoppingBasketDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/ShoppingCartDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/ShoppingCartDTO.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DTO/StockDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/StockDTO.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Assignment.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Assignment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/StockItemDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/StockItemDTO.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/DatabaseAdapter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/DatabaseAdapter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Member.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Member.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Permissions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/PurchaseHistory.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/PurchaseHistory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/ShoppingBasket.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/ShoppingBasket.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/ShoppingCart.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/ShoppingCart.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Stock.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Stock.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/User.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/User.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/db_dict.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/db_dict.py" afterDir="false" />
     </list>
     <list id="b395499b-f66b-412d-bcb0-557ef139e125" name="Changes by salih_kadry" comment="" />
     <list id="270a8280-9b7b-407c-99fc-7175ce8c2493" name="Changes by user" comment="" />

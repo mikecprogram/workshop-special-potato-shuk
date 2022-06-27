@@ -1,6 +1,3 @@
-# from .Logger import Logger
-from Dev.DomainLayer.Objects.Shop import Shop
-
 
 class ShoppingBasketDTO:
 

@@ -19,6 +19,7 @@ from Dev.DomainLayer.Objects.Category import Category
 from Dev.DomainLayer.Objects.Assignment import Assignment
 from Dev.DomainLayer.Objects.ShoppingBasket import ShoppingBasket
 from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
+from Market import Mock
 import threading
 class DatabaseAdapter:
     def __init__(self):
@@ -270,5 +271,8 @@ class DatabaseAdapterMock:
     def is_shop(self, name):
         pass
 
-database_adapter = DatabaseAdapter()
+
+database_adapter = DatabaseAdapterMock()
+if not Mock:
+    database_adapter = DatabaseAdapter()
 
