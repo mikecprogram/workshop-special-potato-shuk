@@ -82,14 +82,14 @@ class ShoppingCart:
 
     def store(self):
         try:
-            self.id = t.add_new_shopping_cart_rid(self._user.getMember().get_username())
-            for sb in self.shoppingBaskets:
-                sb.id = t.add_new_shop_basket_rid(self.id,sb.shop.getShopName())
+            self.id = t.add_new_shopping_cart_rid_if_not_exist(self._user.getMember().get_username())
+            for shopname,sb in self.shoppingBaskets.items():
+                sb.id = t.add_new_shop_basket_rid_if_not_exist(self.id,shopname)
                 stock_items = sb.get_stockItems()
                 for name,count in stock_items.items():
-                    t.add_new_shopping_basket_item(sb.id,name,count)
+                    t.add_new_shopping_basket_item_or_change_count(sb.id,name,count)
         except Exception as e:
-            t.delete_shopping_cart(self.id)
+            print(e.__str__())
             raise e
         self._user = None
 

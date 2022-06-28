@@ -15,7 +15,7 @@ class ShoppingBasket:
         self._cache_lock.acquire()
 
     def get_stockItems(self):#DB use this method please don't use
-        return self.stockItemsDB
+        return self.stockItems
 
     def release__cache_lock(self):
         '''DB cache usage please don't use it'''

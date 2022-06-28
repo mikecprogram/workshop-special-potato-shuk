@@ -51,7 +51,9 @@ class DALAssmbler:
         manager_assignments_dict = {ma.assigner.username:[] for ma in manager_assignments}
         for ma in manager_assignments:
             manager_assignments_dict[ma.assigner.username].append(ma)
-
+        print("shop name: ",name)
+        print("shop _owners_assignments: ", manager_assignments_dict.items())
+        print("shop _owners_assignments: ", owners_assignments_dict.items())
         purchases_history = self.PurchaseHistoryAssmpler(shopDAL.purchases_history)
 
         output.name = name
@@ -71,7 +73,7 @@ class DALAssmbler:
     def MemberAssmpler(self, memberDAL):
         if memberDAL.username in self._membersCache:
             return self._membersCache[memberDAL.username]
-        output = MemberDTO()
+        output = MemberDTO(username=memberDAL.username)
         self._membersCache[memberDAL.username] = output
         founded_shops = { fs.name : self.ShopAssmpler(fs)  for fs in memberDAL.foundedShops}
         ownedShops = { os.name : self.ShopAssmpler(os)  for os in memberDAL.ownedShops}
@@ -101,6 +103,9 @@ class DALAssmbler:
 
     @db_session
     def AssignmentAssmpler(self, assignmentDAL):
+        print("AssignmentAssmpler: ",assignmentDAL.assigner.username)
+        print("AssignmentAssmpler: ", assignmentDAL.assignee.username)
+        print("AssignmentAssmpler: ", str(assignmentDAL.id))
         return AssignmentDTO(self.MemberAssmpler(assignmentDAL.assigner), self.MemberAssmpler(assignmentDAL.assignee),assignmentDAL.id)
 
 
@@ -143,14 +148,15 @@ class DALAssmbler:
 
     @db_session
     def ShoppingBasketAssmpler(self, shoppingBasketDAL):
-        if shoppingBasketDAL.shop.name in self._ShoppingBasketCache:
-            return self._ShoppingBasketCache[shoppingBasketDAL.shop.name]
+        if shoppingBasketDAL.id in self._ShoppingBasketCache:
+            return self._ShoppingBasketCache[shoppingBasketDAL.id]
         output = ShoppingBasketDTO()
-        self._ShoppingBasketCache[shoppingBasketDAL.shop.name] = output
+        self._ShoppingBasketCache[shoppingBasketDAL.id] = output
         output.shop = self.ShopAssmpler(shoppingBasketDAL.shop)
         output.stockItems = {sb.StockItemNameDAL.name:sb.count for sb in shoppingBasketDAL.ShoppingBasketDAL_StockItemDAL}
         output.shoppingCart = self.ShoppingCartAssmpler(shoppingBasketDAL.shoppingCart)
         output.id = shoppingBasketDAL.id
+        return output
     @db_session
     def StockAssmpler(self, stockDAL):
         return StockDTO({si.name:self.StockItemAssmpler(si) for si in stockDAL.stockItems},stockDAL.id,stockDAL.shop_name)

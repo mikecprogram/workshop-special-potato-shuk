@@ -31,10 +31,7 @@ class Member:
     def getNotifications(self):
         copy = self.delayedNoty.copy()
         self.delayedNoty = []
-
-
-        for n in self.delayedNoty:
-            t.delete_delayedNoty(self._username, n)
+        t.delete_delayedNoty(self._username)
         print("Threw up notifications:")
         print(copy)
         return copy

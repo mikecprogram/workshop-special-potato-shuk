@@ -99,7 +99,7 @@ class DatabaseAdapter:
                 self._shopsCacheLock.release()
                 return output[0]
 
-        output = Shop(shopDTO.name)
+        output = Shop(shop_name = shopDTO.name,save = False)
         self._shopsCache[shopDTO.name] = [output, seq_num]
         output.aqcuire_cache_lock()
         self._shopsCacheLock.release()
@@ -112,8 +112,11 @@ class DatabaseAdapter:
         output._managers = {key:self.MemberAssmpler(value, seq_num) for key,value in shopDTO.managers.items()}   # {managerUsername, Member}
         output._purchasePolicies = [policyRecover.Recover(i) for i in shopDTO.purchasePolicies]
         output._discountPolicies = [policyRecover.Recover(i) for i in shopDTO.discountPolicies]
-        output._owners_assignments = {key:[self.AssignmentAssmpler(a) for a in value] for key,value in shopDTO.owners_assignments.items()}
-        output._managers_assignments = {key:[self.AssignmentAssmpler(a) for a in value] for key,value in shopDTO.managers_assignments.items()}
+        output._owners_assignments = {key:[self.AssignmentAssmpler(a,seq_num) for a in value] for key,value in shopDTO.owners_assignments.items()}
+        output._managers_assignments = {key:[self.AssignmentAssmpler(a,seq_num) for a in value] for key,value in shopDTO.managers_assignments.items()}
+        # print("shop name:",output._name)
+        # print("shop _owners_assignments:", output._owners_assignments.items())
+        # print("shop _owners_assignments:", output._managers_assignments.items())
         output._purchases_history = self.PurchaseHistoryAssmpler(shopDTO.purchases_history, seq_num)
 
         self._shopsCacheLock.acquire()
@@ -140,10 +143,10 @@ class DatabaseAdapter:
         output.aqcuire_cache_lock()
         self._membersCacheLock.release()
 
-        output.founded_shops = {key:self.MemberAssmpler(value, seq_num) for key, value in memberDTO.founded_shops.items()}  # {shopName, Shop}
-        output.ownedShops = {key:self.MemberAssmpler(value, seq_num) for key, value in memberDTO.ownedShops.items()}  # {shopname, Shop}
-        output.managedShops =  {key:self.MemberAssmpler(value, seq_num) for key, value in memberDTO.managedShops.items()}  # load
-        output.permissions = {key:Permissions(value) for key, value in memberDTO.managedShops.items()}
+        output.founded_shops = {key:self.ShopAssmpler(value, seq_num) for key, value in memberDTO.founded_shops.items()}  # {shopName, Shop}
+        output.ownedShops = {key:self.ShopAssmpler(value, seq_num) for key, value in memberDTO.ownedShops.items()}  # {shopname, Shop}
+        output.managedShops =  {key:self.ShopAssmpler(value, seq_num) for key, value in memberDTO.managedShops.items()}  # load
+        output.permissions = {key:Permissions(value) for key, value in memberDTO.permissions.items()}
         if memberDTO.admin == 0:
             output.admin = None
         else:
@@ -280,8 +283,8 @@ class DatabaseAdapter:
 
     def ShoppingBasketAssmpler(self, shoppingBasketDTO, seq_num):
         self._ShoppingBasketCacheLock.acquire()
-        if shoppingBasketDTO.shop.name in self._ShoppingBasketCache:
-            output = self._ShoppingBasketCache[shoppingBasketDTO.shop.name]
+        if shoppingBasketDTO.id in self._ShoppingBasketCache:
+            output = self._ShoppingBasketCache[shoppingBasketDTO.id]
             if output[1] > 0 and output[1] != seq_num:
                 self._ShoppingBasketCacheLock.release()
                 output[0].aqcuire_cache_lock()
@@ -292,7 +295,7 @@ class DatabaseAdapter:
                 return output[0]
 
         output = ShoppingBasket()
-        self._ShoppingBasketCache[shoppingBasketDTO.shop.name] = [output, seq_num]
+        self._ShoppingBasketCache[shoppingBasketDTO.id] = [output, seq_num]
         output.aqcuire_cache_lock()
         self._ShoppingBasketCacheLock.release()
 
@@ -301,7 +304,7 @@ class DatabaseAdapter:
         output.stockItems = shoppingBasketDTO.stockItems
         output.id = shoppingBasketDTO.id
         self._ShoppingBasketCacheLock.acquire()
-        self._ShoppingBasketCache[shoppingBasketDTO.shop.name][1] = -1
+        self._ShoppingBasketCache[shoppingBasketDTO.id][1] = -1
         self._ShoppingBasketCacheLock.release()
         output.release__cache_lock()
         return output

@@ -3,8 +3,7 @@ import threading
 import sys
 from Dev.Mock_init import Mock
 from Dev.DAL.objects.DBInit import initializeDatabase
-if not Mock:
-    initializeDatabase()
+
 # from Logger import Logger
 from Dev.DomainLayer.Objects.Policies.policyAnd import policyAnd
 from Dev.DomainLayer.Objects.Policies.policyMax import policyMax
@@ -76,6 +75,8 @@ class Market():
 
     def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password,
                  notificationPlugin ):
+        if not Mock:
+            initializeDatabase()
         if notificationPlugin is None:
             self._notificationPlugin = dummyNotify()
         else:
@@ -96,7 +97,8 @@ class Market():
         self._security = Security()
         hashedPassword = self._security.hash(password)
         member = Member(system_admin_name, hashedPassword, self)
-        self._members[system_admin_name] = member
+        if system_admin_name not in self._members:
+            self._members[system_admin_name] = member
         self._externalServices = ExternalServices(external_payment_service, external_supplement_service)
 
     # returns boolean, returns if current date < 10Minutes+_onlineDate[token]

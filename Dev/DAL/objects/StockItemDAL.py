@@ -6,6 +6,6 @@ class StockItemDAL(db.Entity):
     # discountPolicy = []
     name = Required(str)
     count = Required(int)
-    price = Required(int)
+    price = Required(float)
     shopname = Required(str)
     stock = Required("StockDAL")

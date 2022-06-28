@@ -52,7 +52,7 @@ class TransformedDictMember(MutableMapping):
     def __getitem__(self, key):
         self.rw.acquire_read()
         if key in self.store:
-            output = self.store[key]()
+            output = database_adapter.get_member(key)
             self.rw.release_read()
             return output
         self.rw.release_read()
@@ -124,7 +124,7 @@ class TransformedDictShop(MutableMapping):
     def __getitem__(self, key):
         self.rw.acquire_read()
         if key in self.store:
-            output = self.store[key]()
+            output = database_adapter.get_shop(key)
             output.notificationPlugin = self.notyplugin
             self.rw.release_read()
             return output

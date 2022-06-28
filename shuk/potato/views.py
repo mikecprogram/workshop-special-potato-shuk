@@ -30,7 +30,7 @@ new_noty = notificationPl(m)
 res = m.initialization_of_the_system(notificationPlugin = new_noty)
 if res.isexc:
     print("BUG:")
-    print(response.exception)
+    print(res.exc)
 
 
 def getToken(request):

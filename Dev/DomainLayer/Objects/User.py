@@ -51,7 +51,9 @@ class User:
 
     def logout(self):
         if self.isMember():
+            print("try save cart")
             self._state.saveShoppingCart(self._shoppingCart)
+            print("saved cart")
             self._state = Guest(self)
             self._shoppingCart = ShoppingCart(self)
         else:

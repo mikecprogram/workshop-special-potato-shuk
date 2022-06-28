@@ -83,42 +83,60 @@ class Transactions:
         return s.id
 
     @db_session
-    def add_new_shop_basket_rid(self, shoppingCart_id ,shop_name):
-        s = ShoppingBasketDAL(shoppingCart = ShoppingCartDAL[shoppingCart_id],shop = ShopDAL.get(name=shop_name))
-        s.flush()
-        return s.id
+    def add_new_shop_basket_rid_if_not_exist(self, shoppingCart_id ,shop_name):
+        if not exists(o for o in ShoppingBasketDAL if o.shoppingCart.id == shoppingCart_id and o.shop.name == shop_name):
+            print("shop_basket for shopping cart "+str(shoppingCart_id)+"and shop "+shop_name+"didn't exist")
+            s = ShoppingBasketDAL(shoppingCart = ShoppingCartDAL[shoppingCart_id],shop = ShopDAL.get(name=shop_name))
+            s.flush()
+            return s.id
+        else:
+            print("shop_basket for shopping cart " + str(shoppingCart_id) + "and shop " + shop_name + "exist")
+            s = ShoppingBasketDAL.get(shoppingCart=shoppingCart_id, shop=shop_name)
+            return s.id
 
 
     @db_session
-    def add_new_shopping_basket_item(self, ShoppingBasket_id,StockItem_name,count):
+    def add_new_shopping_basket_item_or_change_count(self, ShoppingBasket_id,StockItem_name,count):
         if not exists(o for o in StockItemNameDAL if o.name == StockItem_name):
-            s =StockItemNameDAL(name = StockItem_name)
+            s = StockItemNameDAL(name = StockItem_name)
             ShoppingBasketDAL_StockItemDAL(ShoppingBasket = ShoppingBasketDAL[ShoppingBasket_id], StockItemName=s, count=count)
         else:
             s = StockItemNameDAL.get(name = StockItem_name)
-            ShoppingBasketDAL_StockItemDAL(ShoppingBasket = ShoppingBasketDAL[ShoppingBasket_id], StockItemName=s, count=count)
+            if ShoppingBasketDAL_StockItemDAL.get(ShoppingBasket = ShoppingBasket_id, StockItemName=StockItem_name) is None:
+                ShoppingBasketDAL_StockItemDAL(ShoppingBasket = ShoppingBasketDAL[ShoppingBasket_id], StockItemName=s, count=count)
+            else:
+                s=ShoppingBasketDAL_StockItemDAL.get(ShoppingBasket = ShoppingBasket_id, StockItemName=StockItem_name)
+                s.count = count
+
 
     @db_session
-    def add_new_shopping_cart_rid(self, member_name):
-        s =ShoppingCartDAL(Member = MemberDAL.get(username = member_name))
-        s.flush()
-        return s.id
+    def add_new_shopping_cart_rid_if_not_exist(self, member_name):
+        if not exists(o for o in ShoppingCartDAL if o.Member.username == member_name):
+            print("cart for member "+member_name+"didn't exist")
+            s = ShoppingCartDAL(Member = MemberDAL.get(username = member_name))
+            s.flush()
+            return s.id
+        else:
+            print("cart for member" + member_name + "exist")
+            return ShoppingCartDAL.get(Member=member_name).id
 
 
     @db_session
     def add_new_stock_item(self, category, desc , name , count,price,shopname,stock_id):
-        s =StockItemDAL(category=category, desc=desc , name=name , count=count,price=price,shopname=shopname,stock_id=StockDAL[stock_id])
+        s =StockItemDAL(category=category, desc=desc , name=name , count=count,price=price,shopname=shopname,stock=StockDAL[stock_id])
         s.flush()
         return s.id
 
     @db_session
     def add_shop_manager_assignment(self, shop_name, assignment_id):
+        print("add_shop_owner_manager")
         ShopDAL.get(name = shop_name).managers_assignments.add(AssignmentDAL[assignment_id])
-
+        print("add_shop_owner_manager end")
     @db_session
     def add_shop_owner_assignment(self, shop_name, assignment_id):
+        print("add_shop_owner_assignment")
         ShopDAL.get(name=shop_name).owners_assignments.add(AssignmentDAL[assignment_id])
-
+        print("add_shop_owner_assignment end")
 
     @db_session
     def add_shop_policy(self,policy,shop_name, type,is_root):
@@ -165,11 +183,13 @@ class Transactions:
 
     @db_session
     def delete_assignment(self, id):
+        print("\n trying to delete assignment id: ",str(id))
         AssignmentDAL[id].delete()
+        print("\ndeleted assignment id: ", str(id))
 
     @db_session
-    def delete_delayedNoty(self, member_name, notification_str):
-        list(DelayedNotyDAL.select(lambda p: p.notification==notification_str and p.member==member_name))[0].delete()
+    def delete_delayedNoty(self, member_name):
+        delete(p for p in DelayedNotyDAL if p.member.username==member_name)
 
     @db_session
     def delete_permission(self, shop_name, member_name, permission_int):
@@ -322,7 +342,7 @@ class TransactionsMock:
     def delete_assignment(self, id):
         pass
 
-    def delete_delayedNoty(self, member_name, notification_str):
+    def delete_delayedNoty(self, member_name):
         pass
 
     def delete_permission(self, shop_name, member_name, permission_int):
@@ -381,6 +401,17 @@ class TransactionsMock:
 
     def change_purchase_string(self, id, new_string):
         pass
+
+    def add_new_shop_basket_rid_if_not_exist(self, shoppingCart_id, shop_name):
+        pass
+
+    def add_new_shopping_basket_item_or_change_count(self, ShoppingBasket_id, StockItem_name, count):
+        pass
+
+    def add_new_shopping_cart_rid_if_not_exist(self, member_name):
+        pass
+
+
 # t = TransactionsMock()
 # if not Mock:
 if not Mock:

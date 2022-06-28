@@ -9,11 +9,11 @@ import threading
 
 class Shop():
 
-    def __init__(self, shop_name, founder=None, notificationPlugin=None):
+    def __init__(self, shop_name, founder=None, notificationPlugin=None,save = True):
         if notificationPlugin is not None:
             notplugin = notificationPlugin
         self._name = shop_name
-        self._stock = Stock(shop_name)
+        self._stock = Stock(shop_name,save)
         self._is_open = True  # need to confirm if we need shop's status such as closed/open. TODO
         self._founder = founder
         self._policies = [] #temp
@@ -26,7 +26,7 @@ class Shop():
         # self._purchaseHistory = PurchaseHistory()
         self._owners_assignments = {}
         self._managers_assignments = {}
-        self._purchases_history = PurchaseHistory()
+        self._purchases_history = PurchaseHistory(save = save)
         self._shop_lock = threading.Lock()
         self.notificationPlugin = notificationPlugin
         self._cache_lock = threading.Lock()
@@ -143,6 +143,7 @@ class Shop():
                 if i.assignee.get_username() == assignee_user_name:
                     assignee_member_object = i.assignee
                     assignment[assigner_user_name].remove(i)
+                    t.delete_assignment(i.id)
                     b = True
                     break
         if not b:
@@ -164,9 +165,11 @@ class Shop():
         if member_to_delete.get_username() in self._owners_assignments:
             for i in self._owners_assignments[member_to_delete.get_username()]:
                 self.recursive_delete(i.assignee)
+                t.delete_assignment(i.id)
         if member_to_delete.get_username() in self._managers_assignments:
             for i in self._managers_assignments[member_to_delete.get_username()]:
                 self.recursive_delete(i.assignee)
+                t.delete_assignment(i.id)
         if member_to_delete.get_username() in self._owners_assignments:
             del self._owners_assignments[member_to_delete.get_username()]
         if member_to_delete.get_username() in self._managers_assignments:
