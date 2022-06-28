@@ -90,7 +90,13 @@
                 {% endif %}
                 {% if shop.founder == userStatus or userStatus in shop.owners %}
                     <div class="center">
-                        <a href="{% url 'shop'%}/{{shop.name}}/shopPolicies"><button class= "bluebutton">&emsp;Add Policies&emsp;</button></a>
+                        <a href="{% url 'shop'%}/{{shop.name}}/policies"><button class= "bluebutton">&emsp;Add Policies&emsp;</button></a>
+                    </div>
+                    <hr>
+                {% endif %}
+                {% if shop.founder == userStatus or userStatus in shop.owners %}
+                    <div class="center">
+                        <a href="{% url 'shop'%}/{{shop.name}}/shopPolicies"><button class= "bluebutton">&emsp;view Policies&emsp;</button></a>
                     </div>
                     <hr>
                 {% endif %}

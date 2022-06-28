@@ -8,5 +8,5 @@ class PolicyDAL(db.Entity):
     name = Required(str)
     arg1 = Optional(str)
     arg2 = Optional(str)
-    percent = Required(int)
-    PrimaryKey(type, shop,ID)
+    percent = Required(float)
+    PrimaryKey(isRoot,type, shop,ID)

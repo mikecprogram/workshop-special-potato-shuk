@@ -144,12 +144,12 @@ class SystemService(BridgeInterface):
             return Response(exception=e.__str__())
 
     def login_into_the_trading_system(self, user_id: int, name: str, password: str) -> Response[bool]:
-       # try:
+        try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
             return Response(self.market.login(user_id, name, password))
-        # except Exception as e:
-        #     return Response(exception=e.__str__())
+        except Exception as e:
+             return Response(exception=e.__str__())
 
     def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name: str) -> Response[Dict]:  # [shop description ,item_name1 , item_name2 ...]
         try:
@@ -274,11 +274,11 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def delete_policy(self, token, shopname, policyID)-> Response[bool]:
+    def delete_policy(self, token, shopname, policyID,type1)-> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.remove_policy_from_shop(token, shopname, policyID))
+            return Response(self.market.remove_policy_from_shop(token, shopname, policyID,type1))
         except Exception as e:
             return Response(exception=e.__str__())
 

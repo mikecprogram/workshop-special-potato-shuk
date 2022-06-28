@@ -1,7 +1,10 @@
 
 import threading
 import sys
-from Dev.Mock_init import Mock
+
+from Dev.DomainLayer.Objects.Policies.policyIsAge import policyIsAge
+from Dev.DomainLayer.Objects.Policies.policyIsMember import policyIsMember
+from Dev.Mock_init import Mock,AT
 from Dev.DAL.objects.DBInit import initializeDatabase
 
 # from Logger import Logger
@@ -76,6 +79,7 @@ class Market():
     def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password,
                  notificationPlugin ):
         if not Mock:
+
             initializeDatabase()
         if notificationPlugin is None:
             self._notificationPlugin = dummyNotify()
@@ -321,6 +325,8 @@ class Market():
                 return policyIsShop(p[0], p[2])
             if pol[1] == "isFounder":
                 return policyIsFounder(p[0], p[2])
+            if pol[1] == "isMember":
+                return policyIsMember(p[0], p[2])
             if pol[1] == "isOwner":
                 return policyIsOwner(p[0], p[2])
             if pol[1] == "isCategory":
@@ -329,6 +335,8 @@ class Market():
                 return policyIsItem(p[0], p[3], p[2])
             if pol[1] == "hasAmount":
                 return policyHasAmount(p[0], p[4], p[2], p[3])
+            if pol[1] == "isAge":
+                return policyIsAge(p[0], p[3], p[2])
             if pol[1] == "hasPrice":
                 return policyHasPrice(p[0], p[4], p[2], p[3])
             if pol[1] == "isAfterTime":
@@ -382,11 +390,11 @@ class Market():
             return shop.addTempPolicy(ID, name, arg1, arg2, None)
         raise Exception('Cannot add policy!')
 
-    def remove_policy_from_shop(self, token, shopname, policyID):
+    def remove_policy_from_shop(self, token, shopname, policyID,type1):
         if not self.isToken(token):
             raise Exception('Bad token!')
         s = self._shops[shopname]
-        return s.remove_policy(policyID)
+        return s.remove_policy(policyID,type1)
 
     def calculate_item_price(self, token, shopname, itemname):
         self.isToken(token)

@@ -345,22 +345,25 @@ class Shop():
         self._discountLock.release()
         return True
 
-    def remove_policy(self, ID):
+    def remove_policy(self, ID, type1):
         done = False
-        self._discountLock.acquire()
-        for d in self._discountPolicies:
-            if d.getID() == ID:
-                self._discountPolicies.remove(d)
-                done = True
-        self._discountLock.release()
-        if done:
-            return done
-        self._purchaseLock.acquire()
-        for d in self._purchasePolicies:
-            if d.getID() == ID:
-                self._purchasePolicies.remove(d)
-                done = True
-        self._purchaseLock.release()
+        if type1 == "discount":
+            self._discountLock.acquire()
+            for d in self._discountPolicies:
+                if d.getID() == ID:
+                    self._discountPolicies.remove(d)
+                    t.delete_shop_policy(ID,self._name,"discount")
+                    done = True
+            self._discountLock.release()
+        else:
+            self._purchaseLock.acquire()
+            for d in self._purchasePolicies:
+                if d.getID() == ID:
+                    self._purchasePolicies.remove(d)
+                    t.delete_shop_policy(ID, self._name, "purchase")
+                    done = True
+            self._purchaseLock.release()
+        print(done,ID,type1)
         return done
 
     def getItemPrice(self, name):

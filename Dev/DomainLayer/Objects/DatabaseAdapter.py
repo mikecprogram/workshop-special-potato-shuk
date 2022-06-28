@@ -110,8 +110,11 @@ class DatabaseAdapter:
         output._founder = self.MemberAssmpler(shopDTO.founder,seq_num)
         output._owners = {key:self.MemberAssmpler(value, seq_num) for key,value in shopDTO.owners.items()}  # {ownerUsername, Member} (ò_ó)!!!!!!!!!!!!!!!!!
         output._managers = {key:self.MemberAssmpler(value, seq_num) for key,value in shopDTO.managers.items()}   # {managerUsername, Member}
+
         output._purchasePolicies = [policyRecover.Recover(i) for i in shopDTO.purchasePolicies]
         output._discountPolicies = [policyRecover.Recover(i) for i in shopDTO.discountPolicies]
+        print(3,output._purchasePolicies)
+        print(4, output._discountPolicies)
         output._owners_assignments = {key:[self.AssignmentAssmpler(a,seq_num) for a in value] for key,value in shopDTO.owners_assignments.items()}
         output._managers_assignments = {key:[self.AssignmentAssmpler(a,seq_num) for a in value] for key,value in shopDTO.managers_assignments.items()}
         # print("shop name:",output._name)

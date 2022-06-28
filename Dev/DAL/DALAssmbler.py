@@ -62,8 +62,8 @@ class DALAssmbler:
         output.founder = founder
         output.owners = owners  # {ownerUsername, Member} (ò_ó)!!!!!!!!!!!!!!!!!
         output.managers = managers  # {managerUsername, Member}
-        output.purchasePolicies = [self.PolicyAssmpler(sh) for sh in shopDAL.policy if shopDAL.policy.type == "purchase" and shopDAL.policy.isRoot==1]
-        output.discountPolicies = [self.PolicyAssmpler(sh) for sh in shopDAL.policy if shopDAL.policy.type == "discount" and shopDAL.policy.isRoot==1]
+        output.purchasePolicies = [self.PolicyAssmpler(sh) for sh in shopDAL.policy if sh.type == "purchase" and sh.isRoot==1]
+        output.discountPolicies = [self.PolicyAssmpler(sh) for sh in shopDAL.policy if sh.type == "discount" and sh.isRoot==1]
         output.owners_assignments = owners_assignments_dict
         output.managers_assignments = manager_assignments_dict
         output.purchases_history = purchases_history
@@ -170,13 +170,13 @@ class DALAssmbler:
                             policyDAL.arg1,policyDAL.arg2)
         else:
             if policyDAL.name == "policyNot":
-                arg1 = PolicyDAL.get(ID = int(policyDAL.arg1),shop = policyDAL.shop.name,type = policyDAL.type)
+                arg1 = PolicyDAL.get(ID = int(policyDAL.arg1),shop = policyDAL.shop.name,type = policyDAL.type,isRoot = 0)
                 arg1 = self.PolicyAssmpler(arg1)
                 return PolicyDTO(policyDAL.percent, policyDAL.shop.name, policyDAL.type, policyDAL.ID, policyDAL.name, \
                                  arg1, None)
             else:
-                arg1 = PolicyDAL.get(ID=int(policyDAL.arg1), shop=policyDAL.shop.name, type=policyDAL.type)
-                arg2 = PolicyDAL.get(ID=int(policyDAL.arg2), shop=policyDAL.shop.name, type=policyDAL.type)
+                arg1 = PolicyDAL.get(ID=int(policyDAL.arg1), shop=policyDAL.shop.name, type=policyDAL.type,isRoot = 0)
+                arg2 = PolicyDAL.get(ID=int(policyDAL.arg2), shop=policyDAL.shop.name, type=policyDAL.type,isRoot = 0)
                 arg1 = self.PolicyAssmpler(arg1)
                 arg2 = self.PolicyAssmpler(arg2)
                 return PolicyDTO(policyDAL.percent, policyDAL.shop.name, policyDAL.type, policyDAL.ID, policyDAL.name, \

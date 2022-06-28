@@ -138,31 +138,50 @@ class Transactions:
         ShopDAL.get(name=shop_name).owners_assignments.add(AssignmentDAL[assignment_id])
         print("add_shop_owner_assignment end")
 
-    @db_session
-    def add_shop_policy(self,policy,shop_name, type,is_root):
-        if type(policy).__name__ not in compositePoliciesClass:
-             PolicyDAL(type=type,shop=ShopDAL.get(name=shop_name),ID=policy.id,name=policy.name,\
-                             arg1=policy.get_args()[0],arg2=policy.get_args()[1] , percent= policy.discount,\
-             isRoot= is_root)
-        else:
-            if type(policy).__name__ == "policyNot":
-                arg1=policy.get_args()[0]
-                arg1 = self.add_shop_policy(arg1,shop_name,type,0)
-                PolicyDAL(type=type, shop=ShopDAL.get(name=shop_name), ID=policy.id, name=policy.name, \
-                                 arg1=arg1, arg2=None, percent=policy.discount,\
-                                 isRoot = is_root )
-            else:
-                arg1 = policy.get_args()[0]
-                arg1 = self.add_shop_policy(arg1, shop_name, type, 0)
-                arg2 = policy.get_args()[1]
-                arg2 = self.add_shop_policy(arg2, shop_name, type, 0)
-                PolicyDAL(type=type, shop=ShopDAL.get(name=shop_name), ID=policy.id, name=policy.name, \
-                                 arg1=arg1, arg2=arg2, percent=policy.discount, \
-                                 isRoot=is_root)
 
     @db_session
-    def Delete_shop_policy(self, policy, shop_name, type, is_root):
-        pass
+    def add_shop_policy(self,policy,shop_name, type1,is_root):
+        if PolicyDAL.get(type=type1,isRoot=is_root,ID=policy.ID,shop=shop_name) is None:
+            if type(policy).__name__ not in compositePoliciesClass:
+                if policy.get_args()[0] is None and policy.get_args()[1] is None:
+                    PolicyDAL(type=type1, shop=ShopDAL.get(name=shop_name), ID=policy.ID, name=type(policy).__name__, \
+                               percent=policy.percent, \
+                              isRoot=is_root)
+                    return
+                if policy.get_args()[0] is None:
+                    PolicyDAL(type=type1, shop=ShopDAL.get(name=shop_name), ID=policy.ID, name=type(policy).__name__, \
+                               arg2=policy.get_args()[1],percent=policy.percent, \
+                              isRoot=is_root)
+                    return
+                if policy.get_args()[1] is None:
+                    PolicyDAL(type=type1, shop=ShopDAL.get(name=shop_name), ID=policy.ID, name=type(policy).__name__, \
+                               arg1=policy.get_args()[0],percent=policy.percent, \
+                              isRoot=is_root)
+                    return
+
+                PolicyDAL(type=type1,shop=ShopDAL.get(name=shop_name),ID=policy.ID,name=type(policy).__name__,\
+                             arg1=policy.get_args()[0],arg2=policy.get_args()[1] , percent= policy.percent,\
+                isRoot= is_root)
+            else:
+                if type(policy).__name__ == "policyNot":
+                    arg1=policy.get_args()[0]
+                    arg1 = self.add_shop_policy(arg1,shop_name,type1,0)
+                    PolicyDAL(type=type1, shop=ShopDAL.get(name=shop_name), ID=policy.ID, name=type(policy).__name__, \
+                                     arg1=arg1, percent=policy.percent,\
+                                     isRoot = is_root )
+                else:
+                    arg1 = policy.get_args()[0]
+                    self.add_shop_policy(arg1, shop_name, type1, 0)
+                    arg2 = policy.get_args()[1]
+                    self.add_shop_policy(arg2, shop_name, type1, 0)
+                    PolicyDAL(type=type1, shop=ShopDAL.get(name=shop_name), ID=policy.ID, name=type(policy).__name__, \
+                                     arg1=str(arg1.ID), arg2=str(arg2.ID), percent=policy.percent, \
+                                     isRoot=is_root)
+    @db_session
+    def delete_shop_policy(self, id, shop_name, type1):
+        print(1000,id, shop_name, type1)
+        PolicyDAL.get(ID=id, shop=shop_name, type=type1,isRoot = 1).delete()
+        print(1000, id, shop_name, type1)
     #--------------------------------------------------------------------
 
     @db_session
@@ -272,7 +291,7 @@ class TransactionsMock:
     def add_shop_policy(self, policy, shop_name, type, is_root):
         pass
 
-    def Delete_shop_policy(self, policy, shop_name, type, is_root):
+    def delete_shop_policy(self, id, shop_name, type, is_root):
         pass
 
     def get_member(self, name):

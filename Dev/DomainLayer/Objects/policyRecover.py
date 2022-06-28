@@ -1,5 +1,8 @@
+from Dev.DomainLayer.Objects.Policies.policyIsMember import policyIsMember
 
+dic ={
 
+}
 
 class policyRecover:
 
@@ -20,49 +23,54 @@ class policyRecover:
         from Dev.DomainLayer.Objects.Policies.policyNot import policyNot
         from Dev.DomainLayer.Objects.Policies.policyOr import policyOr
         from Dev.DomainLayer.Objects.Policies.policyXor import policyXor
+        from Dev.DomainLayer.Objects.Policies.policyIsAge import policyIsAge
         t = dal.name
         shopname = dal.shopname
-        if t == "isShop":
-            return policyIsShop(shopname, dal.ID, dal.percent)
-        if t == "isFounder":
-            return policyIsFounder(shopname, dal.ID, dal.percent)
-        if t == "isOwner":
-            return policyIsOwner(shopname, dal.ID, dal.percent)
-        if t == "isCategory":
-            return policyIsCategory(shopname, dal.ID, dal.percent, dal.arg1)
-        if t == "isItem":
-            return policyIsItem(shopname, dal.ID, dal.percent, dal.arg1)
-        if t == "hasAmount":
-            return policyHasAmount(shopname, dal.ID, dal.percent, dal.arg1, int(dal.arg2))
-        if t == "hasPrice":
-            return policyHasPrice(shopname, dal.ID, dal.percent, dal.arg1, float(dal.arg2))
-        if t == "isAfterTime":
-            return policyIsAfterTime(shopname, dal.ID, dal.percent, int(dal.arg1), int(dal.arg2))
+        if t == "policyIsAge":
+            return policyIsAge(dal.ID, dal.percent, dal.arg1)
+        if t == "policyIsShop":
+            return policyIsShop( dal.ID, dal.percent)
+        if t == "policyIsFounder":
+            return policyIsFounder( dal.ID, dal.percent)
+        if t == "policyIsMember":
+            return policyIsMember( dal.ID, dal.percent)
+        if t == "policyIsOwner":
+            return policyIsOwner( dal.ID, dal.percent)
+        if t == "policyIsCategory":
+            return policyIsCategory( dal.ID, dal.percent, dal.arg1)
+        if t == "policyIsItem":
+            return policyIsItem( dal.ID, dal.percent, dal.arg1)
+        if t == "policyHasAmount":
+            return policyHasAmount( dal.ID, dal.percent, dal.arg1, int(dal.arg2))
+        if t == "policyHasPrice":
+            return policyHasPrice( dal.ID, dal.percent, dal.arg1, float(dal.arg2))
+        if t == "policyIsAfterTime":
+            return policyIsAfterTime( dal.ID, dal.percent, int(dal.arg1), int(dal.arg2))
 
-        if t == "not":
+        if t == "policyNot":
             pt = policyRecover.Recover(dal.arg1)
-            return policyNot(shopname, dal.ID, pt)
-        if t == "and":
+            return policyNot( dal.ID, pt)
+        if t == "policyAnd":
             pt1 = policyRecover.Recover(dal.arg1)
             pt2 = policyRecover.Recover(dal.arg2)
-            return policyAnd(shopname, dal.ID, pt1, pt2)
-        if t == "or":
+            return policyAnd( dal.ID, pt1, pt2)
+        if t == "policyOr":
             pt1 = policyRecover.Recover(dal.arg1)
             pt2 = policyRecover.Recover(dal.arg2)
-            return policyOr(shopname, dal.ID, pt1, pt2)
-        if t == "xor":
+            return policyOr( dal.ID, pt1, pt2)
+        if t == "policyXor":
             pt1 = policyRecover.Recover(dal.arg1)
             pt2 = policyRecover.Recover(dal.arg2)
-            return policyXor(shopname, dal.ID, pt1, pt2)
-        if t == "if":
+            return policyXor( dal.ID, pt1, pt2)
+        if t == "policyIf":
             pt1 = policyRecover.Recover(dal.arg1)
             pt2 = policyRecover.Recover(dal.arg2)
-            return policyIf(shopname, dal.ID, pt1, pt2)
-        if t == "add":
+            return policyIf( dal.ID, pt1, pt2)
+        if t == "policyAdd":
             pt1 = policyRecover.Recover(dal.arg1)
             pt2 = policyRecover.Recover(dal.arg2)
-            return policyAdd(shopname, dal.ID, pt1, pt2)
-        if t == "max":
+            return policyAdd( dal.ID, pt1, pt2)
+        if t == "policyMax":
             pt1 = policyRecover.Recover(dal.arg1)
             pt2 = policyRecover.Recover(dal.arg2)
-            return policyMax(shopname, dal.ID, pt1, pt2)
+            return policyMax( dal.ID, pt1, pt2)
