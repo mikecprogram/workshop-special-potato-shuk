@@ -647,6 +647,21 @@ class Market():
                 self._membersLock.release()
                 raise Exception(owner_name + " is not Member")
 
+    def delete_shop_manager(self, token: int, shop_name: str, manager_name: str):
+        if self.isToken(token) and self.is_logged_in(token):
+            self._membersLock.acquire()
+            member = self._members[self.getUser(token).getUsername()]
+            if self.is_member(manager_name):
+                try:
+                    member.delete_shop_manager(shop_name, manager_name)
+                    self._membersLock.release()
+                except Exception as e:
+                    self._membersLock.release()
+                    raise e
+            else:
+                self._membersLock.release()
+                raise Exception(manager_name + " is not Member")
+
     def delete_member(self, token: int, member_name: str):
         try:
             self._enterLock.acquire()

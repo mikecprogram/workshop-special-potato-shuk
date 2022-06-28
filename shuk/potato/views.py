@@ -672,7 +672,7 @@ def manage(request):
                 if r.isexc:
                     errormessage = r.exc
             elif 'delman' in request.POST:
-                r = m.delete_shop_owner(tokenuser, str(request.POST['delman']),person)
+                r = m.delete_shop_manager(tokenuser, str(request.POST['delman']),person)
                 if r.isexc:
                     errormessage = r.exc
             elif 'makeown' in request.POST:

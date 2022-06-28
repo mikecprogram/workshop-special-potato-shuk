@@ -253,7 +253,7 @@ class Transactions:
 
     @db_session
     def deleteManagedShop(self, member_name ,shop_name):
-        delete(p for p in PermissionsDAL if p.member == member_name and p.shop == shop_name)
+        delete(p for p in PermissionsDAL if p.member.username == member_name and p.shop.name == shop_name)
 
     @db_session
     def item_set_amount(self,item_id, count):

@@ -134,8 +134,29 @@ class Shop():
         if assignee_user_name not in self._owners:
             raise Exception(assignee_user_name + " is not an owner of the shop:" + self._name)
         self.delete_assignment_owner(assigner_user_name, assignee_user_name, self._owners_assignments)
+    def delete_manager(self,assigner_user_name, assignee_user_name):
+        if assignee_user_name == self._founder.get_username():
+            raise Exception("%s is Founder of the shop:%s and therefore cant be deleted from owners group" %(assignee_user_name,self._name))
+        if assignee_user_name not in self._managers:
+            raise Exception(assignee_user_name + " is not an owner of the shop:" + self._name)
+        self.delete_assignment_manager(assigner_user_name, assignee_user_name, self._managers_assignments)
 
     def delete_assignment_owner(self, assigner_user_name, assignee_user_name, assignment):
+        assignee_member_object = None
+        b = False
+        if assigner_user_name in assignment:
+            for i in assignment[assigner_user_name]:
+                if i.assignee.get_username() == assignee_user_name:
+                    assignee_member_object = i.assignee
+                    assignment[assigner_user_name].remove(i)
+                    t.delete_assignment(i.id)
+                    b = True
+                    break
+        if not b:
+            raise Exception(assigner_user_name + " did not assignee " + assignee_user_name)
+        self.recursive_delete(assignee_member_object)
+
+    def delete_assignment_manager(self, assigner_user_name, assignee_user_name, assignment):
         assignee_member_object = None
         b = False
         if assigner_user_name in assignment:
@@ -176,8 +197,8 @@ class Shop():
             del self._managers_assignments[member_to_delete.get_username()]
         member_to_delete.deleteOwnedShop(self)
         member_to_delete.deleteManagedShop(self)
-        if member_to_delete.get_username() in self._owners:
-            del self._owners[member_to_delete.get_username()]
+        if member_to_delete.get_username() in self._managers:
+            del self._managers[member_to_delete.get_username()]
 
     def assign_manager(self, assigner_member_object, assignee_member_object):
         self.have_rule_in_shop(assignee_member_object)
