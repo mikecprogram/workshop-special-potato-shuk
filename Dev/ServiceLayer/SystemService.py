@@ -205,11 +205,11 @@ class SystemService(BridgeInterface):
             return Response(exception=e.__str__())
 
     # guest and member
-    def Shopping_cart_purchase(self, user_id: int) -> Response[bool]:
+    def Shopping_cart_purchase(self, token, card_number, month, year, holder, ccv, id, name, address, city, country, zip) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.Shopping_cart_purchase(user_id))
+            return Response(self.market.Shopping_cart_purchase(token, card_number, month, year, holder, ccv, id, name, address, city, country, zip))
         except Exception as e:
             return Response(exception=e.__str__())
 

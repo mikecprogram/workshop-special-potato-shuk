@@ -417,22 +417,23 @@ class Market():
         shop = self.get_shop_by_name(shopname)
         return user.calculate_item_price(shop,itemname)
 
-    def Shopping_cart_purchase(self, token):
+    def Shopping_cart_purchase(self, token, card_number, month, year, holder, ccv, id, name, address, city, country, zip):
         if self.isToken(token):
             user = self.getUser(token)
             if not user.validate_cart_purchase():
                 raise Exception('Cart did not pass purchase policy!')
             price = user.calculate_cart_price()
-            tid = 0
-            #tid = ExternalServices.execute_payment(?????)
+            tid = ExternalServices.execute_payment(card_number, month, year, holder, ccv, id)
             if tid < 0:
                 raise Exception('Payment failed!')
             try:
                 if user.purchase():
-                   # ExternalServices.execute_shipment(?????)
-                    return True
+                    if ExternalServices.execute_shipment(name, address, city, country, zip) > 0:
+                        return True
+                    raise Exception('Shipment failed!')
+                raise Exception('failed to remove items from shop during purchase!')
             except Exception as e:
-                # ExternalServices.cancel_payment(tid)
+                ExternalServices.cancel_payment(tid)
                 raise e
 
     def get_inshop_purchases_history(self, token, shopname):
