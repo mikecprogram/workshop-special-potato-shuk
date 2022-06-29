@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/database.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/DatabaseAdapter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/DatabaseAdapter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/Mock_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/Mock_init.py" afterDir="false" />
     </list>
     <list id="b395499b-f66b-412d-bcb0-557ef139e125" name="Changes by salih_kadry" comment="" />

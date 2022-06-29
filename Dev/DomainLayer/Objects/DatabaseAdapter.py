@@ -21,6 +21,7 @@ from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
 from Dev.Mock_init import Mock
 #from Market import Mock
 import threading
+
 class DatabaseAdapter:
     def __init__(self):
         self.sequence_number = 1
@@ -44,7 +45,6 @@ class DatabaseAdapter:
     def add_member(self,username, hashed,admin,member):
         self.db.add_new_member(username,hashed, admin)
         self._save_member_in_cache(member)
-
     def _save_member_in_cache(self,member):
         self._membersCacheLock.acquire()
         self._membersCache[member.get_username()] = [member,-1]
@@ -84,7 +84,7 @@ class DatabaseAdapter:
         return self.ShopAssmpler(shop_DTO,self._increase_sequence_number())
 
     def is_shop(self, name):
-        return self.is_shop(name)
+        return self.db.is_shop(name)
 
     def ShopAssmpler(self, shopDTO, seq_num):
         self._shopsCacheLock.acquire()
