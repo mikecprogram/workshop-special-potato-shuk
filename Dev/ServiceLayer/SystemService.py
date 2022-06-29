@@ -209,7 +209,17 @@ class SystemService(BridgeInterface):
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.Shopping_cart_purchase(token, card_number, month, year, holder, ccv, id, name, address, city, country, zip))
+            return Response(self.market.Shopping_cart_purchase(token, card_number, month, year, holder, ccv,
+                                                               id, name, address, city, country, zip))
+        except Exception as e:
+            return Response(exception=e.__str__())
+
+    # not items in the cart, items in the shop!!!
+    def bid_shop_item(self, token, shopname, itemname, amount, bidPrice) -> Response[bool]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.bid_shop_item(token, shopname, itemname, amount, bidPrice))
         except Exception as e:
             return Response(exception=e.__str__())
 

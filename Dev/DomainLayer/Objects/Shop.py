@@ -30,6 +30,8 @@ class Shop():
         self._shop_lock = threading.Lock()
         self.notificationPlugin = notificationPlugin
         self._cache_lock = threading.Lock()
+        self.bids = []
+        self.bidAccepts = {}
 
     def aqcuire_cache_lock(self):
         '''DB cache usage please don't use it'''
@@ -386,6 +388,16 @@ class Shop():
             self._purchaseLock.release()
         print(done,ID,type1)
         return done
+
+    def add_bid(self, bidId, username, itemname, amount, bidPrice):
+        if bidId not in bidAccepts.keys():
+            self.bids.append([bidId, username, itemname, amount, bidPrice])
+            self.bidAccepts[bidId] = set()
+
+    def acceptBid(self, bidId, username):
+        if bidId in bidAccepts.values():
+            self.bidAccepts[bidId].add(username)
+            if len(self.bidAccepts[bidId]) ==
 
     def getItemPrice(self, name):
         return self._stock.getItem(name).getPrice()

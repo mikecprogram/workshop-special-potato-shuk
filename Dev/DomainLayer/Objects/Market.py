@@ -100,6 +100,8 @@ class Market():
         self._enterLock = threading.Lock()
         self._nextPolicy = 1
         self._policyLock = threading.Lock()
+        self._nextBid = 1
+        self._bidLock = threading.Lock()
         self._security = Security()
         #loadConfigFile:
         self.init_file_loader = init_file_loader()
@@ -435,6 +437,16 @@ class Market():
             except Exception as e:
                 ExternalServices.cancel_payment(tid)
                 raise e
+
+    def bid_shop_item(self, token, shopname, itemname, amount, bidPrice):
+        shop = self.get_shop_by_name(shopname)
+        username = self.getUser(token).getUsername()
+        self._bidLock.acquire()
+        bidId = self._nextBid
+        self._nextBid += 1
+        self._bidLock.release()
+        shop.add_bid(bidId, username, itemname, amount, bidPrice)
+
 
     def get_inshop_purchases_history(self, token, shopname):
         if self.isToken(token):
