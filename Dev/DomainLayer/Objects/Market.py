@@ -196,10 +196,12 @@ class Market():
                 return user.setAge(age)
 
     def calculate_cart_price(self, token):
-        if self.isToken(token):
-            user = self.getUser(token)
-            return user.calculate_cart_price()
-
+        try:
+            if self.isToken(token):
+                user = self.getUser(token)
+                return user.calculate_cart_price()
+        except Exception as e:
+            return -1
     def shipping_request(self, token, items):
         if self.isToken(token):
             pass
@@ -414,10 +416,14 @@ class Market():
         return s.remove_policy(policyID,type1)
 
     def calculate_item_price(self, token, shopname, itemname):
-        self.isToken(token)
-        user = self.getUser(token)
-        shop = self.get_shop_by_name(shopname)
-        return user.calculate_item_price(shop,itemname)
+        try:
+            self.isToken(token)
+            user = self.getUser(token)
+            shop = self.get_shop_by_name(shopname)
+            return user.calculate_item_price(shop,itemname)
+        except Exception as e:
+            return -1
+        return -1
 
     def Shopping_cart_purchase(self, token, card_number, month, year, holder, ccv, id, name, address, city, country, zip):
         if self.isToken(token):

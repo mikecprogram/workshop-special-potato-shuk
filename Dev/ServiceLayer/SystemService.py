@@ -223,7 +223,7 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def get_bids(self, shopname) -> Response[List[str, str, int, float]]:
+    def get_bids(self, token,shopname) :
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
