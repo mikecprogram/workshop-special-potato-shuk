@@ -94,6 +94,11 @@ class Transactions:
             s = ShoppingBasketDAL.get(shoppingCart=shoppingCart_id, shop=shop_name)
             return s.id
 
+    @db_session
+    def get_next_id(self):
+        s = AutoIncreamentDal()
+        s.flush()
+        return s.id
 
     @db_session
     def add_new_shopping_basket_item_or_change_count(self, ShoppingBasket_id,StockItem_name,count):

@@ -12,3 +12,4 @@ from Dev.DAL.objects.DelayedNotyDAL import DelayedNotyDAL
 from Dev.DAL.objects.ShoppingBasketDAL_StockItemDAL import ShoppingBasketDAL_StockItemDAL
 from Dev.DAL.objects.StockItemNameDAL import StockItemNameDAL
 from Dev.DAL.objects.PolicyDAL import PolicyDAL
+from Dev.DAL.objects.autoIncreamentDal import AutoIncreamentDal
