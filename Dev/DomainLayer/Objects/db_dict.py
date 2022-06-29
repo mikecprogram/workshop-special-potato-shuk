@@ -1,5 +1,6 @@
 from collections.abc import MutableMapping
 from Dev.DomainLayer.Objects.DatabaseAdapter import database_adapter
+from Dev.Mock_init import Mock
 import threading
 class ReadWriteLock:
     """ A lock object that allows many simultaneous "read locks", but
@@ -108,6 +109,24 @@ class TransformedDictMember(MutableMapping):
         output= [(key,value(),) for key,value in self.store.items()]
         self.rw.release_read()
         return output
+
+    def delete_member_from_cache(self,name):
+        try:
+            if not Mock:
+                self.rw.acquire_read()
+                database_adapter._ShoppingCartCache = {}
+                database_adapter._ShoppingBasketCache = {}
+                database_adapter._AssignmentCache = {}  # {id, ShoppingCartDTO}
+                if name in database_adapter._membersCache:
+                    print("cache before",database_adapter._membersCache.items())
+                    del database_adapter._membersCache[name]
+                    print("deleted member:"+name+"  cache after")
+                    print(database_adapter._membersCache.items())
+                self.rw.release_read()
+        except Exception as e:
+            print(e.__str__())
+
+
 class TransformedDictShop(MutableMapping):
     """A dictionary that applies an arbitrary key-altering
        function before accessing the keys"""

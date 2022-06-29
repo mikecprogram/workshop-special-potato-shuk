@@ -49,19 +49,22 @@ class User:
         else:
             raise Exception("Logged in member tried to login again.")
 
-    def logout(self):
+    def logout(self,market):
         if self.isMember():
             print("try save cart")
             self._state.saveShoppingCart(self._shoppingCart)
             print("saved cart")
+            name =self._state._username
             self._state = Guest(self)
             self._shoppingCart = ShoppingCart(self)
+            market.delete_cache_member(name)
         else:
             raise Exception("Cant log out guest")
+        return True
 
-    def exit(self):
+    def exit(self,market):
         if self.isMember():
-            self.logout()
+            self.logout(market)
         else:
             self.clearShoppingCart()
 

@@ -146,7 +146,7 @@ class Market():
 
     def exit(self, token):
         if self.isToken(token):
-            self._onlineVisitors[token].exit()
+            self._onlineVisitors[token].exit(self)
             del self._onlineVisitors[token]
             return True
         return False
@@ -205,7 +205,11 @@ class Market():
     def logout(self, token):
         if self.isToken(token):
             user = self.getUser(token)
-            user.logout()
+            user.logout(self)
+
+    def delete_cache_member(self,name):
+        if not Mock:
+            self._members.delete_member_from_cache(name)
 
     def is_logged_in_by_username(self,username):
         for un in self._onlineVisitors.values():
@@ -700,7 +704,7 @@ class Market():
                             online_members = list(self._onlineVisitors.values())
                             online_members = [u for u in online_members if u.isMember() and u.getUsername() == member_name]
                             if len(online_members) == 1:
-                                online_members[0].logout()
+                                online_members[0].logout(self)
                             del self._members[member_name]
                     else:
                         raise Exception(member_name + " is not Member")
