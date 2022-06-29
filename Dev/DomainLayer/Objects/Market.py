@@ -476,10 +476,10 @@ class Market():
     def payBid(self, token, bidId, card_number, month, year, holder, ccv, id, name, address, city, country, zip):
         self.isToken(token)
         user = self.getUser(token)
-        if bidId not in user.acceptedBids.keys():
+        if bidId not in user.getMember().acceptedBids.keys():
             raise Exception('this bid id is either pending or broken!')
-        bid = user.acceptedBids[bidId]
-        shop = bid[0]
+        bid = user.getMember().acceptedBids[bidId]
+        shop = self.get_shop_by_name(bid[0])
         itemname = bid[2]
         amount = bid[3]
         price = bid[4]
@@ -491,6 +491,9 @@ class Market():
         try:
             if shop.editItem(itemname, None, None, None, None, count-amount):
                 if self._externalServices.execute_shipment(name, address, city, country, zip) > 0:
+                    user.getMember().acceptedBids.pop(bidId)
+                    shop.bids.pop(bidId)
+                    shop.bidAccepts.pop(bidId)
                     return True
                 raise Exception('Shipment failed!')
             raise Exception('failed to remove items from shop during purchase!')

@@ -248,7 +248,8 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def pay_bid(self, token, bidId, card_number, month, year, holder, ccv, id, name, address, city, country, zip) -> Response[bool]:
+    def pay_bid(self, token, bidId, card_number=None, month=None, year=None, holder=None,
+                               ccv=None, id=None, name=None, address=None, city=None, country=None, zip=None) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")

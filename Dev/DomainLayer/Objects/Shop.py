@@ -247,9 +247,7 @@ class Shop():
             self._is_open = False
             all = self.get_founder_and_owners()
             usernames = [u.get_username() for u in all]
-            print(usernames)
             missed = self.notificationPlugin.alertspecificrange("The Shop \"%s\" is closed." %(self.getShopName()),usernames)
-            print(missed)
             for user in all:
                 if user.get_username() in missed:
                     user.addDelayedNotification("The Shop \"%s\" is closed." %(self.getShopName()))
@@ -389,7 +387,6 @@ class Shop():
                     t.delete_shop_policy(ID, self._name, "purchase")
                     done = True
             self._purchaseLock.release()
-        print(done,ID,type1)
         return done
 
     def getBids(self):
@@ -407,9 +404,7 @@ class Shop():
                 self.bidAccepts[bidId].add(username)
                 k = self._owners.keys()
                 if set(k).issubset(self.bidAccepts[bidId]):
-                    print(1111111111111111111,self.bids[bidId][1])
                     member = market._members[self.bids[bidId][1]]
-                    print(22222222222,member.get_username())
                     member.acceptBid(bidId, self.bids[bidId])
                     # TODO notify user his bid is accepted here
                     return True
@@ -446,19 +441,16 @@ class Shop():
     def calculate_price(self, user, name, amount):
         item = self._stock.getItem(name)
         disc = self.findDiscount(user, item)
-        # print(name, disc,item.getPrice()*amount*disc)
         return round(item.getPrice() * amount * disc, 3)
 
     def calculate_price_for_general_item(self, user, itemname):
         item = self._stock.getItem(itemname)
         disc = self.findDiscount(user, item)
-        # print(name, disc,item.getPrice()*amount*disc)
         return round(item.getPrice() * disc, 3)
 
     def findDiscount(self, user, item):
         disc = 1
         for policy in self._discountPolicies:
-            # print(policy,policy.apply(user, item))
             if policy.apply(user, item):
                 d = policy.getDiscount()
                 disc *= (1 - d / 100)

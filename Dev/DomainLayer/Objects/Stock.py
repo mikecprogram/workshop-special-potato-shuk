@@ -155,7 +155,7 @@ class Stock:
             n = item.getName().lower()
             p = item.getPrice()
             d = item.getDesc().lower()
-            # print(n,p,item_maxPrice)
+
             if (query in c or query in n or query in d) or query == "":  # at least one match
                 if item_minPrice != 0:
                     if p < item_minPrice:
@@ -165,12 +165,10 @@ class Stock:
                         continue
                 if category != "":
                     if category != c:
-                        print("SKIP CATEGORY")
                         continue
                 ret.append(item.get_item_report_dict())
         if len(ret) == 0:
             return None
-        print(ret)
         return ret
 
     def getCategories(self):
