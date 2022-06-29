@@ -735,6 +735,7 @@ def makerender(request, tokenuser, page, optparams=None, error=None):
         optparams = {}
     optparams['token'] = tokenuser
     r = m.shopping_carts_check_content(tokenuser)
+    print(11111111111111111,r.exc)
     cartamount = sum([len(result) for result in r.res.values()])
     optparams['cartamount'] = cartamount
     if error is None:

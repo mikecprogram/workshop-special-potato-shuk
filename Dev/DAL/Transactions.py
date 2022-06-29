@@ -94,6 +94,11 @@ class Transactions:
             s = ShoppingBasketDAL.get(shoppingCart=shoppingCart_id, shop=shop_name)
             return s.id
 
+    @db_session
+    def get_next_id(self):
+        s = AutoIncreamentDal()
+        s.flush()
+        return s.id
 
     @db_session
     def add_new_shopping_basket_item_or_change_count(self, ShoppingBasket_id,StockItem_name,count):
@@ -107,7 +112,13 @@ class Transactions:
             else:
                 s=ShoppingBasketDAL_StockItemDAL.get(ShoppingBasket = ShoppingBasket_id, StockItemName=StockItem_name)
                 s.count = count
-
+    @db_session
+    def delete_shopping_basket_item_or_change_count(self, ShoppingBasket_id,StockItem_name,removed_count):
+        if ShoppingBasketDAL_StockItemDAL.get(ShoppingBasket = ShoppingBasket_id, StockItemName=StockItem_name) is not None:
+            s=ShoppingBasketDAL_StockItemDAL.get(ShoppingBasket = ShoppingBasket_id, StockItemName=StockItem_name)
+            s.count = s.count - removed_count
+            if s.count == 0:
+                s.delete()
 
     @db_session
     def add_new_shopping_cart_rid_if_not_exist(self, member_name):
@@ -302,7 +313,8 @@ class TransactionsMock:
 
     def get_shop(self, name):
         pass
-
+    def delete_shopping_basket_item_or_change_count(self, ShoppingBasket_id,StockItem_name,removed_count):
+        pass
     def is_shop(self, name):
         pass
 
