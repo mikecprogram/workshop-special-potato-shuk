@@ -1,8 +1,12 @@
 #import unittest
+import unittest
+
+from Dev.DomainLayer.Objects.Market import Market
+
 
 class MarketTests(unittest.TestCase):
     def logintests(self):
-        m = Market(None,None,None,None)
+        m = Market(None)
         self.testTimeout_guest(m)
 
     def testTimeout_guest(self):

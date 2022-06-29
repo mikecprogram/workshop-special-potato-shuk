@@ -79,11 +79,10 @@ class dummyNotify():
         pass
 class Market():
 
-    def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password,
-                 notificationPlugin ):
+    def __init__(self, notificationPlugin):
         if not Mock:
-
             initializeDatabase()
+
         if notificationPlugin is None:
             self._notificationPlugin = dummyNotify()
         else:
@@ -102,17 +101,16 @@ class Market():
         self._nextPolicy = 1
         self._policyLock = threading.Lock()
         self._security = Security()
-        self._externalServices = ExternalServices(external_payment_service, external_supplement_service)
         #loadConfigFile:
         self.init_file_loader = init_file_loader()
-        if system_admin_name not in self._members:
-            self.load_sys_admin()
+        self.load_sys_admin()
         self.reloadExternalServices()
     def load_sys_admin(self):
         sys_username,sys_password = self.init_file_loader.getManagerDetails()
-        hashedPassword = self._security.hash(sys_password)
-        sysmanager = Member(sys_username,hashedPassword,self)# this is sys manager.
-        self._members[sys_username] = sysmanager
+        if sys_username not in self._members:
+            hashedPassword = self._security.hash(sys_password)
+            sysmanager = Member(sys_username,hashedPassword,self)# this is sys manager.
+            self._members[sys_username] = sysmanager
     def resetSystem(self):
         #todo DROP TABLE
         #todo START TABLE
@@ -555,8 +553,8 @@ class Market():
             else:
                 raise Exception('Shop does not exist with the given shop name!')
 
-    
-    
+
+
     def shop_manager_permission_adding(self, token, manager_name_to_update, permission_code, shop_name):
         if self.isToken(token):
             if shop_name not in self._shops:
