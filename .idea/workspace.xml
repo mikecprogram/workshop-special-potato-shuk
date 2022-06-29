@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workshop-special-potato-shuk.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workshop-special-potato-shuk.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/test_Requirement_II_6_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/test_Requirement_II_6_2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/ExternalServices.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/ExternalServices.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/InitFileLoader.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/InitFileLoader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/paymentServiceInterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/paymentServiceInterface.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/shippingServiceInterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/shippingServiceInterface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/ServiceLayer/BridgeInterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/ServiceLayer/BridgeInterface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/ServiceLayer/SystemService.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/ServiceLayer/SystemService.py" afterDir="false" />
     </list>
     <list id="b395499b-f66b-412d-bcb0-557ef139e125" name="Changes by salih_kadry" comment="" />
     <list id="270a8280-9b7b-407c-99fc-7175ce8c2493" name="Changes by user" comment="" />
@@ -76,6 +70,8 @@
       <recent name="C:\Users\salih_kadry\Documents\GitHub\workshop-special-potato-shuk\AcceptanceTests\Tests\Users Requirements (II)" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\USER\Documents\GitHub\workshop-special-potato-shuk\AcceptanceTests\Tests\Users Requirements (II)" />
+      <recent name="C:\Users\USER\Documents\GitHub\workshop-special-potato-shuk\Dev\DomainLayer" />
       <recent name="C:\Users\user\Desktop\workshop-special-potato-shuk\Dev\DomainLayer\Objects\Policies" />
     </key>
   </component>
@@ -221,7 +217,7 @@
       <workItem from="1656176167173" duration="460000" />
       <workItem from="1656197507070" duration="4225000" />
       <workItem from="1656401730138" duration="2402000" />
-      <workItem from="1656486015222" duration="4630000" />
+      <workItem from="1656486015222" duration="5349000" />
     </task>
     <servers />
   </component>
@@ -322,7 +318,7 @@
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_4_11_MyTestCase.coverage" NAME="pytest for test_Requirement_II_4_11.MyTestCase Coverage Results" MODIFIED="1655982518948" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_5_2_1_MyTestCase_testHasPriceAndHasAmountPurchase.coverage" NAME="pytest for test_Requirement_II_2_5_2_1.MyTestCase.testHasPriceAndHasAmountPurchase Coverage Results" MODIFIED="1656203369343" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_2_MyTestCase.coverage" NAME="pytest for test_Requirement_II_2_2.MyTestCase Coverage Results" MODIFIED="1655810951579" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
-    <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_in_Users_Requirements__II_.coverage" NAME="pytest in Users Requirements (II) Coverage Results" MODIFIED="1656490666099" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
+    <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_in_Users_Requirements__II_.coverage" NAME="pytest in Users Requirements (II) Coverage Results" MODIFIED="1656491294939" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_5_3_MyTestCase_testPurchaseHistory.coverage" NAME="pytest for test_Requirement_II_2_5_3.MyTestCase.testPurchaseHistory Coverage Results" MODIFIED="1655879661584" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_4_4_MyTestCase_testBAD.coverage" NAME="pytest for test_Requirement_II_4_4.MyTestCase.testBAD Coverage Results" MODIFIED="1655887248744" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
     <SUITE FILE_PATH="coverage/workshop_special_potato_shuk$pytest_for_test_Requirement_II_2_5_2_1_MyTestCase_testIsAfterTime.coverage" NAME="pytest for test_Requirement_II_2_5_2_1.MyTestCase.testIsAfterTime Coverage Results" MODIFIED="1656203400633" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />

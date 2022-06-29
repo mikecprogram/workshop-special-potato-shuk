@@ -17,7 +17,6 @@ class init_file_loader:
             conf_file.close()
         except Exception as e:
             configFileString = fallback_string
-            print(os.getcwd())
             print("DEMO MODE ACTIVATED (config file not found)")
 
         try:
