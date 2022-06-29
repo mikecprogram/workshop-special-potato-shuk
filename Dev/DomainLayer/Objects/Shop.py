@@ -151,7 +151,7 @@ class Shop():
                 if i.assignee.get_username() == assignee_user_name:
                     assignee_member_object = i.assignee
                     assignment[assigner_user_name].remove(i)
-                    t.delete_assignment(i.id)
+                    t.delete_assignment(i.id,self._name)
                     b = True
                     break
         if not b:
@@ -166,7 +166,7 @@ class Shop():
                 if i.assignee.get_username() == assignee_user_name:
                     assignee_member_object = i.assignee
                     assignment[assigner_user_name].remove(i)
-                    t.delete_assignment(i.id)
+                    t.delete_assignment(i.id,self._name)
                     b = True
                     break
         if not b:
@@ -188,17 +188,19 @@ class Shop():
         if member_to_delete.get_username() in self._owners_assignments:
             for i in self._owners_assignments[member_to_delete.get_username()]:
                 self.recursive_delete(i.assignee)
-                t.delete_assignment(i.id)
+                t.delete_assignment(i.id,self._name)
         if member_to_delete.get_username() in self._managers_assignments:
             for i in self._managers_assignments[member_to_delete.get_username()]:
                 self.recursive_delete(i.assignee)
-                t.delete_assignment(i.id)
+                t.delete_assignment(i.id,self._name)
         if member_to_delete.get_username() in self._owners_assignments:
             del self._owners_assignments[member_to_delete.get_username()]
         if member_to_delete.get_username() in self._managers_assignments:
             del self._managers_assignments[member_to_delete.get_username()]
         member_to_delete.deleteOwnedShop(self)
         member_to_delete.deleteManagedShop(self)
+        if member_to_delete.get_username() in self._owners:
+            del self._owners[member_to_delete.get_username()]
         if member_to_delete.get_username() in self._managers:
             del self._managers[member_to_delete.get_username()]
 
@@ -221,10 +223,11 @@ class Shop():
         else:
             assignment[assigner_member_object.get_username()] = [
                 a]
-            if assignment == self._owners_assignments:
-                t.add_shop_owner_assignment(self._name, a.id)
-            else:
-                t.add_shop_manager_assignment(self._name, a.id)
+        if assignment == self._managers_assignments:
+            t.add_shop_manager_assignment(self._name, a.id)
+        else:
+            t.add_shop_owner_assignment(self._name, a.id)
+
 
     def is_assignment(self, assigner, assignee):
         if assigner in self._owners_assignments:

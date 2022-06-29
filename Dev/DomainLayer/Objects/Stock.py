@@ -44,7 +44,7 @@ class Stock:
         if name in self._stockItems.keys():
             item = self._stockItems[name]
             return item.get_item_report_dict()
-        raise Exception("No such item %s in this shop." % (name))
+        return None
 
     def getItem(self, name):
         if name in self._stockItems.keys():

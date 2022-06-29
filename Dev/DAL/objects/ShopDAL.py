@@ -8,8 +8,8 @@ class ShopDAL(db.Entity):
     permissions = Set("PermissionsDAL",reverse="shop",cascade_delete=True)
     # purchasePolicy = []
     # discountPolicy = []
-    owners_assignments = Set("AssignmentDAL",reverse="shopOwner",cascade_delete=True)
-    managers_assignments = Set("AssignmentDAL",reverse="shopManager",cascade_delete=True)
+    owners_assignments = Set("AssignmentDAL",reverse="shopOwner")
+    managers_assignments = Set("AssignmentDAL",reverse="shopManager")
     purchases_history = Required("PurchaseHistoryDAL",cascade_delete=True)
     ShoppingBaskets = Set("ShoppingBasketDAL",cascade_delete=True)
     policy = Set("PolicyDAL",cascade_delete=True)
