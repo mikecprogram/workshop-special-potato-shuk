@@ -223,6 +223,38 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
+    def get_bids(self, shopname) -> Response[List[str, str, int, float]]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.getBids(token, shopname))
+        except Exception as e:
+            return Response(exception=e.__str__())
+
+    def accept_bid(self, token, shopname, bidId) -> Response[bool]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.acceptBid(token, shopname, bidId))
+        except Exception as e:
+            return Response(exception=e.__str__())
+
+    def reject_bid(self, token, shopname, bidId) -> Response[bool]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.rejectBid(token, shopname, bidId))
+        except Exception as e:
+            return Response(exception=e.__str__())
+
+    def pay_bid(self, token, bidId, card_number, month, year, holder, ccv, id, name, address, city, country, zip) -> Response[bool]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.payBid(token, bidId, card_number, month, year, holder, ccv, id, name, address, city, country, zip))
+        except Exception as e:
+            return Response(exception=e.__str__())
+
     def get_cart_price(self, token) -> Response[int]:
         try:
             if self.market is None:

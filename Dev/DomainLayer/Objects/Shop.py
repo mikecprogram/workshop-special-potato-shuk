@@ -30,7 +30,7 @@ class Shop():
         self._shop_lock = threading.Lock()
         self.notificationPlugin = notificationPlugin
         self._cache_lock = threading.Lock()
-        self.bids = []
+        self.bids = {}
         self.bidAccepts = {}
 
     def aqcuire_cache_lock(self):
@@ -389,15 +389,33 @@ class Shop():
         print(done,ID,type1)
         return done
 
-    def add_bid(self, bidId, username, itemname, amount, bidPrice):
+    def getBids(self):
+        return self.bids
+
+    def add_bid(self, bidId, user, itemname, amount, bidPrice):
         if bidId not in bidAccepts.keys():
-            self.bids.append([bidId, username, itemname, amount, bidPrice])
+            self.bids[bidId] = [self._name, user, itemname, amount, bidPrice]
             self.bidAccepts[bidId] = set()
+            #TODO notify all owners here
 
     def acceptBid(self, bidId, username):
-        if bidId in bidAccepts.values():
-            self.bidAccepts[bidId].add(username)
-            if len(self.bidAccepts[bidId]) ==
+        if username in self._owners:
+            if bidId in bidAccepts.values():
+                self.bidAccepts[bidId].add(username)
+                if self._owners.keys.issubset(self.bidAccepts[bidId]):
+                    self.bids[bidId][1].acceptBid(bidId, self.bids[bidId])
+                    # TODO notify user his bid is accepted here
+            raise Exceprion('bad bid id!')
+        raise Exceprion('not owner of the shop!')
+
+    def rejectBid(self, bidId, username):
+        if username in self._owners:
+            if bidId in bidAccepts.values():
+                self.bidAccepts.pop(bidId)
+                self.bids.pop(bidId)
+                # TODO notify user his bid is rejected here
+            raise Exceprion('bad bid id!')
+        raise Exceprion('not owner of the shop!')
 
     def getItemPrice(self, name):
         return self._stock.getItem(name).getPrice()
