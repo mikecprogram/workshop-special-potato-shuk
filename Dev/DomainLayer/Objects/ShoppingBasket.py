@@ -77,8 +77,9 @@ class ShoppingBasket:
         ret = []
         for name, amount in self.stockItems.items():
             item = self.shop.getItemInfo(name)
-            item['count'] = amount
-            ret.append(item)
+            if item is not None:
+                item['count'] = amount
+                ret.append(item)
         return ret
 
     def clear(self):

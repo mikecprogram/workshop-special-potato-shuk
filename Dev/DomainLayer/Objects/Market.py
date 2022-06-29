@@ -442,7 +442,7 @@ class Market():
     def bid_shop_item(self, token, shopname, itemname, amount, bidPrice):
         self.isToken(token)
         shop = self.get_shop_by_name(shopname)
-        user = self.getUser(token)
+        user = self.getUser(token).getUsername()
         self._bidLock.acquire()
         bidId = self._nextBid
         self._nextBid += 1
@@ -450,7 +450,7 @@ class Market():
         shop.add_bid(bidId, user, itemname, amount, bidPrice)
         return True
 
-    def getBids(self, shopname):
+    def getBids(self, token, shopname):
         self.isToken(token)
         shop = self.get_shop_by_name(shopname)
         return shop.getBids()
@@ -459,7 +459,7 @@ class Market():
         self.isToken(token)
         username = self.getUser(token).getUsername()
         shop = self.get_shop_by_name(shopname)
-        shop.acceptBid(bidId, username)
+        shop.acceptBid(bidId, username, self)
 
     def rejectBid(self, token, shopname, bidId):
         self.isToken(token)

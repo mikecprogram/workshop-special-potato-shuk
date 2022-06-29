@@ -393,29 +393,29 @@ class Shop():
         return self.bids
 
     def add_bid(self, bidId, user, itemname, amount, bidPrice):
-        if bidId not in bidAccepts.keys():
+        if bidId not in self.bidAccepts.keys():
             self.bids[bidId] = [self._name, user, itemname, amount, bidPrice]
             self.bidAccepts[bidId] = set()
             #TODO notify all owners here
 
-    def acceptBid(self, bidId, username):
+    def acceptBid(self, bidId, username, market):
         if username in self._owners:
-            if bidId in bidAccepts.values():
+            if bidId in self.bidAccepts.values():
                 self.bidAccepts[bidId].add(username)
                 if self._owners.keys.issubset(self.bidAccepts[bidId]):
-                    self.bids[bidId][1].acceptBid(bidId, self.bids[bidId])
+                    market._members[self.bids[1]].acceptBid(bidId, self.bids[bidId])
                     # TODO notify user his bid is accepted here
-            raise Exceprion('bad bid id!')
-        raise Exceprion('not owner of the shop!')
+            raise Exception('bad bid id!')
+        raise Exception('not owner of the shop!')
 
     def rejectBid(self, bidId, username):
         if username in self._owners:
-            if bidId in bidAccepts.values():
+            if bidId in self.bidAccepts.values():
                 self.bidAccepts.pop(bidId)
                 self.bids.pop(bidId)
                 # TODO notify user his bid is rejected here
-            raise Exceprion('bad bid id!')
-        raise Exceprion('not owner of the shop!')
+            raise Exception('bad bid id!')
+        raise Exception('not owner of the shop!')
 
     def getItemPrice(self, name):
         return self._stock.getItem(name).getPrice()
