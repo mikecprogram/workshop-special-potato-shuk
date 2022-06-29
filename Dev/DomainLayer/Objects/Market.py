@@ -465,7 +465,7 @@ class Market():
         self.isToken(token)
         username = self.getUser(token).getUsername()
         shop = self.get_shop_by_name(shopname)
-        shop.acceptBid(bidId, username, self)
+        return shop.acceptBid(bidId, username, self)
 
     def rejectBid(self, token, shopname, bidId):
         self.isToken(token)

@@ -39,7 +39,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.isexc), r.exc)
         self.assertEqual({1: ['shopname', 'username', 'itemname1', 5, 20]}, r.res)
 
-        r = self.m.accept_bid(self.u, "shopname", 1)
+        r = self.m.accept_bid(self.u2, "shopname", 1)
         self.assertTrue((not r.isexc), r.exc)
         self.assertTrue(r.res, r.exc)
 

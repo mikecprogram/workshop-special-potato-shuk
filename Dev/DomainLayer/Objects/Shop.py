@@ -403,11 +403,16 @@ class Shop():
 
     def acceptBid(self, bidId, username, market):
         if username in self._owners:
-            if bidId in self.bidAccepts.values():
+            if bidId in self.bidAccepts.keys():
                 self.bidAccepts[bidId].add(username)
-                if self._owners.keys.issubset(self.bidAccepts[bidId]):
-                    market._members[self.bids[1]].acceptBid(bidId, self.bids[bidId])
+                k = self._owners.keys()
+                if set(k).issubset(self.bidAccepts[bidId]):
+                    print(1111111111111111111,self.bids[bidId][1])
+                    member = market._members[self.bids[bidId][1]]
+                    print(22222222222,member.get_username())
+                    member.acceptBid(bidId, self.bids[bidId])
                     # TODO notify user his bid is accepted here
+                    return True
             raise Exception('bad bid id!')
         raise Exception('not owner of the shop!')
 

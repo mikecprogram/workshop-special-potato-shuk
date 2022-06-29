@@ -19,6 +19,7 @@ class Member:
         self._age = None
         self.delayedNoty = []
         self._cache_lock = threading.Lock()
+        self.acceptedBids = {}
 
     def aqcuire_cache_lock(self):
         '''DB cache usage please don't use it'''
@@ -40,6 +41,11 @@ class Member:
         print("Added to %s \n %s" %(self.get_username(),message))
         t.add_new_delayedNoty_rid(self._username,message)
         self.delayedNoty.append(message)
+
+
+    def acceptBid(self, bidId, bid):
+        self.acceptedBids[bidId] = bid
+
 
     def getAge(self):
         return self._age

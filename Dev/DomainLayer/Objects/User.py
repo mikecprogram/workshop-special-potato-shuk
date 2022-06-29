@@ -13,7 +13,7 @@ class User:
         self._state = Guest(self)
         self._shoppingCart = ShoppingCart(self)
         self._policies = []
-        self.acceptedBids = {}
+
 
     def isMember(self):
         return isinstance(self._state, Member)
@@ -152,9 +152,6 @@ class User:
 
     def validate_cart_purchase(self):
         return self._shoppingCart.validate_purchase()
-
-    def acceptBid(self, bidId, bid):
-        self.acceptedBids[bidId] = bid
 
     def is_admin(self):
         return self.getMember().is_admin()
