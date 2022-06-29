@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/DALAssmbler.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/DALAssmbler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DAL/Transactions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/Transactions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShopDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShopDAL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/MembersAcceptedBids.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/MembersAcceptedBids.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/imports.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/imports.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" afterDir="false" />
     </list>
@@ -75,7 +74,7 @@
       <recent name="C:\Users\user\Desktop\workshop-special-potato-shuk\Dev\DomainLayer\Objects\Policies" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_bid.MyTestCase">
+  <component name="RunManager" selected="Python tests.pytest in Users Requirements (II)">
     <configuration name="Mock_init" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="workshop-special-potato-shuk" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -197,9 +196,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest in Users Requirements (II)" />
         <item itemvalue="Python tests.pytest for test_bid.MyTestCase" />
         <item itemvalue="Python.test_bid" />
-        <item itemvalue="Python tests.pytest in Users Requirements (II)" />
         <item itemvalue="Python tests.pytest for test_Requirement_II_1_1.MyTestCase" />
         <item itemvalue="Python.Mock_init" />
       </list>

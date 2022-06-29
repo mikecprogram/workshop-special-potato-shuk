@@ -150,12 +150,31 @@ class Transactions:
         ShopDAL.get(name=shop_name).owners_assignments.add(AssignmentDAL[assignment_id])
         print("added_owner_assignment id: ",assignment_id,"shop_name: ",shop_name)
     def add_bid(self, bidId,shop_name ,user, itemid, amount, bidPrice):
-        BidDAL(id=bidId,shop=shop_name,member=MemberDAL.get(username=user),item=StockItemDAL.get(itemid=itemid),\
-        amount=amount,bidPrice=bidPrice)
-
+        try:
+            BidDAL(id=bidId,shop=shop_name,member=MemberDAL.get(username=user),item=StockItemDAL.get(itemid=itemid),\
+            amount=amount,bidPrice=bidPrice)
+        except Exception as e:
+            print(e.__str__())
+    def add_accept_bid_owner(self,bidID,ownerName):
+        try:
+            MembersAcceptedBids.get(bid =bidID).members.add(MemberDAL.get(username=ownerName))
+        except Exception as e:
+            print(e.__str__())
+    def add_accept_bid_without_owners(self,bidID):
+        try:
+            MembersAcceptedBids(bid =BidDAL.get(id=bidID))
+        except Exception as e:
+            print(e.__str__())
+    def delete_accept_bid(self,bidID):
+        try:
+            MembersAcceptedBids.get(bid = bidID).delete()
+        except Exception as e:
+            print(e.__str__())
     def delete_bid(self, bidId):
-        BidDAL.get(id=bidId).delete()
-
+        try:
+            BidDAL.get(id=bidId).delete()
+        except Exception as e:
+            print(e.__str__())
     @db_session
     def add_shop_policy(self,policy,shop_name, type1,is_root):
         if PolicyDAL.get(type=type1,isRoot=is_root,ID=policy.ID,shop=shop_name) is None:
@@ -364,6 +383,20 @@ class TransactionsMock:
     def add_shop_owner_assignment(self, shop_name, assignment_id):
         pass
 
+    def add_bid(self, bidId, shop_name, user, itemid, amount, bidPrice):
+        pass
+
+    def add_accept_bid_owner(self, bidID, ownerName):
+        pass
+
+    def add_accept_bid_without_owners(self, bidID):
+        pass
+
+    def delete_accept_bid(self, bidID):
+        pass
+
+    def delete_bid(self, bidId):
+        pass
     # --------------------------------------------------------------------
 
     def delete_member(self, username):
