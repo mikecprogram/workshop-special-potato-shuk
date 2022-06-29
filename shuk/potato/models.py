@@ -46,11 +46,13 @@ class MemberWithPermissions():
 
 
 class Policy(): #dumb struct
-    def __init__(self, id, name, args, discount):
+    def __init__(self, shopname, id, name, args, discount):
+        self.shopname = shopname
         self.id = id
         self.name = name
         self.args = args
         self.discount = discount
+
 
 class TemplatePolicy():
     def __init__(self, name, args):

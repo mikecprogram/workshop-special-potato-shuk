@@ -24,8 +24,7 @@
                 {% endif %}
                 <form action="" method="POST">
                     {% csrf_token %}
-                    Apply this policy to shop:
-                    <input list="myshops" name="shopname" class="fullsize">
+                    Apply this policy to shop {{item.shopname}}:
                     <div class="center"><button class="bluebutton" type="submit" name="applydiscount" value="{{item.id}}">&emsp;Apply Discount Policy&emsp;</button></div>
                     <div class="center"><button class="yellowbutton" type="submit" name="applypurchasepolicy" value="{{item.id}}">&emsp;Apply Purchase Policy&emsp;</button></div>
                 </form>

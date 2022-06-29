@@ -421,11 +421,19 @@ class Market():
         if self.isToken(token):
             user = self.getUser(token)
             if not user.validate_cart_purchase():
-                # TODO add better exceptions :)
                 raise Exception('Cart did not pass purchase policy!')
             price = user.calculate_cart_price()
-            # paymentServiceInterface.request_payment(price, None) or something similar, this interface is empty
-            return user.purchase()
+            tid = 0
+            #tid = ExternalServices.execute_payment(?????)
+            if tid < 0:
+                raise Exception('Payment failed!')
+            try:
+                if user.purchase():
+                   # ExternalServices.execute_shipment(?????)
+                    return True
+            except Exception as e:
+                # ExternalServices.cancel_payment(tid)
+                raise e
 
     def get_inshop_purchases_history(self, token, shopname):
         if self.isToken(token):

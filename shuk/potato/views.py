@@ -394,9 +394,9 @@ def shopPolicies(request, shopname):
     pols = []
     for p in policies:
         if len(p) == 3:
-            pols.append(Policy(p[1],p[0],[],p[2]))
+            pols.append(Policy(shopname, p[1],p[0],[],p[2]))
         if len(p) == 2:
-            pols.append(Policy(p[1],p[0],[],None))
+            pols.append(Policy(shopname, p[1],p[0],[],None))
 
 
     return makerender(request, tokenuser, 'shopPolicies.html',
@@ -467,7 +467,6 @@ def policies(request,shopname):
         elif 'applydiscount' in request.POST:
             polid = request.POST['applydiscount']#from 0 to 100
             if 'shopname' in request.POST:
-                shopname = request.POST['shopname']
                 if shopname is not None:
                     shopname = shopname.strip()
                 print(shopname,int(polid))
@@ -478,7 +477,6 @@ def policies(request,shopname):
         elif 'applypurchasepolicy' in request.POST:
             polid = request.POST['applypurchasepolicy']#from 0 to 100
             if 'shopname' in request.POST:
-                shopname = request.POST['shopname']
                 print(shopname, int(polid))
                 r = m.add_purchase_policy_to_shop(tokenuser,shopname,int(polid))
                 if r.isexc:
@@ -487,25 +485,25 @@ def policies(request,shopname):
     request.POST = {}
 
     myPolicies = []
-    getpol = m.get_my_policies(tokenuser,shopname).res
+    getpol = m.get_my_policies(tokenuser, shopname).res
     if getpol is None:
         getpol=[]
     pol = None
     for p in getpol:
         if p[1] in compositeNames:
             if len(p) == 4:
-                pol = Policy(p[0], p[1], [p[2], p[3]], None)
+                pol = Policy(shopname, p[0], p[1], [p[2], p[3]], None)
             if len(p) == 3:
-                pol = Policy(p[0], p[1], [p[2]], None)
+                pol = Policy(shopname, p[0], p[1], [p[2]], None)
             if len(p) == 2:
-                pol = Policy(p[0], p[1], [], None)
+                pol = Policy(shopname, p[0], p[1], [], None)
         else:
             if len(p) == 5:
-                pol = Policy(p[0], p[1], [p[2], p[3]], p[4])
+                pol = Policy(shopname, p[0], p[1], [p[2], p[3]], p[4])
             if len(p) == 4:
-                pol = Policy(p[0], p[1], [p[2]], p[3])
+                pol = Policy(shopname, p[0], p[1], [p[2]], p[3])
             if len(p) == 3:
-                pol = Policy(p[0], p[1], [], p[2])
+                pol = Policy(shopname, p[0], p[1], [], p[2])
         if pol is not None:
             myPolicies.append(pol)
 
