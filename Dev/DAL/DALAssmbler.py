@@ -153,7 +153,7 @@ class DALAssmbler:
         output = ShoppingBasketDTO()
         self._ShoppingBasketCache[shoppingBasketDAL.id] = output
         output.shop = self.ShopAssmpler(shoppingBasketDAL.shop)
-        output.stockItems = {sb.StockItemNameDAL.name:sb.count for sb in shoppingBasketDAL.ShoppingBasketDAL_StockItemDAL}
+        output.stockItems = {sb.StockItemName.name:sb.count for sb in shoppingBasketDAL.ShoppingBasketDAL_StockItemDAL}
         output.shoppingCart = self.ShoppingCartAssmpler(shoppingBasketDAL.shoppingCart)
         output.id = shoppingBasketDAL.id
         return output

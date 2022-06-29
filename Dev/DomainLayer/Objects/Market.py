@@ -34,6 +34,7 @@ from Dev.DomainLayer.Objects.paymentServiceInterface import paymentServiceInterf
 from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
 
 from Dev.DomainLayer.Objects.db_dict import TransformedDictMember,TransformedDictShop
+from Dev.DAL.Transactions import t
 
 
 
@@ -82,7 +83,6 @@ class Market():
     def __init__(self, notificationPlugin):
         if not Mock:
             initializeDatabase()
-
         if notificationPlugin is None:
             self._notificationPlugin = dummyNotify()
         else:

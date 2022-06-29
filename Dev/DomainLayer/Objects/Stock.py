@@ -55,8 +55,9 @@ class Stock:
     def addStockItem(self, stockItem: StockItem):
         if not (stockItem._name in self._stockItems.keys()):
             self._stockItems[stockItem._name] = stockItem
-            t.add_new_stock_item(stockItem.getCategory(),stockItem.getDesc(),stockItem.getName()\
+            item_id=t.add_new_stock_item(stockItem.getCategory(),stockItem.getDesc(),stockItem.getName()\
                                  ,stockItem.getCount(),stockItem.getPrice(),self.shop_name,self.id)
+            stockItem._id = item_id
             return True
         else:
             raise Exception('An item with the same name (%s) already exists in this shop' % stockItem._name)
