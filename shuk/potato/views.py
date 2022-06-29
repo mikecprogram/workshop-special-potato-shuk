@@ -123,8 +123,6 @@ def cart(request):
                 listing['after'] = r.res
     res = m.calculate_cart_price(tokenuser)
     if res.isexc:
-        print("BOB")
-        print(res.exc)
         return renderError(request, tokenuser, res.exc)
     cartprice = res.res
     return makerender(request, tokenuser, 'cart.html', {'cartprice': cartprice,'answer': answer, 'amountOfItems': len_results},
@@ -377,8 +375,6 @@ def shopPolicies(request, shopname):
         if "removePolicy" in request.POST:
             (id,dis) = request.POST['removePolicy'].split('|')
             type1 = "discount"
-            print("dis ",dis)
-            print("dis ", dis == 'None')
             if dis == 'None':
                 type1 = "purchase"
             r = m.delete_policy(tokenuser,shopname, int(id),type1)
@@ -445,8 +441,6 @@ def policies(request,shopname):
                 second = None
 
             if typeofpolicy in compositeNames:
-                #print(str(typeofpolicy), first, second)
-                #print(m.get_my_policies(tokenuser).res)
                 if second is None:
                     r = m.compose_policy(tokenuser,shopname, str(typeofpolicy), int(first), None)
                     if r.isexc:
@@ -456,8 +450,6 @@ def policies(request,shopname):
                     if r.isexc:
                         errormessage = r.exc
             else:
-                print(str(typeofpolicy), first, second)
-                print(m.get_my_policies(tokenuser,shopname).res)
                 r = m.add_policy(tokenuser,shopname,float(discount),str(typeofpolicy),first,second)
                 if r.isexc:
                     errormessage = r.exc
@@ -469,19 +461,15 @@ def policies(request,shopname):
             if 'shopname' in request.POST:
                 if shopname is not None:
                     shopname = shopname.strip()
-                print(shopname,int(polid))
                 r = m.add_discount_policy_to_shop(tokenuser,shopname,int(polid))
                 if r.isexc:
                     errormessage = r.exc
-                print(m.get_shop_policies(tokenuser, shopname).res)
         elif 'applypurchasepolicy' in request.POST:
             polid = request.POST['applypurchasepolicy']#from 0 to 100
             if 'shopname' in request.POST:
-                print(shopname, int(polid))
                 r = m.add_purchase_policy_to_shop(tokenuser,shopname,int(polid))
                 if r.isexc:
                     errormessage = r.exc
-                print(m.get_shop_policies(tokenuser, shopname).res)
     request.POST = {}
 
     myPolicies = []
@@ -662,7 +650,6 @@ def manage(request):
                 return renderError(request, tokenuser, r.exc)
         else:
             person = request.POST['person']
-            print(person)
             if 'editpermission' in request.POST:
                 return redirect("/shop/%s/%s"%(request.POST['editpermission'],person))
             elif 'makeman' in request.POST:
@@ -735,7 +722,6 @@ def makerender(request, tokenuser, page, optparams=None, error=None):
         optparams = {}
     optparams['token'] = tokenuser
     r = m.shopping_carts_check_content(tokenuser)
-    print(11111111111111111,r.exc)
     cartamount = sum([len(result) for result in r.res.values()])
     optparams['cartamount'] = cartamount
     if error is None:

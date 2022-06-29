@@ -16,8 +16,6 @@ class policyHasPrice(Composable):
             return raw > self.price
         else:
             basket = user.getBasketByShop(item.getShopName()).checkBasket()
-            print(basket)
-            print(self.itemname)
             for listing in basket:
                 if listing['name'] == self.itemname:
                     return listing['count'] * item.getPrice() >= self.price

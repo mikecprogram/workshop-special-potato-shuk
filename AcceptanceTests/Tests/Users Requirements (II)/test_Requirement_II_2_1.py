@@ -50,14 +50,12 @@ class MyTestCase(unittest.TestCase):
     def testbadItemGuest(self):
         r = self.m.info_about_item_in_shop(self.u, "baditemname", "shopname")
         self.assertTrue(r.res is None, r.exc)
-        self.assertTrue(r.isexc, r.exc)
 
 
     def testbadShopMember(self):
         self.m.login_into_the_trading_system(self.u, "username", "password")
         r = self.m.info_about_item_in_shop(self.u, "baditemname", "shopname")
         self.assertEqual(r.res, None, r.res)
-        self.assertTrue(r.isexc, r.exc)
 
 
 if __name__ == '__main__':

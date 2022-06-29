@@ -432,17 +432,17 @@ class Market():
                 raise Exception('Cart did not pass purchase policy!')
             price = user.calculate_cart_price()
             # where do i use the price???
-            tid = ExternalServices.execute_payment(card_number, month, year, holder, ccv, id)
+            tid = self._externalServices.execute_payment(card_number, month, year, holder, ccv, id)
             if tid < 0:
                 raise Exception('Payment failed!')
             try:
                 if user.purchase():
-                    if ExternalServices.execute_shipment(name, address, city, country, zip) > 0:
+                    if self._externalServices.execute_shipment(name, address, city, country, zip) > 0:
                         return True
                     raise Exception('Shipment failed!')
                 raise Exception('failed to remove items from shop during purchase!')
             except Exception as e:
-                ExternalServices.cancel_payment(tid)
+                self._externalServices.cancel_payment(tid)
                 raise e
 
     def bid_shop_item(self, token, shopname, itemname, amount, bidPrice):
@@ -476,26 +476,29 @@ class Market():
     def payBid(self, token, bidId, card_number, month, year, holder, ccv, id, name, address, city, country, zip):
         self.isToken(token)
         user = self.getUser(token)
-        if bidId not in user.acceptedBids.keys():
+        if bidId not in user.getMember().acceptedBids.keys():
             raise Exception('this bid id is either pending or broken!')
-        bid = user.acceptedBids[bidId]
-        shop = bid[0]
+        bid = user.getMember().acceptedBids[bidId]
+        shop = self.get_shop_by_name(bid[0])
         itemname = bid[2]
         amount = bid[3]
         price = bid[4]
         count = shop.getAmount(itemname)
         # where do i use the price???
-        tid = ExternalServices.execute_payment(card_number, month, year, holder, ccv, id)
+        tid = self._externalServices.execute_payment(card_number, month, year, holder, ccv, id)
         if tid < 0:
             raise Exception('Payment failed!')
         try:
             if shop.editItem(itemname, None, None, None, None, count-amount):
-                if ExternalServices.execute_shipment(name, address, city, country, zip) > 0:
+                if self._externalServices.execute_shipment(name, address, city, country, zip) > 0:
+                    user.getMember().acceptedBids.pop(bidId)
+                    shop.bids.pop(bidId)
+                    shop.bidAccepts.pop(bidId)
                     return True
                 raise Exception('Shipment failed!')
             raise Exception('failed to remove items from shop during purchase!')
         except Exception as e:
-            ExternalServices.cancel_payment(tid)
+            self._externalServices.cancel_payment(tid)
             raise e
 
 
@@ -658,12 +661,6 @@ class Market():
             return True
         else:
             raise Exception("Shop does not exist with the given shop name!")
-
-    def payment_execution(self, token):  # TODO to specify which params we need
-        self._externalServices.execute_payment()
-
-    def shipping_execution(self, token):  # TODO to specify which params we need
-        self._externalServices.execute_shipment()
 
     def grant_permission(self, permission_code, shop_name, token, target_manager):
         if self.isToken(token):

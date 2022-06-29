@@ -34,7 +34,6 @@ class ShoppingBasket:
         sum = 0
         for itemname in self.stockItems.keys():
             nu = self.shop.calculate_price(user, itemname, self.stockItems[itemname])
-            # print(name, nu)
             sum += nu
         return sum
 
