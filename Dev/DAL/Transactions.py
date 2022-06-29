@@ -140,14 +140,15 @@ class Transactions:
 
     @db_session
     def add_shop_manager_assignment(self, shop_name, assignment_id):
-        print("add_shop_owner_manager")
+        print("add_manager_assignment id: ",assignment_id,"shop_name: ",shop_name)
         ShopDAL.get(name = shop_name).managers_assignments.add(AssignmentDAL[assignment_id])
-        print("add_shop_owner_manager end")
+        print("added_manager_assignment id: ", assignment_id, "shop_name: ", shop_name)
+
     @db_session
     def add_shop_owner_assignment(self, shop_name, assignment_id):
-        print("add_shop_owner_assignment")
+        print("add_owner_assignment id: ",assignment_id,"shop_name: ",shop_name)
         ShopDAL.get(name=shop_name).owners_assignments.add(AssignmentDAL[assignment_id])
-        print("add_shop_owner_assignment end")
+        print("added_owner_assignment id: ",assignment_id,"shop_name: ",shop_name)
 
 
     @db_session
@@ -212,10 +213,12 @@ class Transactions:
         PurchaseHistoryDAL[id].delete()
 
     @db_session
-    def delete_assignment(self, id):
-        print("\n trying to delete assignment id: ",str(id))
+    def delete_assignment(self, id,name):
+        print("\n trying to delete assignment id: ",str(id),name)
+        ShopDAL.get(name=name).owners_assignments.remove(AssignmentDAL[id])
+        ShopDAL.get(name=name).owners_assignments.remove(AssignmentDAL[id])
         AssignmentDAL[id].delete()
-        print("\ndeleted assignment id: ", str(id))
+        print("\ndeleted assignment id: ", str(id),name)
 
     @db_session
     def delete_delayedNoty(self, member_name):
@@ -370,7 +373,7 @@ class TransactionsMock:
     def delete_purchase_history(self, id):
         pass
 
-    def delete_assignment(self, id):
+    def delete_assignment(self, id,name):
         pass
 
     def delete_delayedNoty(self, member_name):

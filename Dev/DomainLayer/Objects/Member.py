@@ -89,15 +89,12 @@ class Member:
         t.add_new_permission_rid(shop.getShopName(), self._username, -1)
 
     def can_assign_manager(self, shopname):
-        t.add_new_permission_rid(shopname, self._username, 6)
         return self.permissions[shopname].can_assign_manager()
 
     def can_assign_owner(self, shopname):
-        t.add_new_permission_rid(shopname, self._username, 4)
         return self.permissions[shopname].can_assign_owner()
 
     def canGetRolesInfoReport(self, shopname):
-        t.add_new_permission_rid(shopname, self._username, 12)
         return self.permissions[shopname].can_get_shop_roles_info()
 
     def is_owned_shop(self, shopName):
@@ -186,11 +183,9 @@ class Member:
             raise Exception("Member could not get inshop purchases history about non owned or non managed with special permission shop!")
 
     def can_get_inshop_purchases_history(self, shop_name):
-        t.add_new_permission_rid(shop_name, self._username, 13)
         return self.permissions[shop_name].can_get_inshop_purchases_history()
 
     def can_update_manager_permissions(self, shop_name):
-        t.add_new_permission_rid(shop_name, self._username, 8)
         return self.permissions[shop_name].can_change_shop_manager_permissions()
 
     def grant_permission(self, permission_code, shop_name, target_manager):

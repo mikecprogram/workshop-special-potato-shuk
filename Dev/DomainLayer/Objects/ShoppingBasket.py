@@ -59,8 +59,6 @@ class ShoppingBasket:
 
     def removeItem(self, item_name, amount):
         amount = int(amount)
-        if not (self.shop.itemExists(item_name)):
-            raise Exception("No such item found in shop")
         if not (item_name in self.stockItems):
             raise Exception("Item is not even in the basket!")
         if self.stockItems[item_name] - amount <= 0 or amount == self.stockItems[item_name]:
@@ -80,6 +78,13 @@ class ShoppingBasket:
             if item is not None:
                 item['count'] = amount
                 ret.append(item)
+            else:
+                ret.append({'name': name, 'price': -1,
+                            'count':amount,
+                 'amount': 0,
+                 'category': "Item Out Of Stock",
+                 'description': "Item Out Of Stock"})
+
         return ret
 
     def clear(self):
