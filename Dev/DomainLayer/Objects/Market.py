@@ -1,8 +1,8 @@
 from operator import is_
 import threading
-import sys
 
 # from Logger import Logger
+from Dev.DomainLayer.Objects.InitFileLoader import init_file_loader
 from Dev.DomainLayer.Objects.Policies.policyAnd import policyAnd
 from Dev.DomainLayer.Objects.Policies.policyMax import policyMax
 from Dev.DomainLayer.Objects.Policies.policyAdd import policyAdd
@@ -24,6 +24,8 @@ from Dev.DomainLayer.Objects.ExternalServices import ExternalServices
 
 from Dev.DomainLayer.Objects.Member import Member
 from Dev.DomainLayer.Objects.Security import Security
+from Dev.DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
+from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
 
 prem = [
     "premission1",
@@ -65,10 +67,14 @@ class dummyNotify():
         return ran
     def alert(self, message):
         pass
+
+
+
+
+
 class Market():
 
-    def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password,
-                 notificationPlugin ):
+    def __init__(self,notificationPlugin):
         if notificationPlugin is None:
             self._notificationPlugin = dummyNotify()
         else:
@@ -82,17 +88,27 @@ class Market():
         self._policyLock = threading.Lock()
         self._shops = {}  # {shopName, shop}
         self._security = Security()
-        hashedPassword = self._security.hash(password)
-        member = Member(system_admin_name, hashedPassword, self)
-        self._members[system_admin_name] = member
+        #loadConfigFile:
+        self.init_file_loader = init_file_loader()
+        self.reloadExternalServices()
+        self.resetSystem()#only when no sys admin
+    def resetSystem(self):
+        #todo DROP TABLE
+        #todo START TABLE
+        self.init_file_loader.load_config_file()
+        sys_username,sys_password = self.init_file_loader.getManagerDetails()
+        hashedPassword = self._security.hash(sys_password)
+        sysmanager = Member(sys_username,hashedPassword,self)# this is sys manager.
+        self._members[sys_username] = sysmanager
+        #todo add him to system
+        self.reloadExternalServices()
+    def reloadExternalServices(self):
+        external_payment_service = paymentServiceInterface(self.init_file_loader.url)
+        external_supplement_service = shippingServiceInterface(self.init_file_loader.url)
         self._externalServices = ExternalServices(external_payment_service, external_supplement_service)
 
-    # returns boolean, returns if current date < 10Minutes+_onlineDate[token]
-    # if #t update _onlineDate[token]
-    # this will be checked before each user function
-    # this function returns whether the token is valid
     def isToken(self, token):
-        if (not (token in self._onlineVisitors)):
+        if not (token in self._onlineVisitors):
             raise Exception("The token was not found")
         return True
 
