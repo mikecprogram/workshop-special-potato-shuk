@@ -14,4 +14,3 @@ class ShopDAL(db.Entity):
     ShoppingBaskets = Set("ShoppingBasketDAL",cascade_delete=True)
     policy = Set("PolicyDAL",cascade_delete=True)
     bids = Set("BidDAL",cascade_delete=True)
-    bidsAccepts = Set("MembersAcceptedBids",cascade_delete=True)

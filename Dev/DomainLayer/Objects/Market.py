@@ -127,6 +127,7 @@ class Market():
         self._externalServices = ExternalServices(external_payment_service, external_supplement_service)
 
     def isToken(self, token):
+        print(token)
         if (not (token in self._onlineVisitors)):
             raise Exception("The token was not found")
         return True

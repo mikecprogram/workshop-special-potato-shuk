@@ -9,3 +9,4 @@ class StockItemDAL(db.Entity):
     price = Required(float)
     shopname = Required(str)
     stock = Required("StockDAL")
+    bidItem = Set("BidDAL")

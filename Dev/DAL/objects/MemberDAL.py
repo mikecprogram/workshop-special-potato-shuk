@@ -11,3 +11,5 @@ class MemberDAL(db.Entity):
     assigner =Set("AssignmentDAL",cascade_delete=True)
     assignee =Set("AssignmentDAL",cascade_delete=True)
     delayedNotys = Set("DelayedNotyDAL",cascade_delete=True)
+    MembersAcceptedBids = Set("MembersAcceptedBids")
+    MembersBids = Set("BidDAL")
