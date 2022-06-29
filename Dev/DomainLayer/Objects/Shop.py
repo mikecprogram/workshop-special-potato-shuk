@@ -41,7 +41,7 @@ class Shop():
         '''DB cache usage please don't use it'''
         self._cache_lock.release()
     def getId(self, itemname):
-        return self._stock.getId(itemname)
+        return self._stock.getItem(itemname)._id
 
     def isOpen(self):
         return self._is_open

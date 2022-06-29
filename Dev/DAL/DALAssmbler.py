@@ -67,6 +67,8 @@ class DALAssmbler:
         output.owners_assignments = owners_assignments_dict
         output.managers_assignments = manager_assignments_dict
         output.purchases_history = purchases_history
+        output.bids = {b.id:[b.shop.name,b.member.username,b.item.name,b.amount,b.bidPrice] for b in shopDAL.bids}
+        output.bidAccepts = {ab.bid.id:[i.username for i in ab.members] for ab in shopDAL.bidsAccepts}
         return output
 
     @db_session
@@ -99,6 +101,13 @@ class DALAssmbler:
         output.savedCart = savedCart
         output.age = age
         output.delayedNoty = delayedNoty
+        output.acceptedBids = {}
+        for s in ShopDAL:
+            for b in s.bids:
+                if b.member.username == username:
+                    for ba in s.bidsAccepts:
+                        if ba.bid.id == b.id and set([o.username for o in s.owners]).issubset(set([o.username for o in ba.members])):
+                            output.acceptedBids[b.id] = [b.shop.name,b.member.username,b.item.name,b.amount,b.bidPrice]
         return output
 
     @db_session

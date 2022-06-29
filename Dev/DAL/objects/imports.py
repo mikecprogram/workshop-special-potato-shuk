@@ -13,3 +13,4 @@ from Dev.DAL.objects.ShoppingBasketDAL_StockItemDAL import ShoppingBasketDAL_Sto
 from Dev.DAL.objects.StockItemNameDAL import StockItemNameDAL
 from Dev.DAL.objects.PolicyDAL import PolicyDAL
 from Dev.DAL.objects.autoIncreamentDal import AutoIncreamentDal
+from Dev.DAL.objects.BidDAL import BidDAL

@@ -149,7 +149,12 @@ class Transactions:
         print("add_owner_assignment id: ",assignment_id,"shop_name: ",shop_name)
         ShopDAL.get(name=shop_name).owners_assignments.add(AssignmentDAL[assignment_id])
         print("added_owner_assignment id: ",assignment_id,"shop_name: ",shop_name)
+    def add_bid(self, bidId,shop_name ,user, itemid, amount, bidPrice):
+        BidDAL(id=bidId,shop=shop_name,member=MemberDAL.get(username=user),item=StockItemDAL.get(itemid=itemid),\
+        amount=amount,bidPrice=bidPrice)
 
+    def delete_bid(self, bidId):
+        BidDAL.get(id=bidId).delete()
 
     @db_session
     def add_shop_policy(self,policy,shop_name, type1,is_root):
