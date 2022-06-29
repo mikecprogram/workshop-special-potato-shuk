@@ -77,8 +77,16 @@ class ShoppingBasket:
         ret = []
         for name, amount in self.stockItems.items():
             item = self.shop.getItemInfo(name)
-            item['count'] = amount
-            ret.append(item)
+            if item is not None:
+                item['count'] = amount
+                ret.append(item)
+            else:
+                ret.append({'name': name, 'price': -1,
+                            'count':amount,
+                 'amount': 0,
+                 'category': "Item Out Of Stock",
+                 'description': "Item Out Of Stock"})
+
         return ret
 
     def clear(self):
