@@ -1,4 +1,4 @@
-from Dev.DomainLayer.Objects import StockItem, User
+from Dev.DomainLayer.Objects import StockItem
 from Dev.DomainLayer.Objects.Policies.Composable import Composable
 
 
@@ -9,5 +9,8 @@ class policyIsCategory(Composable):
         self.percent = float(percent)
         self.category = category
 
-    def apply(self, user: User, item: StockItem):
+    def apply(self, user, item: StockItem):
         return item.getCategory() == self.category
+
+    def get_args(self):
+        return [str(self.category),None]

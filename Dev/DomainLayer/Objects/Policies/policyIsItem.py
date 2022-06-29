@@ -1,4 +1,4 @@
-from Dev.DomainLayer.Objects import StockItem, User
+from Dev.DomainLayer.Objects import StockItem
 from Dev.DomainLayer.Objects.Policies.Composable import Composable
 
 
@@ -9,5 +9,8 @@ class policyIsItem(Composable):
         self.percent = float(percent)
         self.itemname = itemname
 
-    def apply(self, user: User, item: StockItem):
+    def apply(self, user, item: StockItem):
         return item.getName() == self.itemname
+
+    def get_args(self):
+        return [str(self.itemname),None]

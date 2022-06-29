@@ -30,7 +30,7 @@ new_noty = notificationPl(m)
 res = m.initialization_of_the_system(notificationPlugin = new_noty)
 if res.isexc:
     print("BUG:")
-    print(response.exception)
+    print(res.exc)
 
 
 def getToken(request):
@@ -375,8 +375,13 @@ def shopPolicies(request, shopname):
             m.add_purchase_policy_to_shop(tokenuser, "shopname1", 2)"""
     if request.method == "POST":
         if "removePolicy" in request.POST:
-            id = request.POST['removePolicy']
-            r = m.delete_policy(tokenuser,shopname, int(id))
+            (id,dis) = request.POST['removePolicy'].split('|')
+            type1 = "discount"
+            print("dis ",dis)
+            print("dis ", dis == 'None')
+            if dis == 'None':
+                type1 = "purchase"
+            r = m.delete_policy(tokenuser,shopname, int(id),type1)
             if r.isexc:
                 errormessage = r.exc
 
@@ -399,7 +404,7 @@ def shopPolicies(request, shopname):
                       , error=errormessage)
 
 
-def policies(request):
+def policies(request,shopname):
     errormessage = ""
     tokenuser = getToken(request)
     simpleBank = [TemplatePolicy("hasAmount", ["item name","amount"]),
@@ -443,17 +448,17 @@ def policies(request):
                 #print(str(typeofpolicy), first, second)
                 #print(m.get_my_policies(tokenuser).res)
                 if second is None:
-                    r = m.compose_policy(tokenuser, str(typeofpolicy), int(first), None)
+                    r = m.compose_policy(tokenuser,shopname, str(typeofpolicy), int(first), None)
                     if r.isexc:
                         errormessage = r.exc
                 else:
-                    r = m.compose_policy(tokenuser, str(typeofpolicy), int(first), int(second))
+                    r = m.compose_policy(tokenuser,shopname, str(typeofpolicy), int(first), int(second))
                     if r.isexc:
                         errormessage = r.exc
             else:
                 print(str(typeofpolicy), first, second)
-                print(m.get_my_policies(tokenuser).res)
-                r = m.add_policy(tokenuser,float(discount),str(typeofpolicy),first,second)
+                print(m.get_my_policies(tokenuser,shopname).res)
+                r = m.add_policy(tokenuser,shopname,float(discount),str(typeofpolicy),first,second)
                 if r.isexc:
                     errormessage = r.exc
 
@@ -482,7 +487,9 @@ def policies(request):
     request.POST = {}
 
     myPolicies = []
-    getpol = m.get_my_policies(tokenuser).res
+    getpol = m.get_my_policies(tokenuser,shopname).res
+    if getpol is None:
+        getpol=[]
     pol = None
     for p in getpol:
         if p[1] in compositeNames:
@@ -665,7 +672,7 @@ def manage(request):
                 if r.isexc:
                     errormessage = r.exc
             elif 'delman' in request.POST:
-                r = m.delete_shop_owner(tokenuser, str(request.POST['delman']),person)
+                r = m.delete_shop_manager(tokenuser, str(request.POST['delman']),person)
                 if r.isexc:
                     errormessage = r.exc
             elif 'makeown' in request.POST:

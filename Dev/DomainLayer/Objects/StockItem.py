@@ -2,11 +2,11 @@ from unicodedata import category
 
 
 ##from .Logger import Logger
-
+import threading
 
 class StockItem:
 
-    def __init__(self, ID, category: str, name, description, count, purchasepolicy, discountpolicy, price, shopname):
+    def __init__(self, ID=None, category: str=None, name=None, description=None, count=None, price=None, shopname=None):
         self._id = ID
         self._category = category
         self._desc = description
@@ -16,6 +16,15 @@ class StockItem:
         self._count = count
         self._price = price
         self._shopname = shopname
+        self._cache_lock = threading.Lock()
+
+    def aqcuire_cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.acquire()
+
+    def release__cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.release()
 
     def toString(self):
         return "id: " + str(self._id) + "\ncategory: " + self._category + "\nname: " + self._name + "\namount: " + str(self._count) + "\nprice: " + str(self._price) + "\ndescription: " + self._desc

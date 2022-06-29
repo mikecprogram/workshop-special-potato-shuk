@@ -1,7 +1,5 @@
 {
     "python.analysis.extraPaths": [
         "./Dev/ServiceLayer"
-    ],
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": false
+    ]
 }

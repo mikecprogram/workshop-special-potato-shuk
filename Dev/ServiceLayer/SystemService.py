@@ -145,7 +145,7 @@ class SystemService(BridgeInterface):
                 return Response(exception="you have to initialize the system")
             return Response(self.market.login(user_id, name, password))
         except Exception as e:
-            return Response(exception=e.__str__())
+             return Response(exception=e.__str__())
 
     def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name: str) -> Response[Dict]:  # [shop description ,item_name1 , item_name2 ...]
         try:
@@ -270,11 +270,11 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def delete_policy(self, token, shopname, policyID)-> Response[bool]:
+    def delete_policy(self, token, shopname, policyID,type1)-> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.remove_policy_from_shop(token, shopname, policyID))
+            return Response(self.market.remove_policy_from_shop(token, shopname, policyID,type1))
         except Exception as e:
             return Response(exception=e.__str__())
 
@@ -460,6 +460,14 @@ class SystemService(BridgeInterface):
             if self.market is None:
                 return Response(exception="you have to initialize the system")
             return Response(self.market.delete_shop_owner(user_id, shop_name, owner_name))
+
+        except Exception as e:
+            return Response(exception=e.__str__())
+    def delete_shop_manager(self, user_id: int, shop_name: str, manager_name: str) -> Response[None]:
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.delete_shop_manager(user_id, shop_name, manager_name))
 
         except Exception as e:
             return Response(exception=e.__str__())

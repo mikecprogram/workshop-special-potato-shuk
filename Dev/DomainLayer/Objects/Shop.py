@@ -1,16 +1,19 @@
 from Dev.DomainLayer.Objects.Policies.policyIsShop import policyIsShop
-from Dev.DomainLayer.Objects.StockItem import *
-from Dev.DomainLayer.Objects.Assignment import Assignment
+from Dev.DomainLayer.Objects.StockItem import StockItem
+from Dev.DomainLayer.Objects.Assignment import Assignment,t
 from Dev.DomainLayer.Objects.Stock import Stock
 from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
+notplugin = None
 import threading
 
 
 class Shop():
 
-    def __init__(self, shop_name: str, founder, notificationPlugin):
+    def __init__(self, shop_name, founder=None, notificationPlugin=None,save = True):
+        if notificationPlugin is not None:
+            notplugin = notificationPlugin
         self._name = shop_name
-        self._stock = Stock()
+        self._stock = Stock(shop_name,save)
         self._is_open = True  # need to confirm if we need shop's status such as closed/open. TODO
         self._founder = founder
         self._policies = [] #temp
@@ -23,10 +26,18 @@ class Shop():
         # self._purchaseHistory = PurchaseHistory()
         self._owners_assignments = {}
         self._managers_assignments = {}
-        self._purchases_history = PurchaseHistory()
+        self._purchases_history = PurchaseHistory(save = save)
         self._shop_lock = threading.Lock()
         self.notificationPlugin = notificationPlugin
+        self._cache_lock = threading.Lock()
 
+    def aqcuire_cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.acquire()
+
+    def release__cache_lock(self):
+        '''DB cache usage please don't use it'''
+        self._cache_lock.release()
     def getId(self, itemname):
         return self._stock.getId(itemname)
 
@@ -58,7 +69,7 @@ class Shop():
             raise Exception('You do not have the sufficient permissions to add item')
 
         nid = self._stock.getNextId()
-        item = StockItem(nid, category, item_name, item_desc, amount, None, None, item_price, self._name)
+        item = StockItem(nid, category, item_name, item_desc, amount, item_price, self._name)
         try:
             self._shop_lock.acquire()
             r = self._stock.addStockItem(item)
@@ -123,6 +134,12 @@ class Shop():
         if assignee_user_name not in self._owners:
             raise Exception(assignee_user_name + " is not an owner of the shop:" + self._name)
         self.delete_assignment_owner(assigner_user_name, assignee_user_name, self._owners_assignments)
+    def delete_manager(self,assigner_user_name, assignee_user_name):
+        if assignee_user_name == self._founder.get_username():
+            raise Exception("%s is Founder of the shop:%s and therefore cant be deleted from owners group" %(assignee_user_name,self._name))
+        if assignee_user_name not in self._managers:
+            raise Exception(assignee_user_name + " is not an owner of the shop:" + self._name)
+        self.delete_assignment_manager(assigner_user_name, assignee_user_name, self._managers_assignments)
 
     def delete_assignment_owner(self, assigner_user_name, assignee_user_name, assignment):
         assignee_member_object = None
@@ -132,6 +149,22 @@ class Shop():
                 if i.assignee.get_username() == assignee_user_name:
                     assignee_member_object = i.assignee
                     assignment[assigner_user_name].remove(i)
+                    t.delete_assignment(i.id)
+                    b = True
+                    break
+        if not b:
+            raise Exception(assigner_user_name + " did not assignee " + assignee_user_name)
+        self.recursive_delete(assignee_member_object)
+
+    def delete_assignment_manager(self, assigner_user_name, assignee_user_name, assignment):
+        assignee_member_object = None
+        b = False
+        if assigner_user_name in assignment:
+            for i in assignment[assigner_user_name]:
+                if i.assignee.get_username() == assignee_user_name:
+                    assignee_member_object = i.assignee
+                    assignment[assigner_user_name].remove(i)
+                    t.delete_assignment(i.id)
                     b = True
                     break
         if not b:
@@ -153,17 +186,19 @@ class Shop():
         if member_to_delete.get_username() in self._owners_assignments:
             for i in self._owners_assignments[member_to_delete.get_username()]:
                 self.recursive_delete(i.assignee)
+                t.delete_assignment(i.id)
         if member_to_delete.get_username() in self._managers_assignments:
             for i in self._managers_assignments[member_to_delete.get_username()]:
                 self.recursive_delete(i.assignee)
+                t.delete_assignment(i.id)
         if member_to_delete.get_username() in self._owners_assignments:
             del self._owners_assignments[member_to_delete.get_username()]
         if member_to_delete.get_username() in self._managers_assignments:
             del self._managers_assignments[member_to_delete.get_username()]
         member_to_delete.deleteOwnedShop(self)
         member_to_delete.deleteManagedShop(self)
-        if member_to_delete.get_username() in self._owners:
-            del self._owners[member_to_delete.get_username()]
+        if member_to_delete.get_username() in self._managers:
+            del self._managers[member_to_delete.get_username()]
 
     def assign_manager(self, assigner_member_object, assignee_member_object):
         self.have_rule_in_shop(assignee_member_object)
@@ -173,25 +208,35 @@ class Shop():
         self.add_assignment(assigner_member_object, assignee_member_object, self._managers_assignments)
         return True
 
+    def get_item_id_from_name(self,item_name):
+        return self._stock.get_item_id_from_name(item_name)
+
     def add_assignment(self, assigner_member_object, assignee_member_object, assignment):
+        a= Assignment(assigner_member_object, assignee_member_object)
         if assigner_member_object.get_username() in assignment:
             assignment[assigner_member_object.get_username()].append(
-                Assignment(assigner_member_object, assignee_member_object))
+                a)
         else:
             assignment[assigner_member_object.get_username()] = [
-                Assignment(assigner_member_object, assignee_member_object)]
+                a]
+            if assignment == self._owners_assignments:
+                t.add_shop_owner_assignment(self._name, a.id)
+            else:
+                t.add_shop_manager_assignment(self._name, a.id)
 
     def is_assignment(self, assigner, assignee):
         if assigner in self._owners_assignments:
             return assignee in self._owners_assignments[assigner]
         if assigner in self._managers_assignments:
             return assignee in self._managers_assignments[assigner]
+
     def get_founder_and_owners(self):
         all = []
         all.append(self._founder)
         for o in  self._owners.values():
             all.append(o)
         return all
+
     def close_shop(self):
         if self._is_open:
             self._is_open = False
@@ -203,6 +248,7 @@ class Shop():
             for user in all:
                 if user.get_username() in missed:
                     user.addDelayedNotification("The Shop \"%s\" is closed." %(self.getShopName()))
+            t.close_shop(self.getShopName())
             return True
         else:
             raise Exception('Closed shop could not be closed again!')
@@ -216,6 +262,7 @@ class Shop():
             for user in all:
                 if user.get_username() in missed:
                     user.addDelayedNotification("The Shop \"%s\" is open again." % (self.getShopName()))
+            t.reopen_shop(self.getShopName())
             return True
         else:
             raise Exception('Open shop could not be opened again!')
@@ -282,6 +329,7 @@ class Shop():
             raise Exception('Owner can only update his assignees permissions!')
         grantee_manager.get_permissions(self._name).add_permission(permission_code)
 
+
     def withdraw_permission(self, permission_code, grantor_username, grantee_manager):
         if not self.is_manager(grantee_manager.get_username()):
             raise Exception('Asked member is not a manager of the given shop in market!')
@@ -307,32 +355,36 @@ class Shop():
     def addPurchasePolicy(self, policy):
         self._purchaseLock.acquire()
         self._purchasePolicies.append(policy)
+        t.add_shop_policy(policy,self._name,"purchase",1)
         self._purchaseLock.release()
         return True
 
     def addDiscountPolicy(self, policy):
         self._discountLock.acquire()
         self._discountPolicies.append(policy)
+        t.add_shop_policy(policy, self._name, "discount", 1)
         self._discountLock.release()
-
         return True
 
-    def remove_policy(self, ID):
+    def remove_policy(self, ID, type1):
         done = False
-        self._discountLock.acquire()
-        for d in self._discountPolicies:
-            if d.getID() == ID:
-                self._discountPolicies.remove(d)
-                done = True
-        self._discountLock.release()
-        if done:
-            return done
-        self._purchaseLock.acquire()
-        for d in self._purchasePolicies:
-            if d.getID() == ID:
-                self._purchasePolicies.remove(d)
-                done = True
-        self._purchaseLock.release()
+        if type1 == "discount":
+            self._discountLock.acquire()
+            for d in self._discountPolicies:
+                if d.getID() == ID:
+                    self._discountPolicies.remove(d)
+                    t.delete_shop_policy(ID,self._name,"discount")
+                    done = True
+            self._discountLock.release()
+        else:
+            self._purchaseLock.acquire()
+            for d in self._purchasePolicies:
+                if d.getID() == ID:
+                    self._purchasePolicies.remove(d)
+                    t.delete_shop_policy(ID, self._name, "purchase")
+                    done = True
+            self._purchaseLock.release()
+        print(done,ID,type1)
         return done
 
     def getItemPrice(self, name):

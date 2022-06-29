@@ -1,5 +1,11 @@
-from operator import is_
+
 import threading
+import sys
+
+from Dev.DomainLayer.Objects.Policies.policyIsAge import policyIsAge
+from Dev.DomainLayer.Objects.Policies.policyIsMember import policyIsMember
+from Dev.Mock_init import Mock,AT
+from Dev.DAL.objects.DBInit import initializeDatabase
 
 # from Logger import Logger
 from Dev.DomainLayer.Objects.InitFileLoader import init_file_loader
@@ -26,6 +32,10 @@ from Dev.DomainLayer.Objects.Member import Member
 from Dev.DomainLayer.Objects.Security import Security
 from Dev.DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
 from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
+
+from Dev.DomainLayer.Objects.db_dict import TransformedDictMember,TransformedDictShop
+
+
 
 prem = [
     "premission1",
@@ -61,45 +71,54 @@ def is_valid_password(password):
 
 debug = True
 
-
+notyplugin = None
 class dummyNotify():
     def alertspecificrange(self, message, ran):
         return ran
     def alert(self, message):
         pass
-
-
-
-
-
 class Market():
 
-    def __init__(self,notificationPlugin):
+    def __init__(self, external_payment_service, external_supplement_service, system_admin_name, password,
+                 notificationPlugin ):
+        if not Mock:
+
+            initializeDatabase()
         if notificationPlugin is None:
             self._notificationPlugin = dummyNotify()
         else:
             self._notificationPlugin = notificationPlugin
-        self._members = {}
+        if not Mock:
+            self._members = TransformedDictMember()
+            self._shops = TransformedDictShop()
+            self._shops.set_notiplugin(self._notificationPlugin)
+        else:
+            self._members = {}
+            self._shops = {}
         self._membersLock = threading.Lock()
         self._onlineVisitors = {}  # {token, User}
         self._nextToken = -1
         self._enterLock = threading.Lock()
         self._nextPolicy = 1
         self._policyLock = threading.Lock()
-        self._shops = {}  # {shopName, shop}
         self._security = Security()
+        self._externalServices = ExternalServices(external_payment_service, external_supplement_service)
         #loadConfigFile:
         self.init_file_loader = init_file_loader()
+        if system_admin_name not in self._members:
+            self.load_sys_admin()
         self.reloadExternalServices()
-        self.resetSystem()#only when no sys admin
-    def resetSystem(self):
-        #todo DROP TABLE
-        #todo START TABLE
-        self.init_file_loader.load_config_file()
+    def load_sys_admin(self):
         sys_username,sys_password = self.init_file_loader.getManagerDetails()
         hashedPassword = self._security.hash(sys_password)
         sysmanager = Member(sys_username,hashedPassword,self)# this is sys manager.
         self._members[sys_username] = sysmanager
+    def resetSystem(self):
+        #todo DROP TABLE
+        #todo START TABLE
+        self.init_file_loader.load_config_file()
+        self.load_sys_admin()
+
         #todo add him to system
         self.reloadExternalServices()
     def reloadExternalServices(self):
@@ -108,7 +127,7 @@ class Market():
         self._externalServices = ExternalServices(external_payment_service, external_supplement_service)
 
     def isToken(self, token):
-        if not (token in self._onlineVisitors):
+        if (not (token in self._onlineVisitors)):
             raise Exception("The token was not found")
         return True
 
@@ -323,6 +342,8 @@ class Market():
                 return policyIsShop(p[0], p[2])
             if pol[1] == "isFounder":
                 return policyIsFounder(p[0], p[2])
+            if pol[1] == "isMember":
+                return policyIsMember(p[0], p[2])
             if pol[1] == "isOwner":
                 return policyIsOwner(p[0], p[2])
             if pol[1] == "isCategory":
@@ -331,6 +352,8 @@ class Market():
                 return policyIsItem(p[0], p[3], p[2])
             if pol[1] == "hasAmount":
                 return policyHasAmount(p[0], p[4], p[2], p[3])
+            if pol[1] == "isAge":
+                return policyIsAge(p[0], p[3], p[2])
             if pol[1] == "hasPrice":
                 return policyHasPrice(p[0], p[4], p[2], p[3])
             if pol[1] == "isAfterTime":
@@ -384,11 +407,11 @@ class Market():
             return shop.addTempPolicy(ID, name, arg1, arg2, None)
         raise Exception('Cannot add policy!')
 
-    def remove_policy_from_shop(self, token, shopname, policyID):
+    def remove_policy_from_shop(self, token, shopname, policyID,type1):
         if not self.isToken(token):
             raise Exception('Bad token!')
         s = self._shops[shopname]
-        return s.remove_policy(policyID)
+        return s.remove_policy(policyID,type1)
 
     def calculate_item_price(self, token, shopname, itemname):
         self.isToken(token)
@@ -641,6 +664,21 @@ class Market():
                 self._membersLock.release()
                 raise Exception(owner_name + " is not Member")
 
+    def delete_shop_manager(self, token: int, shop_name: str, manager_name: str):
+        if self.isToken(token) and self.is_logged_in(token):
+            self._membersLock.acquire()
+            member = self._members[self.getUser(token).getUsername()]
+            if self.is_member(manager_name):
+                try:
+                    member.delete_shop_manager(shop_name, manager_name)
+                    self._membersLock.release()
+                except Exception as e:
+                    self._membersLock.release()
+                    raise e
+            else:
+                self._membersLock.release()
+                raise Exception(manager_name + " is not Member")
+
     def delete_member(self, token: int, member_name: str):
         try:
             self._enterLock.acquire()
@@ -707,3 +745,4 @@ class Market():
 
     def get_all_categories(self):
         return {shop.getShopName(): shop.getCategories() for shop in self._shops.values()}
+

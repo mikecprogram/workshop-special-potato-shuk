@@ -9,3 +9,6 @@ class policyIsShop(Composable):
 
     def apply(self, user, item):
         return True
+
+    def get_args(self):
+        return [None,None]

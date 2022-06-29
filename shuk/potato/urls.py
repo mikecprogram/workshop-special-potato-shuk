@@ -22,7 +22,7 @@ urlpatterns = [
     re_path(r'^register$',views.register,name = 'register'),
     re_path(r'^shop$',views.shops,name = 'shop'),
     re_path(r'^shops$',views.shops, name = "shops"),
-    re_path(r'^policies$',views.policies, name = "policies"),
+    re_path(r'^shop/(?P<shopname>[\w ]+)/policies$',views.policies),
     re_path(r'^shop/(?P<shopname>[\w ]+)/shopPolicies$',views.shopPolicies),
     re_path(r'^shop/(?P<shopname>[\w ]+)/additem$',views.additem),
     re_path(r'^shop/(?P<shopname>[\w ]+)/history$',views.storeHistoryPurchases),

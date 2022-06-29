@@ -224,7 +224,7 @@ class MyTestCase(unittest.TestCase):
         r = self.m.get_shop_policies(self.u, "shopname")
         self.assertEqual(r.res, [["discount", 1, 10], ["purchase", 2]], r.res)
         self.assertTrue((not r.isexc), r.exc)
-        r = self.m.delete_policy(self.u, "shopname", 1)
+        r = self.m.delete_policy(self.u, "shopname", 1,"discount")
         self.assertTrue(r.res, r.exc)
         self.assertTrue((not r.isexc), r.exc)
         r = self.m.get_shop_policies(self.u, "shopname")
