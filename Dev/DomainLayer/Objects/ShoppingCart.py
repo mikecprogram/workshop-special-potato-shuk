@@ -31,21 +31,28 @@ class ShoppingCart:
                 return None
             return self.shoppingBaskets[shop.getShopName()]
 
-    def addItem(self, shop, item_name, amount):
+    def addItem(self, shop, item_name, amount,user):
         s = self.getBasketByShop(shop)
         if s is None:
             s = ShoppingBasket(self, shop)
             self.shoppingBaskets[shop.getShopName()] = s
         s.addItem(item_name, amount)
+        if user.isMember():
+            self.store()
 
-    def removeItem(self, shopName, item_name, amount):
+    def removeItem(self, shopName, item_name, amount,user):
         b = self.getBasketByShop(shopName)
         if b is None:
             raise Exception("Cant remove item from a shop you dont have cart from (%s)" % shopName)
         if b.removeItem(item_name, amount):
             if b.is_empty():
                 del self.shoppingBaskets[shopName]
-            return True
+        if user.isMember():
+            t.delete_shopping_basket_item_or_change_count(b.id,item_name,amount)
+            if b.is_empty():
+                t.delete_shop_basket(b.id)
+        return True
+
 
     def validate_purchase(self):
         for name, basket in self.shoppingBaskets.items():
@@ -91,7 +98,6 @@ class ShoppingCart:
         except Exception as e:
             print(e.__str__())
             raise e
-        self._user = None
 
 
     def setUser(self, user):

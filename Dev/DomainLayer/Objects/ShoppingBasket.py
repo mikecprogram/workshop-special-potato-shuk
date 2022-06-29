@@ -54,8 +54,7 @@ class ShoppingBasket:
         if not (item_name in self.stockItems.keys()):
             self.stockItems[item_name] = 0
         if not (self.shop.isAmount(item_name, self.stockItems[item_name] + amount)):
-            self.stockItems[item_name] = self.shop.getAmount(item_name)
-            raise Exception("No such amount available in shop, setting to whats left in stock.")
+            raise Exception("No such amount available in shop")
         self.stockItems[item_name] = self.stockItems[item_name] + amount
 
     def removeItem(self, item_name, amount):
