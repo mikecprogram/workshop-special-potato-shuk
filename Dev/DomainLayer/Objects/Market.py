@@ -4,7 +4,7 @@ import sys
 
 from Dev.DomainLayer.Objects.Policies.policyIsAge import policyIsAge
 from Dev.DomainLayer.Objects.Policies.policyIsMember import policyIsMember
-from Dev.Mock_init import Mock,AT
+from Dev.Mock_init import Mock
 from Dev.DAL.objects.DBInit import initializeDatabase
 
 # from Logger import Logger
@@ -106,13 +106,35 @@ class Market():
         #loadConfigFile:
         self.init_file_loader = init_file_loader()
         self.load_sys_admin()
+        #self.loadcondig()
         self.reloadExternalServices()
+
     def load_sys_admin(self):
-        sys_username,sys_password = self.init_file_loader.getManagerDetails()
+        sys_username,sys_password = self.init_file_loader.getManagerDetailsa(-1)
         if sys_username not in self._members:
             hashedPassword = self._security.hash(sys_password)
             sysmanager = Member(sys_username,hashedPassword,self)# this is sys manager.
             self._members[sys_username] = sysmanager
+
+    def loadcondig(self):
+        for hhhhh in range(2,4):
+            u, p = self.init_file_loader.getManagerDetailsa(hhhhh)
+            print(u)
+            print(p)
+            if u not in self._members:
+                hashedPassword = self._security.hash(p)
+                mem = Member(u,hashedPassword)
+                self._members[u] = mem
+        u3, p3 = self.init_file_loader.getManagerDetailsa(3)
+        u, p = self.init_file_loader.getManagerDetailsa(2)
+        t2 = self.enter()
+        """self.login(t2,u,p)
+        self.shop_open(t2,"s")
+        self.adding_item_to_the_shops_stock(t2,"Bamba","s","Snacks","Tasty",30.0,20)
+        self.shop_manager_assignment(t2,"s",u3)
+        self.grant_permission(1,"s",t2,u3)
+        self.exit(t2)
+        print("DONEDONEDONEDONEDONEDONEDONEDONE")"""
     def resetSystem(self):
         #todo DROP TABLE
         #todo START TABLE

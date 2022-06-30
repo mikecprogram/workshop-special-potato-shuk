@@ -321,6 +321,17 @@ def shop(request, shopname):
     tokenuser = getToken(request)
     errormessage = ""
     if request.method == 'POST':  # Add to cart or deleteItem
+        if 'accept' in request.POST:
+            isAccept = request.POST['accept']
+            bidid = int(request.POST['bidid'])
+            if isAccept == "True":
+                res = m.accept_bid(tokenuser, shopname,bidid)
+                if res.isexc:
+                    errormessage = res.exc
+            else:
+                res = m.reject_bid(tokenuser, shopname,bidid)
+                if res.isexc:
+                    errormessage = res.exc
         if 'deleteItem' in request.POST:
             itemname = request.POST['deleteItem']
             res = m.deleting_item_from_shop_stock(tokenuser, itemname, shopname)
@@ -341,7 +352,7 @@ def shop(request, shopname):
     # TODO, fetch also the discounts
 
     showAddItem = True
-
+    request.POST = {}
     return makerender(request, tokenuser, 'shop.html', \
                       {'shopname': shopinfo['name'], \
                        'items': shopinfo['items'], \
@@ -594,11 +605,22 @@ def search(request):
             for _, items in answer.items():
                 len_results += len(items)
     if request.method == 'POST':
-        (itemname, shopname) = request.POST['addItemToCart'].split('|')
-        quantity = int(request.POST['quantity'])
-        res = m.shopping_carts_add_item(tokenuser, itemname, shopname, quantity)
-        if res.isexc:
-            errormessage = res.exc
+        if "bid" in request.POST:
+            (itemname, shopname) = request.POST['bidsettings'].split('|')
+            amount = request.POST['amount']
+            r = m.bid_shop_item(tokenuser,shopname,itemname,int(amount),float(price))
+            if r.isexc:
+                errormessage = res.exc
+            else:
+                errormessage = "Bidding sent"
+
+        else:
+            (itemname, shopname) = request.POST['addItemToCart'].split('|')
+            quantity = int(request.POST['quantity'])
+            res = m.shopping_carts_add_item(tokenuser, itemname, shopname, quantity)
+            if res.isexc:
+                errormessage = res.exc
+            request.POST = {}
 
     return makerender(request, tokenuser, 'searchItems.html',
                       {'categories':categories,'len_results': len_results, 'answer': answer, 'searchterm': query, 'category': category,
@@ -733,6 +755,9 @@ def makerender(request, tokenuser, page, optparams=None, error=None):
         optparams = {}
     optparams['token'] = tokenuser
     r = m.shopping_carts_check_content(tokenuser)
+    if r.isexc:
+        print("2345678765432123456787654321234567865432345678765432345678")
+        print(r.exc)
     cartamount = sum([len(result) for result in r.res.values()])
     optparams['cartamount'] = cartamount
     if error is None:

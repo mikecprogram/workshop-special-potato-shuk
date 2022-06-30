@@ -1,6 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<script type="text/javascript">
+function hideshow_bidform(newval) {
+    var x = document.getElementById("purchaseform");
+    if (x.style.display === "none") {
+        document.getElementById("boba").value = newval;
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+</script>
+
+<div class="floatcenter-container">
+    <form id="purchaseform" class="credit-card" action="" method="POST" id="purchaseForm" style="display: none;" >
+        {% csrf_token %}
+        <H1>Send Bid:</H1>
+            <input hidden id="boba" name="bidsettings" value="itemname|shopname">
+        Amount:
+            <input type="number" name="amount" value="0">
+        Suggest new price:
+            <input type="number" name="price" value="0">
+
+
+        <div class="center"><button class="bluebutton" type="submit" name="bid" value="True">&emsp;Send bid&emsp;</button></div>
+        <div class="center"><button class="redbutton" onclick="hideshow_bidform('','')" >&emsp;Close&emsp;</button></div>
+    </form></div>
 <div class="center">
 <form class="SearchParams" action="" method="GET">
     <div class="LoginContainer">
@@ -59,6 +85,7 @@
                 Amount: <input  type ="number" value=1 min="1" max="{{item.amount}}" step="1" name="quantity">
                 <div class="center"><button class="bluebutton" type="submit"name="addItemToCart" value="{{item.name}}|{{shopname}}">Add to cart</button></div>
             </form>
+            <div class="center"><button onclick="hideshow_bidform('{{item.name}}|{{shopname}}')" class="yellowbutton">Bid</button></div>
         </div>
         {% endfor %}
 </div>

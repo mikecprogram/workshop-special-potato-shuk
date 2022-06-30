@@ -47,26 +47,19 @@ class init_file_loader:
             self.url = None
             self.username = "Alex"
             self.password = "Alex_123456"
-            self.u2 = "Mike"
-            self.u2password = "12345678"
-            self.u3 =  "Mike3"
-            self.u3password =  "12345678"
-            self.u4 = "Mike4"
-            self.u4password = "12345678"
 
 
     def getManagerDetails(self):
         return self.username, self.password
 
-    def getManagerDetailsa(self, hhhhh):
-        print(hhhhh)
-        if hhhhh == 1:
+    def getManagerDetailsa(self, id):
+        if id == 1:
             return (self.username, self.password)
-        if hhhhh == 2:
+        if id == 2:
             return (self.u2, self.u2password)
-        if hhhhh == 3:
+        if id == 3:
             return (self.u3, self.u3password)
-        if hhhhh == 4:
+        if id == 4:
             return (self.u4, self.u4password)
         return self.username, self.password
     def getPaymentUrl(self):

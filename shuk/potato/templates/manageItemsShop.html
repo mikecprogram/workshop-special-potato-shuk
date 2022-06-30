@@ -5,7 +5,25 @@
 <h2>Founded by :{{founder}}</h2>
 <h2>Owned by :{{owners}}</h2>
 <h2>Managed by :{{managers}}</h2>
+<h1>Bids:</h1>
+<div class="stockitemlist">
+{% for item in itemslist %}
+        <div class="stockitem">
+            <h3>Bid id: {{item.bidid}}</h3>
+            <label id="bidsettings" hidden name="bidid" value="{{item.bidid}}"></label>
 
+            <h3>By : {{item.username}}</h3>
+            <h2>On item : {{item.itemname}}</h2>
+            <h2>For price : {{item.price}}</h2>
+            <form action="" method="post" >
+                {% csrf_token %}
+                <button type="submit" class="redbutton" name="accept" value="False">Deny</button>
+                <button type="submit" class="bluebutton" name="accept" value="True">Accept</button>
+            </form>
+        </div>
+{% endfor %}
+</div>
+<H1>Items:</H1>
 <div class="stockitemlist">
 
     {% for item in itemslist %}
@@ -15,24 +33,24 @@
             <h2>{{item.name}}</h2>
             <p>{{item.desc}}</p>
             <hr>
-            <form action="" method="post" id="myForm">
+            <form action="" method="post" >
                 {% csrf_token %}
                 <button type="submit" class="btn btn-sm btn-info" name="something">-</button>
             </form>
             <p class="price">{{item.price}}₪</p>
-            <form action="" method="post" id="myForm">
+            <form action="" method="post" >
                 {% csrf_token %}
                 <button type="submit" class="btn btn-sm btn-info" name="something">+</button>
             </form>
             <hr>
             <p class="left">{{item.count}} left.</p>
             <!-- todo: add functionality  -->
-            <form action="" method="post" id="myForm">
+            <form action="" method="post" >
                 {% csrf_token %}
                 <button type="submit" class="btn btn-sm btn-info" name="something">-</button>
             </form>
             <p> Quantity: {{item.quantity}} </p>
-            <form action="" method="post" id="myForm">
+            <form action="" method="post" >
                 {% csrf_token %}
                 <button type="submit" class="btn btn-sm btn-info" name="something">+</button>
             </form>

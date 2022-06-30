@@ -4,8 +4,6 @@ from Dev.ServiceLayer.BridgeInterface import BridgeInterface
 from Dev.ServiceLayer.Response import Response
 from typing import Dict, List, Set
 
-from Dev.DomainLayer.Objects.shippingServiceInterface import shippingServiceInterface
-from Dev.DomainLayer.Objects.paymentServiceInterface import paymentServiceInterface
 from Dev.DomainLayer.Objects.Market import Market
 from Dev.DomainLayer.Objects.PaymentService import PaymentService
 from Dev.DomainLayer.Objects.ShippingService import ShippingService
@@ -48,10 +46,11 @@ class SystemService(BridgeInterface):
             return Response(exception=e.__str__())
 
     def initialization_of_the_system(self,notificationPlugin = None) -> Response[bool]:
+
+        self.market: Market = Market(notificationPlugin)
         try:
             if self.market is not None:
                 return Response(exception="system have been initialized before")
-            self.market: Market = Market(notificationPlugin)
             return Response(True)
         except Exception as e:
             return Response(exception=e.__str__())
