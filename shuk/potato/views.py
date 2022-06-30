@@ -83,9 +83,20 @@ def cart(request):
     jsmessage = ""
     if request.method == 'POST':
         if 'purchase' in request.POST:
+            holder = str(request.POST['holder-number'])
+            holderid = str(request.POST['holder-id'])
+            cardid = str(request.POST['card-number'])
+            cvv = str(request.POST['cvv'])
+            month = str(request.POST['Month'])
+            year = str(request.POST['Year'])
+            name = str(request.POST['name'])
+            address = str(request.POST['address'])
+            city = str(request.POST['city'])
+            country= str(request.POST['country'])
+            zip = str(request.POST['zip'])
             print("TRY TO PURCHASE")
             jsmessage = 'Purchase successfully!'
-            res = m.Shopping_cart_purchase(tokenuser)
+            res = m.Shopping_cart_purchase(tokenuser,cardid,month,year,holder,cvv,holderid,name, address, city, country, zip)
             if res.isexc:
                 print(res.exc)
                 jsmessage = res.exc
@@ -609,12 +620,12 @@ def temp(request):
     m.shop_open(u, "Shufersal")
     m.shop_manager_assignment(u,"Mega","mike")
     m.shop_owner_assignment(u,"Shufersal","mike")
+    m.adding_item_to_the_shops_stock(u, "name", "Mega", "category", "description", 70.0, 5)
     m.shop_open(u2, "MOMMMMM")
-    m.logout(u2)
     m.logout(u)
-    u2 = getToken(request)
-    m.login_into_the_trading_system(u2, "mike", "password")
-    return redirect("/manage")
+    m.shopping_carts_add_item(u2, "name", "Mega", 3)
+    request.COOKIES['tokenuser'] = u2
+    return cart(request)
 
 def unpack_managed_shop(tokenuser,res):
     shops = []
