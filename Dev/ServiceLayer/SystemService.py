@@ -140,12 +140,12 @@ class SystemService(BridgeInterface):
             return Response(exception=e.__str__())
 
     def login_into_the_trading_system(self, user_id: int, name: str, password: str) -> Response[bool]:
-        # try:
-        if self.market is None:
-            return Response(exception="you have to initialize the system")
-        return Response(self.market.login(user_id, name, password))
-        # except Exception as e:
-        #      return Response(exception=e.__str__())
+        try:
+            if self.market is None:
+                return Response(exception="you have to initialize the system")
+            return Response(self.market.login(user_id, name, password))
+        except Exception as e:
+             return Response(exception=e.__str__())
 
     def info_about_shop_in_the_market_and_his_items_name(self, user_id, shop_name: str) -> Response[Dict]:  # [shop description ,item_name1 , item_name2 ...]
         try:

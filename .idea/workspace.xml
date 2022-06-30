@@ -3,14 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/DALAssmbler.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/DALAssmbler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/Transactions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/Transactions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/BidDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/BidDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DTO/MemberDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/MemberDTO.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DTO/ShopDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/ShopDTO.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/DatabaseAdapter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/DatabaseAdapter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/Mock_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/Mock_init.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/ServiceLayer/SystemService.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/ServiceLayer/SystemService.py" afterDir="false" />
     </list>
     <list id="b395499b-f66b-412d-bcb0-557ef139e125" name="Changes by salih_kadry" comment="" />
@@ -79,7 +72,7 @@
       <recent name="C:\Users\user\Desktop\workshop-special-potato-shuk\Dev\DomainLayer\Objects\Policies" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_Requirement_II_4_7.MyTestCase.testGood">
+  <component name="RunManager" selected="Python tests.pytest in Users Requirements (II)">
     <configuration name="pytest for test_Requirement_II_2_5_3.MyTestCase.testAddedAsGuest" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="workshop-special-potato-shuk" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -187,10 +180,10 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python tests.pytest in Users Requirements (II)" />
         <item itemvalue="Python tests.pytest for test_Requirement_II_4_7.MyTestCase.testGood" />
         <item itemvalue="Python tests.pytest for test_bid.MyTestCase.testAddBid" />
         <item itemvalue="Python tests.pytest for test_bid.MyTestCase" />
-        <item itemvalue="Python tests.pytest in Users Requirements (II)" />
         <item itemvalue="Python tests.pytest for test_Requirement_II_2_5_3.MyTestCase.testAddedAsGuest" />
       </list>
     </recent_temporary>
