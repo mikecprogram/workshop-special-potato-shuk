@@ -232,11 +232,11 @@ class SystemService(BridgeInterface):
         except Exception as e:
             return Response(exception=e.__str__())
 
-    def accept_bid(self, token, shopname, bidId) -> Response[bool]:
+    def accept_bid(self, token, shopname, bidId, counterPrice = None) -> Response[bool]:
         try:
             if self.market is None:
                 return Response(exception="you have to initialize the system")
-            return Response(self.market.acceptBid(token, shopname, bidId))
+            return Response(self.market.acceptBid(token, shopname, bidId, counterPrice))
         except Exception as e:
             return Response(exception=e.__str__())
 

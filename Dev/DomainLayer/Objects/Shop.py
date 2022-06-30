@@ -400,17 +400,22 @@ class Shop():
             t.add_accept_bid_without_owners(bidId)
             #TODO notify all owners here
 
-    def acceptBid(self, bidId, username, market):
+    def acceptBid(self, bidId, username, market, counter):
         if username in self._owners:
             if bidId in self.bidAccepts.keys():
-                self.bidAccepts[bidId].add(username)
-                t.add_accept_bid_owner(bidId,username)
-                k = self._owners.keys()
-                if set(k).issubset(self.bidAccepts[bidId]):
-                    member = market._members[self.bids[bidId][1]]
-                    member.acceptBid(bidId, self.bids[bidId])
-                    # TODO notify user his bid is accepted here
-                    return True
+                if counter is not None:
+                    self.bids[bidId][4] = counter
+                    self.bidAccepts[bidId] = set()
+                    #TODO notify all owners and user here
+                else:
+                    self.bidAccepts[bidId].add(username)
+                    t.add_accept_bid_owner(bidId,username)
+                    k = self._owners.keys()
+                    if set(k).issubset(self.bidAccepts[bidId]):
+                        member = market._members[self.bids[bidId][1]]
+                        member.acceptBid(bidId, self.bids[bidId])
+                        # TODO notify user his bid is accepted here
+                        return True
             raise Exception('bad bid id!')
         raise Exception('not owner of the shop!')
 
