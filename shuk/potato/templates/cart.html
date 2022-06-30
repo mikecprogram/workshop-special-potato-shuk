@@ -7,10 +7,74 @@
         <div class = "center"><h1>Your cart is empty.</h1></div>
 {% else %}
 <h3>Total of {{cartprice}}.</h3>
-<form action="" method="POST" id="purchaseForm">
-    {% csrf_token %}
-    <div class="center"><button class="bluebutton" type="submit" name="purchase" value="True">&emsp;Purchase Cart&emsp;</button></div>
-</form>
+<script type="text/javascript">
+function hideshow_purchaseform() {
+    var x = document.getElementById("purchaseform");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+</script>
+    <button onclick="hideshow_purchaseform()" class="yellowbutton">Purchase</button>
+
+ <div class="floatcenter-container">
+    <form id="purchaseform" class="credit-card" action="" method="POST" id="purchaseForm" style="display: none" >
+        {% csrf_token %}
+            <div class="form-header">
+              <h4 class="title">Credit card details</h4>
+            </div>
+
+              <!-- Card Number -->
+              <input type="text" name="holder-number" class="card-number" placeholder="Holder name" required>
+              <input type="text" name="holder-id" class="card-number" placeholder="Holder id" required>
+              <input type="text" name="card-number" class="card-number" placeholder="Card Number" required>
+
+              <!-- Date Field -->
+              <div class="date-field">
+                <div class="month">
+                  <select name="Month" required>
+                    <option value="january">January</option>
+                    <option value="february">February</option>
+                    <option value="march">March</option>
+                    <option value="april">April</option>
+                    <option value="may">May</option>
+                    <option value="june">June</option>
+                    <option value="july">July</option>
+                    <option value="august">August</option>
+                    <option value="september">September</option>
+                    <option value="october">October</option>
+                    <option value="november">November</option>
+                    <option value="december">December</option>
+                  </select>
+                </div>
+                <div class="year">
+                  <select name="Year" required>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Card Verification Field -->
+              <div class="card-verification">
+                <div class="cvv-input">
+                  <input type="text" placeholder="CVV" name="cvv" required>
+                </div>
+              </div>
+
+              <input type="text" name="name" class="card-number" placeholder="Name" required>
+              <input type="text" name="address" class="card-number" placeholder="Address" required>
+              <input type="text" name="city" class="card-number" placeholder="City" required>
+              <input type="text" name="country" class="card-number" placeholder="Country" required>
+                <input type="text" name="zip" class="card-number" placeholder="Zip" required>
+
+        <div class="center"><button class="bluebutton" type="submit" name="purchase" value="True">&emsp;Purchase Cart&emsp;</button></div>
+        <div class="center"><button class="redbutton" onclick="hideshow_purchaseform()" >&emsp;Close&emsp;</button></div>
+    </form></div>
 
 {% for shopname, items in answer.items %}
 <hr>
