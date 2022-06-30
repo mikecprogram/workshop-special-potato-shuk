@@ -299,8 +299,10 @@ class Shop():
 
     def purchase(self, user, itemname: str, amount: int, bought_price: float):
         '''Perform purchase'''
-        self._purchases_history.add(user.get_state(), itemname, amount, bought_price)
-        self._stock.purchase(itemname, amount)
+        id = t.make_new_atomic()
+        self._purchases_history.add(user.get_state(), itemname, amount, bought_price, True, id)
+        self._stock.purchase(itemname, amount, id)
+        t.run_atomic(id)
         self.notify_all_owners_and_founder("%s purchased %d of %s from shop %s" % (user.get_state(), amount, itemname, self.getShopName()))
         return True
 
