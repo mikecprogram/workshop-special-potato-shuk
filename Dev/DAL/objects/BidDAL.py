@@ -7,5 +7,5 @@ class BidDAL(db.Entity):
     item = Required("StockItemDAL")
     amount = Required(int)
     bidPrice = Required(float)
-    MembersAcceptedBids = Optional("MembersAcceptedBids")
+    MembersAcceptedBids = Optional("MembersAcceptedBids",cascade_delete=True)
 

@@ -420,7 +420,6 @@ class Shop():
                 self.bidAccepts.pop(bidId)
                 self.bids.pop(bidId)
                 t.delete_bid(bidId)
-                t.delete_accept_bid(bidId)
                 # TODO notify user his bid is rejected here
             raise Exception('bad bid id!')
         raise Exception('not owner of the shop!')

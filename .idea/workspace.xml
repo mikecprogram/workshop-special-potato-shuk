@@ -4,13 +4,14 @@
     <list default="true" id="407604b8-33b4-4d1b-8aed-1690b57ae6a2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DAL/DALAssmbler.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/DALAssmbler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DAL/Transactions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/Transactions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/BidDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/BidDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/MemberDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/MemberDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/ShopDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/ShopDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/StockItemDAL.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DAL/objects/StockItemDAL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/DAL/objects/database.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/MemberDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/MemberDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DTO/ShopDTO.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DTO/ShopDTO.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/DatabaseAdapter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/DatabaseAdapter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Market.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dev/Mock_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/Mock_init.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/DomainLayer/Objects/Shop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dev/ServiceLayer/SystemService.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dev/ServiceLayer/SystemService.py" afterDir="false" />
     </list>
     <list id="b395499b-f66b-412d-bcb0-557ef139e125" name="Changes by salih_kadry" comment="" />
     <list id="270a8280-9b7b-407c-99fc-7175ce8c2493" name="Changes by user" comment="" />
@@ -78,30 +79,8 @@
       <recent name="C:\Users\user\Desktop\workshop-special-potato-shuk\Dev\DomainLayer\Objects\Policies" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.pytest for test_Requirement_II_2_5_3.MyTestCase.testAfterRelog">
-    <configuration name="test_bid" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="workshop-special-potato-shuk" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="C:\Users\user\AppData\Local\Programs\Python\Python39\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)/test_bid.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="pytest for test_Requirement_II_2_5_3.MyTestCase.testAfterRelog" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python tests.pytest for test_Requirement_II_4_7.MyTestCase.testGood">
+    <configuration name="pytest for test_Requirement_II_2_5_3.MyTestCase.testAddedAsGuest" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="workshop-special-potato-shuk" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -113,11 +92,11 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_Requirement_II_2_5_3.MyTestCase.testAfterRelog&quot;" />
+      <option name="_new_target" value="&quot;test_Requirement_II_2_5_3.MyTestCase.testAddedAsGuest&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="pytest for test_Requirement_II_2_5_3.MyTestCase.testPurchaseHistory" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+    <configuration name="pytest for test_Requirement_II_4_7.MyTestCase.testGood" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="workshop-special-potato-shuk" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -129,7 +108,7 @@
       <option name="_new_keywords" value="&quot;&quot;" />
       <option name="_new_parameters" value="&quot;&quot;" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_Requirement_II_2_5_3.MyTestCase.testPurchaseHistory&quot;" />
+      <option name="_new_target" value="&quot;test_Requirement_II_4_7.MyTestCase.testGood&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
@@ -165,6 +144,22 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
+    <configuration name="pytest in Users Requirements (II)" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
+      <module name="workshop-special-potato-shuk" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_parameters" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/AcceptanceTests/Tests/Users Requirements (II)&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
     <configuration name="pytest in test_wow.py" type="tests" factoryName="py.test" nameIsGenerated="true">
       <module name="workshop-special-potato-shuk" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -183,20 +178,20 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.test_bid" />
       <item itemvalue="Python tests.pytest in test_wow.py" />
-      <item itemvalue="Python tests.pytest for test_bid.MyTestCase" />
+      <item itemvalue="Python tests.pytest for test_Requirement_II_2_5_3.MyTestCase.testAddedAsGuest" />
+      <item itemvalue="Python tests.pytest in Users Requirements (II)" />
       <item itemvalue="Python tests.pytest for test_bid.MyTestCase.testAddBid" />
-      <item itemvalue="Python tests.pytest for test_Requirement_II_2_5_3.MyTestCase.testPurchaseHistory" />
-      <item itemvalue="Python tests.pytest for test_Requirement_II_2_5_3.MyTestCase.testAfterRelog" />
+      <item itemvalue="Python tests.pytest for test_bid.MyTestCase" />
+      <item itemvalue="Python tests.pytest for test_Requirement_II_4_7.MyTestCase.testGood" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.pytest for test_Requirement_II_2_5_3.MyTestCase.testAfterRelog" />
-        <item itemvalue="Python tests.pytest for test_Requirement_II_2_5_3.MyTestCase.testPurchaseHistory" />
-        <item itemvalue="Python tests.pytest for test_bid.MyTestCase" />
+        <item itemvalue="Python tests.pytest for test_Requirement_II_4_7.MyTestCase.testGood" />
         <item itemvalue="Python tests.pytest for test_bid.MyTestCase.testAddBid" />
-        <item itemvalue="Python.test_bid" />
+        <item itemvalue="Python tests.pytest for test_bid.MyTestCase" />
+        <item itemvalue="Python tests.pytest in Users Requirements (II)" />
+        <item itemvalue="Python tests.pytest for test_Requirement_II_2_5_3.MyTestCase.testAddedAsGuest" />
       </list>
     </recent_temporary>
   </component>

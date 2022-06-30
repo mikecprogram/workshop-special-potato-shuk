@@ -127,7 +127,6 @@ class Market():
         self._externalServices = ExternalServices(external_payment_service, external_supplement_service)
 
     def isToken(self, token):
-        print(token)
         if (not (token in self._onlineVisitors)):
             raise Exception("The token was not found")
         return True
@@ -495,6 +494,7 @@ class Market():
                     user.getMember().acceptedBids.pop(bidId)
                     shop.bids.pop(bidId)
                     shop.bidAccepts.pop(bidId)
+                    t.delete_bid(bidId)
                     return True
                 raise Exception('Shipment failed!')
             raise Exception('failed to remove items from shop during purchase!')

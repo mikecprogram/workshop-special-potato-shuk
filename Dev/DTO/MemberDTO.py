@@ -14,3 +14,4 @@ class MemberDTO:
         self.savedCart = savedCart
         self.age = age
         self.delayedNoty = delayedNoty
+        self.acceptedBids ={}

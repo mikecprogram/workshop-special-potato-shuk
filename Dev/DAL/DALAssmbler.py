@@ -65,7 +65,9 @@ class DALAssmbler:
         output.managers_assignments = manager_assignments_dict
         output.purchases_history = purchases_history
         output.bids = {b.id:[b.shop.name,b.member.username,b.item.name,b.amount,b.bidPrice] for b in shopDAL.bids}
-        output.bidAccepts = {b.id:[i.username for i in b.MembersAcceptedBids.members] for b in shopDAL.bids}
+        output.bidAccepts = {b.id:set([i.username for i in b.MembersAcceptedBids.members]) for b in shopDAL.bids}
+        print("DTOBIds",output.bids)
+        print("AccDTOBIds",output.bidAccepts)
         return output
 
     @db_session
@@ -99,9 +101,10 @@ class DALAssmbler:
         output.age = age
         output.delayedNoty = delayedNoty
         output.acceptedBids = {}
-        for b in ShopDAL.MembersBids:
-            if set([o.username for o in b.shop.owners]).issubset(set([o.username for o in b.MembersAcceptedBids.members])):
+        for b in memberDAL.MembersBids:
+            if set(select(o.username for o in b.shop.owners)).issubset(set(select(o.username for o in b.MembersAcceptedBids.members))):
                 output.acceptedBids[b.id] = [b.shop.name,b.member.username,b.item.name,b.amount,b.bidPrice]
+        print("MemberDTOAccBIds", output.acceptedBids)
         return output
 
     @db_session

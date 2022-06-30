@@ -121,6 +121,8 @@ class DatabaseAdapter:
         # print("shop _owners_assignments:", output._owners_assignments.items())
         # print("shop _owners_assignments:", output._managers_assignments.items())
         output._purchases_history = self.PurchaseHistoryAssmpler(shopDTO.purchases_history, seq_num)
+        output.bids = shopDTO.bids
+        output.bidAccepts = shopDTO.bidAccepts
 
         self._shopsCacheLock.acquire()
         self._shopsCache[shopDTO.name][1] = -1
@@ -159,7 +161,7 @@ class DatabaseAdapter:
         output._savedCart = self.ShoppingCartAssmpler(memberDTO.savedCart,seq_num)
         output._age = memberDTO.age
         output.delayedNoty = memberDTO.delayedNoty
-
+        output.acceptedBids=memberDTO.acceptedBids
         self._membersCacheLock.acquire()
         self._membersCache[memberDTO.username][1] = -1
         self._membersCacheLock.release()

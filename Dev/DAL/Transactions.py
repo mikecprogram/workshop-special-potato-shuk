@@ -15,7 +15,8 @@ class Transactions:
     def get_member(self,name):
         if self.is_member(name):
             transaction_lock.acquire()
-            output = assembler.MemberAssmpler(MemberDAL.get(username=name))
+            j=MemberDAL.get(username=name)
+            output = assembler.MemberAssmpler(j)
             transaction_lock.release()
             return output
         else:
@@ -149,29 +150,44 @@ class Transactions:
         print("add_owner_assignment id: ",assignment_id,"shop_name: ",shop_name)
         ShopDAL.get(name=shop_name).owners_assignments.add(AssignmentDAL[assignment_id])
         print("added_owner_assignment id: ",assignment_id,"shop_name: ",shop_name)
+
+    @db_session
     def add_bid(self, bidId,shop_name ,user, itemid, amount, bidPrice):
         try:
-            BidDAL(id=bidId,shop=shop_name,member=MemberDAL.get(username=user),item=StockItemDAL.get(itemid=itemid),\
+            print("add_bid")
+            BidDAL(id=bidId,shop=shop_name,member=MemberDAL.get(username=user),item=StockItemDAL.get(id=itemid),\
             amount=amount,bidPrice=bidPrice)
         except Exception as e:
             print(e.__str__())
+
+    @db_session
     def add_accept_bid_owner(self,bidID,ownerName):
         try:
+            print("add_accept_bid_owner")
             MembersAcceptedBids.get(bid =bidID).members.add(MemberDAL.get(username=ownerName))
         except Exception as e:
             print(e.__str__())
+
+    @db_session
     def add_accept_bid_without_owners(self,bidID):
         try:
+            print("add_accept_bid_without_owners")
             MembersAcceptedBids(bid =BidDAL.get(id=bidID))
         except Exception as e:
             print(e.__str__())
+
+    @db_session
     def delete_accept_bid(self,bidID):
         try:
+            print("delete_accept_bid")
             MembersAcceptedBids.get(bid = bidID).delete()
         except Exception as e:
             print(e.__str__())
+
+    @db_session
     def delete_bid(self, bidId):
         try:
+            print("delete_bid")
             BidDAL.get(id=bidId).delete()
         except Exception as e:
             print(e.__str__())

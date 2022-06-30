@@ -14,4 +14,5 @@ class ShopDTO:
         self.owners_assignments = owners_assignments
         self.managers_assignments = managers_assignments
         self.purchases_history = purchases_history
-
+        self.bids = {}
+        self.bidAccepts = {}
