@@ -57,6 +57,38 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue((not r.isexc), r.exc)
         self.assertEqual({}, r.res)
 
+    def testAddBidCounter(self):
+        r = self.m.bid_shop_item(self.u, "shopname", "itemname1", 5, 20)
+        self.assertTrue((not r.isexc), r.exc)
+        self.assertTrue(r.res, r.exc)
+        r = self.m.get_bids(self.u, "shopname")
+        self.assertTrue((not r.isexc), r.exc)
+        self.assertEqual({1: ['shopname', 'username', 'itemname1', 5, 20]},r.res)
+
+        self.m.logout(self.u)
+        self.m.login_into_the_trading_system(self.u2, "ownername", "password")
+        r = self.m.get_bids(self.u, "shopname")
+        self.assertTrue((not r.isexc), r.exc)
+        self.assertEqual({1: ['shopname', 'username', 'itemname1', 5, 20]}, r.res)
+
+        r = self.m.accept_bid(self.u2, "shopname", 1, 30)
+        self.assertTrue((not r.isexc), r.exc)
+        self.assertTrue(r.res, r.exc)
+
+        r = self.m.get_bids(self.u2, "shopname")
+        self.assertTrue((not r.isexc), r.exc)
+        self.assertEqual({1: ['shopname', 'username', 'itemname1', 5, 30]}, r.res)
+
+        self.m.logout(self.u)
+        self.m.login_into_the_trading_system(self.u, "username", "password")
+        r = self.m.pay_bid(self.u, 1)
+        self.assertTrue((not r.isexc), r.exc)
+        self.assertTrue(r.res, r.exc)
+
+        r = self.m.get_bids(self.u, "shopname")
+        self.assertTrue((not r.isexc), r.exc)
+        self.assertEqual({}, r.res)
+
 
 if __name__ == '__main__':
     unittest.main()

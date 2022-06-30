@@ -465,7 +465,7 @@ class Market():
         self.isToken(token)
         member = self.getUser(token).getMember()
         shop = self.get_shop_by_name(shopname)
-        return shop.acceptBid(bidId, member, counter)
+        return shop.acceptBid(bidId, member, self, counter)
 
     def rejectBid(self, token, shopname, bidId):
         self.isToken(token)
@@ -476,6 +476,7 @@ class Market():
     def payBid(self, token, bidId, card_number, month, year, holder, ccv, id, name, address, city, country, zip):
         self.isToken(token)
         user = self.getUser(token)
+        print(bidId , user.getMember().acceptedBids.keys())
         if bidId not in user.getMember().acceptedBids.keys():
             raise Exception('this bid id is either pending or broken!')
         bid = user.getMember().acceptedBids[bidId]

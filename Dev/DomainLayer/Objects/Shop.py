@@ -391,21 +391,24 @@ class Shop():
             t.add_accept_bid_without_owners(bidId)
             self.notify_all_owners_and_founder( "A new bid was added to shop %s" % (self.getShopName()))
 
-    def acceptBid(self, bidId, member, counter):
+    def acceptBid(self, bidId, member, market, counter):
         if member.get_username() in self._owners:
             if bidId in self.bidAccepts.keys():
                 if counter is not None:
+                    print(counter)
                     self.bids[bidId][4] = counter
                     self.bidAccepts[bidId] = set()
-                    self.notify_all_owners_and_founder( "A bid with id %d from shop %s got new counter offer : %f" % (bidId,self.getShopName(),counter))
+                    self.notify_all_owners_and_founder( "A bid with id %d from shop %s got new counter offer : %f" % (bidId, self.getShopName(), counter))
                     self.notify_member(member, "Your bid from shop %s was got counter offer." % self.getShopName())
+
                 self.bidAccepts[bidId].add(member.get_username())
                 t.add_accept_bid_owner(bidId, member.get_username())
                 k = self._owners.keys()
                 if set(k).issubset(self.bidAccepts[bidId]):
-                    member.acceptBid(bidId, self.bids[bidId])
+                    bidder = market._members[self.bids[bidId][1]]
+                    bidder.acceptBid(bidId, self.bids[bidId])
                     self.notify_member(member, "Your bid from shop %s was accepted." % self.getShopName())
-                    return True
+                return True
             raise Exception('No such bid id.')
         raise Exception('You are not owner of the shop')
 
@@ -474,10 +477,8 @@ class Shop():
                 user.addDelayedNotification(message)
 
     def notify_member(self, member, message):
-        member = market.getMemberByUsername(username)
         all = [member]
         usernames = [member.get_username()]
-
         missed = self.notificationPlugin.alertspecificrange(message, usernames)
         for user in all:
             if user.get_username() in missed:

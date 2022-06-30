@@ -44,6 +44,7 @@ class Member:
 
 
     def acceptBid(self, bidId, bid):
+        print(self._username, bid)
         self.acceptedBids[bidId] = bid
 
 
