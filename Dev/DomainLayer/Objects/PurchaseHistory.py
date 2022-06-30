@@ -23,9 +23,12 @@ class PurchaseHistory():
     def append(self, data):
         raise Exception("DEPRECATED")
 
-    def add(self,userstate,itemname,itemcount,bought_price):
+    def add(self,userstate,itemname,itemcount,bought_price,atomic = False,atomicId=-1):
         self.purchaseString += "User '%s' bought %d of %s for %f.\n"%(userstate,itemcount,itemname,bought_price)
-        t.change_purchase_string(self.id,self.purchaseString)
+        if not atomic:
+            t.change_purchase_string(self.id, self.purchaseString)
+        else:
+            t.add_to_atomic(atomicId,lambda:t.change_purchase_string(self.id, self.purchaseString))
 
     def get_string(self):
         return self.purchaseString

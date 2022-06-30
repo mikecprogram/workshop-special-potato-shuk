@@ -33,10 +33,12 @@ class Stock:
             i = i + 1
         return i
 
-    def purchase(self, itemname: str, amount: int):
+    def purchase(self, itemname: str, amount: int,AtomicId):
         '''Removes amount from count of stockItem'''
         if itemname in list(self._stockItems):
             self._stockItems[itemname].remove(amount)
+            t.add_to_atomic(AtomicId,\
+            lambda:t.item_set_amount(self._stockItems[itemname]._id,self._stockItems[itemname]._count - amount))
             return 0;
         raise Exception("No such item %s in this shop." % (itemname))
 

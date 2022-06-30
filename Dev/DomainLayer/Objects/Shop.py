@@ -1,23 +1,22 @@
 from Dev.DomainLayer.Objects.Policies.policyIsShop import policyIsShop
 from Dev.DomainLayer.Objects.StockItem import StockItem
-from Dev.DomainLayer.Objects.Assignment import Assignment, t
+from Dev.DomainLayer.Objects.Assignment import Assignment,t
 from Dev.DomainLayer.Objects.Stock import Stock
 from Dev.DomainLayer.Objects.PurchaseHistory import PurchaseHistory
-
 notplugin = None
 import threading
 
 
 class Shop():
 
-    def __init__(self, shop_name, founder=None, notificationPlugin=None, save=True):
+    def __init__(self, shop_name, founder=None, notificationPlugin=None,save = True):
         if notificationPlugin is not None:
             notplugin = notificationPlugin
         self._name = shop_name
-        self._stock = Stock(shop_name, save)
+        self._stock = Stock(shop_name,save)
         self._is_open = True  # need to confirm if we need shop's status such as closed/open. TODO
         self._founder = founder
-        self._policies = []  # temp
+        self._policies = [] #temp
         self._owners = {}  # {ownerUsername, Member} (ò_ó)!!!!!!!!!!!!!!!!!
         self._managers = {}  # {managerUsername, Member}
         self._purchasePolicies = []
@@ -27,7 +26,7 @@ class Shop():
         # self._purchaseHistory = PurchaseHistory()
         self._owners_assignments = {}
         self._managers_assignments = {}
-        self._purchases_history = PurchaseHistory(save=save)
+        self._purchases_history = PurchaseHistory(save = save)
         self._shop_lock = threading.Lock()
         self.notificationPlugin = notificationPlugin
         self._cache_lock = threading.Lock()
@@ -41,7 +40,6 @@ class Shop():
     def release__cache_lock(self):
         '''DB cache usage please don't use it'''
         self._cache_lock.release()
-
     def getId(self, itemname):
         return self._stock.getItem(itemname)._id
 
@@ -102,10 +100,8 @@ class Shop():
         except Exception as e:
             self._shop_lock.release()
             raise e
-
-    def getAmount(self, item_name):
+    def getAmount(self,item_name):
         return self._stock.getAmount(item_name)
-
     def checkAmount(self, item_name, amount):
         amount = int(amount)
         if amount < 0:
@@ -118,8 +114,7 @@ class Shop():
         except Exception as e:
             self._shop_lock.release()
             raise e
-
-    def have_rule_in_shop(self, member):
+    def have_rule_in_shop(self,member):
         if member.get_username() == self._founder.get_username():
             raise Exception("Assignee is already a founder of the shop!")
         if member.get_username() in self._managers:
@@ -129,7 +124,7 @@ class Shop():
 
     def assign_owner(self, assigner_member_object, assignee_member_object):
         self.have_rule_in_shop(assignee_member_object)
-        # if assigned owner was a manager need to think what to do remove from managers or... NO.. if you have a rule you cant be promoted.
+        #if assigned owner was a manager need to think what to do remove from managers or... NO.. if you have a rule you cant be promoted.
         self._owners[assignee_member_object.get_username()] = assignee_member_object
         assignee_member_object.addOwnedShop(self)
         self.add_assignment(assigner_member_object, assignee_member_object, self._owners_assignments)
@@ -137,14 +132,13 @@ class Shop():
 
     def delete_owner(self, assigner_user_name, assignee_user_name):
         if assignee_user_name == self._founder.get_username():
-            raise Exception("%s is Founder of the shop:%s and therefore cant be deleted from owners group" % (assignee_user_name, self._name))
+            raise Exception("%s is Founder of the shop:%s and therefore cant be deleted from owners group" %(assignee_user_name,self._name))
         if assignee_user_name not in self._owners:
             raise Exception(assignee_user_name + " is not an owner of the shop:" + self._name)
         self.delete_assignment_owner(assigner_user_name, assignee_user_name, self._owners_assignments)
-
-    def delete_manager(self, assigner_user_name, assignee_user_name):
+    def delete_manager(self,assigner_user_name, assignee_user_name):
         if assignee_user_name == self._founder.get_username():
-            raise Exception("%s is Founder of the shop:%s and therefore cant be deleted from owners group" % (assignee_user_name, self._name))
+            raise Exception("%s is Founder of the shop:%s and therefore cant be deleted from owners group" %(assignee_user_name,self._name))
         if assignee_user_name not in self._managers:
             raise Exception(assignee_user_name + " is not an owner of the shop:" + self._name)
         self.delete_assignment_manager(assigner_user_name, assignee_user_name, self._managers_assignments)
@@ -157,7 +151,7 @@ class Shop():
                 if i.assignee.get_username() == assignee_user_name:
                     assignee_member_object = i.assignee
                     assignment[assigner_user_name].remove(i)
-                    t.delete_assignment(i.id, self._name)
+                    t.delete_assignment(i.id,self._name)
                     b = True
                     break
         if not b:
@@ -172,7 +166,7 @@ class Shop():
                 if i.assignee.get_username() == assignee_user_name:
                     assignee_member_object = i.assignee
                     assignment[assigner_user_name].remove(i)
-                    t.delete_assignment(i.id, self._name)
+                    t.delete_assignment(i.id,self._name)
                     b = True
                     break
         if not b:
@@ -194,11 +188,11 @@ class Shop():
         if member_to_delete.get_username() in self._owners_assignments:
             for i in self._owners_assignments[member_to_delete.get_username()]:
                 self.recursive_delete(i.assignee)
-                t.delete_assignment(i.id, self._name)
+                t.delete_assignment(i.id,self._name)
         if member_to_delete.get_username() in self._managers_assignments:
             for i in self._managers_assignments[member_to_delete.get_username()]:
                 self.recursive_delete(i.assignee)
-                t.delete_assignment(i.id, self._name)
+                t.delete_assignment(i.id,self._name)
         if member_to_delete.get_username() in self._owners_assignments:
             del self._owners_assignments[member_to_delete.get_username()]
         if member_to_delete.get_username() in self._managers_assignments:
@@ -218,11 +212,11 @@ class Shop():
         self.add_assignment(assigner_member_object, assignee_member_object, self._managers_assignments)
         return True
 
-    def get_item_id_from_name(self, item_name):
+    def get_item_id_from_name(self,item_name):
         return self._stock.get_item_id_from_name(item_name)
 
     def add_assignment(self, assigner_member_object, assignee_member_object, assignment):
-        a = Assignment(assigner_member_object, assignee_member_object)
+        a= Assignment(assigner_member_object, assignee_member_object)
         if assigner_member_object.get_username() in assignment:
             assignment[assigner_member_object.get_username()].append(
                 a)
@@ -234,6 +228,7 @@ class Shop():
         else:
             t.add_shop_owner_assignment(self._name, a.id)
 
+
     def is_assignment(self, assigner, assignee):
         if assigner in self._owners_assignments:
             return assignee in self._owners_assignments[assigner]
@@ -243,29 +238,37 @@ class Shop():
     def get_founder_and_owners(self):
         all = []
         all.append(self._founder)
-        for o in self._owners.values():
+        for o in  self._owners.values():
             all.append(o)
         return all
 
     def close_shop(self):
         if self._is_open:
             self._is_open = False
-            self.notify_all_owners_and_founder("The Shop \"%s\" is closed." % (self.getShopName()))
+            all = self.get_founder_and_owners()
+            usernames = [u.get_username() for u in all]
+            missed = self.notificationPlugin.alertspecificrange("The Shop \"%s\" is closed." %(self.getShopName()),usernames)
+            for user in all:
+                if user.get_username() in missed:
+                    user.addDelayedNotification("The Shop \"%s\" is closed." %(self.getShopName()))
             t.close_shop(self.getShopName())
             return True
         else:
             raise Exception('Closed shop could not be closed again!')
-
     def reopen_shop(self):
         if not self._is_open:
             self._is_open = True
-            self.notify_all_owners_and_founder("The Shop \"%s\" is open again." % (self.getShopName()))
+            all = self.get_founder_and_owners()
+            usernames = [u.get_username() for u in all]
 
+            missed = self.notificationPlugin.alertspecificrange("The Shop \"%s\" is open again." % (self.getShopName()), usernames)
+            for user in all:
+                if user.get_username() in missed:
+                    user.addDelayedNotification("The Shop \"%s\" is open again." % (self.getShopName()))
             t.reopen_shop(self.getShopName())
             return True
         else:
             raise Exception('Open shop could not be opened again!')
-
     # Returns whether usernae is manager
     def is_manager(self, manager_username: str) -> bool:
         return manager_username in self._managers
@@ -281,7 +284,7 @@ class Shop():
 
     def getRolesInfoReport(self):
         return {'founder': self._founder.get_username(), 'managers': [m for m in self._managers],
-                'owners': [m for m in self._owners]}
+        'owners': [m for m in self._owners]}
 
     def get_shop_report(self):
         return {'name': self._name, 'founder': self._founder.get_username(), 'managers': [m for m in self._managers],
@@ -299,9 +302,17 @@ class Shop():
 
     def purchase(self, user, itemname: str, amount: int, bought_price: float):
         '''Perform purchase'''
-        self._purchases_history.add(user.get_state(), itemname, amount, bought_price)
-        self._stock.purchase(itemname, amount)
-        self.notify_all_owners_and_founder("%s purchased %d of %s from shop %s" % (user.get_state(), amount, itemname, self.getShopName()))
+        atomicId=t.make_new_atomic()
+        self._purchases_history.add(user.get_state(), itemname, amount, bought_price,True,atomicId)
+        self._stock.purchase(itemname, amount,atomicId)
+        t.run_atomic(atomicId)
+        all = self.get_founder_and_owners()
+        usernames = [u.get_username() for u in all]
+        message = "%s purchased %d of %s from shop %s" %(user.get_state(),amount,itemname,self.getShopName())
+        missed = self.notificationPlugin.alertspecificrange(message, usernames)
+        for user in all:
+            if user.get_username() in missed:
+                user.addDelayedNotification(message)
         return True
 
     def search(self, query: str, category: str, item_min_price: float, item_max_price: float):
@@ -323,6 +334,7 @@ class Shop():
             raise Exception('Owner can only update his assignees permissions!')
         grantee_manager.get_permissions(self._name).add_permission(permission_code)
 
+
     def withdraw_permission(self, permission_code, grantor_username, grantee_manager):
         if not self.is_manager(grantee_manager.get_username()):
             raise Exception('Asked member is not a manager of the given shop in market!')
@@ -333,14 +345,13 @@ class Shop():
 
     def archive_shopping_basket(self, shooping_basket_report):
         self._purchases_history.append(shooping_basket_report)
-
-    def can_add_purchase_policies(self, user):
-        if user.getMember() == self._founder or user.getMember() in self._owners:
+    def can_add_purchase_policies(self,user):
+        if user.getMember() == self._founder or user.getMember() in self._owners :
             return True
         if user.getMember() in self._managers:
             return user.getMember().can_add_purchase_policies(self.name)
 
-    def can_add_discount_policies(self, user):
+    def can_add_discount_policies(self,user):
         if user.getMember() == self._founder or user.getMember() in self._owners:
             return True
         if user.getMember() in self._managers:
@@ -349,7 +360,7 @@ class Shop():
     def addPurchasePolicy(self, policy):
         self._purchaseLock.acquire()
         self._purchasePolicies.append(policy)
-        t.add_shop_policy(policy, self._name, "purchase", 1)
+        t.add_shop_policy(policy,self._name,"purchase",1)
         self._purchaseLock.release()
         return True
 
@@ -367,7 +378,7 @@ class Shop():
             for d in self._discountPolicies:
                 if d.getID() == ID:
                     self._discountPolicies.remove(d)
-                    t.delete_shop_policy(ID, self._name, "discount")
+                    t.delete_shop_policy(ID,self._name,"discount")
                     done = True
             self._discountLock.release()
         else:
@@ -389,33 +400,29 @@ class Shop():
             self.bidAccepts[bidId] = set()
             t.add_bid(bidId, self._name, user, self.getId(itemname), amount, bidPrice)
             t.add_accept_bid_without_owners(bidId)
-            self.notify_all_owners_and_founder( "A new bid was added to shop %s" % (self.getShopName()))
+            #TODO notify all owners here
 
-    def acceptBid(self, bidId, member, counter):
-        if member.get_username() in self._owners:
+    def acceptBid(self, bidId, username, market):
+        if username in self._owners:
             if bidId in self.bidAccepts.keys():
-                if counter is not None:
-                    self.bids[bidId][4] = counter
-                    self.bidAccepts[bidId] = set()
-                    self.notify_all_owners_and_founder( "A bid with id %d from shop %s got new counter offer : %f" % (bidId,self.getShopName(),counter))
-                    self.notify_member(member, "Your bid from shop %s was got counter offer." % self.getShopName())
-                self.bidAccepts[bidId].add(member.get_username())
-                t.add_accept_bid_owner(bidId, member.get_username())
+                self.bidAccepts[bidId].add(username)
+                t.add_accept_bid_owner(bidId,username)
                 k = self._owners.keys()
                 if set(k).issubset(self.bidAccepts[bidId]):
+                    member = market._members[self.bids[bidId][1]]
                     member.acceptBid(bidId, self.bids[bidId])
-                    self.notify_member(member, "Your bid from shop %s was accepted." % self.getShopName())
+                    # TODO notify user his bid is accepted here
                     return True
-            raise Exception('No such bid id.')
-        raise Exception('You are not owner of the shop')
+            raise Exception('bad bid id!')
+        raise Exception('not owner of the shop!')
 
-    def rejectBid(self, bidId, member):
-        if member.get_username() in self._owners:
+    def rejectBid(self, bidId, username):
+        if username in self._owners:
             if bidId in self.bidAccepts.values():
                 self.bidAccepts.pop(bidId)
                 self.bids.pop(bidId)
                 t.delete_bid(bidId)
-                self.notify_member(member, "Your bid from shop %s was denied." % self.getShopName())
+                # TODO notify user his bid is rejected here
             raise Exception('bad bid id!')
         raise Exception('not owner of the shop!')
 
@@ -454,8 +461,7 @@ class Shop():
                 d = policy.getDiscount()
                 disc *= (1 - d / 100)
         return disc
-
-    def get_permission_report(self, member_name):
+    def get_permission_report(self,member_name):
         m = self._managers[member_name]
         p = m.get_permissions(self._name)
         ret = p.get_permission_report_json()
@@ -463,22 +469,3 @@ class Shop():
 
     def getCategories(self):
         return self._stock.getCategories()
-
-    def notify_all_owners_and_founder(self, message):
-        all = self.get_founder_and_owners()
-        usernames = [u.get_username() for u in all]
-
-        missed = self.notificationPlugin.alertspecificrange(message, usernames)
-        for user in all:
-            if user.get_username() in missed:
-                user.addDelayedNotification(message)
-
-    def notify_member(self, member, message):
-        member = market.getMemberByUsername(username)
-        all = [member]
-        usernames = [member.get_username()]
-
-        missed = self.notificationPlugin.alertspecificrange(message, usernames)
-        for user in all:
-            if user.get_username() in missed:
-                user.addDelayedNotification(message)

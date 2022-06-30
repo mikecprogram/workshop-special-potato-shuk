@@ -10,6 +10,32 @@ compositePoliciesClass = [
         "policyNot", "policyAnd", "policyOr", "policyXor", "policyMax", "policyAdd", "policyIf"
     ]
 class Transactions:
+    def __init__(self):
+        self.atomic = {}
+        self.id = 0
+        self.atomicLock = threading.Lock()
+
+    @db_session(retry=3)
+    def run_atomic(self,id):
+        for i in self.atomic[id]:
+            print("Making atomics")
+            i()
+        print("Finish atomics")
+        del self.atomic[id]
+
+
+    def add_to_atomic(self,id,lamda):
+        self.atomicLock.acquire()
+        self.atomic[id].append(lamda)
+        self.atomicLock.release()
+
+    def make_new_atomic(self):
+        self.atomicLock.acquire()
+        self.atomic[self.id]=[]
+        output =self.id
+        self.id = self.id+1
+        self.atomicLock.release()
+        return output
 
     @db_session
     def get_member(self,name):
@@ -406,6 +432,16 @@ class TransactionsMock:
         pass
 
     def add_accept_bid_without_owners(self, bidID):
+        pass
+
+    def run_atomic(self,id):
+        pass
+
+
+    def add_to_atomic(self,id,lamda):
+        pass
+
+    def make_new_atomic(self):
         pass
 
     def delete_accept_bid(self, bidID):
