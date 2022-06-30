@@ -463,16 +463,16 @@ class Market():
 
     def acceptBid(self, token, shopname, bidId, counter):
         self.isToken(token)
-        username = self.getUser(token).getUsername()
+        member = self.getUser(token).getMember()
         shop = self.get_shop_by_name(shopname)
-        return shop.acceptBid(bidId, username, self, counter)
+        return shop.acceptBid(bidId, member, counter)
 
     def rejectBid(self, token, shopname, bidId):
         self.isToken(token)
-        username = self.getUser(token).getUsername()
+        member = self.getUser(token).getMember()
         shop = self.get_shop_by_name(shopname)
-        shop.rejectBid(bidId, username)
-
+        shop.rejectBid(bidId, member)
+    
     def payBid(self, token, bidId, card_number, month, year, holder, ccv, id, name, address, city, country, zip):
         self.isToken(token)
         user = self.getUser(token)
@@ -484,7 +484,7 @@ class Market():
         amount = bid[3]
         price = bid[4]
         count = shop.getAmount(itemname)
-        # where do i use the price???
+
         tid = self._externalServices.execute_payment(card_number, month, year, holder, ccv, id)
         if tid < 0:
             raise Exception('Payment failed!')
@@ -495,15 +495,13 @@ class Market():
                     shop.bids.pop(bidId)
                     shop.bidAccepts.pop(bidId)
                     t.delete_bid(bidId)
+                    shop.notify_all_owners_and_founder("The bid %d was purchase successfully" % bidId)
                     return True
                 raise Exception('Shipment failed!')
             raise Exception('failed to remove items from shop during purchase!')
         except Exception as e:
             self._externalServices.cancel_payment(tid)
             raise e
-
-
-
 
     def get_inshop_purchases_history(self, token, shopname):
         if self.isToken(token):
