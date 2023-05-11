@@ -61,18 +61,19 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'shuk.urls'
 
-PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 #this is another dirty fix for loading the template after messing with base dir
+PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_ROOT, 'templates').replace('\\','/'),
+    os.path.join(PROJECT_ROOT, 'templates'),
+    os.path.join(PROJECT_ROOT, 'potato\\templates'),
 )
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': TEMPLATE_DIRS,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
