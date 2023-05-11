@@ -1,6 +1,9 @@
 import unittest
 import sys
 
+
+
+from Dev.ServiceLayer.SystemService import SystemService
 # this is how you import from different folder in python:
 # sys.path.insert(0, r'C:\Users\USER\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
 # STEP 1 : add r.exc: (self\.assertTrue\(.+(?<!r\.exc))\)$        $1,r.exc)
@@ -10,7 +13,6 @@ import sys
 self.assertTrue($2, r.exc)
         self.assertTrue($1, r.exc)
 """
-from Dev.ServiceLayer.SystemService import *
 
 
 class MyTestCase(unittest.TestCase):

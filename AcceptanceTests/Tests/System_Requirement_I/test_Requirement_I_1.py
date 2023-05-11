@@ -1,9 +1,8 @@
 import unittest
 import sys
 #this is how you import from different folder in python:
-sys.path.insert(0, r'C:\Users\user\Desktop\workshop-special-potato-shuk\dev\ServiceLayer')
-
-from SystemService import *
+#sys.path.insert(0, r'C:\Users\micha\OneDrive - post.bgu.ac.il\Documents\GitHub\workshop-special-potato-shuk')
+from Dev.ServiceLayer.SystemService import SystemService
 
 
 class MyTestCase(unittest.TestCase):

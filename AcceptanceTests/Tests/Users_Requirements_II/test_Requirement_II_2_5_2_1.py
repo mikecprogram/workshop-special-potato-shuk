@@ -353,6 +353,7 @@ class MyTestCase(unittest.TestCase):
 
     def testIsAfterTime(self): # run this test after 10AM
         self.m.add_policy(self.u, "shopname", 10, "isAfterTime", 10, 0)
+        print("Hell")
         self.m.add_discount_policy_to_shop(self.u, "shopname", 1)
         self.m.add_discount_policy_to_shop(self.u, "shopname", 2)
         self.m.shopping_carts_add_item(self.u, "itemname1", "shopname", 4)

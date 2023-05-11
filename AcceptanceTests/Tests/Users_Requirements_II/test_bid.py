@@ -1,7 +1,8 @@
 import unittest
 import sys
 
-from Dev.ServiceLayer.SystemService import *
+
+from Dev.ServiceLayer.SystemService import SystemService
 
 
 class MyTestCase(unittest.TestCase):
