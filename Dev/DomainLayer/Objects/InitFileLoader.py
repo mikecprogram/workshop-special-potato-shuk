@@ -17,7 +17,10 @@ class init_file_loader:
             conf_file.close()
         except Exception as e:
             configFileString = fallback_string
-            print("DEMO MODE ACTIVATED (config file not found)")
+            print("DEMO MODE ACTIVATED (config file not found, creating one)")
+            conf_file = open("config.txt", "w+")
+            conf_file.write(configFileString)
+            conf_file.close()
 
         try:
             regex_pattern = "^(real|demo)[.]*\n(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}).*\nSystem Manager Username:\s+([a-zA-Z0-9]+)\nSystem Manager Password:\s+([\_a-zA-Z0-9]+)"
