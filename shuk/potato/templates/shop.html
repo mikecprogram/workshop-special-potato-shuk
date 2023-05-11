@@ -3,17 +3,17 @@
 {% block content %}
 <h1 style="text-align: center">{{shopname}}</h1>
 <h2>Founded by :{{founder}}</h2>
-{% if shop.owners != "" %}
+{% if owners != "" %}
 <h2>Owned by :{{owners}}</h2>
 {% endif %}
-{% if shop.managers != "" %}
+{% if managers != "" %}
 <h2>Managed by :{{managers}}</h2>
 {% endif %}
 
 {% if showAddItem %}
 <div class="center"><a href="additem"><button class="bluebutton">&emsp;Add Item&emsp;</button></a></div>
 {% endif %}
-There are{{items|length}} items in this shop.
+There are {{items|length}} items in this shop.
 <div class="stockitemlist">
     {% for item in items %}
 
