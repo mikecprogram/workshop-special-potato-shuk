@@ -7,7 +7,12 @@ from urllib import response
 from django import forms
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
-sys.path.append( '..' )
+import os
+
+#this is a dirty fix for importing from Dev folder
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(BASE_DIR)
+
 from Dev.ServiceLayer.SystemService import SystemService
 from .models import ItemInBasket, Shop, StockItem, Policy, TemplatePolicy
 
