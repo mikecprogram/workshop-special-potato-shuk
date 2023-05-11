@@ -13,10 +13,6 @@ class policyIsAfterTime(Composable):
 
     def apply(self, user: User, item: StockItem):
         now = datetime.datetime.now()
-        print(now.hour)
-        print(self.hour)
-        print(now.minute)
-        print(self.minute)
         return now.hour >= self.hour and now.minute >= self.minute
 
     def get_args(self):
